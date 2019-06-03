@@ -1,0 +1,9 @@
+C:\inetpub\wwwroot\AbcService\bin\AbcService.dll.config
+C:\inetpub\wwwroot\AbcService\bin\AbcService.dll
+C:\inetpub\wwwroot\AbcService\bin\AbcService.pdb
+C:\inetpub\wwwroot\AbcService\bin\rscp4n.dll
+C:\inetpub\wwwroot\AbcService\bin\sapnco.dll
+C:\inetpub\wwwroot\AbcService\bin\sapnco_utils.dll
+C:\inetpub\wwwroot\AbcService\obj\Debug\AbcService.dll
+C:\inetpub\wwwroot\AbcService\obj\Debug\AbcService.pdb
+C:\inetpub\wwwroot\AbcService\obj\Debug\BankService.csprojResolveAssemblyReference.cache

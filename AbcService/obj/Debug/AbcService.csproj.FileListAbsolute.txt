@@ -1,0 +1,8 @@
+D:\H2O\AbcService\AbcService\bin\AbcService.dll.config
+D:\H2O\AbcService\AbcService\bin\AbcService.dll
+D:\H2O\AbcService\AbcService\bin\AbcService.pdb
+D:\H2O\AbcService\AbcService\obj\Debug\AbcService.dll
+D:\H2O\AbcService\AbcService\obj\Debug\AbcService.pdb
+C:\inetpub\wwwroot\AbcService\obj\Debug\AbcService.csprojResolveAssemblyReference.cache
+C:\inetpub\wwwroot\AbcService\obj\Debug\AbcService.dll
+C:\inetpub\wwwroot\AbcService\obj\Debug\AbcService.pdb
