@@ -1,0 +1,106 @@
+using System;
+using System.Data;
+using System.Data.OracleClient;
+using System.Collections;
+using System.Data.SqlClient;
+using System.Data.OleDb;
+using System.Collections.Generic;
+using Ipedf.Web.Entity;
+using Ipedf.Core;
+using ConstLibrary = Ipedf.Common;
+namespace Ipedf.Web.DataAccess
+{
+	
+	public partial class HelperObject_SCM_D_GYS_MATER_PIC
+	{		
+		#region Method Blok
+		public static int Save(EntityObject_SCM_D_GYS_MATER_PIC obj,IDbTransaction trans)
+		{
+			
+			//平台自动生成代码
+			//obj.ID= Guid.NewGuid().ToString();
+			string sSql = "insert into SCM_D_GYS_MATER_PIC( ID, CODE, COMMENTS, FREEUSE1, FREEUSE3, CREATE_USER_ID, DATA_ORGANISE_ID, GYSACCOUNT, CHARGE, CREATE_TIME, MATER_ID, CREATE_DEPART_ID, STATE, FREEUSE2, NAME) values ( :ID, :CODE, :COMMENTS, :FREEUSE1, :FREEUSE3, :CREATE_USER_ID, :DATA_ORGANISE_ID, :GYSACCOUNT, :CHARGE, :CREATE_TIME, :MATER_ID, :CREATE_DEPART_ID, :STATE, :FREEUSE2, :NAME)";
+			#region Parameters Block
+			OracleParameter[] parameters = new OracleParameter[15];
+			parameters[0] = new OracleParameter();
+			parameters[0].ParameterName =":ID";
+			parameters[0].Size = 36;
+			parameters[0].OracleType = System.Data.OracleClient.OracleType.Char;
+			parameters[0].Value = obj.ID == null ? String.Empty:obj.ID;
+			parameters[1] = new OracleParameter();
+			parameters[1].ParameterName =":CODE";
+			parameters[1].Size = 50;
+			parameters[1].OracleType = System.Data.OracleClient.OracleType.VarChar;
+			parameters[1].Value = obj.CODE == null ? String.Empty:obj.CODE;
+			parameters[2] = new OracleParameter();
+			parameters[2].ParameterName =":COMMENTS";
+			parameters[2].Size = 1000;
+			parameters[2].OracleType = System.Data.OracleClient.OracleType.VarChar;
+			parameters[2].Value = obj.COMMENTS == null ? String.Empty:obj.COMMENTS;
+			parameters[3] = new OracleParameter();
+			parameters[3].ParameterName =":FREEUSE1";
+			parameters[3].Size = 50;
+			parameters[3].OracleType = System.Data.OracleClient.OracleType.VarChar;
+			parameters[3].Value = obj.FREEUSE1 == null ? String.Empty:obj.FREEUSE1;
+			parameters[4] = new OracleParameter();
+			parameters[4].ParameterName =":FREEUSE3";
+			parameters[4].Size = 200;
+			parameters[4].OracleType = System.Data.OracleClient.OracleType.VarChar;
+			parameters[4].Value = obj.FREEUSE3 == null ? String.Empty:obj.FREEUSE3;
+			parameters[5] = new OracleParameter();
+			parameters[5].ParameterName =":CREATE_USER_ID";
+			parameters[5].Size = 36;
+			parameters[5].OracleType = System.Data.OracleClient.OracleType.Char;
+			parameters[5].Value = obj.CREATE_USER_ID == null ? String.Empty:obj.CREATE_USER_ID;
+			parameters[6] = new OracleParameter();
+			parameters[6].ParameterName =":DATA_ORGANISE_ID";
+			parameters[6].Size = 36;
+			parameters[6].OracleType = System.Data.OracleClient.OracleType.Char;
+			parameters[6].Value = obj.DATA_ORGANISE_ID == null ? String.Empty:obj.DATA_ORGANISE_ID;
+			parameters[7] = new OracleParameter();
+			parameters[7].ParameterName =":GYSACCOUNT";
+			parameters[7].Size = 50;
+			parameters[7].OracleType = System.Data.OracleClient.OracleType.VarChar;
+			parameters[7].Value = obj.GYSACCOUNT == null ? String.Empty:obj.GYSACCOUNT;
+			parameters[8] = new OracleParameter();
+			parameters[8].ParameterName =":CHARGE";
+			parameters[8].Size = 20;
+			parameters[8].OracleType = System.Data.OracleClient.OracleType.VarChar;
+			parameters[8].Value = obj.CHARGE == null ? String.Empty:obj.CHARGE;
+			parameters[9] = new OracleParameter();
+			parameters[9].ParameterName =":CREATE_TIME";
+			parameters[9].Size = 7;
+			parameters[9].OracleType = System.Data.OracleClient.OracleType.DateTime;
+			parameters[9].Value = obj.CREATE_TIME;
+			parameters[10] = new OracleParameter();
+			parameters[10].ParameterName =":MATER_ID";
+			parameters[10].Size = 36;
+			parameters[10].OracleType = System.Data.OracleClient.OracleType.Char;
+			parameters[10].Value = obj.MATER_ID == null ? String.Empty:obj.MATER_ID;
+			parameters[11] = new OracleParameter();
+			parameters[11].ParameterName =":CREATE_DEPART_ID";
+			parameters[11].Size = 36;
+			parameters[11].OracleType = System.Data.OracleClient.OracleType.Char;
+			parameters[11].Value = obj.CREATE_DEPART_ID == null ? String.Empty:obj.CREATE_DEPART_ID;
+			parameters[12] = new OracleParameter();
+			parameters[12].ParameterName =":STATE";
+			parameters[12].Size = 22;
+			parameters[12].OracleType = System.Data.OracleClient.OracleType.Number;
+			parameters[12].Value = obj.STATE;
+			parameters[13] = new OracleParameter();
+			parameters[13].ParameterName =":FREEUSE2";
+			parameters[13].Size = 100;
+			parameters[13].OracleType = System.Data.OracleClient.OracleType.VarChar;
+			parameters[13].Value = obj.FREEUSE2 == null ? String.Empty:obj.FREEUSE2;
+			parameters[14] = new OracleParameter();
+			parameters[14].ParameterName =":NAME";
+			parameters[14].Size = 200;
+			parameters[14].OracleType = System.Data.OracleClient.OracleType.VarChar;
+			parameters[14].Value = obj.NAME == null ? String.Empty:obj.NAME;
+			#endregion 
+			return IDALProvider.IDAL.ExecuteNonQuery(sSql,parameters,trans);
+		}
+		
+		#endregion 
+	}
+}

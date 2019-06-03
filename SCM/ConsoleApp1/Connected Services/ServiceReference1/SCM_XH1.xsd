@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Ipedf.Web.Entity" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Ipedf.Web.Entity" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost/scm/SCM_XH.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/Ipedf.Core" />
+  <xs:complexType name="DisplayObject_SCM_D_PURCHARSEPLAN">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:EntityObject_SCM_D_PURCHARSEPLAN">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="LIFNR_NAME" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MATNR_NAME" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="DisplayObject_SCM_D_PURCHARSEPLAN" nillable="true" type="tns:DisplayObject_SCM_D_PURCHARSEPLAN" />
+  <xs:complexType name="EntityObject_SCM_D_PURCHARSEPLAN">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/Ipedf.Core" base="q1:EntityBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ALLMENGE" type="xs:decimal" />
+          <xs:element minOccurs="0" name="BEDAT" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="BSART" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CODE" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="COMMENTS" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CREATE_DEPART_ID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CREATE_TIME" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="CREATE_USER_ID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DATA_ORGANISE_ID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="EBELN" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="EBELP" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="EINDT" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="FREEUSE1" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="FREEUSE2" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="FREEUSE3" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="LGORT" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="LIFNR" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MATNR" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MEINS" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MENGE" type="xs:decimal" />
+          <xs:element minOccurs="0" name="MODIFY_DEPART_ID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MODIFY_TIME" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="MODIFY_USER_ID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MSEHT" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="NAME" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="NETPR" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SEND_DEAPRT_CONTACT" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SEND_DEAPRT_ID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SEND_DEAPRT_NAME" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SEND_DEAPRT_PHONE" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="STATE" type="xs:decimal" />
+          <xs:element minOccurs="0" name="STATUS" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SUREMENGE" type="xs:decimal" />
+          <xs:element minOccurs="0" name="TXZ01" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="WERKS" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="WERKST" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="EntityObject_SCM_D_PURCHARSEPLAN" nillable="true" type="tns:EntityObject_SCM_D_PURCHARSEPLAN" />
+</xs:schema>

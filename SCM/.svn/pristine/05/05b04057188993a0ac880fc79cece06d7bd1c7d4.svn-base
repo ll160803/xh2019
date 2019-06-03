@@ -1,0 +1,124 @@
+INPUT
+{
+	 PADDING-RIGHT: 2px; 
+	 PADDING-TOP: 1px; 
+	 PADDING-LEFT:2px; 
+	 PADDING-BOTTOM: 1px; 
+	 BORDER-TOP: #576169 1px solid; 
+	 BORDER-LEFT: #576169 1px solid; 
+	 BORDER-RIGHT: #576169 1px solid; 
+	 BORDER-BOTTOM: #576169 1px solid; 
+	 LETTER-SPACING: 1px;
+	 LINE-HEIGHT: 100%; 
+	 HEIGHT: 18px;
+	 BACKGROUND-COLOR:#FEFEFE; 
+	 MARGIN: 1px 1px; 
+	 WORD-SPACING: 1px;
+}
+.InsResizeLine
+{
+  border-right: 1px;
+	border-top: 1px;
+	border-left: 1px;
+	border-bottom: 1px;
+	background-color: transparent;
+	border-color:blue;
+}
+.ReverseRow
+{
+	page-break-before: auto;
+	page-break-after: auto;
+	overflow: visible;
+	height: 20px;
+	background-color: white;
+}
+.PageBreak
+{
+	page-break-after:always;
+	overflow: visible;
+	height: 20px;
+	background-color: white;
+}
+.workingtable
+{
+	/*table-layout: fixed;*/
+	font-size: 9pt;
+	overflow: auto;
+	border-color:Black;
+	border-collapse: collapse;
+	background-color: white;
+	text-align: center;
+}
+.A4Htable
+{
+	/*table-layout: fixed;*/
+	font-size: 9pt;
+	overflow: auto;
+	border-color:Black;
+	border-collapse: collapse;
+	background-color: white;
+	text-align: center;
+	width:900px;
+}
+.AutoSizetable
+{
+	/*table-layout: fixed;*/
+	font-size: 9pt;
+	overflow: auto;
+	border-color:Black;
+	border-collapse: collapse;
+	background-color: white;
+	text-align: center;
+}
+.A4Vtable
+{
+	/*table-layout: fixed;*/
+	font-size: 9pt;
+	overflow: auto;
+	border-color:Black;
+	border-collapse: collapse;
+	background-color: white;
+	text-align: center;
+	width:650px;
+}
+.A3Htable
+{
+	/*table-layout: fixed;*/
+	font-size: 9pt;
+	overflow: auto;
+	border-color:Black;
+	border-collapse: collapse;
+	background-color: white;
+	text-align: center;
+	width:1500px;
+}
+.Left
+{
+	text-align: left;
+}
+.Right
+{
+	text-align: right;
+}
+.Hide
+{
+	visibility:hidden;display:none
+}
+.Title
+{
+	font-size: 20pt;
+	font-family: "ºÚÌå";
+	height: 24pt;
+	text-align: center;
+}
+@media print
+{
+	.NoPrint
+	{
+		DISPLAY: none;
+	}
+	.PageNext
+	{
+		PAGE-BREAK-AFTER: always;
+	}
+}

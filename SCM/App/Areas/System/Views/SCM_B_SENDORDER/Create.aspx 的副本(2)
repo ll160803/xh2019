@@ -1,0 +1,128 @@
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Index.Master" Inherits="System.Web.Mvc.ViewPage<Ipedf.Web.Entity.DisplayObject_SCM_B_SENDORDER>" %>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
+    送货单
+</asp:Content>
+<asp:Content ID="Content3" ContentPlaceHolderID="MainContent" runat="server">
+    <div id="senginfoGrid">
+    <div id="tb">
+        <div>
+             <a href="#" class="easyui-linkbutton" iconcls="icon-edit" onclick="flexiModify();"
+                    plain="true">编辑</a> <a href="#" class="easyui-linkbutton" iconcls="icon-remove" onclick="flexiDelete();"
+                        plain="true">删除</a> <a href="#" class="easyui-linkbutton" iconcls="icon-add" onclick="OpenSupply();"
+                            plain="true">引入供应计划</a> <a href="#" class="easyui-linkbutton" iconcls="icon-save"
+                                onclick="GenerateSendInfo();" plain="true">送货清单打印</a>创建时间:
+            <input class="easyui-datebox" id="startDate" style="width: 100px" />
+            -
+            <input class="easyui-datebox" id="endDate" style="width: 100px" />
+            发票号码：<input class="easyui-textbox" id="txtName" style="width: 100px" />
+            院区：
+            <select class="easyui-combobox" id="com_WERKST" style="width: 150px;">
+                <option value="">全部</option>
+                <option value="武汉协和医院-本部">武汉协和医院-本部</option>
+                <option value="武汉协和医院-西院">武汉协和医院-西院</option>
+                <option value="武汉协和医院-肿瘤中心">武汉协和医院-肿瘤中心</option>
+            </select>
+            <a href="#" class="easyui-linkbutton" iconcls="icon-search" onclick="btnSearch();">查询</a>
+        </div>
+    </div>
+    </div>
+     <script language="javascript" type="text/javascript">
+         var toolbar = '#tb';
+         $('#senginfoGrid').datagrid({
+             title: '创建送货清单',
+             iconCls: 'icon-site',
+             url: '<%: Url.Content("~/System/SCM_B_SENDORDER/GetSubPlanData")%>',
+             fitColumns: true,
+             queryParams: { FPHM: $("#txtName").val(), SEND_ORDER_CODE: -1 }, //-1代表是
+             idField: 'ID',
+             sortName: 'CODE',
+             sortOrder: 'desc',
+             singleSelect: false,
+             height: 350,
+             nowrap: false,
+             rownumbers: true,
+             selectOnCheck: true,
+             checkOnSelect: true,
+             toolbar: toolbar,
+             columns: [
+                    [{
+                        field: 'ID',
+                        title: 'ID',
+                        width: 50,
+                        halign: 'center',
+                        align: 'center',
+                        hidden: true
+                    }, {
+                        field: 'IsCheck',
+                        checkbox: true
+
+                    }, {
+                        field: 'CODE',
+                        title: '送货单号',
+                        halign: 'center',
+                        align: 'center',
+                        sortable: true,
+                        width: 100
+                    }, {
+                        field: 'MATNR',
+                        title: '物料编码',
+                        halign: 'center',
+                        align: 'center',
+                        sortable: true,
+                        width: 80
+                    }, {
+                        field: 'TXZ01',
+                        title: '物料描述',
+                        width: 200,
+                        halign: 'center',
+                        align: 'center',
+                        sortable: true
+                    }, {
+                        field: 'MENGE',
+                        title: '送货数量',
+                        width: 80,
+                        halign: 'center',
+                        align: 'center',
+                        sortable: true
+                    }, {
+                        field: 'LINK_PERSON',
+                        title: '联系人',
+                        width: 80,
+                        halign: 'center',
+                        align: 'center',
+                        sortable: true
+                    },
+                     {
+                         field: 'SEND_DEPART_NAME',
+                         title: '送达部门',
+                         width: 80,
+                         halign: 'center',
+                         align: 'center',
+                         sortable: true
+                     },
+                     {
+                         field: 'LINK_TELEPHONE',
+                         title: '联系方式',
+                         width: 80,
+                         halign: 'center',
+                         align: 'center',
+                         sortable: true
+                     },
+                     {
+                         field: 'MATER_CODE',
+                         title: '商品条码',
+                         width: 80,
+                         halign: 'center',
+                         align: 'center',
+                         sortable: true
+                     }
+                    ]
+		],
+             pagination: true,
+             rownumbers: true
+
+         });
+</script>
+</asp:Content>
+

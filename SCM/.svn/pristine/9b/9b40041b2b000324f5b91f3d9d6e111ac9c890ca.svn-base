@@ -1,0 +1,595 @@
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Index.Master" Inherits="System.Web.Mvc.ViewPage<dynamic>" %>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
+    供应商信息
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+    <div id="tb" style="padding: 5px; height: auto">
+        <div style="margin-bottom: 5px">
+            <%--<a href="#" class="easyui-linkbutton" iconcls="icon-save" plain="true" onclick="flexiSave();">
+                保存</a>--%> <a href="#" class="easyui-linkbutton" iconcls="icon-save" plain="true" onclick="flexiSaveAudit();">
+                    保存并通过审核</a> <a href="#" class="easyui-linkbutton" iconcls="icon-save" plain="true"
+                        onclick="flexiCancel();">取消通过审核</a> <%--<a href="#" class="easyui-linkbutton" iconcls="icon-add"
+                            plain="true" onclick="OpenAndInterFace(1);">打开接口</a> <a href="#" class="easyui-linkbutton"
+                                iconcls="icon-cancel" plain="true" onclick="OpenAndInterFace(0);">关闭接口</a>--%>
+            <%--<a href="#" class="easyui-linkbutton" iconcls="icon-save" plain="true" onclick="ReName();">
+                下载资质文件</a>--%>
+        </div>
+        <div>
+            供应商名称：<input class="easyui-textbox" id="GYSNAME" style="width: 120px" />
+            供应商帐号：<input class="easyui-textbox" id="GYSAccount" style="width: 120px" />
+            <a href="#" class="easyui-linkbutton" iconcls="icon-search" onclick="btnSearch();">查询</a>
+        </div>
+    </div>
+</asp:Content>
+<asp:Content ID="Content3" ContentPlaceHolderID="HeadContent" runat="server">
+    <script type="text/javascript" language="javascript">
+        var columns = [[{
+    field: 'ck',
+    checkbox: true
+},
+{
+    field: 'ID',
+    title: 'ID',
+    width: 120,
+    hidden: true
+},
+{
+    field: 'NAME',
+    title: '供应商名称',
+    width: 150,
+    sortable: true
+},
+{
+    field: 'LINK_PERSON',
+    title: '联系人',
+    width: 120,
+    sortable: true
+
+},
+{
+    field: 'PHONE',
+    title: '联系电话',
+    width: 80,
+    sortable: true
+},
+{
+    field: 'EMAIL',
+    title: '电子邮箱',
+    width: 120,
+    sortable: true
+},
+{
+    field: 'ADDRESS',
+    title: '地址',
+    width: 150,
+    sortable: true
+},
+{
+    field: 'CODE',
+    title: '供应商账号',
+    width: 80,
+    editor: 'text',
+    sortable: true
+
+},
+{
+    field: 'FID',
+    title: '工商营业执照',
+    width: 80,
+    formatter: function(value, rec) {
+        if (value != null) {
+
+            return "<a target='_blank' href='<%: Url.Content("~/System/MDM/DownFile")%>?SERVER_NAME="+value+"' class='editcls'  ></a>";
+        }
+    }
+
+},
+{
+    field: 'SID',
+    title: '组织机构代码',
+    width: 80,
+    formatter: function(value, rec) {
+        if (value != null) {
+        return "<a target='_blank' href='<%: Url.Content("~/System/MDM/DownFile")%>?SERVER_NAME="+value+"' class='editcls'  ></a>";
+        }
+    }
+
+},
+{
+    field: 'TID',
+    title: '税务登记证',
+    width: 80,
+    formatter: function(value, rec) {
+        if (value != null) {
+            return "<a target='_blank' href='<%: Url.Content("~/System/MDM/DownFile")%>?SERVER_NAME="+value+"' class='editcls'  ></a>";
+        }
+    }
+
+},
+
+{
+    field: 'ID_7',
+    title: '医疗器械经营企业许可证',
+    width: 80,
+    formatter: function(value, rec) {
+        if (value != null) {
+            return "<a target='_blank' href='<%: Url.Content("~/System/MDM/DownFile")%>?SERVER_NAME="+value+"' class='editcls'  ></a>";
+        }
+    }
+
+},
+{
+    field: 'ID_8',
+    title: '危险化学品经营许可证',
+    width: 80,
+    formatter: function(value, rec) {
+        if (value != null) {
+            return "<a target='_blank' href='<%: Url.Content("~/System/MDM/DownFile")%>?SERVER_NAME="+value+"' class='editcls'  ></a>";
+        }
+    }
+
+},
+{
+    field: 'ID_11',
+    title: '开发票资料及银行账户信息',
+    width: 80,
+    formatter: function(value, rec) {
+        if (value != null) {
+            return "<a target='_blank' href='<%: Url.Content("~/System/MDM/DownFile")%>?SERVER_NAME="+value+"' class='editcls'  ></a>";
+        }
+    }
+
+},
+{
+    field: 'ID_12',
+    title: '企业税票模板',
+    width: 80,
+    formatter: function(value, rec) {
+        if (value != null) {
+            return "<a target='_blank' href='<%: Url.Content("~/System/MDM/DownFile")%>?SERVER_NAME="+value+"' class='editcls'  ></a>";
+        }
+    }
+
+},
+{
+    field: 'ID_14',
+    title: '企业样章备案',
+    width: 80,
+    formatter: function(value, rec) {
+        if (value != null) {
+            return "<a target='_blank' href='<%: Url.Content("~/System/MDM/DownFile")%>?SERVER_NAME="+value+"' class='editcls'  ></a>";
+        }
+    }
+
+},
+{
+    field: 'ID_18',
+    title: '廉洁协议',
+    width: 120,
+    formatter: function(value, rec) {
+        if (value != null) {
+            return "<a target='_blank' href='<%: Url.Content("~/System/MDM/DownFile")%>?SERVER_NAME="+value+"' class='editcls'  ></a>";
+        }
+    }
+
+},
+{
+    field: 'STATE',
+    title: '审核',
+    width: 80,
+    formatter: function(value, rec) {
+        if (value == 1) {
+            return "未审核";
+        }
+        return "审核通过";
+    },
+    styler: function(value, row, index) {
+        if (value == 1) {
+            return 'color:red';
+        }
+        return 'color:green';
+    }
+
+},
+{
+    field: 'FAX',
+    title: '接口审核',
+    width: 80,
+    formatter: function(value, rec) {
+        if (value == 1) {
+            return "通过";
+        }
+        return "未通过";
+    },
+    styler: function(value, row, index) {
+        if (value == 1) {
+            return 'color:green';
+        }
+        return 'color:red';
+    }
+
+}
+
+]];
+$(function() {
+
+    WCKJ.Format.EditGrid("flexigridData", "", '<%: Url.Content("~/System/MDM/GetData")%>', columns, {
+        title: '供应商-基本信息',
+        //列表的标题
+        iconCls: 'icon-site',
+        fit: true,
+        nowrap: false,
+        striped: true,
+        queryParams:{DEPT_TYPE_ID:'SCM00340002'},
+        toolbar: '#tb',
+        collapsible: false,
+        //获取数据的url
+        sortName: 'STATE',
+        sortOrder: 'asc',
+        idField: 'ID',
+        pagination: true,
+        rownumbers: true,
+        onLoadSuccess: function() {
+            WC_Common.Format.IconButton('.editcls', 'icon-search');
+        }
+    },
+    "", 0);
+
+});
+function btnSearch() {
+    $("#flexigridData").datagrid("reload", {
+        GysName: $("#GYSNAME").val(),
+        GysAccount: $("#GYSAccount").val(),
+        DEPT_TYPE_ID:'SCM00340002'
+    });
+    $("#flexigridData").datagrid("clearSelections");
+}
+function down(filepath) {
+    window.location.href = '<%:Url.Content("~/UploadFile/BaseInfo/") %>' + filepath;
+
+}
+function ReName() {
+    var arr = [];
+var rows = $('#flexigridData').datagrid('getSelections');
+if (rows.length == 0) {
+    $.messager.confirm('操作提示', "确认下载全部供应商吗？",
+    function(r) {
+        if (r) {
+            $.messager.progress({
+                title: '请稍等...',
+                msg: '数据处理中...',
+                text: '进度.......'
+            });
+            $.post("<%: Url.Content("~/System/MDM/DownImage")%>", {
+                IDS: ""
+            },
+            function(res) {
+                $.messager.progress('close');
+                if (res != "F") {
+                    //移除删除的数据
+                    window.location.href = '<%:Url.Content("~/UploadFile/Attach.zip") %>';
+
+                } else {
+                    if (res == "") {
+                        $.messager.alert('操作提示', '删除失败!请查看该数据与其他模块下的信息的关联，或联系管理员。', 'info');
+                    } else {
+                        $.messager.alert('操作提示', res, 'info');
+                    }
+                }
+            });
+        }
+        });
+    } else {
+        for (var i = 0; i < rows.length; i++) {
+            arr.push(rows[i].ID);
+        }
+
+        $.messager.progress({
+            title: '请稍等...',
+            msg: '数据处理中...',
+            text: '进度.......'
+        });
+        $.post("<%: Url.Content("~/System/MDM/DownImage")%>", {
+            IDS: arr.join(",")
+        },
+        function(res) {
+            $.messager.progress('close');
+            if (res != "F") {
+                //移除删除的数据
+                window.location.href = '<%:Url.Content("~/UploadFile/GYSAttach.zip") %>';
+
+            } else {
+                if (res == "") {
+                    $.messager.alert('操作提示', '删除失败!请查看该数据与其他模块下的信息的关联，或联系管理员。', 'info');
+                } else {
+                    $.messager.alert('操作提示', res, 'info');
+                }
+            }
+        });
+    }
+}
+//导航到创建的按钮
+function flexiSave() {
+    endEditing('flexigridData');
+    var rows = $('#flexigridData').datagrid('getSelections');
+    if (rows.length == 0) {
+        $.messager.alert('操作提示', '请选择数据!', 'warning');
+        return false;
+    }
+
+    var arr = [];
+    var arrSAPCode = [];
+    var arrNAME = [];
+    for (var i = 0; i < rows.length; i++) {
+        arr.push(rows[i].ID);
+        if ($.trim(rows[i].CODE).length == 0) {
+            $.messager.alert('操作提示', rows[i].NAME + "：没有填写SAP账号！", 'info');
+            return false;
+        }
+        if (rows[i].STATE != "1") {
+            $.messager.alert('操作提示', rows[i].NAME + "：审核通过用户不能做更改！", 'info');
+            return false;
+        }
+        arrSAPCode.push(rows[i].CODE);
+        arrNAME.push(rows[i].NAME);
+    }
+
+    $.messager.confirm('操作提示', "确认保存这 " + arr.length + " 项吗？",
+    function(r) {
+        if (r) {
+            $.post("<%: Url.Content("~/System/MDM/SaveSAPCode")%>", {
+                IDS: arr.join(","),
+                SAPCODE: arrSAPCode.join(","),
+                NAMEs: arrNAME.join(","),
+                flag: 0,
+                DEPT_TYPE_ID:'SCM00340002'
+            },
+            function(res) {
+                if (res == "OK") {
+                    //移除删除的数据
+                    $.messager.alert('操作提示', '保存成功!', 'info');
+                    $("#flexigridData").datagrid("reload");
+                    $("#flexigridData").datagrid("clearSelections");
+                } else {
+                    if (res == "") {
+                        $.messager.alert('操作提示', '删除失败!请查看该数据与其他模块下的信息的关联，或联系管理员。', 'info');
+                    } else {
+                        $.messager.alert('操作提示', res, 'info');
+                    }
+                }
+            });
+        }
+    });
+
+    return false;
+}
+function flexiCancel()
+{
+   endEditing('flexigridData');
+     var rows = $('#flexigridData').datagrid('getSelections');
+    if (rows.length == 0) {
+        $.messager.alert('操作提示', '请选择数据!', 'warning');
+        return false;
+    }
+     var arr = [];
+       var arrSAPCode = [];
+    for (var i = 0; i < rows.length; i++) {
+        arr.push(rows[i].ID);
+        arrSAPCode.push(rows[i].CODE);
+        if (rows[i].STATE == "1") {
+            $.messager.alert('操作提示', rows[i].NAME + "：只有审核通过账户才可以取消！", 'info');
+            return false;
+        }
+    }
+
+    $.messager.confirm('操作提示', "确认保存这 " + arr.length + " 项吗？",
+    function(r) {
+        if (r) {
+            $.post("<%: Url.Content("~/System/MDM/SaveCancelCode")%>", {
+                IDS: arr.join(","),
+                SAPCode: arrSAPCode.join(","),
+                DEPT_TYPE_ID:'SCM00340002'
+            },
+            function(res) {
+                if (res == "OK") {
+                    //移除删除的数据
+                    $.messager.alert('操作提示', '保存成功!', 'info');
+                    $("#flexigridData").datagrid("reload");
+                    $("#flexigridData").datagrid("clearSelections");
+                } else {
+                    if (res == "") {
+                        $.messager.alert('操作提示', '删除失败!请查看该数据与其他模块下的信息的关联，或联系管理员。', 'info');
+                    } else {
+                        $.messager.alert('操作提示', res, 'info');
+                    }
+                }
+            });
+        }
+    });
+
+    return false;
+}
+function flexiSaveYS(flag)
+{
+   var rows = $('#flexigridData').datagrid('getSelections');
+    if (rows.length == 0) {
+        $.messager.alert('操作提示', '请选择数据!', 'warning');
+        return false;
+    }
+    var msg1="：已经放开验收合格证书上传";
+    if(flag==0)
+    {
+       msg1="：已经限制验收合格证书上传";
+    }
+    var arr = [];
+    for (var i = 0; i < rows.length; i++) {
+        arr.push(rows[i].CODE);
+        if (rows[i].YH == flag) {
+            $.messager.alert('操作提示', rows[i].NAME + msg1, 'info');
+            return false;
+        }
+    }
+     var msg2="：放开验收合格证书上传吗？";
+    if(flag==0)
+    {
+       msg2="：限制验收合格证书上传吗？";
+    }
+    $.messager.confirm('操作提示', "确认这 " + arr.length + " 项"+msg2,
+    function(r) {
+        if (r) {
+            $.post("<%: Url.Content("~/System/MDM/OpenAndCloseYH")%>", {
+                query: arr.join(","),
+                Flag: flag
+            },
+            function(res) {
+                if (res == "OK") {
+                    //移除删除的数据
+                    $.messager.alert('操作提示', '操作成功!', 'info');
+                    $("#flexigridData").datagrid("reload");
+                    $("#flexigridData").datagrid("clearSelections");
+                } else {
+                    if (res == "") {
+                        $.messager.alert('操作提示', '操作失败!请查看该数据与其他模块下的信息的关联，或联系管理员。', 'info');
+                    } else {
+                        $.messager.alert('操作提示', res, 'info');
+                    }
+                }
+            });
+        }
+    });
+}
+//导航到创建的按钮
+function flexiSaveAudit() {
+    // $('#flexigridData').datagrid('acceptChanges');
+    endEditing('flexigridData');
+    var rows = $('#flexigridData').datagrid('getSelections');
+    if (rows.length == 0) {
+        $.messager.alert('操作提示', '请选择数据!', 'warning');
+        return false;
+    }
+
+    var arr = [];
+    var arrSAPCode = [];
+    var arrNAME = [];
+    for (var i = 0; i < rows.length; i++) {
+        arr.push(rows[i].ID);
+        if ($.trim(rows[i].CODE).length == 0) {
+            $.messager.alert('操作提示', rows[i].NAME + "：没有填写SAP账号！", 'info');
+            return false;
+        }
+        if (rows[i].STATE != "1") {
+            $.messager.alert('操作提示', rows[i].NAME + "：审核通过用户不能做更改！", 'info');
+            return false;
+        }
+        arrSAPCode.push(rows[i].CODE);
+        arrNAME.push(rows[i].NAME);
+    }
+
+    $.messager.confirm('操作提示', "确认保存这 " + arr.length + " 项吗？",
+    function(r) {
+        if (r) {
+            $.post("<%: Url.Content("~/System/MDM/SaveSAPCode")%>", {
+                IDS: arr.join(","),
+                SAPCODE: arrSAPCode.join(","),
+                NAMEs: arrNAME.join(","),
+                flag: 1,
+                DEPT_TYPE_ID:'SCM00340002'
+            },
+            function(res) {
+                if (res == "OK") {
+                    //移除删除的数据
+                    $.messager.alert('操作提示', '保存成功!', 'info');
+                    $("#flexigridData").datagrid("reload");
+                    $("#flexigridData").datagrid("clearSelections");
+                } else {
+                    if (res == "") {
+                        $.messager.alert('操作提示', '删除失败!请查看该数据与其他模块下的信息的关联，或联系管理员。', 'info');
+                    } else {
+                        $.messager.alert('操作提示', res, 'info');
+                    }
+                }
+            });
+        }
+    });
+
+    return false;
+}
+function OpenAndInterFace(Flag) {
+    var rows = $('#flexigridData').datagrid('getSelections');
+    if (rows.length == 0) {
+        $.messager.alert('操作提示', '请选择数据!', 'warning');
+        return false;
+    }
+
+    var arr = [];
+    for (var i = 0; i < rows.length; i++) {
+        arr.push(rows[i].ID);
+    }
+
+    $.messager.confirm('操作提示', "确认打开这 " + arr.length + " 项的接口吗？",
+    function(r) {
+        if (r) {
+            $.post("<%: Url.Content("~/System/MDM/OpenAndCloseInF")%>", {
+                query: arr.join(","),
+                Status: Flag,
+                DEPT_TYPE_ID:'SCM00340002'
+            },
+            function(res) {
+                if (res == "OK") {
+                    //移除删除的数据
+                    $.messager.alert('操作提示', '操作成功!', 'info');
+                    $("#flexigridData").datagrid("reload");
+                    $("#flexigridData").datagrid("clearSelections");
+                } else {
+                    if (res == "") {
+                        $.messager.alert('操作提示', '操作失败!请查看该数据与其他模块下的信息的关联，或联系管理员。', 'info');
+                    } else {
+                        $.messager.alert('操作提示', res, 'info');
+                    }
+                }
+            });
+        }
+    });
+
+};
+//删除的按钮
+function flexiDelete() {
+
+    var rows = $('#flexigridData').datagrid('getSelections');
+    if (rows.length == 0) {
+        $.messager.alert('操作提示', '请选择数据!', 'warning');
+        return false;
+    }
+
+    var arr = [];
+    for (var i = 0; i < rows.length; i++) {
+        arr.push(rows[i].ID);
+    }
+
+    $.messager.confirm('操作提示', "确认删除这 " + arr.length + " 项吗？",
+    function(r) {
+        if (r) {
+            $.post("<%: Url.Content("~/System/MDM/Delete")%>", {
+                query: arr.join(",")
+            },
+            function(res) {
+                if (res == "OK") {
+                    //移除删除的数据
+                    $.messager.alert('操作提示', '删除成功!', 'info');
+                    $("#flexigridData").datagrid("reload");
+                    $("#flexigridData").datagrid("clearSelections");
+                } else {
+                    if (res == "") {
+                        $.messager.alert('操作提示', '删除失败!请查看该数据与其他模块下的信息的关联，或联系管理员。', 'info');
+                    } else {
+                        $.messager.alert('操作提示', res, 'info');
+                    }
+                }
+            });
+        }
+    });
+
+};
+    </script>
+</asp:Content>

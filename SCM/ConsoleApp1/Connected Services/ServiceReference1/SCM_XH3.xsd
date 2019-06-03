@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Ipedf.App.Models" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Ipedf.App.Models" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost/scm/SCM_XH.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/Ipedf.Web.Entity" />
+  <xs:complexType name="WcfMess_XH">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="IsSuccess" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Mess" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PurchasePlans" nillable="true" type="tns:ArrayOfPurchase" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="WcfMess_XH" nillable="true" type="tns:WcfMess_XH" />
+  <xs:complexType name="ArrayOfPurchase">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Purchase" nillable="true" type="tns:Purchase" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPurchase" nillable="true" type="tns:ArrayOfPurchase" />
+  <xs:complexType name="Purchase">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/Ipedf.Web.Entity" base="q1:DisplayObject_SCM_D_PURCHARSEPLAN">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="NAME1" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Purchase" nillable="true" type="tns:Purchase" />
+  <xs:complexType name="ArrayOfPlanDetail">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="PlanDetail" nillable="true" type="tns:PlanDetail" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPlanDetail" nillable="true" type="tns:ArrayOfPlanDetail" />
+  <xs:complexType name="PlanDetail">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="BEDAT" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="CHARG" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CODE" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="COMMENTS" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EBELN" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EEIND" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="FLAG" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FPBM" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FPHM" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FPJR" type="xs:decimal" />
+      <xs:element minOccurs="0" name="FPRQ" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="GYJH" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="GYSACCOUNT" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="GYSNAME" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="HSDAT" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LGORT" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MATNR" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MEINS" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MENGE" type="xs:decimal" />
+      <xs:element minOccurs="0" name="MSEHT" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NETPR" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ORDER_MENGE" type="xs:decimal" />
+      <xs:element minOccurs="0" name="OUT_CAUSE" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OUT_DATE" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="PKG_AMOUNT" type="xs:decimal" />
+      <xs:element minOccurs="0" name="PKG_NUMBER" type="xs:decimal" />
+      <xs:element minOccurs="0" name="TXZ01" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="VFDAT" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="WERKS" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="WERKST" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PlanDetail" nillable="true" type="tns:PlanDetail" />
+  <xs:complexType name="ArrayOfWcfPlan_XH">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="WcfPlan_XH" nillable="true" type="tns:WcfPlan_XH" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfWcfPlan_XH" nillable="true" type="tns:ArrayOfWcfPlan_XH" />
+  <xs:complexType name="WcfPlan_XH">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CODE" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IsSuccess" type="xs:boolean" />
+      <xs:element minOccurs="0" name="MESS" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="WcfPlan_XH" nillable="true" type="tns:WcfPlan_XH" />
+</xs:schema>

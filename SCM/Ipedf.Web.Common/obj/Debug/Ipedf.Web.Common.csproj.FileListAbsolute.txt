@@ -1,0 +1,17 @@
+D:\Ipedf\v2.2\SCM\Ipedf.Web.Common\bin\Debug\Ipedf.Web.Common.dll
+D:\Ipedf\v2.2\SCM\Ipedf.Web.Common\bin\Debug\Ipedf.Web.Common.pdb
+D:\Ipedf\v2.2\SCM\Ipedf.Web.Common\bin\Debug\NPOI.dll
+D:\Ipedf\v2.2\SCM\Ipedf.Web.Common\bin\Debug\NPOI.OOXML.dll
+D:\Ipedf\v2.2\SCM\Ipedf.Web.Common\bin\Debug\NPOI.OpenXml4Net.dll
+D:\Ipedf\v2.2\SCM\Ipedf.Web.Common\bin\Debug\NPOI.OpenXmlFormats.dll
+D:\Ipedf\v2.2\SCM\Ipedf.Web.Common\bin\Debug\ICSharpCode.SharpZipLib.dll
+D:\Ipedf\v2.2\SCM\Ipedf.Web.Common\obj\Debug\Ipedf.Web.Common.dll
+D:\Ipedf\v2.2\SCM\Ipedf.Web.Common\obj\Debug\Ipedf.Web.Common.pdb
+D:\Ipedf\v2.2\SCM\Ipedf.Web.Common\obj\Debug\Ipedf.Web.Common.csprojResolveAssemblyReference.cache
+C:\work\xiehe\SCM\Ipedf.Web.Common\bin\Debug\Ipedf.Web.Common.dll
+C:\work\xiehe\SCM\Ipedf.Web.Common\bin\Debug\Ipedf.Web.Common.pdb
+C:\work\xiehe\SCM\Ipedf.Web.Common\obj\Debug\Ipedf.Web.Common.csproj.CoreCompileInputs.cache
+C:\work\xiehe\SCM\Ipedf.Web.Common\obj\Debug\Ipedf.Web.Common.csproj.CopyComplete
+C:\work\xiehe\SCM\Ipedf.Web.Common\obj\Debug\Ipedf.Web.Common.dll
+C:\work\xiehe\SCM\Ipedf.Web.Common\obj\Debug\Ipedf.Web.Common.pdb
+C:\work\xiehe\SCM\Ipedf.Web.Common\obj\Debug\Ipedf.Web.Common.csprojAssemblyReference.cache

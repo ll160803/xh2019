@@ -1,0 +1,392 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using Ipedf.Web.Entity;
+using Ipedf.Web.BizLogic;
+using Ipedf.App.Models;
+using Models;
+using Ipedf.Core;
+using Ipedf.App.Codes;
+using System.IO;
+
+namespace Ipedf.App.Areas.System.Controllers
+{
+    public class SCM_D_MATERController : BaseController
+    {
+        public ActionResult Index()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 验收合格证书
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult CheckIndex()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 供应商供应药品查询
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult MDMIndex()
+        {
+            return View();
+        }
+        public ActionResult SaveState(string IDS, string state, string COMMENTS)
+        {
+            string[] Ids = IDS.Split(',').ToArray();
+            string[] COMMENT_S = COMMENTS.Split(',').ToArray();
+
+            List<EntityObject_SCM_D_GYS_MATER_PIC> updateDetailEntities = new List<EntityObject_SCM_D_GYS_MATER_PIC>();
+            BizLogicObject_SCM_D_GYS_MATER_PIC logic = new BizLogicObject_SCM_D_GYS_MATER_PIC();
+            for (var i = 0; i < Ids.Length; i++)
+            {
+                EntityObject_SCM_D_GYS_MATER_PIC entity = new EntityObject_SCM_D_GYS_MATER_PIC();
+                entity.ID = Ids[i];
+                entity = BizLogicObject_SCM_D_GYS_MATER_PIC.Proxy.Get(entity);
+
+                entity.STATE = Convert.ToDecimal(state);
+                if (entity.STATE != 2)
+                {
+                    entity.COMMENTS = COMMENT_S[i];
+                }
+                else
+                {
+                    entity.COMMENTS = "";
+                }
+                updateDetailEntities.Add(entity);
+            }
+            var msg = logic.BatchUpdate(updateDetailEntities.ToArray());
+            if (msg.Succeed)
+            {
+                return Json("OK", "text/html");
+            }
+            else
+            {
+                return Json(msg.Message, "text/html");
+            }
+        }
+        public JsonResult GetComBoxData(int page, int rows, string order, string sort, string keyword)
+        {
+            PagingParamter paging = new PagingParamter();
+
+            paging.PageIndex = page - 1;
+            paging.PageSize = rows;
+
+            OrderByParameter OrderByPara = new OrderByParameter();
+            OrderByPara.Asc = true;
+            OrderByPara.OrderBy = "ID";
+            CauseObject_SCM_D_MATER cause = new CauseObject_SCM_D_MATER();
+            cause.MATNR = "11%";
+            cause.GYSACCOUNT = GetCurrentID();
+            //   cause.DELETEFLAG = 0;
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                if (!string.IsNullOrEmpty(keyword.Trim()))
+                {
+                    cause.SetCustomCondition(" and (SCM_D_MATER.TXZ01 like '%" + keyword.Trim() + "%' or  upper(SCM_D_MATER.SPELL_CODE) like '%" + keyword.Trim().ToUpper() + "%') ");
+                }
+            }
+            var dataSource = BizLogicObject_SCM_D_MATER.Proxy.Query(cause, paging, OrderByPara);
+
+            List<DisplayObject_SCM_D_MATER> queryData = dataSource.ToList();
+
+            return Json(new datagrid
+            {
+                total = paging.TotalRecords,
+                rows = queryData
+            });
+
+        }
+        /// <summary>
+        /// 退货选择供应商
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="rows"></param>
+        /// <param name="order"></param>
+        /// <param name="sort"></param>
+        /// <param name="keyword"></param>
+        /// <returns></returns>
+        public JsonResult GetComBoxDataForReturn(int page, int rows, string order, string sort, string keyword)
+        {
+            PagingParamter paging = new PagingParamter();
+
+            paging.PageIndex = page - 1;
+            paging.PageSize = rows;
+
+            OrderByParameter OrderByPara = new OrderByParameter();
+            OrderByPara.Asc = true;
+            OrderByPara.OrderBy = "ID";
+            CauseObject_V_SCM_D_MATER_MDM cause = new CauseObject_V_SCM_D_MATER_MDM();
+            cause.MATNR = "11%";
+           // cause.GYSACCOUNT = GetCurrentID();
+            //   cause.DELETEFLAG = 0;
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                if (!string.IsNullOrEmpty(keyword.Trim()))
+                {
+                    cause.SetCustomCondition(" and (V_SCM_D_MATER_MDM.TXZ01 like '%" + keyword.Trim() + "%' or  upper(V_SCM_D_MATER_MDM.SPELL_CODE) like '%" + keyword.Trim().ToUpper() + "%') ");
+                }
+            }
+            var dataSource = BizLogicObject_V_SCM_D_MATER_MDM.Proxy.Query(cause, paging, OrderByPara);
+
+            List<DisplayObject_V_SCM_D_MATER_MDM> queryData = dataSource.ToList();
+
+            return Json(new datagrid
+            {
+                total = paging.TotalRecords,
+                rows = queryData
+            });
+
+        }
+        public JsonResult GetData(Guid? id, int page, int rows, string order, string sort, string Name, string Code, string STATE, string CHARGE)
+        {
+            var pageIng = new PagingParamter
+            {
+                PageIndex = page - 1,
+                PageSize = rows
+            };
+            CauseObject_V_SCM_D_MATER_PIC_COM_FILE cause = new CauseObject_V_SCM_D_MATER_PIC_COM_FILE();
+            if (!string.IsNullOrEmpty(Name))
+            {
+                cause.TXZ01 = "%" + Name + "%";
+            }
+            if (!string.IsNullOrEmpty(Code))
+            {
+                cause.MATNR = "%" + Code + "%";
+            }
+            if (!string.IsNullOrEmpty(CHARGE))
+            {
+                //cause.CHARGE = "%" + CHARGE + "%";
+                cause.SetCustomCondition(" AND V_SCM_D_MATER_PIC_COM_FILE.CHARGE LIKE '%" + CHARGE + "%' ");
+            }
+            if (!string.IsNullOrEmpty(STATE) && STATE != "全部")
+            {
+                cause.STATE = Convert.ToDecimal(STATE);
+            }
+            cause.GYSACCOUNT = GetCurrentID();
+            var pageList = BizLogicObject_V_SCM_D_MATER_PIC_COM_FILE.Proxy.Query(cause, pageIng, new OrderByParameter { Asc = order == "asc" ? true : false, OrderBy = sort });
+            return Json(new datagrid
+            {
+                total = pageIng.TotalRecords,
+                rows = pageList
+            });
+        }
+
+        public JsonResult GetDataByMdm(Guid? id, int page, int rows, string order, string sort, string Name, string Code, string GYSACCOUNT, string GYSNAME)
+        {
+            var pageIng = new PagingParamter
+            {
+                PageIndex = page - 1,
+                PageSize = rows
+            };
+            CauseObject_V_SCM_D_MATER_MDM cause = new CauseObject_V_SCM_D_MATER_MDM();
+            if (!string.IsNullOrEmpty(Name))
+            {
+                cause.TXZ01 = "%" + Name + "%";
+            }
+            if (!string.IsNullOrEmpty(Code))
+            {
+                cause.MATNR = "%" + Code + "%";
+            }
+            if (!string.IsNullOrEmpty(GYSACCOUNT))
+            {
+                cause.GYSACCOUNT = GYSACCOUNT;
+            }
+            if (!string.IsNullOrEmpty(GYSNAME))
+            {
+                cause.GYS_NAME = "%" + GYSNAME + "%";
+            }
+            cause.FREEUSE1 = "1";
+            //  cause.GYSACCOUNT = GetCurrentID();
+            var pageList = BizLogicObject_V_SCM_D_MATER_MDM.Proxy.Query(cause, pageIng, new OrderByParameter { Asc = order == "asc" ? true : false, OrderBy = sort });
+            return Json(new datagrid
+            {
+                total = pageIng.TotalRecords,
+                rows = pageList
+            });
+        }
+        public JsonResult GetDataAll(Guid? id, int page, int rows, string order, string sort, string Name, string Code, string STATE, string GYSACCOUNT, string GYSNAME, string CHARGE)
+        {
+            var pageIng = new PagingParamter
+            {
+                PageIndex = page - 1,
+                PageSize = rows
+            };
+            CauseObject_V_SCM_D_MATER_PIC_COM_FILE cause = new CauseObject_V_SCM_D_MATER_PIC_COM_FILE();
+            if (!string.IsNullOrEmpty(Name))
+            {
+                cause.TXZ01 = "%" + Name + "%";
+            }
+            if (!string.IsNullOrEmpty(Code))
+            {
+                cause.MATNR = "%" + Code + "%";
+            }
+            if (!string.IsNullOrEmpty(GYSACCOUNT))
+            {
+                cause.GYSACCOUNT = GYSACCOUNT;
+            }
+            if (!string.IsNullOrEmpty(GYSNAME))
+            {
+                cause.GYSNAME = "%" + GYSNAME + "%";
+            }
+            if (!string.IsNullOrEmpty(CHARGE))
+            {
+                //cause.CHARGE = "%" + CHARGE + "%"; 
+                cause.SetCustomCondition(" AND V_SCM_D_MATER_PIC_COM_FILE.CHARGE LIKE '%" + CHARGE + "%' ");
+            }
+            if (!string.IsNullOrEmpty(STATE) && STATE != "全部")
+            {
+                cause.STATE = Convert.ToDecimal(STATE);
+            }
+            //  cause.GYSACCOUNT = GetCurrentID();
+            var pageList = BizLogicObject_V_SCM_D_MATER_PIC_COM_FILE.Proxy.Query(cause, pageIng, new OrderByParameter { Asc = order == "asc" ? true : false, OrderBy = sort });
+            return Json(new datagrid
+            {
+                total = pageIng.TotalRecords,
+                rows = pageList
+            });
+        }
+        public ActionResult Create()
+        {
+            ViewBag.FName = "";
+            ViewBag.FID = "";
+            EntityObject_SCM_D_GYS_MATER_PIC entity = new EntityObject_SCM_D_GYS_MATER_PIC
+            {
+                ID = Guid.NewGuid().ToString()
+            };
+            return View(entity);
+        }
+        [HttpPost]
+        public ActionResult Create(EntityObject_SCM_D_GYS_MATER_PIC entity)
+        {
+            if (entity != null && ModelState.IsValid)
+            {
+                entity.GYSACCOUNT = GetCurrentID();
+                entity.CHARGE = entity.CHARGE.Trim();//去除空格
+                var fileHas = BizLogicObject_SCM_D_GYS_MATER_PIC.Proxy.Query(new CauseObject_SCM_D_GYS_MATER_PIC
+                     {
+                         MATER_ID = entity.MATER_ID,
+                         CHARGE = entity.CHARGE.Trim(),
+                         GYSACCOUNT = entity.GYSACCOUNT
+                     });
+                if (fileHas.Length > 0)
+                {
+                    return Json("F:创建失败，已经存在此资质的文件！！！", "text/html");
+                }
+                var msg = BizLogicObject_SCM_D_GYS_MATER_PIC.Proxy.Save(entity);
+                if (msg.Succeed)
+                {
+                    RfcNOC rfc = new RfcNOC();
+                    var file_en = BizLogicObject_COM_FILE.Proxy.Query(new CauseObject_COM_FILE { REF_TAB_ID = entity.ID }).FirstOrDefault();
+
+                    if (file_en != null)
+                    {
+                        var mater_en = BizLogicObject_SCM_D_MATER.Proxy.Get(new EntityObject_SCM_D_MATER { ID = entity.MATER_ID });
+                        rfc.SendUploadInfo_RFC(entity.GYSACCOUNT, mater_en.MATNR, entity.CHARGE.Trim(), file_en.SERVER_NAME, "I");
+                    }
+                    return Json("S:创建成功", "text/html");
+                }
+                else
+                    return Json("F:" + msg.Message, "text/html");
+            }
+            return Json("F:创建失败，请核对输入的数据的格式", "text/html");
+        }
+        [HttpPost]
+        public ActionResult Delete(FormCollection collection)
+        {
+            string returnValue = string.Empty;
+            string[] deleteId = collection["query"].Split(',').ToArray();
+
+            List<EntityObject_SCM_D_GYS_MATER_PIC> deleteDetailEntities = new List<EntityObject_SCM_D_GYS_MATER_PIC>();
+            foreach (var item in deleteId)
+            {
+                EntityObject_SCM_D_GYS_MATER_PIC entity = new EntityObject_SCM_D_GYS_MATER_PIC();
+                entity.ID = item;
+                deleteDetailEntities.Add(entity);
+            }
+
+            var msg = BizLogicObject_SCM_D_GYS_MATER_PIC.Proxy.BatchDelete(deleteDetailEntities.ToArray());
+            if (msg.Succeed)
+            {
+                return Json("OK", "text/html");
+            }
+            else
+            {
+                return Json(msg.Message, "text/html");
+            }
+        }
+
+        public ActionResult Edit(string id)
+        {
+            EntityObject_SCM_D_GYS_MATER_PIC curObj = new EntityObject_SCM_D_GYS_MATER_PIC();
+            curObj.ID = id;
+            curObj = BizLogicObject_SCM_D_GYS_MATER_PIC.Proxy.Get(curObj);
+            string FName = "";
+            string FID = "";
+            var mater = BizLogicObject_SCM_D_MATER.Proxy.Get(new EntityObject_SCM_D_MATER { ID = curObj.MATER_ID });
+            var fileEn = BizLogicObject_COM_FILE.Proxy.Query(new CauseObject_COM_FILE { REF_TAB_ID = curObj.ID });
+            if (fileEn.Length > 0)
+            {
+                FID = fileEn[0].ID;
+                FName = fileEn[0].CLIENT_NAME;
+            }
+            ViewBag.MaterName = mater.TXZ01;
+            ViewBag.FName = FName;
+            ViewBag.FID = FID;
+            return View(curObj);
+        }
+        public FileStreamResult DownFile(string CLIENT_NAME, string SERVER_NAME)
+        {
+            string absoluFilePath = Server.MapPath("~/SAP/") + SERVER_NAME;
+            return File(new FileStream(absoluFilePath, FileMode.Open), "application/octet-stream", Server.UrlEncode(SERVER_NAME));
+        }
+        [HttpPost]
+        public ActionResult Edit(string id, FormCollection from)
+        {
+            EntityObject_SCM_D_GYS_MATER_PIC curObj = new EntityObject_SCM_D_GYS_MATER_PIC();
+            curObj.ID = id;
+            curObj = BizLogicObject_SCM_D_GYS_MATER_PIC.Proxy.Get(curObj);
+
+            TryUpdateModel<EntityObject_SCM_D_GYS_MATER_PIC>(curObj, from);
+            curObj.CHARGE = curObj.CHARGE.Trim();//去除空格
+            var fileHas = BizLogicObject_SCM_D_GYS_MATER_PIC.Proxy.Query(new CauseObject_SCM_D_GYS_MATER_PIC
+            {
+                MATER_ID = curObj.MATER_ID,
+                CHARGE = curObj.CHARGE.Trim(),
+                GYSACCOUNT = curObj.GYSACCOUNT,
+            });
+            if (fileHas.Length > 1 || fileHas.Count(p => p.ID != id) > 0)
+            {
+                return Json("F:创建失败，已经存在此资质的文件！！！", "text/html");
+            }
+
+            var msg = BizLogicObject_SCM_D_GYS_MATER_PIC.Proxy.Update(curObj);
+            if (msg.Succeed)
+            {
+                #region 调用上传SAP附件
+                RfcNOC rfc = new RfcNOC();
+                var file_en = BizLogicObject_COM_FILE.Proxy.Query(new CauseObject_COM_FILE { REF_TAB_ID = curObj.ID }).FirstOrDefault();
+
+                if (file_en != null)
+                {
+                    var mater_en = BizLogicObject_SCM_D_MATER.Proxy.Get(new EntityObject_SCM_D_MATER { ID = curObj.MATER_ID });
+                    rfc.SendUploadInfo_RFC(curObj.GYSACCOUNT, mater_en.MATNR, curObj.CHARGE.Trim(), file_en.SERVER_NAME, "I");
+                }
+                #endregion
+                return Json("S:保存成功", "text/html");
+            }
+            else
+            {
+
+                return Json("F:保存失败，请核对输入的数据的格式", "text/html");
+            }
+
+
+        }
+
+    }
+}

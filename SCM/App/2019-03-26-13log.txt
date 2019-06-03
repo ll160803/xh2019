@@ -1,0 +1,25 @@
+2019-03-26 13:54:51,367 [11612] ERROR Ipedf.Core.BizLogicBase [(null)] <(null)>
+ - 索引超出了数组界限。
+System.IndexOutOfRangeException: 索引超出了数组界限。
+   在 Ipedf.Web.DataAccess.HelperObject_MDM_D_DEPT.Save(EntityObject_MDM_D_DEPT obj, IDbTransaction trans) 位置 C:\work\xiehe\SCM\Ipedf.Web.DataAccess.Oracle\HelperObject_MDM_D_DEPT.cs:行号 161
+   在 Ipedf.Web.BizLogic.BizLogicObject_MDM_D_DEPT.Save(EntityObject_MDM_D_DEPT obj) 位置 C:\work\xiehe\SCM\Ipedf.Web.BizLogic.Oracle\BizLogicObject_MDM_D_DEPT.cs:行号 44
+2019-03-26 13:54:57,909 [11612] ERROR Ipedf.Core.BizLogicBase [(null)] <(null)>
+ - 索引超出了数组界限。
+System.IndexOutOfRangeException: 索引超出了数组界限。
+   在 Ipedf.Web.DataAccess.HelperObject_MDM_D_DEPT.Save(EntityObject_MDM_D_DEPT obj, IDbTransaction trans) 位置 C:\work\xiehe\SCM\Ipedf.Web.DataAccess.Oracle\HelperObject_MDM_D_DEPT.cs:行号 161
+   在 Ipedf.Web.BizLogic.BizLogicObject_MDM_D_DEPT.Save(EntityObject_MDM_D_DEPT obj) 位置 C:\work\xiehe\SCM\Ipedf.Web.BizLogic.Oracle\BizLogicObject_MDM_D_DEPT.cs:行号 44
+2019-03-26 13:55:12,766 [19688] ERROR Ipedf.Core.BizLogicBase [(null)] <(null)>
+ - 索引超出了数组界限。
+System.IndexOutOfRangeException: 索引超出了数组界限。
+   在 Ipedf.Web.DataAccess.HelperObject_MDM_D_DEPT.Save(EntityObject_MDM_D_DEPT obj, IDbTransaction trans) 位置 C:\work\xiehe\SCM\Ipedf.Web.DataAccess.Oracle\HelperObject_MDM_D_DEPT.cs:行号 161
+   在 Ipedf.Web.BizLogic.BizLogicObject_MDM_D_DEPT.Save(EntityObject_MDM_D_DEPT obj) 位置 C:\work\xiehe\SCM\Ipedf.Web.BizLogic.Oracle\BizLogicObject_MDM_D_DEPT.cs:行号 44
+2019-03-26 13:55:37,311 [26312] ERROR Ipedf.Core.BizLogicBase [(null)] <(null)>
+ - 索引超出了数组界限。
+System.IndexOutOfRangeException: 索引超出了数组界限。
+   在 Ipedf.Web.DataAccess.HelperObject_MDM_D_DEPT.Save(EntityObject_MDM_D_DEPT obj, IDbTransaction trans) 位置 C:\work\xiehe\SCM\Ipedf.Web.DataAccess.Oracle\HelperObject_MDM_D_DEPT.cs:行号 161
+   在 Ipedf.Web.BizLogic.BizLogicObject_MDM_D_DEPT.Save(EntityObject_MDM_D_DEPT obj) 位置 C:\work\xiehe\SCM\Ipedf.Web.BizLogic.Oracle\BizLogicObject_MDM_D_DEPT.cs:行号 44
+2019-03-26 13:57:29,835 [29992] ERROR Ipedf.Core.BizLogicBase [(null)] <(null)>
+ - 索引超出了数组界限。
+System.IndexOutOfRangeException: 索引超出了数组界限。
+   在 Ipedf.Web.DataAccess.HelperObject_MDM_D_DEPT.Save(EntityObject_MDM_D_DEPT obj, IDbTransaction trans) 位置 C:\work\xiehe\SCM\Ipedf.Web.DataAccess.Oracle\HelperObject_MDM_D_DEPT.cs:行号 161
+   在 Ipedf.Web.BizLogic.BizLogicObject_MDM_D_DEPT.Save(EntityObject_MDM_D_DEPT obj) 位置 C:\work\xiehe\SCM\Ipedf.Web.BizLogic.Oracle\BizLogicObject_MDM_D_DEPT.cs:行号 44

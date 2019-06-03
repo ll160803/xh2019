@@ -1,0 +1,87 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+#add{
+    
+    height:60px;
+    margin:5px  5%;
+}
+#add_top{
+    
+    height:30px;
+    border-bottom: 1px solid #aac5e7;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+#Atop_left{
+   
+    height:30px;
+    float: left;
+    line-height: 30px;
+    /*margin-left: 10%;*/
+}
+
+.addDialog{
+    width:100%;
+    height:250px;
+}
+button{
+   border:none;
+   margin: 0;
+    padding: 0 12px;
+    line-height: 23px;
+    vertical-align: top;
+    text-decoration: none;
+    height: 23px;
+    color: #ffffff;
+    text-align: center;
+    margin-left: 20px;
+    background-color: #428bca;
+    cursor:pointer;
+
+
+}
+#CX{
+	border:none;
+   margin: 0;
+    padding: 0 12px;
+    line-height: 18px;
+    vertical-align: top;
+    text-decoration: none;
+    height: 18px;
+    color: #ffffff;
+    text-align: center;
+    margin-left: 5px;
+    background-color: #80aaff;
+    cursor:pointer;
+	font-size:12px;
+}
+#DCX{
+	border:none;
+   margin: 0;
+    padding: 0 12px;
+    line-height: 18px;
+    vertical-align: top;
+    text-decoration: none;
+    height: 18px;
+    color: #ffffff;
+    text-align: center;
+    margin-left: 5px;
+    background-color: #80aaff;
+    cursor:pointer;
+	font-size:12px;
+}
+.Amiddle_top{
+    margin-bottom: 5px;
+    padding: 5px 0;
+	margin-left:-20px;
+}
+input{
+    border:1px solid #aaaaaa;
+    width:100px;
+}
+/*#Adg{*/
+    /*height:300px;*/
+    /*background-color: #aaaaaa;*/
+/*}*/

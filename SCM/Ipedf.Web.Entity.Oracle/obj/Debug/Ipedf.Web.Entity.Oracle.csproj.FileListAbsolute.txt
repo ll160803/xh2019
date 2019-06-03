@@ -1,0 +1,16 @@
+D:\Ipedf\v2.2\SCM\Ipedf.Web.Entity.Oracle\bin\Debug\Ipedf.Web.Entity.Oracle.dll
+D:\Ipedf\v2.2\SCM\Ipedf.Web.Entity.Oracle\bin\Debug\Ipedf.Web.Entity.Oracle.pdb
+D:\Ipedf\v2.2\SCM\Ipedf.Web.Entity.Oracle\bin\Debug\Ipedf.Common.dll
+D:\Ipedf\v2.2\SCM\Ipedf.Web.Entity.Oracle\bin\Debug\Ipedf.Core.Web.dll
+D:\Ipedf\v2.2\SCM\Ipedf.Web.Entity.Oracle\bin\Debug\Ipedf.Core.Utility.dll
+D:\Ipedf\v2.2\SCM\Ipedf.Web.Entity.Oracle\bin\Debug\Newtonsoft.Json.dll
+D:\Ipedf\v2.2\SCM\Ipedf.Web.Entity.Oracle\obj\Debug\Ipedf.Web.Entity.Oracle.dll
+D:\Ipedf\v2.2\SCM\Ipedf.Web.Entity.Oracle\obj\Debug\Ipedf.Web.Entity.Oracle.pdb
+D:\Ipedf\v2.2\SCM\Ipedf.Web.Entity.Oracle\obj\Debug\Ipedf.Web.Entity.Oracle.csprojResolveAssemblyReference.cache
+C:\work\xiehe\SCM\Ipedf.Web.Entity.Oracle\bin\Debug\Ipedf.Web.Entity.Oracle.dll
+C:\work\xiehe\SCM\Ipedf.Web.Entity.Oracle\bin\Debug\Ipedf.Web.Entity.Oracle.pdb
+C:\work\xiehe\SCM\Ipedf.Web.Entity.Oracle\obj\Debug\Ipedf.Web.Entity.Oracle.csproj.CoreCompileInputs.cache
+C:\work\xiehe\SCM\Ipedf.Web.Entity.Oracle\obj\Debug\Ipedf.Web.Entity.Oracle.csproj.CopyComplete
+C:\work\xiehe\SCM\Ipedf.Web.Entity.Oracle\obj\Debug\Ipedf.Web.Entity.Oracle.dll
+C:\work\xiehe\SCM\Ipedf.Web.Entity.Oracle\obj\Debug\Ipedf.Web.Entity.Oracle.pdb
+C:\work\xiehe\SCM\Ipedf.Web.Entity.Oracle\obj\Debug\Ipedf.Web.Entity.Oracle.csprojAssemblyReference.cache

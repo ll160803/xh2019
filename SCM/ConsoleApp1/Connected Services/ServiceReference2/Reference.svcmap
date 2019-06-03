@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="2966647a-ebf1-44a0-91dd-fc2b67e6acfb" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost/scm/SCM_XH.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="SCM_XH.xsd" MetadataType="Schema" ID="c1edb133-20be-4b32-a500-5811bbd7a1c9" SourceId="1" SourceUrl="http://localhost/scm/SCM_XH.svc?xsd=xsd1" />
+    <MetadataFile FileName="SCM_XH1.xsd" MetadataType="Schema" ID="6aad5608-220e-4e52-9c36-0471e7989a5a" SourceId="1" SourceUrl="http://localhost/scm/SCM_XH.svc?xsd=xsd3" />
+    <MetadataFile FileName="SCM_XH2.xsd" MetadataType="Schema" ID="ec677cd2-52f8-4921-99a8-883ff21083cf" SourceId="1" SourceUrl="http://localhost/scm/SCM_XH.svc?xsd=xsd4" />
+    <MetadataFile FileName="SCM_XH3.xsd" MetadataType="Schema" ID="a40416e0-ceed-429b-8c69-6abaafc10b6c" SourceId="1" SourceUrl="http://localhost/scm/SCM_XH.svc?xsd=xsd2" />
+    <MetadataFile FileName="SCM_XH4.xsd" MetadataType="Schema" ID="769793e9-c810-4f2c-a3f2-c5dfb0d8a969" SourceId="1" SourceUrl="http://localhost/scm/SCM_XH.svc?xsd=xsd0" />
+    <MetadataFile FileName="SCM_XH.wsdl" MetadataType="Wsdl" ID="5a2bcbe1-c3ae-4a54-a6a4-e5d0b73bcc89" SourceId="1" SourceUrl="http://localhost/scm/SCM_XH.svc?wsdl" />
+    <MetadataFile FileName="SCM_XH.disco" MetadataType="Disco" ID="3c719ffd-c050-4091-920b-85897e7e0115" SourceId="1" SourceUrl="http://localhost/scm/SCM_XH.svc?disco" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

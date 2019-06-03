@@ -1,0 +1,544 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using Models;
+using Ipedf.Web.Entity;
+using Ipedf.Web.BizLogic;
+using Ipedf.Core;
+using System.Text;
+using Ipedf.App.Codes;
+using ThoughtWorks.QRCode.Codec;
+using System.IO;
+
+namespace Ipedf.App.Areas.System.Controllers
+{
+    public class SCM_B_SENDORDERController : BaseController
+    {
+        //
+        // GET: /System/SCM_B_SENDORDER/
+
+
+        public ActionResult Index()
+        {
+            return View();
+        }
+        public ActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Create(EntityObject_SCM_B_SENDORDER entity)
+        {
+            if (entity != null && ModelState.IsValid)
+            {
+                entity.FPHM = entity.FPHM.Trim();
+                entity.GYSACCOUNT = GetCurrentID();
+                entity.GYSNAME = GetCurrentPerson();
+                BizLogicObject_SCM_B_SENDORDER.Proxy.Save(entity);
+                return Json("S:创建成功");
+            }
+            return Json("F:创建失败，请核对输入的数据的格式");
+        }
+        [HttpPost]
+        public ActionResult Delete(FormCollection collection)
+        {
+            string returnValue = string.Empty;
+            string[] deleteId = collection["query"].Split(',').ToArray();
+
+            List<EntityObject_SCM_B_SENDORDER> deleteDetailEntities = new List<EntityObject_SCM_B_SENDORDER>();
+            foreach (var item in deleteId)
+            {
+                EntityObject_SCM_B_SENDORDER entity = new EntityObject_SCM_B_SENDORDER();
+                entity.ID = item;
+                deleteDetailEntities.Add(entity);
+            }
+            var msg = BizLogicObject_SCM_B_SENDORDER.Proxy.BatchDelete(deleteDetailEntities.ToArray());
+            if (msg.Succeed)
+            {
+                return Json("OK");
+            }
+            else
+            {
+                return Json(msg.Message);
+            }
+        }
+
+        public ActionResult Edit(string id)
+        {
+            EntityObject_SCM_B_SENDORDER curObj = new EntityObject_SCM_B_SENDORDER();
+            curObj.ID = id;
+            curObj = BizLogicObject_SCM_B_SENDORDER.Proxy.Get(curObj);
+            return View(curObj);
+        }
+        [HttpPost]
+        public ActionResult Edit(string id, FormCollection from)
+        {
+            EntityObject_SCM_B_SENDORDER curObj = new EntityObject_SCM_B_SENDORDER();
+            curObj.ID = id;
+            curObj = BizLogicObject_SCM_B_SENDORDER.Proxy.Get(curObj);
+
+            TryUpdateModel<EntityObject_SCM_B_SENDORDER>(curObj, from);
+            curObj.FPHM = curObj.FPHM.Trim();
+            var msg = BizLogicObject_SCM_B_SENDORDER.Proxy.Update(curObj);
+            if (msg.Succeed)
+            {
+                return Json("S:保存成功");
+            }
+            else
+            {
+
+                return Json("F:保存失败，请核对输入的数据的格式");
+            }
+
+
+        }
+        /// <summary>
+        /// 异步加载数据
+        /// </summary>
+        /// <param name="page">页码</param>
+        /// <param name="rows">每页显示的行数</param>
+        /// <param name="order">排序字段</param>
+        /// <param name="sort">升序asc（默认）还是降序desc</param>
+        /// <param name="search">查询条件</param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult GetData(Guid? id, int page, int rows, string order, string sort, string startDate, string endDate, string FPHM)
+        {
+
+            int total = 0;
+            // object dataSource = null;
+
+            //平台自动生成代码
+            //  CauseObject_COM_SYSTEM cause = (CauseObject_COM_SYSTEM)search;
+            PagingParamter paging = new PagingParamter();
+
+            paging.PageIndex = page - 1;
+            paging.PageSize = rows;
+
+            OrderByParameter OrderByPara = new OrderByParameter();
+            OrderByPara.Asc = order == "asc" ? true : false;
+            OrderByPara.OrderBy = sort;
+            CauseObject_V_SCM_B_SENDORDER cause = new CauseObject_V_SCM_B_SENDORDER();
+            if (!string.IsNullOrEmpty(FPHM))
+            {
+                cause.FPHM = "%" + FPHM + "%";
+            }
+            StringBuilder sb = new StringBuilder();
+            if (!string.IsNullOrEmpty(startDate))
+            {
+                sb.Append(string.Format(" and V_SCM_B_SENDORDER.CREATE_TIME >=to_date('{0}','yyyy/mm/dd') ", startDate));
+            }
+            if (!string.IsNullOrEmpty(endDate))
+            {
+                sb.Append(string.Format(" and V_SCM_B_SENDORDER.CREATE_TIME<=to_date('{0}','yyyy/mm/dd')", endDate));
+            }
+            if (!string.IsNullOrEmpty(sb.ToString()))
+            {
+                cause.SetCustomCondition(sb.ToString());
+            }
+            cause.GYSACCOUNT = GetCurrentID();//供应商选择
+            var dataSource = BizLogicObject_V_SCM_B_SENDORDER.Proxy.Query(cause, paging, OrderByPara);
+
+            List<DisplayObject_V_SCM_B_SENDORDER> queryData = dataSource.ToList();
+            total = paging.TotalRecords;
+            return Json(new datagrid
+            {
+                total = total,
+                rows = queryData
+            });
+        }
+        [HttpPost]
+        public JsonResult GetSubPlanData(Guid? id, int page, int rows, string order, string sort, string SEND_ORDER_CODE, string FPHM)
+        {
+            int total = 0;
+            // object dataSource = null;
+
+            //平台自动生成代码
+            //  CauseObject_SCM_D_SUPPLYPLAN cause = (CauseObject_SCM_D_SUPPLYPLAN)search;
+            PagingParamter paging = new PagingParamter();
+
+            paging.PageIndex = page - 1;
+            paging.PageSize = rows;
+
+            OrderByParameter OrderByPara = new OrderByParameter();
+            OrderByPara.Asc = order == "asc" ? true : false;
+            OrderByPara.OrderBy = sort;
+            CauseObject_SCM_D_SUPPLYPLAN cause = new CauseObject_SCM_D_SUPPLYPLAN();
+            StringBuilder sb = new StringBuilder();
+            if (!string.IsNullOrEmpty(SEND_ORDER_CODE))
+            {
+                if (SEND_ORDER_CODE == "-1")//是送货清单选取供应计划
+                {
+                    cause.STATUS = "0";//已经扫码入库的供应计划不能做更改
+                    sb.Append(" and (length(SCM_D_SUPPLYPLAN.SEND_ORDER_CODE)=0 or SCM_D_SUPPLYPLAN.SEND_ORDER_CODE is null) ");
+                }
+                else
+                {
+                    cause.SEND_ORDER_CODE = SEND_ORDER_CODE;
+                }
+            }
+            if (!string.IsNullOrEmpty(FPHM))
+            {
+                //cause.FPHM = "%" + FPHM + "%";
+
+                if (SEND_ORDER_CODE == "-1")//是送货清单选取供应计划
+                {
+                    sb.Append(" and ((trim(SCM_D_SUPPLYPLAN.FPHM)='" + FPHM.Trim() + "') or (length(SCM_D_SUPPLYPLAN.FPHM)=0 or SCM_D_SUPPLYPLAN.FPHM IS NULL )) ");
+                }
+                else
+                {
+                    sb.Append(" and trim(SCM_D_SUPPLYPLAN.FPHM)='" + FPHM.Trim() + "') ");
+                }
+            }
+            if (!string.IsNullOrEmpty(sb.ToString()))
+            {
+                cause.SetCustomCondition(sb.ToString());
+            }
+            cause.GYSACCOUNT = GetCurrentID();//供应商筛选
+            cause.BSART = "Z003";
+            var dataSource = BizLogicObject_SCM_D_SUPPLYPLAN.Proxy.Query(cause, paging, OrderByPara);
+
+            List<DisplayObject_SCM_D_SUPPLYPLAN> queryData = dataSource.ToList();
+            total = paging.TotalRecords;
+            return Json(new datagrid
+            {
+                total = total,
+                rows = queryData
+            });
+        }
+        /// <summary>
+        /// 把送货清单号写入供应计划中 请鲲鹏做测试是否正确
+        /// </summary>
+        /// <param name="SupplyIDs"></param>
+        /// <param name="SEND_ORDER_CODE"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult SettingSupply(string SupplyIDs, string SEND_ORDER_CODE, string FPHM)
+        {
+            CauseObject_SCM_D_SUPPLYPLAN cause = new CauseObject_SCM_D_SUPPLYPLAN();
+            var ids = "('" + SupplyIDs.Replace(",", "','") + "') ";
+            cause.SetCustomCondition("and SCM_D_SUPPLYPLAN.ID in " + ids);
+            var supplyList = BizLogicObject_SCM_D_SUPPLYPLAN.Proxy.Query(cause);
+            var listUpdateEntities = new List<EntityObject_SCM_D_SUPPLYPLAN>();
+            foreach (var item in supplyList)
+            {
+                item.SEND_ORDER_CODE = SEND_ORDER_CODE;
+                item.FPHM = FPHM;
+                item.SetUpdate("SEND_ORDER_CODE", "FPHM");
+                listUpdateEntities.Add((EntityObject_SCM_D_SUPPLYPLAN)item);
+            }
+            var msg = BizLogicObject_SCM_D_SUPPLYPLAN.Proxy.BatchUpdate(supplyList);
+
+
+            if (msg.Succeed)
+            {
+                RfcNOC rnc = new RfcNOC();
+                var List_Back = rnc.SendSupplyPlan(GetCurrentID(), listUpdateEntities, GetCurrentID(), GetCurrentPerson(), "0", "U");//SAP返回的列表
+                if (List_Back[0].MSTYPE == "S")
+                {
+                    return Json("OK");
+                }
+                else
+                {
+                    LogHelper.Info("通过送货清单修改供应计划号SCM成功,发送SAP保存失败", 1);
+                    return Json("S:SCM保存成功,SAP保存失败！", "text/html");
+                }
+                return Json("OK");
+            }
+            else
+            {
+                return Json(msg.Message);
+            }
+        }
+        /// <summary>
+        /// 从送货清单中移除
+        /// </summary>
+        /// <param name="supplyID"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult DeleteSubPlan(string supplyID)
+        {
+            List<EntityObject_SCM_D_SUPPLYPLAN> deleteDetailEntities = new List<EntityObject_SCM_D_SUPPLYPLAN>();
+            if (!string.IsNullOrEmpty(supplyID))
+            {
+                var entity = BizLogicObject_SCM_D_SUPPLYPLAN.Proxy.Get(new EntityObject_SCM_D_SUPPLYPLAN { ID = supplyID });
+                entity.SEND_ORDER_CODE = "";
+                entity.SetUpdate("SEND_ORDER_CODE");
+                var msg = BizLogicObject_SCM_D_SUPPLYPLAN.Proxy.Update(entity);
+                var listUpdateEntities = new List<EntityObject_SCM_D_SUPPLYPLAN>();
+                listUpdateEntities.Add(entity);
+                if (msg.Succeed)
+                {
+                    RfcNOC rnc = new RfcNOC();
+                    var List_Back = rnc.SendSupplyPlan(GetCurrentID(), listUpdateEntities, GetCurrentID(), GetCurrentPerson(), "0", "U");//SAP返回的列表
+                    if (List_Back[0].MSTYPE == "S")
+                    {
+                        return Json("OK");
+                    }
+                    else
+                    {
+                        LogHelper.Info("通过送货清单删除供应计划，SCM成功,发送SAP保存失败", 1);
+                        return Json("S:SCM保存成功,SAP保存失败！", "text/html");
+                    }
+                    return Json("OK");
+                }
+                else
+                {
+                    return Json(msg.Message);
+                }
+            }
+
+
+            return Json("未知错误请联系管理人员!");
+        }
+
+        public ActionResult PrintSendInfo(string id)
+        {
+
+            CauseObject_V_SCM_D_SUPPLIERPLAN cause = new CauseObject_V_SCM_D_SUPPLIERPLAN();
+
+            cause.SEND_ORDER_CODE = id;
+            var entitys = BizLogicObject_V_SCM_D_SUPPLIERPLAN.Proxy.Query(cause);
+            StringBuilder sb = new StringBuilder();
+            var markCode = GenerateMark(id);//生成送货清单二维码
+            sb.Append("<table cellpadding=\"0\" cellspacing=\"0\">");
+
+            var gysName = "";
+            var FPJR = entitys.Sum(p => p.FPJR);
+            for (int i = 0; i < entitys.Length; i++)
+            {
+                var entity = entitys[i];
+                if (i == 0)
+                {
+                    gysName = entity.GYSNAME;
+                    sb.AppendFormat("<tr><td colspan=\"14\" style=\"height:50px;font-family:宋体;text-align:center;font-size: 20px;\" >{0}</td></tr>",  "武汉协和医院总务物资送货清单");
+                    sb.AppendFormat("<tr><td colspan=\"3\" style=\"height:80px;font-family:宋体;text-align:left;font-size: 12px;\" >{0}</td>", entity.GYSNAME);
+                    sb.AppendFormat("<td colspan=\"4\" style=\"height:80px;font-family:宋体;text-align:left;font-size: 12px;\" >发票号码：{0}</td><td colspan=\"3\" style=\"height:80px;font-family:宋体;font-size: 12px;\" >发票金额：{1}</td><td colspan=\"3\" style=\"height:80px;font-family:宋体;font-size: 12px;\" >送货单号：{2}</td><td style=\"height:80px;font-family:宋体;font-size: 12px;\"> <img alt=\"显示出错\" id=\"im_1\" src=\"{3}\"  style=\" width:80px; height:80px;\"/></td></tr>", entity.FPHM, FPJR, id, markCode);
+                    GenerateHeadCode(sb, "订单日期", "采购订单", "行项目", "物资编码", "物资描述", "采购数量", "送货数量", "基本单位", "单价", "金额", "送达科室", "负责人", "联系电话", "商品条码");
+                }
+                // var data = GenerateMark(entity.CODE);
+                GenerateCode(sb, entity.BEDAT, entity.EBELN, entity.GYJH, entity.MATNR, entity.TXZ01, entity.ORDER_MENGE.ToString(), entity.MENGE.ToString(), entity.MSEHT, entity.NETPR, entity.FPJR.ToString(), entity.SEND_DEPART_NAME, entity.LINK_PERSON, entity.LINK_TELEPHONE, entity.MATER_CODE);
+            }
+            GenerateBottomCode(sb, "", "", "", "", "", "", "", "", "", "", "", "", "", "");//最后一行空着
+            sb.AppendFormat("<tr><td colspan=\"4\" style=\"height:30px;font-family:宋体;text-align:left;font-size: 12px;\" >供应商(盖章)：{0}</td><td colspan=\"4\" style=\"height:30px;font-family:宋体;font-size: 12px;\" >采购中心(签字)：</td><td colspan=\"6\" style=\"height:30px;font-family:宋体;font-size: 12px;\" >打印日期：</td></tr>", gysName);
+            sb.Append("</table>");
+            ViewBag.PrintStr = new MvcHtmlString(sb.ToString());
+            return View();
+        }
+
+        public void GenerateCode(StringBuilder sb, string BEDAT, string EBELN, string EBELP, string MATNR, string TXZ01, string order_menge, string MENGE, string MSEHT, string PRICE, string MONEY, string SEND_DEPART_NAME, string LINK_PERSON, string LINK_TELEPHONE, string MATER_CODE)
+        {
+            var replaceStr = GenerateStr();
+            sb.AppendFormat(replaceStr, BEDAT, EBELN, EBELP, MATNR, TXZ01, order_menge, MENGE, MSEHT, PRICE, MONEY, SEND_DEPART_NAME, LINK_PERSON, LINK_TELEPHONE, MATER_CODE);
+        }
+        public void GenerateBottomCode(StringBuilder sb, string BEDAT, string EBELN, string EBELP, string MATNR, string TXZ01, string order_menge, string MENGE, string MSEHT, string PRICE, string MONEY, string SEND_DEPART_NAME, string LINK_PERSON, string LINK_TELEPHONE, string MATER_CODE)
+        {
+            var replaceStr = GenerateBottomStr();
+            sb.AppendFormat(replaceStr, BEDAT, EBELN, EBELP, MATNR, TXZ01, order_menge, MENGE, MSEHT, PRICE, MONEY, SEND_DEPART_NAME, LINK_PERSON, LINK_TELEPHONE, MATER_CODE);
+        }
+        /// <summary>
+        /// 表底部的样式
+        /// </summary>
+        /// <returns></returns>
+        public string GenerateBottomStr()
+        {
+            var reStr =
+                 "<tr>" +
+                    "<td style=\"width: 80px;border-bottom:solid 1px black;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{0}" +
+                    "</td>" +
+                     "<td style=\"width: 60px;border-bottom:solid 1px black;border-left:solid 1px black;border-top:solid 1px black;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{1}" +
+                    "</td>" +
+                    "<td style=\"width:60px;border-bottom:solid 1px black;border-left:solid 1px black;border-top:solid 1px black;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{2}" +
+                    "</td>" +
+                      "<td style=\"width: 60px;border-bottom:solid 1px black;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{3}" +
+                    "</td>" +
+                      "<td style=\"width: 240px;border-bottom:solid 1px black;text-align:center;border-left:solid 1px black;border-top:solid 1px black;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{4}" +
+                    "</td>" +
+                     "<td style=\"width: 60px;border-bottom:solid 1px black;text-align:center;border-left:solid 1px black;border-top:solid 1px black;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{5}" +
+                    "</td>" +
+                     "<td style=\"width: 60px;border-bottom:solid 1px black;text-align:center;border-left:solid 1px black;border-top:solid 1px black;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{6}" +
+                    "</td>" +
+                     "<td style=\"width: 60px;border-bottom:solid 1px black;text-align:center;border-left:solid 1px black;border-top:solid 1px black;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{7}" +
+                    "</td>" +
+                     "<td style=\"width: 60px;border-bottom:solid 1px black;text-align:center;border-left:solid 1px black;border-top:solid 1px black;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{8}" +
+                    "</td>" +
+                     "<td style=\"width: 60px;border-bottom:solid 1px black;text-align:center;border-left:solid 1px black;border-top:solid 1px black;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{9}" +
+                    "</td>" +
+                     "<td style=\"width: 60px;border-bottom:solid 1px black;text-align:center;border-left:solid 1px black;border-top:solid 1px black;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{10}" +
+                    "</td>" +
+                     "<td style=\"width: 60px;border-bottom:solid 1px black;text-align:center;border-left:solid 1px black;border-top:solid 1px black;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{11}" +
+                    "</td>" +
+                    
+                      "<td style=\"width: 80px;border-bottom:solid 1px black;text-align:center;border-left:solid 1px black;border-top:solid 1px black;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{12}" +
+                    "</td>" +
+                      "<td style=\"width: 100px;border-right:solid 1px black;border-bottom:solid 1px black;border-left:solid 1px black;border-top:solid 1px black;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{13}" +
+                    "</td>" +
+                "</tr>";
+
+            return reStr;
+
+        }
+        /// <summary>
+        /// 每行的数据设置
+        /// </summary>
+        /// <returns></returns>
+        public string GenerateStr()
+        {
+            var reStr =
+                 "<tr>" +
+                    "<td style=\"width: 80px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{0}" +
+                    "</td>" +
+                     "<td style=\"width: 60px;border-left:solid 1px black;border-top:solid 1px black;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{1}" +
+                    "</td>" +
+                    "<td style=\"width: 60px;border-left:solid 1px black;border-top:solid 1px black;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{2}" +
+                    "</td>" +
+                      "<td style=\"width: 60px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{3}" +
+                    "</td>" +
+                      "<td style=\"width: 240px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{4}" +
+                    "</td>" +
+                     "<td style=\"width: 60px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{5}" +
+                    "</td>" +
+                     "<td style=\"width: 60px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{6}" +
+                    "</td>" +
+                       "<td style=\"width: 60px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{7}" +
+                    "</td>" +
+                       "<td style=\"width: 60px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{8}" +
+                    "</td>" +
+                       "<td style=\"width: 60px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{9}" +
+                    "</td>" +
+                       "<td style=\"width: 60px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{10}" +
+                    "</td>" +
+                       "<td style=\"width: 60px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{11}" +
+                    "</td>" +
+                      
+                       "<td style=\"width: 80px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{12}" +
+                    "</td>" +
+                      "<td style=\"width: 100px;border-left:solid 1px black;border-top:solid 1px black;border-right:solid 1px black;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{13}" +
+                    "</td>" +
+                "</tr>";
+
+            return reStr;
+
+        }
+
+        public void GenerateHeadCode(StringBuilder sb, string BEDAT, string EBELN, string EBELP, string MATNR, string TXZ01, string order_menge, string MENGE, string MSEHT, string PRICE, string MONEY, string SEND_DEPART_NAME, string LINK_PERSON, string LINK_TELEPHONE, string MATER_CODE)
+        {
+            var replaceStr = GenerateHeadStr();
+            sb.AppendFormat(replaceStr, BEDAT, EBELN, EBELP, MATNR, TXZ01, order_menge, MENGE, MSEHT, PRICE, MONEY, SEND_DEPART_NAME, LINK_PERSON, LINK_TELEPHONE, MATER_CODE);
+        }
+        public string GenerateHeadStr()
+        {
+            var reStr =
+                 "<tr>" +
+                    "<td style=\"width: 80px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{0}" +
+                    "</td>" +
+                     "<td style=\"width: 60px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{1}" +
+                    "</td>" +
+                    "<td style=\"width: 60px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{2}" +
+                    "</td>" +
+                      "<td style=\"width: 60px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{3}" +
+                    "</td>" +
+                      "<td style=\"width: 240px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{4}" +
+                    "</td>" +
+                     "<td style=\"width: 60px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{5}" +
+                    "</td>" +
+                     "<td style=\"width: 60px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{6}" +
+                    "</td>" +
+                      "<td style=\"width: 60px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{7}" +
+                    "</td>" +
+                      "<td style=\"width: 60px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{8}" +
+                    "</td>" +
+                      "<td style=\"width: 60px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{9}" +
+                    "</td>" +
+                      "<td style=\"width: 60px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{10}" +
+                    "</td>" +
+                      "<td style=\"width: 60px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{11}" +
+                       "</td>" +
+                      "<td style=\"width: 80px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{12}" +
+                    "</td>" +
+                      "<td style=\"width: 100px;border-left:solid 1px black;border-top:solid 1px black;border-right:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                        "{13}" +
+                    "</td>" +
+                "</tr>";
+
+            return reStr;
+
+        }
+
+        public string GenerateMark(string id)
+        {
+
+            QRCodeEncoder qrCodeEncoder = new QRCodeEncoder();
+            qrCodeEncoder.QRCodeEncodeMode = QRCodeEncoder.ENCODE_MODE.BYTE;
+            qrCodeEncoder.QRCodeScale = 4;
+            qrCodeEncoder.QRCodeVersion = 8;
+            qrCodeEncoder.QRCodeErrorCorrect = QRCodeEncoder.ERROR_CORRECTION.M;
+            //System.Drawing.Image image = qrCodeEncoder.Encode("4408810820 深圳－广州 小江");
+            global::System.Drawing.Image image = qrCodeEncoder.Encode(id);
+            string filename = Guid.NewGuid().ToString() + ".jpg";
+
+            string fileMonthPath = Server.MapPath(@"~\UploadFile") + "\\" + DateTime.Now.ToString("MM");
+            string filePreMonthPath = Server.MapPath(@"~\UploadFile") + "\\" + DateTime.Now.AddMonths(-1).ToString("MM");
+            if (Directory.Exists(filePreMonthPath))
+            {
+                Directory.Delete(filePreMonthPath, true);
+            }
+            if (!Directory.Exists(fileMonthPath))
+            {
+                Directory.CreateDirectory(fileMonthPath);
+            }
+
+            string filepath = fileMonthPath + "\\" + filename;
+            global::System.IO.FileStream fs = new global::System.IO.FileStream(filepath, global::System.IO.FileMode.OpenOrCreate, global::System.IO.FileAccess.Write);
+            image.Save(fs, global::System.Drawing.Imaging.ImageFormat.Jpeg);
+
+            fs.Close();
+            image.Dispose();
+            var path = Url.Content("~/");
+            return path + @"UploadFile/" + DateTime.Now.ToString("MM") + "/" + filename;
+        }
+    }
+}

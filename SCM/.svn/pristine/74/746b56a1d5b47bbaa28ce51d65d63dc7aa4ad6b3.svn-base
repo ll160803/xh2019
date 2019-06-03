@@ -1,0 +1,36 @@
+@charset "utf-8";
+/* CSS Document */
+/*======================Reset=======================*/
+html,div, h1, h2, h3, h4, h5, h6, ul, ol, dl, li, dt, dd, p, blockquote,  
+pre, form,body, fieldset, th, img, textarea, div,a {border:0 none;margin:0;padding:0;outline: 0;}
+ul,ol,li{list-style-type:none;}
+a {color:#454545;text-decoration:none; outline:none;/*FF±ê×¼È¥ÐéÏß¿ò*/}
+a {star:expression(this.onFocus=this.blur()); /* for Ie*È¥ÐéÏß¿ò*/ }
+a:hover{color:#af0000; text-decoration:none;}
+:focus {outline: none;}
+body {font-size:12px; font-family:"ËÎÌå"; color:#393939; text-align:center; background:url(../images/sclm/mbg.jpg) repeat; }
+p{ line-height:24px;}
+.clear{ clear:both;}
+.lh24{ line-height:24px;}
+
+
+/*=======================Top===========================*/
+#top{ width:100%; overflow:hidden; height:102px; background:url(../images/sclm/top-bg.jpg) repeat-x; margin:0 auto;}
+.top{ width:1000px; height:95px; padding-top:7px; margin:0 auto; text-align:left; font-family:"Microsoft YaHei"; color:#000; font-size:24px; font-weight:bold; line-height:100px;}
+.top a{font-family:"Î¢ÈíÑÅºÚ"; font-size:16px; color:#c3000d;}
+.top a:hover{ text-decoration:underline;}
+
+
+#center{ width:100%; height:430px; margin:0; text-align:center; background:url(../images/sclm/mid-bg.jpg) no-repeat center;}
+#midd{ width:1000px; height:430px; margin:0 auto; background:url(../images/sclm/centerbg.jpg) no-repeat center; position:relative;}
+.login{ width:330px; height:414px; position:absolute; left:620px; top:10px; background:url(../images/sclm/logbg.png) no-repeat;}
+.title{ width:250px; margin:0 auto; height:30px; line-height:30px; padding-top:30px; font-family:"Î¢ÈíÑÅºÚ"; font-size:16px; color:#ec7200; text-align:left; border-bottom:1px #ec7200 solid;}
+.inptit{ width:223px; margin:0 auto; line-height:25px; color:#535353; font-family:"Î¢ÈíÑÅºÚ"; font-size:14px; text-align:left; padding-top:10px;}
+.inp{width:213px; height:34px; margin:0 auto; padding-left:7px; padding-right:3px; background:url(../images/sclm/input.jpg) no-repeat;}
+.input{ width:213px; height:34px; margin:0 auto; line-height:34px; background:none; font-size:14px; font-family:"Î¢ÈíÑÅºÚ"; color:#555;  border:none;}
+.submit{ width:223px; height:34px; padding-top:60px; margin:0 auto;}
+.submii{ width:223px; height:34px; background:url(../images/sclm/login.jpg) no-repeat; border:none; cursor:pointer;}
+
+
+#bottom{ width:100%; height:38px; line-height:38px; background:url(../images/sclm/botbg.jpg) repeat-x;}
+.bott{ width:1000px; margin:0 auto; text-align:center; font-size:12px; color:#e4e4e4;}
