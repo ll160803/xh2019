@@ -35,3 +35,4 @@ D:\project\xh2019\Nfine\project\NFine.Code\obj\Debug\NFine.Code.csproj.CoreCompi
 D:\project\xh2019\Nfine\project\NFine.Code\obj\Debug\NFine.Code.csproj.CopyComplete
 D:\project\xh2019\Nfine\project\NFine.Code\obj\Debug\NFine.Code.dll
 D:\project\xh2019\Nfine\project\NFine.Code\obj\Debug\NFine.Code.pdb
+D:\project\xh2019\Nfine\project\NFine.Code\obj\Debug\NFine.Code.csprojAssemblyReference.cache

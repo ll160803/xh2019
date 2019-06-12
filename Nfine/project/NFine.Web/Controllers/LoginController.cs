@@ -23,6 +23,12 @@ namespace NFine.Web.Controllers
         [HttpGet]
         public virtual ActionResult Index()
         {
+            //System.Net.NetworkCredential c = new System.Net.NetworkCredential("com_wsjk", "654321");
+            //SapHrm.ZWS_KQRYXX gf = new SapHrm.ZWS_KQRYXX();
+            //gf.Credentials = c;
+            //SapHrm.Zhr00SKqryxx[] ty=new SapHrm.Zhr00SKqryxx[] { };
+            //var ry = gf.Zhr00FmKqryxx(new SapHrm.Zhr00FmKqryxx {  TRyxx=ty});
+            //ViewBag.Name = ry.TRyxx.FirstOrDefault().Name1;
             var test = string.Format("{0:E2}", 1);
             return View();
         }
