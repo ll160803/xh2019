@@ -128,6 +128,8 @@
     <Compile Include="Areas\ExampleManage\Controllers\SendMessagesController.cs" />
     <Compile Include="Areas\ExampleManage\Controllers\SignetController.cs" />
     <Compile Include="Areas\ExampleManage\ExampleManageAreaRegistration.cs" />
+    <Compile Include="Areas\Hrm\Controllers\AskForLeaveController.cs" />
+    <Compile Include="Areas\Hrm\Controllers\OutAndInController.cs" />
     <Compile Include="Areas\Hrm\Controllers\SapUserController.cs" />
     <Compile Include="Areas\Hrm\HrmAreaRegistration.cs" />
     <Compile Include="Areas\ReportManage\Controllers\EchartsController.cs" />
@@ -641,6 +643,7 @@
     <Content Include="Areas\Hrm\Views\Web.config" />
     <Content Include="Areas\Hrm\Views\SapUser\In.cshtml" />
     <Content Include="Areas\Hrm\Views\SapUser\Out.cshtml" />
+    <Content Include="Areas\Hrm\Views\OutAndIn\Index.cshtml" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\NFine.Framework.Release.pubxml" />
     <None Include="Properties\Settings.settings">
