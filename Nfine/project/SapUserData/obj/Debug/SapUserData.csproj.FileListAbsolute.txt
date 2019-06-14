@@ -9,8 +9,8 @@ D:\project\xh2019\Nfine\project\SapUserData\bin\Debug\MySql.Data.Entity.EF5.dll
 D:\project\xh2019\Nfine\project\SapUserData\bin\Debug\MySql.Data.Entity.EF6.dll
 D:\project\xh2019\Nfine\project\SapUserData\bin\Debug\EntityFramework.xml
 D:\project\xh2019\Nfine\project\SapUserData\bin\Debug\EntityFramework.SqlServer.xml
-D:\project\xh2019\Nfine\project\SapUserData\obj\Debug\SapUserData.csprojAssemblyReference.cache
 D:\project\xh2019\Nfine\project\SapUserData\obj\Debug\SapUserData.csproj.CoreCompileInputs.cache
 D:\project\xh2019\Nfine\project\SapUserData\obj\Debug\SapUserData.csproj.CopyComplete
 D:\project\xh2019\Nfine\project\SapUserData\obj\Debug\SapUserData.exe
 D:\project\xh2019\Nfine\project\SapUserData\obj\Debug\SapUserData.pdb
+D:\project\xh2019\Nfine\project\SapUserData\obj\Debug\SapUserData.csprojAssemblyReference.cache

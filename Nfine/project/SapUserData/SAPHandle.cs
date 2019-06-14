@@ -58,6 +58,7 @@ namespace SapUserData
                     row["PERSK"] = user.Persk;
                     row["PERSG"] = user.Persg;
                     row["NAME1"] = user.Name1;
+                    row["WERKS"] = user.Werks;
                     row["NACHN"] = user.Nachn;
                     row["GESCTXT"] = user.Gesctxt;
                     row["GESCH"] = user.Gesch;
@@ -70,6 +71,7 @@ namespace SapUserData
                     var nr = data.NewRow();
                     nr["ZHRBTTXT"] = user.Zhrbttxt;
                     nr["ZHRBTRTL"] = user.Zhrbtrtl;
+                    nr["WERKS"] = user.Werks;
                     nr["YGGH"] = user.Yggh;
                     nr["RYLB"] = user.Rylb;
                     nr["PTEXT"] = user.Ptext;
@@ -89,7 +91,7 @@ namespace SapUserData
                 }
             }
             da.Update(ds, "Table");
-            ds.AcceptChanges();
+           //ds.AcceptChanges();
             LogFactory.GetLogger("GetMysqlUserData").Info("更新或插入数据完成");
         }
 

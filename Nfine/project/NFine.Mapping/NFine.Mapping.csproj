@@ -48,6 +48,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Hrm\HrmUserMap.cs" />
+    <Compile Include="Hrm\OutAndInMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemManage\AreaMap.cs" />
     <Compile Include="SystemManage\ItemsDetailMap.cs" />

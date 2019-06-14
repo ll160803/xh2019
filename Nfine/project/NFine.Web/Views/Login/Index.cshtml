@@ -85,11 +85,13 @@
                         $password.focus();
                         $.login.formMessage('请输入登录密码。');
                         return false;
-                    } else if ($code.val() == "") {
-                        $code.focus();
-                        $.login.formMessage('请输入验证码。');
-                        return false;
-                    } else {
+                    }
+                    //else if ($code.val() == "") {//暂时注销验证证吗
+                    //    $code.focus();
+                    //    $.login.formMessage('请输入验证码。');
+                    //    return false;
+                    //}
+                    else {
                         $("#login_button").attr('disabled', 'disabled').find('span').html("loading...");
                         $.ajax({
                             url: "/Login/CheckLogin",
