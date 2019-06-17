@@ -30,7 +30,7 @@ namespace NFine.Domain.Entity.Hrm
         public string SickCheck { get; set; }
         public int? AskSort { get; set; }
         public bool? IsNew { get; set; }
-        public string State { get; set; }
+        public int? State { get; set; }
         public string SubmitUser { get; set; }
         public string LeaderAudit { get; set; }
         public DateTime? LeaderAuditTime { get; set; }

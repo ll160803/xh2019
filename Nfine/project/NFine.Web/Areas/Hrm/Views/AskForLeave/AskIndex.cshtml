@@ -16,11 +16,11 @@
                 { label: '主键', name: 'F_Id', hidden: true },
                 { label: '人员编号', name: 'PERNR', width: 80, align: 'left' },
                 { label: '姓名', name: 'NACHN', width: 80, align: 'left' },
-               
+
                 {
                     label: '请假类型', name: 'F_ItemName', width: 80, align: 'left'
                 },
-               
+
                 {
                     label: '请假开始时间', name: 'StartDate', width: 80, align: 'left',
                     formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' }
@@ -29,8 +29,13 @@
                     label: '请假结束时间', name: 'EndDate', width: 80, align: 'left',
                     formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' }
                 },
-               
-               
+                
+                {
+                    label: '请假天数', name: 'days', width: 80, align: 'left',
+                    formatter: function (cellvalue, options, rowObject) {
+                        return $.days_count(rowObject.StartDate, rowObject.EndDate)+"天";
+                    }
+                },
                 {
                     label: '性别', name: 'GESCTXT', width: 80, align: 'left'
                 },
@@ -64,7 +69,7 @@
                 }, {
                     label: '序列值', name: 'AskSort', width: 80, align: 'left'
                 }
-               
+
             ],
             pager: "#gridPager",
             sortname: 'F_CreatorTime desc',
@@ -92,7 +97,7 @@
         var keyValue = $("#gridList").jqGridRowValue().F_Id;
         var IsNew = $("#gridList").jqGridRowValue().IsNew;
         var State = $("#gridList").jqGridRowValue().State;
-        
+
         if (IsNew == "否") {
             $.modalAlert("此记录已经做过请假改登，不能编辑", "warning");
             return false;
@@ -119,7 +124,7 @@
     function btn_delete() {
         var IsNew = $("#gridList").jqGridRowValue().IsNew;
         var State = $("#gridList").jqGridRowValue().State;
-       
+
         if (IsNew == "否") {
             $.modalAlert("此记录已经做过请假改登，不能删除", "warning");
             return false;
@@ -129,7 +134,7 @@
             return false;
         }
         if (State != "未提交") {
-            $.modalAlert("此记录已经提交，不能编辑", "warning");
+            $.modalAlert("此记录已经提交，不能删除", "warning");
             return false;
         }
         $.deleteForm({
@@ -176,18 +181,46 @@
             btn: null,
         });
     }
+    function btn_SubmitChange() {//
+        var keyValue = $("#gridList").jqGridRowValue().F_Id;
+        var IsNew = $("#gridList").jqGridRowValue().IsNew;
+        var State = $("#gridList").jqGridRowValue().State;
+        if (IsNew == "否") {
+            $.modalAlert("此记录已经做过请假改登，不能继续改登", "warning");
+            return false;
+        }
+        //if (IsNew == false) {
+        //    $.modalAlert("此记录已经做过请假改登，不能删除", "warning");
+        //    return false;
+        //}
+        if (State == "未提交" || State == "已提交") {
+            $.modalAlert("此记录未审核，不能进行请假改登", "warning");
+            return false;
+        }
+        $.modalOpen({
+            id: "FormModify",
+            title: "请假改登",
+            url: "/hrm/askforleave/Form?keyValue=" + keyValue,
+            width: "700px",
+            height: "510px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].submitFormModify();
+            },
+            btn: ['改登确认', '关闭'],
+        });
+    }
 </script>
 
 <div class="topPanel">
     <div class="toolbar">
         @*<div id="txt_condition" class="btn-group">
-            <a class="btn btn-default dropdown-text" data-toggle="dropdown">选择条件</a>
-            <a class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
-            <ul class="dropdown-menu">
-                <li><a href="javascript:void()" data-value="DbName">数据库名</a></li>
-                <li><a href="javascript:void()" data-value="FileName">备份名称</a></li>
-            </ul>
-        </div>*@
+                <a class="btn btn-default dropdown-text" data-toggle="dropdown">选择条件</a>
+                <a class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="javascript:void()" data-value="DbName">数据库名</a></li>
+                    <li><a href="javascript:void()" data-value="FileName">备份名称</a></li>
+                </ul>
+            </div>*@
         <div class="btn-group">
             <a class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></a>
         </div>
@@ -199,8 +232,10 @@
                 <li class="first">已选中<span>1</span>项</li>
                 <li><a id="NF-edit" authorize="yes" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>修改请假</a></li>
                 <li><a id="NF-delete" authorize="yes" onclick="btn_delete()"><i class="fa fa-trash-o"></i>删除请假</a></li>
-                <li><a id="NF-audit" authorize="yes" onclick="btn_Submit()"><i class="fa fa-pencil-square-o"></i>请假提交</a></li>
                 <li><a id="NF-Details" authorize="yes" onclick="btn_details()"><i class="fa fa-search-plus"></i>查看请假</a></li>
+                <li class="split"></li>
+                <li><a id="NF-audit" authorize="yes" onclick="btn_Submit()"><i class="fa fa-pencil-square-o"></i>请假提交</a></li>
+                <li><a id="NF-change" authorize="yes" onclick="btn_SubmitChange()"><i class="fa fa-credit-card-alt"></i>请假改登</a></li>
             </ul>
             <a href="javascript:;" class="close"></a>
         </div>

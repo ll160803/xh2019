@@ -31,7 +31,7 @@ namespace NFine.Repository.Hrm
 FROM
 	hrm_askforleave 
 WHERE
-	HrmUserId = @UserId 
+	HrmUserId = @UserId AND IsNew=1
 	AND (
 	( UNIX_TIMESTAMP( StartDate ) >= UNIX_TIMESTAMP(@StartTime ) AND UNIX_TIMESTAMP( StartDate ) <= UNIX_TIMESTAMP( @EndTime ) ) 
 	OR ( UNIX_TIMESTAMP( EndDate ) >= UNIX_TIMESTAMP( @StartTime ) AND UNIX_TIMESTAMP( EndDate ) <= UNIX_TIMESTAMP( @EndTime ) ) 
@@ -53,7 +53,7 @@ WHERE
 FROM
 	hrm_askforleave 
 WHERE
-	HrmUserId = @UserId AND F_ID!=@keyvalue
+	HrmUserId = @UserId AND F_ID!=@keyvalue AND IsNew=1
 	AND (
 	( UNIX_TIMESTAMP( StartDate ) >= UNIX_TIMESTAMP(@StartTime ) AND UNIX_TIMESTAMP( StartDate ) <= UNIX_TIMESTAMP( @EndTime ) ) 
 	OR ( UNIX_TIMESTAMP( EndDate ) >= UNIX_TIMESTAMP( @StartTime ) AND UNIX_TIMESTAMP( EndDate ) <= UNIX_TIMESTAMP( @EndTime ) ) 

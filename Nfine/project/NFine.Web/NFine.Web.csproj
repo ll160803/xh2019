@@ -1128,6 +1128,8 @@
     <Content Include="Content\js\ComboGrid\i18n\combogrid_it.properties" />
     <Content Include="Content\js\easyui\themes\material-teal\images\Thumbs.db" />
     <Content Include="Content\js\easyui\themes\material\images\Thumbs.db" />
+    <Content Include="Areas\Hrm\Views\AskForLeave\AskModifyIndex.cshtml" />
+    <Content Include="Areas\Hrm\Views\AskForLeave\FormModify.cshtml" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\NFine.Framework.Release.pubxml" />
     <None Include="Properties\Settings.settings">

@@ -67,24 +67,47 @@ namespace NFine.Web.Areas.Hrm.Controllers
         {
             if (string.IsNullOrEmpty(keyValue))
             {
-                userEntity.State = "1";//草稿状态
+                userEntity.State = 1;//草稿状态
                 userEntity.IsNew = true;//激活的请假
                 userEntity.AskSort = 1;//默认是1
             }
             else
             {
-                if(userEntity.State!="1"||userEntity.IsNew==false)
+                if (userEntity.State != 1 || userEntity.IsNew == false)
                 {
                     return Error("错误操作。");
                 }
             }
             // userEntity.OrganizeId= OperatorProvider.Provider.GetCurrent().CompanyId;//当前科室
-           var hasList= askApp.GetLeaveList(userEntity.HrmUserId, userEntity.StartDate.Value, userEntity.EndDate.Value,keyValue);
-            if(hasList.Count>0)
+            var hasList = askApp.GetLeaveList(userEntity.HrmUserId, userEntity.StartDate.Value, userEntity.EndDate.Value, keyValue);
+            if (hasList.Count > 0)
             {
                 return Error("此员工在请假时间区间内，已经有请假记录，请核实后重新提交");
             }
             askApp.InsertForm(userEntity, keyValue);
+            return Success("操作成功。");
+        }
+        [HttpPost]
+        [HandlerAjaxOnly]
+        [ValidateAntiForgeryToken]
+        public ActionResult SubmitFormModify(AskForLeaveEntity userEntity, string keyValue)
+        {
+
+            userEntity.State = 1;//草稿状态
+            userEntity.IsNew = true;//激活的请假
+            userEntity.AskSort = userEntity.AskSort+1;//默认是增加1个
+            userEntity.Ref_Id = userEntity.Ref_Id;//请假和请假改登之间的唯一标识
+            // userEntity.OrganizeId= OperatorProvider.Provider.GetCurrent().CompanyId;//当前科室
+            var hasList = askApp.GetLeaveList(userEntity.HrmUserId, userEntity.StartDate.Value, userEntity.EndDate.Value, keyValue);
+            if (hasList.Count > 0)
+            {
+                return Error("此员工在请假时间区间内，已经有请假记录，请核实后重新提交");
+            }
+            var oldEntity = askApp.GetForm(keyValue);
+            oldEntity.IsNew = false;//之前的请假记录不激活
+            userEntity.F_Id = Guid.NewGuid().ToString();
+            askApp.SubmitForm(oldEntity, keyValue);//之前的请假记录不激活
+            askApp.SubmitForm(userEntity, "");
             return Success("操作成功。");
         }
         [HttpPost]
@@ -94,7 +117,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
         public ActionResult DeleteForm(string keyValue)
         {
             AskForLeaveEntity entity = askApp.GetForm(keyValue);
-            if (entity.State != "1" || entity.IsNew == false)
+            if (entity.State != 1 || entity.IsNew == false)
             {
                 return Error("此请假不能删除，具体请联系管理员。");
             }
@@ -108,11 +131,11 @@ namespace NFine.Web.Areas.Hrm.Controllers
         public ActionResult SubmitLeave(string keyValue)
         {
             AskForLeaveEntity entity = askApp.GetForm(keyValue);
-            if (entity.State != "1" || entity.IsNew == false)
+            if (entity.State != 1 || entity.IsNew == false)
             {
                 return Error("此请假已经提交，请勿重复操作，具体请联系管理员。");
             }
-            entity.State = "2";
+            entity.State = 2;
             askApp.SubmitForm(entity, keyValue);
             return Success("提交成功。");
         }
@@ -123,11 +146,11 @@ namespace NFine.Web.Areas.Hrm.Controllers
         public ActionResult SubmitAudit(string keyValue)
         {
             AskForLeaveEntity entity = askApp.GetForm(keyValue);
-            if (entity.State != "1" || entity.IsNew == false)
+            if (entity.State != 1 || entity.IsNew == false)
             {
                 return Error("此请假已经提交，请勿重复操作，具体请联系管理员。");
             }
-            entity.State = "3";
+            entity.State = 3;
             askApp.SubmitForm(entity, keyValue);
             return Success("审核成功。");
         }
