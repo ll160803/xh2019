@@ -89,6 +89,11 @@ namespace NFine.Data
         }
         public List<TEntity> FindList(Pagination pagination)
         {
+            if (string.IsNullOrEmpty(pagination.sord))
+            {
+                pagination.sord = "asc";
+                pagination.sidx = "F_Id";
+            }
             bool isAsc = pagination.sord.ToLower() == "asc" ? true : false;
             string[] _order = pagination.sidx.Split(',');
             MethodCallExpression resultExp = null;
@@ -117,6 +122,11 @@ namespace NFine.Data
         }
         public List<TEntity> FindList(Expression<Func<TEntity, bool>> predicate, Pagination pagination)
         {
+            if(string.IsNullOrEmpty(pagination.sord))
+            {
+                pagination.sord = "asc";
+                pagination.sidx = "F_Id";
+            }
             bool isAsc = pagination.sord.ToLower() == "asc" ? true : false;
             string[] _order = pagination.sidx.Split(',');
             MethodCallExpression resultExp = null;

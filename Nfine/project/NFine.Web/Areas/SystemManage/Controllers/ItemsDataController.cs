@@ -38,6 +38,18 @@ namespace NFine.Web.Areas.SystemManage.Controllers
         }
         [HttpGet]
         [HandlerAjaxOnly]
+        public ActionResult GetSelectJson_Own(string enCode)
+        {
+            var data = itemsDetailApp.GetItemList(enCode);
+            List<object> list = new List<object>();
+            foreach (ItemsDetailEntity item in data)
+            {
+                list.Add(new { id = item.F_Id, text = item.F_ItemName });
+            }
+            return Content(list.ToJson());
+        }
+        [HttpGet]
+        [HandlerAjaxOnly]
         public ActionResult GetFormJson(string keyValue)
         {
             var data = itemsDetailApp.GetForm(keyValue);

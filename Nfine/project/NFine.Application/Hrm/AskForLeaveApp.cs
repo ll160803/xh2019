@@ -31,7 +31,10 @@ namespace NFine.Application.Hrm
             }
             return service.FindList(expression, pagination);
         }
-
+        public List<AskForLeaveEntity> GetLeaveList(string userId,DateTime start,DateTime end,string keyvalue)
+        {
+            return service.GetItemList(start, end, userId, keyvalue);
+        }
 	    public AskForLeaveEntity GetForm(string keyValue)
         {
             return service.FindEntity(keyValue);
@@ -52,6 +55,20 @@ namespace NFine.Application.Hrm
             else
             {
                 entity.Create();
+                service.Insert(entity);
+            }
+        }
+        public void InsertForm(AskForLeaveEntity entity, string keyValue)
+        {
+            if (!string.IsNullOrEmpty(keyValue))
+            {
+                entity.Modify(keyValue);
+                service.Update(entity);
+            }
+            else
+            {
+                entity.Create();
+                entity.Ref_Id = entity.F_Id;//创建的时候 这是请假改登和原记录的跟踪ID
                 service.Insert(entity);
             }
         }

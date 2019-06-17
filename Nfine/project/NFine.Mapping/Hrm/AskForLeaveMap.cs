@@ -19,7 +19,7 @@ namespace NFine.Mapping.Hrm
     {
 		 public AskForLeaveMap()
         {
-            this.ToTable("AskForLeave");
+            this.ToTable("hrm_AskForLeave");
             this.HasKey(t => t.F_Id);
         }
     }

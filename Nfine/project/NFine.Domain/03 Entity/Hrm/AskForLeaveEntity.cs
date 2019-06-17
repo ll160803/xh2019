@@ -20,31 +20,34 @@ namespace NFine.Domain.Entity.Hrm
     /// </summary>
     public class AskForLeaveEntity : IEntity<AskForLeaveEntity>, ICreationAudited, IDeleteAudited, IModificationAudited
     {
-						public  string  F_Id { get; set; }
-					public  string  HrmUserId { get; set; }
-					public  string  OrganizeId { get; set; }
-					public  string  AskTypeId { get; set; }
-					public  DateTime?  StartDate { get; set; }
-					public  DateTime?  EndDate { get; set; }
-					public  string  HosOrganize { get; set; }
-					public  string  SickCheck { get; set; }
-					public  string  State { get; set; }
-					public  string  SubmitUser { get; set; }
-					public  string  LeaderAudit { get; set; }
-					public  DateTime?  LeaderAuditTime { get; set; }
-					public  string  LastAudit { get; set; }
-					public  DateTime?  LastAuditTime { get; set; }
-					public  bool?  F_AllowEdit { get; set; }
-					public  bool?  F_AllowDelete { get; set; }
-					public  int?  F_SortCode { get; set; }
-					public  bool?  F_DeleteMark { get; set; }
-					public  bool?  F_EnabledMark { get; set; }
-					public  string  F_Description { get; set; }
-					public  DateTime?  F_CreatorTime { get; set; }
-					public  string  F_CreatorUserId { get; set; }
-					public  DateTime?  F_LastModifyTime { get; set; }
-					public  string  F_LastModifyUserId { get; set; }
-					public  DateTime?  F_DeleteTime { get; set; }
-					public  string  F_DeleteUserId { get; set; }
-		    }
+        public string F_Id { get; set; }
+        public string HrmUserId { get; set; }
+        public string OrganizeId { get; set; }
+        public string AskTypeId { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public string HosOrganize { get; set; }
+        public string SickCheck { get; set; }
+        public int? AskSort { get; set; }
+        public bool? IsNew { get; set; }
+        public string State { get; set; }
+        public string SubmitUser { get; set; }
+        public string LeaderAudit { get; set; }
+        public DateTime? LeaderAuditTime { get; set; }
+        public string LastAudit { get; set; }
+        public DateTime? LastAuditTime { get; set; }
+        public bool? F_AllowEdit { get; set; }
+        public bool? F_AllowDelete { get; set; }
+        public int? F_SortCode { get; set; }
+        public bool? F_DeleteMark { get; set; }
+        public bool? F_EnabledMark { get; set; }
+        public string F_Description { get; set; }
+        public DateTime? F_CreatorTime { get; set; }
+        public string F_CreatorUserId { get; set; }
+        public DateTime? F_LastModifyTime { get; set; }
+        public string F_LastModifyUserId { get; set; }
+        public DateTime? F_DeleteTime { get; set; }
+        public string F_DeleteUserId { get; set; }
+        public string Ref_Id { get; set; }
+    }
 }

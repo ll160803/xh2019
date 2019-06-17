@@ -19,5 +19,6 @@ namespace NFine.Domain.IRepository.Hrm
 {
     public interface IAskForLeaveRepository : IRepositoryBase<AskForLeaveEntity>
     {
+        List<AskForLeaveEntity> GetItemList(System.DateTime startTime, System.DateTime endTime, string userId,string keyValue);
     }
 }
