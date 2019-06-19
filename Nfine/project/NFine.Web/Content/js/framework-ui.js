@@ -77,6 +77,47 @@ $.download = function (url, data, method) {
         $('<form action="' + url + '" method="' + (method || 'post') + '">' + inputs + '</form>').appendTo('body').submit().remove();
     };
 };
+//新增弹出
+
+$.modalPrompt = function (options) {
+    var defaults = {
+        formType: 2,    // 弹出文本层类型
+        title: '请输入审核意见',    // 标题
+        value: '',    // 可以设置文本默认值
+        area: ['500px', '300px'],     // 设置弹出层大小
+        btn: ['通过', '不通过', '取消'],    // 自定义设置多个按钮
+        btnclass: ['btn btn-primary', 'btn btn-primary', 'btn btn-danger'],
+        btn2: function (index,value) { alert(value); top.layer.close(index); },
+        btnAlign: 'c',
+        callback: function (value, index, elem) {
+            alert(value);
+            top.layer.close(index);
+        }
+    };
+    var options = $.extend(defaults, options);
+
+
+    top.layer.prompt(
+        {
+            formType: options.formType,    // 弹出文本层类型
+            title: options.title,    // 标题
+            value: options.value,    // 可以设置文本默认值
+            area: options.area,     // 设置弹出层大小
+            btn: options.btn,    // 自定义设置多个按钮
+            btnclass: options.btnclass,
+            btn2: function (index, elem) {
+                // 得到value
+                var value = top.$("#layui-layer" + index).find(".layui-layer-input").val();
+                options.btn2(index,value);
+                
+            },
+            btnAlign: options.btnAlign
+        }, function (value, index, elem) {
+            options.callback(value, index, elem);
+            
+        });
+}
+
 $.modalOpen = function (options) {
     var defaults = {
         id: null,
@@ -275,7 +316,7 @@ $.fn.jqGridRowValue = function () {
     if (selectedRowIds != "") {
         var json = [];
         var len = selectedRowIds.length;
-        for (var i = 0; i < len ; i++) {
+        for (var i = 0; i < len; i++) {
             var rowData = $grid.jqGrid('getRowData', selectedRowIds[i]);
             json.push(rowData);
         }
@@ -428,7 +469,7 @@ $.fn.dataGrid = function (options) {
     };
     $element.jqGrid(options);
 };
-$.days_count=function (sDate1, sDate2) {    //sDate1和sDate2是2006-12-18格式  
+$.days_count = function (sDate1, sDate2) {    //sDate1和sDate2是2006-12-18格式  
     var dateSpan,
         tempDate,
         iDays;
@@ -436,6 +477,6 @@ $.days_count=function (sDate1, sDate2) {    //sDate1和sDate2是2006-12-18格式
     sDate2 = Date.parse(sDate2);
     dateSpan = sDate2 - sDate1;
     dateSpan = Math.abs(dateSpan);
-    iDays = Math.floor(dateSpan / (24 * 3600 * 1000));
+    iDays = Math.floor(dateSpan / (24 * 3600 * 1000))+1;
     return iDays
 };

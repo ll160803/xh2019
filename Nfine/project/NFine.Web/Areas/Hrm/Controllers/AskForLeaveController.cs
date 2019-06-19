@@ -25,16 +25,118 @@ namespace NFine.Web.Areas.Hrm.Controllers
             ViewBag.id = id;
             return View();
         }
+        public ActionResult AskAuditIndex(string id)
+        {
+            ViewBag.id = id;
+            return View();
+        }
+        public ActionResult AskLastAuditIndex(string id)
+        {
+            ViewBag.id = id;
+            return View();
+        }
         [HttpGet]
         [HandlerAjaxOnly]
-        public ActionResult GetGridJson(string id, Pagination pagination, string keyword)
+        public ActionResult GetGridJson(string id, Pagination pagination, string keyword, int state = 1)
         {
             System.Linq.Expressions.Expression<Func<ViewAskForLeaveEntity, bool>> expression = ExtLinq.True<ViewAskForLeaveEntity>();
             var orgId = OperatorProvider.Provider.GetCurrent().CompanyId;//当前用户所在公司ID
             expression = expression.And(p => p.OrganizeId == orgId);
+            if(state!=-1)
+            {
+                if(state==1)
+                {
+                    expression = expression.And(p => p.State == 0||p.State==1);
+                }
+                else
+                {
+                    expression = expression.And(p => p.State == state);
+                }
+                
+            }
             if (!string.IsNullOrEmpty(id))
             {
                 expression = expression.And(p => p.RYLB == id);//医生还是护士
+            }
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                var keyPress = ExtLinq.True<ViewAskForLeaveEntity>();
+                keyPress = keyPress.And(t => t.PERNR.Contains(keyword));
+                keyPress = keyPress.Or(t => t.NACHN.Contains(keyword));
+                expression = expression.And(keyPress);
+            }
+
+            var data = new
+            {
+                rows = viewApp.GetList(pagination, expression),
+                total = pagination.total,
+                page = pagination.page,
+                records = pagination.records
+            };
+            return Content(data.ToJson());
+        }
+        [HttpGet]
+        [HandlerAjaxOnly]
+        public ActionResult GetOrgAuditGridJson(string id, Pagination pagination, string keyword, int state=2)//除了 病假、产假 都是由自己科室审核
+        {
+            System.Linq.Expressions.Expression<Func<ViewAskForLeaveEntity, bool>> expression = ExtLinq.True<ViewAskForLeaveEntity>();
+            var orgId = OperatorProvider.Provider.GetCurrent().CompanyId;//当前用户所在公司ID
+            expression = expression.And(p => p.OrganizeId == orgId  & (p.AskTypeId != "9ae23a9c-14fc-4d03-8b05-ca184bd0ee52" & p.AskTypeId != "0a015eb8-82fe-4b5f-82b4-76297709e62c"));
+            if (state == 0)
+            {
+                expression = expression.And(p => p.State == 2 || p.State == 3 || p.State == 4);
+            }
+            else
+            {
+                expression = expression.And(p => p.State == state);
+            }
+            if (!string.IsNullOrEmpty(id))
+            {
+                expression = expression.And(p => p.RYLB == id);//医生还是护士
+            }
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                var keyPress = ExtLinq.True<ViewAskForLeaveEntity>();
+                keyPress = keyPress.And(t => t.PERNR.Contains(keyword));
+                keyPress = keyPress.Or(t => t.NACHN.Contains(keyword));
+                expression = expression.And(keyPress);
+            }
+
+            var data = new
+            {
+                rows = viewApp.GetList(pagination, expression),
+                total = pagination.total,
+                page = pagination.page,
+                records = pagination.records
+            };
+            return Content(data.ToJson());
+        }
+        /// <summary>
+        /// 病假、产假由职工保健科来审核
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="pagination"></param>
+        /// <param name="keyword"></param>
+        /// <param name="state">4是推送SAP</param>
+        /// <returns></returns>
+        [HttpGet]
+        [HandlerAjaxOnly]
+        public ActionResult GetLastAuditGridJson(string id, Pagination pagination, string keyword, int state = 2)
+        {
+            System.Linq.Expressions.Expression<Func<ViewAskForLeaveEntity, bool>> expression = ExtLinq.True<ViewAskForLeaveEntity>();
+            var orgId = OperatorProvider.Provider.GetCurrent().CompanyId;//当前用户所在公司ID
+            expression = expression.And(p => p.OrganizeId == orgId & (p.State == 2 || p.State == 3) & (p.AskTypeId == "9ae23a9c-14fc-4d03-8b05-ca184bd0ee52" || p.AskTypeId == "0a015eb8-82fe-4b5f-82b4-76297709e62c"));
+            if (!string.IsNullOrEmpty(id))
+            {
+                expression = expression.And(p => p.RYLB == id);//医生还是护士
+            }
+            if (state == 0)
+            {
+                expression = expression.And(p => p.State == 2 || p.State == 3 || p.State == 4);
+            }
+            else
+            {
+                expression = expression.And(p => p.State == state);
             }
             if (!string.IsNullOrEmpty(keyword))
             {
@@ -95,7 +197,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
 
             userEntity.State = 1;//草稿状态
             userEntity.IsNew = true;//激活的请假
-            userEntity.AskSort = userEntity.AskSort+1;//默认是增加1个
+            userEntity.AskSort = userEntity.AskSort + 1;//默认是增加1个
             userEntity.Ref_Id = userEntity.Ref_Id;//请假和请假改登之间的唯一标识
             // userEntity.OrganizeId= OperatorProvider.Provider.GetCurrent().CompanyId;//当前科室
             var hasList = askApp.GetLeaveList(userEntity.HrmUserId, userEntity.StartDate.Value, userEntity.EndDate.Value, keyValue);
@@ -151,6 +253,21 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 return Error("此请假已经提交，请勿重复操作，具体请联系管理员。");
             }
             entity.State = 3;
+            askApp.SubmitForm(entity, keyValue);
+            return Success("审核成功。");
+        }
+        [HttpPost]
+        [HandlerAuthorize]
+        [HandlerAjaxOnly]
+        [ValidateAntiForgeryToken]
+        public ActionResult AuditSubmitLeave(string keyValue, int state)
+        {
+            AskForLeaveEntity entity = askApp.GetForm(keyValue);
+            if (entity.State != 2 || entity.IsNew == false)
+            {
+                return Error("此请假已经审核，请勿重复操作，具体请联系管理员。");
+            }
+            entity.State = state;
             askApp.SubmitForm(entity, keyValue);
             return Success("审核成功。");
         }

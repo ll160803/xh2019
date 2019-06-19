@@ -28,7 +28,7 @@ namespace NFine.Domain.Entity.Hrm
         public DateTime? EndDate { get; set; }
         public string HosOrganize { get; set; }
         public string SickCheck { get; set; }
-        public string State { get; set; }
+        public int? State { get; set; }
         public string SubmitUser { get; set; }
         public string LeaderAudit { get; set; }
         public DateTime? LeaderAuditTime { get; set; }
@@ -68,5 +68,7 @@ namespace NFine.Domain.Entity.Hrm
         public string STAT2 { get; set; }
         public string F_FullName { get; set; }
         public string F_ItemName { get; set; }
+        public string Ref_Id { get; set; }
+        public string Suggestion { get; set; }
     }
 }

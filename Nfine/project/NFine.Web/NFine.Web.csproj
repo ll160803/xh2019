@@ -1130,6 +1130,9 @@
     <Content Include="Content\js\easyui\themes\material\images\Thumbs.db" />
     <Content Include="Areas\Hrm\Views\AskForLeave\AskModifyIndex.cshtml" />
     <Content Include="Areas\Hrm\Views\AskForLeave\FormModify.cshtml" />
+    <Content Include="Areas\Hrm\Views\AskForLeave\AskAuditIndex.cshtml" />
+    <Content Include="Areas\Hrm\Views\AskForLeave\AskLastAuditIndex.cshtml" />
+    <Content Include="Areas\SystemManage\Views\Module\Icon.cshtml" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\NFine.Framework.Release.pubxml" />
     <None Include="Properties\Settings.settings">
