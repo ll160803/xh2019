@@ -18,11 +18,12 @@ namespace NFine.Application.Hrm
 {
     public class AskForLeaveApp
     {
-		private IAskForLeaveRepository service = new AskForLeaveRepository();
+        private IAskForLeaveRepository service = new AskForLeaveRepository();
 
-		public List<AskForLeaveEntity> GetList(Pagination pagination, string queryJson)
+
+        public List<AskForLeaveEntity> GetList(Pagination pagination, string queryJson)
         {
-		    var expression = ExtLinq.True<AskForLeaveEntity>();
+            var expression = ExtLinq.True<AskForLeaveEntity>();
             var queryParam = queryJson.ToJObject();
             if (!queryParam["keyword"].IsEmpty())
             {
@@ -31,11 +32,11 @@ namespace NFine.Application.Hrm
             }
             return service.FindList(expression, pagination);
         }
-        public List<AskForLeaveEntity> GetLeaveList(string userId,DateTime start,DateTime end,string keyvalue)
+        public List<AskForLeaveEntity> GetLeaveList(string userId, DateTime start, DateTime end, string keyvalue)
         {
             return service.GetItemList(start, end, userId, keyvalue);
         }
-	    public AskForLeaveEntity GetForm(string keyValue)
+        public AskForLeaveEntity GetForm(string keyValue)
         {
             return service.FindEntity(keyValue);
         }
@@ -44,8 +45,11 @@ namespace NFine.Application.Hrm
         {
             service.Delete(entity);
         }
-
-		public void SubmitForm(AskForLeaveEntity entity, string keyValue)
+        public List<AskForLeaveEntity> GetIdList(string sql)
+        {
+            return service.FindList(sql);
+        }
+        public void SubmitForm(AskForLeaveEntity entity, string keyValue)
         {
             if (!string.IsNullOrEmpty(keyValue))
             {
@@ -72,5 +76,6 @@ namespace NFine.Application.Hrm
                 service.Insert(entity);
             }
         }
+       
     }
 }

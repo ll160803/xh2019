@@ -18,11 +18,11 @@ namespace NFine.Application.Hrm
 {
     public class HrmAskForLeaveRecordApp
     {
-		private IHrmAskForLeaveRecordRepository service = new HrmAskForLeaveRecordRepository();
+        private IHrmAskForLeaveRecordRepository service = new HrmAskForLeaveRecordRepository();
 
-		public List<HrmAskForLeaveRecordEntity> GetList(Pagination pagination, string queryJson)
+        public List<HrmAskForLeaveRecordEntity> GetList(Pagination pagination, string queryJson)
         {
-		    var expression = ExtLinq.True<HrmAskForLeaveRecordEntity>();
+            var expression = ExtLinq.True<HrmAskForLeaveRecordEntity>();
             var queryParam = queryJson.ToJObject();
             if (!queryParam["keyword"].IsEmpty())
             {
@@ -31,8 +31,11 @@ namespace NFine.Application.Hrm
             }
             return service.FindList(expression, pagination);
         }
-
-	    public HrmAskForLeaveRecordEntity GetForm(string keyValue)
+        public List<HrmAskForLeaveRecordEntity> GetList(Pagination pagination, System.Linq.Expressions.Expression<Func<HrmAskForLeaveRecordEntity, bool>> expression)
+        {
+            return service.FindList(expression, pagination);
+        }
+        public HrmAskForLeaveRecordEntity GetForm(string keyValue)
         {
             return service.FindEntity(keyValue);
         }
@@ -42,7 +45,7 @@ namespace NFine.Application.Hrm
             service.Delete(entity);
         }
 
-		public void SubmitForm(HrmAskForLeaveRecordEntity entity, string keyValue)
+        public void SubmitForm(HrmAskForLeaveRecordEntity entity, string keyValue)
         {
             if (!string.IsNullOrEmpty(keyValue))
             {

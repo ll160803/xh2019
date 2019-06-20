@@ -83,6 +83,7 @@ namespace NFine.Web.Controllers
                     operatorModel.LoginIPAddressName = Net.GetLocation(operatorModel.LoginIPAddress);
                     operatorModel.LoginTime = DateTime.Now;
                     operatorModel.LoginToken = DESEncrypt.Encrypt(Guid.NewGuid().ToString());
+                    operatorModel.Is_Doctor = userEntity.F_DutyId == "23ED024E-0AAA-4C8D-9216-D1AB93348D26" ? "1" : "2";//医生1 护士2
                     if (userEntity.F_Account == "admin")
                     {
                         operatorModel.IsSystem = true;

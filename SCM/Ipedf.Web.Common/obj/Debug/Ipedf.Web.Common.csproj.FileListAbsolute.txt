@@ -15,3 +15,10 @@ C:\work\xiehe\SCM\Ipedf.Web.Common\obj\Debug\Ipedf.Web.Common.csproj.CopyComplet
 C:\work\xiehe\SCM\Ipedf.Web.Common\obj\Debug\Ipedf.Web.Common.dll
 C:\work\xiehe\SCM\Ipedf.Web.Common\obj\Debug\Ipedf.Web.Common.pdb
 C:\work\xiehe\SCM\Ipedf.Web.Common\obj\Debug\Ipedf.Web.Common.csprojAssemblyReference.cache
+D:\project\xh2019\SCM\Ipedf.Web.Common\bin\Debug\Ipedf.Web.Common.dll
+D:\project\xh2019\SCM\Ipedf.Web.Common\bin\Debug\Ipedf.Web.Common.pdb
+D:\project\xh2019\SCM\Ipedf.Web.Common\obj\Debug\Ipedf.Web.Common.csproj.CoreCompileInputs.cache
+D:\project\xh2019\SCM\Ipedf.Web.Common\obj\Debug\Ipedf.Web.Common.csproj.CopyComplete
+D:\project\xh2019\SCM\Ipedf.Web.Common\obj\Debug\Ipedf.Web.Common.dll
+D:\project\xh2019\SCM\Ipedf.Web.Common\obj\Debug\Ipedf.Web.Common.pdb
+D:\project\xh2019\SCM\Ipedf.Web.Common\obj\Debug\Ipedf.Web.Common.csprojAssemblyReference.cache

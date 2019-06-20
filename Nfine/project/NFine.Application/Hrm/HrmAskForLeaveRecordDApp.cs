@@ -55,5 +55,9 @@ namespace NFine.Application.Hrm
                 service.Insert(entity);
             }
         }
+        public void InsertForm(List<HrmAskForLeaveRecordDEntity> list)
+        {
+            service.Insert(list);
+        }
     }
 }

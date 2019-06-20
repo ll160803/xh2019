@@ -59,6 +59,7 @@ F:\Nfine\Nfine\project\NFine.Web\obj\Debug\NFine.Web.dll
 F:\Nfine\Nfine\project\NFine.Web\obj\Debug\NFine.Web.pdb
 F:\Nfine\Nfine\project\NFine.Web\bin\MySql.Data.dll
 F:\Nfine\Nfine\project\NFine.Web\bin\MySql.Data.Entity.EF6.dll
+D:\project\xh2019\Nfine\project\NFine.Web\bin\NFine.Mapping.dll
 D:\project\xh2019\Nfine\project\NFine.Web\bin\NFine.Web.dll.config
 D:\project\xh2019\Nfine\project\NFine.Web\bin\NFine.Web.dll
 D:\project\xh2019\Nfine\project\NFine.Web\bin\NFine.Web.pdb
@@ -70,7 +71,6 @@ D:\project\xh2019\Nfine\project\NFine.Web\bin\MySql.Data.Entity.EF6.dll
 D:\project\xh2019\Nfine\project\NFine.Web\bin\NFine.Application.dll
 D:\project\xh2019\Nfine\project\NFine.Web\bin\NFine.Code.dll
 D:\project\xh2019\Nfine\project\NFine.Web\bin\NFine.Domain.dll
-D:\project\xh2019\Nfine\project\NFine.Web\bin\NFine.Mapping.dll
 D:\project\xh2019\Nfine\project\NFine.Web\bin\System.Net.Http.Formatting.dll
 D:\project\xh2019\Nfine\project\NFine.Web\bin\System.Web.Helpers.dll
 D:\project\xh2019\Nfine\project\NFine.Web\bin\System.Web.Http.dll

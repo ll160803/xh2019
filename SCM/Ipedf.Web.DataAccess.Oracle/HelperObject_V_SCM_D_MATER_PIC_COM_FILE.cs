@@ -425,7 +425,7 @@ namespace Ipedf.Web.DataAccess
 				param = new OracleParameter();
 				param.ParameterName =":C_CHARGE";
 				param.OracleType = System.Data.OracleClient.OracleType.VarChar;
-				param.Size = 10;
+				param.Size = 20;
 				param.Value = cause.CHARGE;
 				paramList.Add(param);
 			}
@@ -930,7 +930,7 @@ namespace Ipedf.Web.DataAccess
 				param = new OracleParameter();
 				param.ParameterName = ":U_CHARGE";
 				param.OracleType = System.Data.OracleClient.OracleType.VarChar;
-				param.Size = 10;
+				param.Size = 20;
 				param.Value = string.IsNullOrEmpty(obj.CHARGE) ? string.Empty : obj.CHARGE;
 				paramList.Add(param);
 			}

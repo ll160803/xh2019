@@ -11,32 +11,32 @@ namespace NFine.Web.Areas.Hrm.Controllers
 {
     public class SapUserController : ControllerBase
     {
+        private string IsDoctor = OperatorProvider.Provider.GetCurrent().Is_Doctor;
         //
         // GET: /Hrm/SapUser/
         private HrmUserApp userApp = new HrmUserApp();
         public ActionResult Out(string id)
         {
-            ViewBag.id = id;
+            ViewBag.id = IsDoctor;
             return View();
         }
         public ActionResult In(string id)
         {
-            ViewBag.id = id;
+            ViewBag.id = IsDoctor;
             return View();
         }
 
         [HttpPost]
         [HandlerAjaxOnly]
-        public JsonResult GetComboGridJson(string id,  string order, string sort, string keyword, int page = 1, int rows = int.MaxValue)
+        public JsonResult GetComboGridJson(string id, string order, string sort, string keyword, int page = 1, int rows = int.MaxValue)
         {
             Pagination pagination = new Pagination { page = page, rows = rows, sidx = order, sord = sort };
             System.Linq.Expressions.Expression<Func<HrmUserEntity, bool>> expression = ExtLinq.True<HrmUserEntity>();
             var orgId = OperatorProvider.Provider.GetCurrent().CompanyId;//当前用户所在公司ID
             expression = expression.And(p => p.OrganizeId == orgId);
-            if (!string.IsNullOrEmpty(id))
-            {
-                expression = expression.And(p => p.RYLB == id);
-            }
+
+            expression = expression.And(p => p.RYLB == IsDoctor);
+
             if (!string.IsNullOrEmpty(keyword))
             {
                 var keyPress = ExtLinq.True<HrmUserEntity>();
@@ -48,7 +48,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
             {
                 rows = userApp.GetList(pagination, expression),
                 total = pagination.total
-                
+
             });
             //var data = new
             //{

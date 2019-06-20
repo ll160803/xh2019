@@ -22,12 +22,12 @@
     function initControl() {
         $("#StartDate").datepicker({
             format: 'yyyy-mm-dd',
-           
-            language:'zh-CN'
+
+            language: 'zh-CN'
         });
         $("#EndDate").datepicker({
             format: 'yyyy-mm-dd',
-            
+
             language: 'zh-CN'
         });
         $("#AskTypeId").bindSelect({
@@ -37,7 +37,7 @@
             panelWidth: 500,
             idField: 'F_Id',
             textField: 'NACHN',
-            url: '/hrm/sapuser/GetComboGridJson/1',
+            url: '/hrm/sapuser/GetComboGridJson/',
             method: 'post',
             pagination: true,
             columns: [[
@@ -61,7 +61,7 @@
                     $(this).combogrid("setValue", keyword);
                 }
             },
-            
+
             onSelect: function (rowIndex, rowData) {
                 $("#HrmUserId").val(rowData.F_Id);
                 $("#OrganizeId").val(rowData.OrganizeId);
@@ -92,6 +92,16 @@
             }
         })
     }
+    function ModifyFlag(obj) {
+        debugger
+        var txt = obj.find("option:selected").text();
+        if (txt == "病假" || txt == "产假") {
+            $("#Flag").val(1);
+        }
+        else {
+            $("#Flag").val(0);
+        }
+    }
 </script>
 <form id="form1">
     <div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
@@ -110,20 +120,21 @@
                         <input id="IsNew" name="IsNew" type="hidden" />
                         <input id="AskSort" name="AskSort" type="hidden" />
                         <input id="Ref_Id" name="Ref_Id" type="hidden" />
+                        <input id="Flag" name="Flag" type="hidden" value="1" />
                     </td>
                     <th class="formTitle">请假类型</th>
                     <td class="formValue">
-                        <select id="AskTypeId" name="AskTypeId" class="form-control required"></select>
+                        <select id="AskTypeId" name="AskTypeId" class="form-control required" onchange="ModifyFlag($(this));"></select>
                     </td>
                 </tr>
                 <tr>
                     <th class="formTitle">开始时间</th>
                     <td class="formValue">
-                        <input id="StartDate" name="StartDate" type="text" class="form-control required" placeholder="请输入开始时间" />
+                        <input id="StartDate" name="StartDate" type="text" autocomplete="off" class="form-control required" placeholder="请输入开始时间" />
                     </td>
                     <th class="formTitle">结束时间</th>
                     <td class="formValue">
-                        <input id="EndDate" name="EndDate" type="text" class="form-control required" placeholder="请输入结束时间" />
+                        <input id="EndDate" name="EndDate" type="text" autocomplete="off" class="form-control required" placeholder="请输入结束时间" />
                     </td>
                 </tr>
                 <tr>

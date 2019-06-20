@@ -121,10 +121,26 @@
             prompt: "注：您确定要提交该项数据吗？",
             loading: "正在提交数据...",
             url: "/hrm/askforleave/AuditSubmitLeave",
-            param: { keyValue: $("#gridList").jqGridRowValue().F_Id, state: state },
+            param: { keyValue: $("#gridList").jqGridRowValue().F_Id, state: state, suggestion: value },
             success: function () {
                 $.currentWindow().$("#gridList").trigger("reloadGrid");
                 top.layer.close(index);
+            }
+        })
+    }
+    function sendSap() {
+        //if (value == "") {
+        //    $.modalAlert("请填写审核意见", "warning");
+        //    return false;
+        //}
+
+        $.deleteForm({
+            prompt: "注：您确定要推送SAP考勤数据吗？",
+            loading: "正在提交数据...",
+            url: "/hrm/askforleave/SendLeaveToSap/",
+            param: {  },
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
             }
         })
     }
@@ -192,7 +208,7 @@
                 <td>
                     @*<div class="input-group2">*@
                     <span class="btn-group" style="padding-left:10px;">
-                        <button type="button" class="btn btn-success">考勤推送</button>
+                        <button id="btn_send" type="button" onclick="sendSap();" class="btn btn-success">考勤推送</button>
                     </span>
                     @*</div>*@
                 </td>

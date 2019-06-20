@@ -25,15 +25,10 @@
     </style>
     <script type="text/javascript">
         function Onselect(obj) {
-            debugger
-            //var a = window.parent.document.forms[0];
-            //var b =a.getElementById("F_Icon");
-            //alert(b.value);
-            //var c = window.parent.document.Form22;
-            //var d = c.frames[0].getElementById("F_Icon");
-            //alert(d.value);
-            top.frames["Form22"].contentWindow.find("#F_Icon").val(obj.getAttribute('class'));
+            parent.document.Form.$("#F_Icon").val(obj.getAttribute('class'));
             //window.parent.document.getElementById("F_Icon").value = obj.getAttribute('class');
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);
         }
     </script>
 </head>

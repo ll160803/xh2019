@@ -11,6 +11,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
 {
     public class OutAndInController : ControllerBase
     {
+        
         private ViewOutAndInApp app = new ViewOutAndInApp();
         [HttpGet]
         [HandlerAjaxOnly]

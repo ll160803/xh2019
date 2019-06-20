@@ -1133,6 +1133,7 @@
     <Content Include="Areas\Hrm\Views\AskForLeave\AskAuditIndex.cshtml" />
     <Content Include="Areas\Hrm\Views\AskForLeave\AskLastAuditIndex.cshtml" />
     <Content Include="Areas\SystemManage\Views\Module\Icon.cshtml" />
+    <Content Include="Areas\Hrm\Views\AskForLeave\AskLeaveHistoryRecord.cshtml" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\NFine.Framework.Release.pubxml" />
     <None Include="Properties\Settings.settings">

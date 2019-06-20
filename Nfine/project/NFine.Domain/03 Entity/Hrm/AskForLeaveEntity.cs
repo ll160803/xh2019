@@ -50,5 +50,6 @@ namespace NFine.Domain.Entity.Hrm
         public string F_DeleteUserId { get; set; }
         public string Ref_Id { get; set; }
         public string Suggestion { get; set; }
+        public bool? Flag { get; set; }
     }
 }
