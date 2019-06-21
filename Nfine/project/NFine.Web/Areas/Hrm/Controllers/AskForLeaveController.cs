@@ -41,6 +41,11 @@ namespace NFine.Web.Areas.Hrm.Controllers
             ViewBag.id = id;
             return View();
         }
+        public ActionResult HistoryRecordDetail(string id)
+        {
+            ViewBag.id = id;
+            return View();
+        }
         [HttpGet]
         [HandlerAjaxOnly]
         public ActionResult GetGridJson(string id, Pagination pagination, string keyword, int state = 1)
@@ -179,9 +184,46 @@ namespace NFine.Web.Areas.Hrm.Controllers
             //{
             //    expression = expression.And(p => p.RYLB == id);//医生还是护士
             //}
-
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                var keyPress = ExtLinq.True<ViewHrmAskForLeaveRecordEntity>();
+                keyPress = keyPress.And(t => t.F_FullName.Contains(keyword));
+                keyPress = keyPress.Or(t => t.F_RealName.Contains(keyword));
+                expression = expression.And(keyPress);
+            }
             ViewHrmAskForLeaveRecordApp appRecord = new ViewHrmAskForLeaveRecordApp();
 
+            var data = new
+            {
+                rows = appRecord.GetList(pagination, expression),
+                total = pagination.total,
+                page = pagination.page,
+                records = pagination.records
+            };
+            return Content(data.ToJson());
+        }
+
+        /// <summary>
+        /// 考勤记录详情
+        /// </summary>
+        /// <param name="id">主表Id</param>
+        /// <param name="pagination"></param>
+        /// <param name="keyword"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [HandlerAjaxOnly]
+        public ActionResult GetHistoryDetailRecord(string id, Pagination pagination, string keyword)
+        {
+            HistoryRecordDetailApp appRecord = new HistoryRecordDetailApp();
+            System.Linq.Expressions.Expression<Func<HistoryRecordDetailEntity, bool>> expression = ExtLinq.True<HistoryRecordDetailEntity>();
+            expression = expression.And(p => p.Base_Id == id);
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                var keyPress = ExtLinq.True<HistoryRecordDetailEntity>();
+                keyPress = keyPress.And(t => t.PERNR.Contains(keyword));
+                keyPress = keyPress.Or(t => t.NACHN.Contains(keyword));
+                expression = expression.And(keyPress);
+            }
             var data = new
             {
                 rows = appRecord.GetList(pagination, expression),
@@ -210,7 +252,13 @@ namespace NFine.Web.Areas.Hrm.Controllers
             //{
             //    expression = expression.And(p => p.RYLB == id);//医生还是护士
             //}
-
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                var keyPress = ExtLinq.True<ViewHrmAskForLeaveRecordEntity>();
+                keyPress = keyPress.And(t => t.F_FullName.Contains(keyword));
+                keyPress = keyPress.Or(t => t.F_RealName.Contains(keyword));
+                expression = expression.And(keyPress);
+            }
             ViewHrmAskForLeaveRecordApp appRecord = new ViewHrmAskForLeaveRecordApp();
 
             var data = new

@@ -110,7 +110,7 @@
             $.modalAlert("此记录已经做过请假改登，不能编辑", "warning");
             return false;
         }
-        if (State != "未提交" || State != "审核未通过") {
+        if (!(State == "未提交" || State == "审核未通过")) {
             $.modalAlert("此记录已经提交，不能编辑", "warning");
             return false;
         }
@@ -137,7 +137,7 @@
             $.modalAlert("此记录已经做过请假改登，不能删除", "warning");
             return false;
         }
-        if (State != "未提交" || State != "审核未通过") {
+        if (!(State == "未提交" || State == "审核未通过")) {
             $.modalAlert("此记录已经提交，不能删除", "warning");
             return false;
         }
@@ -160,7 +160,7 @@
         //    $.modalAlert("此记录已经做过请假改登，不能删除", "warning");
         //    return false;
         //}
-        if (State != "未提交" && State != "审核未通过") {
+        if (!(State == "未提交" || State == "审核未通过")) {
             $.modalAlert("此记录已经提交，无需重复提交", "warning");
             return false;
         }

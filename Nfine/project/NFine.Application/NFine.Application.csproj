@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="01 Infrastructure\DbLogType.cs" />
     <Compile Include="Hrm\AskForLeaveApp.cs" />
+    <Compile Include="Hrm\HistoryRecordDetailApp.cs" />
     <Compile Include="Hrm\HrmAskForLeaveRecordApp.cs" />
     <Compile Include="Hrm\HrmAskForLeaveRecordDApp.cs" />
     <Compile Include="Hrm\HrmUserApp.cs" />

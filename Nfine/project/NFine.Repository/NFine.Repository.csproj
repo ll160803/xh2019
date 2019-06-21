@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Hrm\AskForLeaveRepository.cs" />
+    <Compile Include="Hrm\HistoryRecordDetailRepository.cs" />
     <Compile Include="Hrm\HrmAskForLeaveRecordDRepository.cs" />
     <Compile Include="Hrm\HrmAskForLeaveRecordRepository.cs" />
     <Compile Include="Hrm\HrmUserRepository.cs" />

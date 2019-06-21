@@ -43,7 +43,20 @@
             }).trigger('reloadGrid');
         });
     }
-
+    function btn_details() {
+        var keyValue = $("#gridList").jqGridRowValue().F_Id;
+        $.modalOpen({
+            id: "Form24",
+            title: "考勤详情",
+            url: "/hrm/askforleave/HistoryRecordDetail/"+keyValue,
+            width: "800px",
+            height: "600px",
+            btn:null,
+            callBack: function (iframeId) {
+                
+            }
+        });
+    }
 
 </script>
 
@@ -68,18 +81,18 @@
         <table>
             <tr>
                 <td>
-                    @*<div class="input-group">
-                            <input id="txt_keyword" type="text" class="form-control" placeholder="发薪号/姓名" style="width: 200px;">
+                    <div class="input-group">
+                            <input id="txt_keyword" type="text" class="form-control" placeholder="考勤员/考勤部门" style="width: 200px;">
                             <span class="input-group-btn">
                                 <button id="btn_search" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
                             </span>
-                        </div>*@
+                        </div>
                 </td>
             </tr>
         </table>
     </div>
 </div>
-<div class="gridPanel">
+<div class="gridPanel" id="main_panel">
     <table id="gridList"></table>
     <div id="gridPager"></div>
 </div>

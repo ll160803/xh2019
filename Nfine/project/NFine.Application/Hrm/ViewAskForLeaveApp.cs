@@ -48,8 +48,11 @@ namespace NFine.Application.Hrm
         {
             service.Delete(entity);
         }
-
-		public void SubmitForm(ViewAskForLeaveEntity entity, string keyValue)
+        public List<ViewAskForLeaveEntity> ExcelSql(string sql)
+        {
+            return service.FindList(sql);
+        }
+        public void SubmitForm(ViewAskForLeaveEntity entity, string keyValue)
         {
             if (!string.IsNullOrEmpty(keyValue))
             {
