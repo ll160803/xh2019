@@ -87,7 +87,7 @@ $.modalPrompt = function (options) {
         area: ['500px', '300px'],     // 设置弹出层大小
         btn: ['通过', '不通过', '取消'],    // 自定义设置多个按钮
         btnclass: ['btn btn-primary', 'btn btn-primary', 'btn btn-danger'],
-        btn2: function (index,value) { alert(value); top.layer.close(index); },
+        btn2: function (index, value) { alert(value); top.layer.close(index); },
         btnAlign: 'c',
         callback: function (value, index, elem) {
             alert(value);
@@ -108,13 +108,13 @@ $.modalPrompt = function (options) {
             btn2: function (index, elem) {
                 // 得到value
                 var value = top.$("#layui-layer" + index).find(".layui-layer-input").val();
-                options.btn2(index,value);
-                
+                options.btn2(index, value);
+
             },
             btnAlign: options.btnAlign
         }, function (value, index, elem) {
             options.callback(value, index, elem);
-            
+
         });
 }
 
@@ -133,7 +133,7 @@ $.modalOpen = function (options) {
     var options = $.extend(defaults, options);
     var _width = top.$(window).width() > parseInt(options.width.replace('px', '')) ? options.width : top.$(window).width() + 'px';
     var _height = top.$(window).height() > parseInt(options.height.replace('px', '')) ? options.height : top.$(window).height() + 'px';
-    top.layer.open({
+    var setOptions = {
         id: options.id,
         type: 2,
         shade: options.shade,
@@ -148,7 +148,18 @@ $.modalOpen = function (options) {
         }, cancel: function () {
             return true;
         }
-    });
+    };
+    if (options.btn.length > 2) {// viki 当多于两个按钮时 
+        var len = options.btn.length;
+        for (var i = 2; i < len; i++) {
+            var f = options["callBack" + i];
+            setOptions["btn" + i] = function () {
+                var isF = f(options.id);
+                return false;
+            }
+        }
+    }
+    top.layer.open(setOptions);
 }
 $.modalConfirm = function (content, callBack) {
     top.layer.confirm(content, {
@@ -477,6 +488,6 @@ $.days_count = function (sDate1, sDate2) {    //sDate1和sDate2是2006-12-18格�
     sDate2 = Date.parse(sDate2);
     dateSpan = sDate2 - sDate1;
     dateSpan = Math.abs(dateSpan);
-    iDays = Math.floor(dateSpan / (24 * 3600 * 1000))+1;
+    iDays = Math.floor(dateSpan / (24 * 3600 * 1000)) + 1;
     return iDays
 };

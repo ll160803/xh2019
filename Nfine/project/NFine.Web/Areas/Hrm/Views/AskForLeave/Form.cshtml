@@ -68,7 +68,7 @@
             }
         });
     }
-    function submitForm() {
+    function submitForm() {//保存
         if (!$('#form1').formValid()) {
             return false;
         }
@@ -76,11 +76,25 @@
             url: "/hrm/askforleave/SubmitForm?keyValue=" + keyValue,
             param: $("#form1").formSerialize(),
             success: function () {
+               
                 $.currentWindow().$("#gridList").trigger("reloadGrid");
             }
         })
     }
-    function submitFormModify() {
+    function submitAndSaveForm(index) {//保存并提交a
+        if (!$('#form1').formValid()) {
+            return false;
+        }
+        $.submitForm({
+            url: "/hrm/askforleave/SubmitAndSaveForm?keyValue=" + keyValue,
+            param: $("#form1").formSerialize(),
+            success: function () {
+                parent.layer.close(index);
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+    function submitFormModify() {//改登保存
         if (!$('#form1').formValid()) {
             return false;
         }
@@ -92,8 +106,20 @@
             }
         })
     }
+    function submitAndSaveFormModify(index) {//改登 保存并提交
+        if (!$('#form1').formValid()) {
+            return false;
+        }
+        $.submitForm({
+            url: "/hrm/askforleave/SubmitFormModify?keyValue=" + keyValue+"&state=2",
+            param: $("#form1").formSerialize(),
+            success: function () {
+                parent.layer.close(index);
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
     function ModifyFlag(obj) {
-        debugger
         var txt = obj.find("option:selected").text();
         if (txt == "病假" || txt == "产假") {
             $("#Flag").val(1);

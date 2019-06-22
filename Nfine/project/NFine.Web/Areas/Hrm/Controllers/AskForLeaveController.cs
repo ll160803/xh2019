@@ -313,13 +313,46 @@ namespace NFine.Web.Areas.Hrm.Controllers
         [HttpPost]
         [HandlerAjaxOnly]
         [ValidateAntiForgeryToken]
-        public ActionResult SubmitFormModify(AskForLeaveEntity userEntity, string keyValue, string Flag)
+        public ActionResult SubmitAndSaveForm(AskForLeaveEntity userEntity, string keyValue, string Flag)
         {
             if (!string.IsNullOrEmpty(Flag))
             {
                 userEntity.Flag = Flag == "1" ? true : false;
             }
-            userEntity.State = 1;//草稿状态
+            if (string.IsNullOrEmpty(keyValue))
+            {
+                userEntity.State = 1;//草稿状态
+                userEntity.IsNew = true;//激活的请假
+                userEntity.AskSort = 1;//默认是1
+
+            }
+            else
+            {
+                if (userEntity.State != 1 || userEntity.IsNew == false)
+                {
+                    return Error("错误操作。");
+                }
+            }
+            userEntity.State = 2;//改为提交操作
+            // userEntity.OrganizeId= OperatorProvider.Provider.GetCurrent().CompanyId;//当前科室
+            var hasList = askApp.GetLeaveList(userEntity.HrmUserId, userEntity.StartDate.Value, userEntity.EndDate.Value, keyValue);
+            if (hasList.Count > 0)
+            {
+                return Error("此员工在请假时间区间内，已经有请假记录，请核实后重新提交");
+            }
+            askApp.InsertForm(userEntity, keyValue);
+            return Success("操作成功。");
+        }
+        [HttpPost]
+        [HandlerAjaxOnly]
+        [ValidateAntiForgeryToken]
+        public ActionResult SubmitFormModify(AskForLeaveEntity userEntity, string keyValue, string Flag, int state = 1)
+        {
+            if (!string.IsNullOrEmpty(Flag))
+            {
+                userEntity.Flag = Flag == "1" ? true : false;
+            }
+            userEntity.State = state;//草稿状态
             userEntity.IsNew = true;//激活的请假
             userEntity.AskSort = userEntity.AskSort + 1;//默认是增加1个
             userEntity.Ref_Id = userEntity.Ref_Id;//请假和请假改登之间的唯一标识

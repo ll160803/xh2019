@@ -91,9 +91,15 @@
             title: "新增请假",
             url: "/hrm/askforleave/Form",
             width: "700px",
-            height: "510px",
+            height: "410px",
+            btn: ['保存', '保存并提交', '关闭'],
+            btnclass: ['btn btn-primary', 'btn btn-primary', 'btn btn-danger'],
             callBack: function (iframeId) {
                 top.frames[iframeId].submitForm();
+            },
+            callBack2: function (iframeId) {
+                return top.frames[iframeId].submitAndSaveForm(iframeId);
+                   
             }
         });
     }
@@ -119,9 +125,15 @@
             title: "修改请假",
             url: "/hrm/askforleave/Form?keyValue=" + keyValue,
             width: "700px",
-            height: "510px",
+            height: "410px",
+            btn: ['保存', '保存并提交', '关闭'],
+            btnclass: ['btn btn-primary', 'btn btn-primary', 'btn btn-danger'],
             callBack: function (iframeId) {
                 top.frames[iframeId].submitForm();
+            },
+            callBack2: function (iframeId) {
+                return top.frames[iframeId].submitAndSaveForm(iframeId);
+
             }
         });
     }
@@ -205,12 +217,17 @@
             id: "FormModify",
             title: "请假改登",
             url: "/hrm/askforleave/Form?keyValue=" + keyValue,
+            btn: ['保存', '保存并提交', '关闭'],
+            btnclass: ['btn btn-primary', 'btn btn-primary', 'btn btn-danger'],
             width: "700px",
-            height: "510px",
+            height: "410px",
             callBack: function (iframeId) {
                 top.frames[iframeId].submitFormModify();
             },
-            btn: ['改登确认', '关闭'],
+            callBack2: function (iframeId) {
+                return top.frames[iframeId].submitAndSaveFormModify(iframeId);
+                 
+            }
         });
     }
 </script>
