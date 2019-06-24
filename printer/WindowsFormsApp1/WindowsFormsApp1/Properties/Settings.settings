@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="WindowsFormsApp1.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="WindowsFormsApp1_GetInfo_ZHRWS_ZCPS" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://p01app2:8001/sap/bc/srt/rfc/sap/zhrws_zcps/800/zhrws_zcps/zhrws_zcps</Value>
+    </Setting>
+    <Setting Name="WindowsFormsApp1_WebReference_ZHRWS_PSHX" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://p01app2:8001/sap/bc/srt/rfc/sap/zhrws_pshx/800/zhrws_pshx/zhrws_pshx</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

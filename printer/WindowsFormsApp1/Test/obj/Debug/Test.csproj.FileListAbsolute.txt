@@ -1,0 +1,7 @@
+D:\project\printer\WindowsFormsApp1\Test\bin\Debug\Test.exe.config
+D:\project\printer\WindowsFormsApp1\Test\bin\Debug\Test.exe
+D:\project\printer\WindowsFormsApp1\Test\bin\Debug\Test.pdb
+D:\project\printer\WindowsFormsApp1\Test\obj\Debug\Test.csprojAssemblyReference.cache
+D:\project\printer\WindowsFormsApp1\Test\obj\Debug\Test.csproj.CoreCompileInputs.cache
+D:\project\printer\WindowsFormsApp1\Test\obj\Debug\Test.exe
+D:\project\printer\WindowsFormsApp1\Test\obj\Debug\Test.pdb
