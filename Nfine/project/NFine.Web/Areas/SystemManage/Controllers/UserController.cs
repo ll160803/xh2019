@@ -72,6 +72,24 @@ namespace NFine.Web.Areas.SystemManage.Controllers
         }
         [HttpPost]
         [HandlerAjaxOnly]
+        [ValidateAntiForgeryToken]
+        public ActionResult SubmitChangePassword(string oldP, string newP)
+        {
+            var keyValue = OperatorProvider.Provider.GetCurrent().UserId;
+            UserLogOnEntity userLogOnEntity = userLogOnApp.GetForm(keyValue);
+            string dbPassword = Md5.md5(DESEncrypt.Encrypt(oldP.ToLower(), userLogOnEntity.F_UserSecretkey).ToLower(), 32).ToLower();
+            if (dbPassword == userLogOnEntity.F_UserPassword)
+            {
+               (new UserLogOnApp()).RevisePassword(newP, keyValue);
+            }
+            else
+            {
+                return Error("旧密码有误。");
+            }
+            return Success("密码修改成功。");
+        }
+        [HttpPost]
+        [HandlerAjaxOnly]
         [HandlerAuthorize]
         [ValidateAntiForgeryToken]
         public ActionResult DisabledAccount(string keyValue)
