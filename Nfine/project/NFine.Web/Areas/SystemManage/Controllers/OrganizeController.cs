@@ -15,6 +15,7 @@ namespace NFine.Web.Areas.SystemManage.Controllers
 {
     public class OrganizeController : ControllerBase
     {
+        private RoleAuthorizeApp roleAuthorizeApp = new RoleAuthorizeApp();
         private OrganizeApp organizeApp = new OrganizeApp();
 
         [HttpGet]
@@ -50,6 +51,32 @@ namespace NFine.Web.Areas.SystemManage.Controllers
                 tree.parentId = item.F_ParentId;
                 tree.isexpand = true;
                 tree.complete = true;
+                tree.hasChildren = hasChildren;
+                treeList.Add(tree);
+            }
+            return Content(treeList.TreeViewJson());
+        }
+        public ActionResult GetOrganizeTreeJson(string userId)
+        {
+            var authorizedata = new List<RoleAuthorizeEntity>();
+            if (!string.IsNullOrEmpty(userId))
+            {
+                authorizedata = roleAuthorizeApp.GetOrganizeList(userId);
+            }
+            var data = organizeApp.GetList();
+            var treeList = new List<TreeViewModel>();
+            foreach (OrganizeEntity item in data)
+            {
+                TreeViewModel tree = new TreeViewModel();
+                bool hasChildren = data.Count(t => t.F_ParentId == item.F_Id) == 0 ? false : true;
+                tree.id = item.F_Id;
+                tree.text = item.F_FullName;
+                tree.value = item.F_EnCode;
+                tree.parentId = item.F_ParentId;
+                tree.isexpand = true;
+                tree.complete = true;
+                tree.showcheck = true;
+                tree.checkstate = authorizedata.Count(t => t.F_ItemId == item.F_Id);
                 tree.hasChildren = hasChildren;
                 treeList.Add(tree);
             }

@@ -25,6 +25,17 @@ namespace NFine.Application.SystemManage
         {
             return service.IQueryable(t => t.F_ObjectId == ObjectId).ToList();
         }
+        /// <summary>
+        /// 获取用户的组织列表
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public List<RoleAuthorizeEntity> GetOrganizeList(string userId)
+        {
+            var authorizedata = service.IQueryable(t => t.F_ObjectId == userId && t.F_ItemType == 4).ToList();
+
+            return authorizedata.ToList();
+        }
         public List<ModuleEntity> GetMenuList(string roleId)
         {
             var data = new List<ModuleEntity>();

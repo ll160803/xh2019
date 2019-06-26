@@ -9,6 +9,7 @@ using NFine.Data;
 using NFine.Domain.Entity.SystemManage;
 using NFine.Domain.IRepository.SystemManage;
 using NFine.Repository.SystemManage;
+using System.Collections.Generic;
 
 namespace NFine.Repository.SystemManage
 {
@@ -23,7 +24,7 @@ namespace NFine.Repository.SystemManage
                 db.Commit();
             }
         }
-        public void SubmitForm(UserEntity userEntity, UserLogOnEntity userLogOnEntity, string keyValue)
+        public void SubmitForm(UserEntity userEntity, UserLogOnEntity userLogOnEntity, List<RoleAuthorizeEntity> roleAuthorizeEntitys, string keyValue)
         {
             using (var db = new RepositoryBase().BeginTrans())
             {
@@ -39,6 +40,11 @@ namespace NFine.Repository.SystemManage
                     userLogOnEntity.F_UserPassword = Md5.md5(DESEncrypt.Encrypt(Md5.md5(userLogOnEntity.F_UserPassword, 32).ToLower(), userLogOnEntity.F_UserSecretkey).ToLower(), 32).ToLower();
                     db.Insert(userEntity);
                     db.Insert(userLogOnEntity);
+                }
+                db.Delete<RoleAuthorizeEntity>(p => p.F_ItemType == 4 & p.F_ObjectType == 3 & p.F_ObjectId == userEntity.F_Id);
+                foreach(var item in roleAuthorizeEntitys)
+                {
+                    db.Insert(item);
                 }
                 db.Commit();
             }

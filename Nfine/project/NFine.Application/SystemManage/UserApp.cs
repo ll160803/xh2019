@@ -38,7 +38,7 @@ namespace NFine.Application.SystemManage
         {
             service.DeleteForm(keyValue);
         }
-        public void SubmitForm(UserEntity userEntity, UserLogOnEntity userLogOnEntity, string keyValue)
+        public void SubmitForm(UserEntity userEntity, UserLogOnEntity userLogOnEntity,string[] permissionIds, string keyValue)
         {
             if (!string.IsNullOrEmpty(keyValue))
             {
@@ -48,7 +48,20 @@ namespace NFine.Application.SystemManage
             {
                 userEntity.Create();
             }
-            service.SubmitForm(userEntity, userLogOnEntity, keyValue);
+            List<RoleAuthorizeEntity> roleAuthorizeEntitys = new List<RoleAuthorizeEntity>();
+            foreach (var itemId in permissionIds)
+            {
+                RoleAuthorizeEntity roleAuthorizeEntity = new RoleAuthorizeEntity();
+                roleAuthorizeEntity.F_Id = Common.GuId();
+                roleAuthorizeEntity.F_ObjectType = 3;//用户
+                roleAuthorizeEntity.F_ObjectId = userEntity.F_Id;
+                roleAuthorizeEntity.F_ItemId = itemId;
+               
+                roleAuthorizeEntity.F_ItemType = 4;//是部门权限
+                
+                roleAuthorizeEntitys.Add(roleAuthorizeEntity);
+            }
+            service.SubmitForm(userEntity, userLogOnEntity,roleAuthorizeEntitys, keyValue);
         }
         public void UpdateForm(UserEntity userEntity)
         {

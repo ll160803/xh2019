@@ -467,6 +467,10 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 sb.AppendFormat(" and state=3 ");
                 sb.AppendFormat(" and Flag=0 ");//不是产、病假
                 var listIds = askApp.GetIdList(sb.ToString());
+                if(listIds.Count<=0)
+                {
+                    return Error("没有需要推送的数据,请审核后，重新操作。");
+                }
                 List<HrmAskForLeaveRecordDEntity> list_d = new List<HrmAskForLeaveRecordDEntity>();
                 foreach (var item in listIds)
                 {
@@ -505,7 +509,10 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 sb.AppendFormat("  state=3 ");
                 sb.AppendFormat(" and Flag=1 ");//是产、病假
                 var listIds = askApp.GetIdList(sb.ToString());
-
+                if (listIds.Count <= 0)
+                {
+                    return Error("没有需要推送的数据,请审核后，重新操作。");
+                }
                 var orgList = listIds.Select(p => new { orgid = p.OrganizeId, userid = p.F_CreatorUserId }).Distinct();
                 foreach (var org in orgList)
                 {

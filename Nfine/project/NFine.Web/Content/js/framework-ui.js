@@ -140,7 +140,7 @@ $.modalOpen = function (options) {
         title: options.title,
         fix: false,
         area: [_width, _height],
-        content: options.url,
+        content: [options.url],
         btn: options.btn,
         btnclass: options.btnclass,
         yes: function () {
@@ -149,15 +149,20 @@ $.modalOpen = function (options) {
             return true;
         }
     };
-    if (options.btn.length > 2) {// viki 当多于两个按钮时 
-        var len = options.btn.length;
-        for (var i = 2; i < len; i++) {
-            var f = options["callBack" + i];
-            setOptions["btn" + i] = function () {
-                var isF = f(options.id);
-                return false;
+    if (options.btn != null && options.btn != undefined) {
+        if (options.btn.length > 2) {// viki 当多于两个按钮时 
+            var len = options.btn.length;
+            for (var i = 2; i < len; i++) {
+                var f = options["callBack" + i];
+                setOptions["btn" + i] = function () {
+                    var isF = f(options.id);
+                    return false;
+                }
             }
         }
+    }
+    if (options.scroll != null && options.scroll != undefined) {
+        setOptions.content.push(options.scroll);//滚动条
     }
     top.layer.open(setOptions);
 }

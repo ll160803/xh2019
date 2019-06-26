@@ -42,9 +42,9 @@ namespace NFine.Web.Areas.SystemManage.Controllers
         [HttpPost]
         [HandlerAjaxOnly]
         [ValidateAntiForgeryToken]
-        public ActionResult SubmitForm(UserEntity userEntity, UserLogOnEntity userLogOnEntity, string keyValue)
+        public ActionResult SubmitForm(UserEntity userEntity, UserLogOnEntity userLogOnEntity,string permissionIds, string keyValue)
         {
-            userApp.SubmitForm(userEntity, userLogOnEntity, keyValue);
+            userApp.SubmitForm(userEntity, userLogOnEntity, permissionIds.Split(','), keyValue);
             return Success("操作成功。");
         }
         [HttpPost]
