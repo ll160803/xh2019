@@ -82,6 +82,38 @@ namespace NFine.Web.Areas.SystemManage.Controllers
             }
             return Content(treeList.TreeViewJson());
         }
+
+        public ActionResult GetAuthorityOrganizeTreeJson()
+        {
+            var authorizedata = new List<RoleAuthorizeEntity>();
+            var userId = OperatorProvider.Provider.GetCurrent().UserId;
+            if (!string.IsNullOrEmpty(userId))
+            {
+                authorizedata = roleAuthorizeApp.GetOrganizeList(userId);
+            }
+            var data = organizeApp.GetList();
+            var dataOath = from org in data
+                           join authorg in authorizedata on org.F_Id equals authorg.F_ItemId
+                           select org;
+            var treeList = new List<TreeViewModel>();
+            foreach (var item in dataOath)
+            {
+                TreeViewModel tree = new TreeViewModel();
+                bool hasChildren = dataOath.Count(t => t.F_ParentId == item.F_Id) == 0 ? false : true;
+                tree.id = item.F_Id;
+                tree.text = item.F_FullName;
+                tree.value = item.F_EnCode;
+                tree.parentId = dataOath.Count(t => t.F_Id == item.F_ParentId) == 0 ? "0" : item.F_ParentId;
+                tree.isexpand = true;
+                tree.complete = true;
+                tree.showcheck = true;
+                
+                //tree.checkstate = authorizedata.Count(t => t.F_ItemId == item.F_Id);
+                tree.hasChildren = hasChildren;
+                treeList.Add(tree);
+            }
+            return Content(treeList.TreeViewJson());
+        }
         [HttpGet]
         [HandlerAjaxOnly]
         public ActionResult GetTreeGridJson(string keyword)

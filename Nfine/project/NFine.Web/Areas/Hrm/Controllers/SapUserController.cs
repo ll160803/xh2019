@@ -1,6 +1,8 @@
 ﻿using NFine.Application.Hrm;
+using NFine.Application.SystemManage;
 using NFine.Code;
 using NFine.Domain.Entity.Hrm;
+using NFine.Domain.Entity.SystemManage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +17,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
         //
         // GET: /Hrm/SapUser/
         private HrmUserApp userApp = new HrmUserApp();
+        private RoleAuthorizeApp roleAuthorizeApp = new RoleAuthorizeApp();
         public ActionResult Out(string id)
         {
             ViewBag.id = IsDoctor;
@@ -25,15 +28,33 @@ namespace NFine.Web.Areas.Hrm.Controllers
             ViewBag.id = IsDoctor;
             return View();
         }
-
+        public virtual ActionResult UserOrganize()
+        {
+            return View();
+        }
         [HttpPost]
         [HandlerAjaxOnly]
         public JsonResult GetComboGridJson(string id, string order, string sort, string keyword, int page = 1, int rows = int.MaxValue)
         {
             Pagination pagination = new Pagination { page = page, rows = rows, sidx = order, sord = sort };
             System.Linq.Expressions.Expression<Func<HrmUserEntity, bool>> expression = ExtLinq.True<HrmUserEntity>();
-            var orgId = OperatorProvider.Provider.GetCurrent().CompanyId;//当前用户所在公司ID
-            expression = expression.And(p => p.OrganizeId == orgId);
+            var authorizedata = new List<RoleAuthorizeEntity>();
+            var userId = OperatorProvider.Provider.GetCurrent().UserId;
+            if (!string.IsNullOrEmpty(userId))
+            {
+                authorizedata = roleAuthorizeApp.GetOrganizeList(userId);
+            }
+            if (authorizedata.Count == 0)
+            {
+                var orgId = OperatorProvider.Provider.GetCurrent().CompanyId;//当前用户所在公司ID
+                expression = expression.And(p => p.OrganizeId == orgId);
+            }
+            else
+            {
+                var orgIds = "," + string.Join(",", authorizedata.Select(u => u.F_ItemId)) + ",";
+                expression = expression.And(p => orgIds.Contains("," + p.OrganizeId + ","));
+            }
+           
 
             expression = expression.And(p => p.RYLB == IsDoctor);
 
@@ -60,14 +81,34 @@ namespace NFine.Web.Areas.Hrm.Controllers
             //return Content(data.ToJson());
         }
 
-
+        /// <summary>
+        /// 移出科室的所有用户数据
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="pagination"></param>
+        /// <param name="keyword"></param>
+        /// <returns></returns>
         [HttpGet]
         [HandlerAjaxOnly]
         public ActionResult GetGridJson(string id, Pagination pagination, string keyword)
         {
             System.Linq.Expressions.Expression<Func<HrmUserEntity, bool>> expression = ExtLinq.True<HrmUserEntity>();
-            var orgId = OperatorProvider.Provider.GetCurrent().CompanyId;//当前用户所在公司ID
-            expression = expression.And(p => p.OrganizeId == orgId);
+            var authorizedata = new List<RoleAuthorizeEntity>();
+            var userId = OperatorProvider.Provider.GetCurrent().UserId;
+            if (!string.IsNullOrEmpty(userId))
+            {
+                authorizedata = roleAuthorizeApp.GetOrganizeList(userId);
+            }
+            if (authorizedata.Count == 0)
+            {
+                var orgId = OperatorProvider.Provider.GetCurrent().CompanyId;//当前用户所在公司ID
+                expression = expression.And(p => p.OrganizeId == orgId);
+            }
+            else
+            {
+                var orgIds = "," + string.Join(",", authorizedata.Select(u => u.F_ItemId)) + ",";
+                expression = expression.And(p => orgIds.Contains("," + p.OrganizeId + ","));
+            }
             if (!string.IsNullOrEmpty(id))
             {
                 expression = expression.And(p => p.RYLB == id);
@@ -121,22 +162,26 @@ namespace NFine.Web.Areas.Hrm.Controllers
         [HandlerAuthorize]
         [HandlerAjaxOnly]
         [ValidateAntiForgeryToken]
-        public ActionResult RemoveUser(string keyValue)
+        public ActionResult RemoveUser(string keyValue, string outOrgId, string orgInId)
         {
             var user = userApp.GetForm(keyValue);
             var orgId = user.OrganizeId;
-            user.OrganizeId = "";
+            user.OrganizeId = orgInId ?? "";//没有就默认
             userApp.SubmitForm(user, keyValue);
-            AddOutAndInRecord(user, "科室移出", orgId);//移出时 增加移出科室
+            AddOutAndInRecord(user, "科室移出", outOrgId);//移出时 增加移出科室
+            if (!string.IsNullOrEmpty(orgInId))
+            {
+                AddOutAndInRecord(user, "科室移入", orgInId);
+            }
             return Success("移出成功。");
         }
         [HttpPost]
         [HandlerAuthorize]
         [HandlerAjaxOnly]
         [ValidateAntiForgeryToken]
-        public ActionResult InUser(string keyValue)
+        public ActionResult InUser(string keyValue, string orgId)
         {
-            var orgId = OperatorProvider.Provider.GetCurrent().CompanyId;//当前用户所在公司ID
+            orgId = orgId ?? OperatorProvider.Provider.GetCurrent().CompanyId;//当前用户所在公司ID
             var user = userApp.GetForm(keyValue);
             user.OrganizeId = orgId;
             userApp.SubmitForm(user, keyValue);

@@ -1135,6 +1135,7 @@
     <Content Include="Areas\SystemManage\Views\Module\Icon.cshtml" />
     <Content Include="Areas\Hrm\Views\AskForLeave\AskLeaveHistoryRecord.cshtml" />
     <Content Include="Areas\Hrm\Views\AskForLeave\HistoryRecordDetail.cshtml" />
+    <Content Include="Areas\Hrm\Views\SapUser\UserOrganize.cshtml" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\NFine.Framework.Release.pubxml" />
     <None Include="Properties\Settings.settings">

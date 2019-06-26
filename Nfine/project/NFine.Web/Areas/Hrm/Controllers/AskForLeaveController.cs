@@ -7,6 +7,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Text;
+using NFine.Domain.Entity.SystemManage;
+using NFine.Application.SystemManage;
 
 namespace NFine.Web.Areas.Hrm.Controllers
 {
@@ -15,6 +17,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
         private string IsDoctor = OperatorProvider.Provider.GetCurrent().Is_Doctor;
         private ViewAskForLeaveApp viewApp = new ViewAskForLeaveApp();
         private AskForLeaveApp askApp = new AskForLeaveApp();
+        private RoleAuthorizeApp roleAuthorizeApp = new RoleAuthorizeApp();
         // GET: /Hrm/AskForLeave/
         /// <summary>
         /// 
@@ -51,8 +54,23 @@ namespace NFine.Web.Areas.Hrm.Controllers
         public ActionResult GetGridJson(string id, Pagination pagination, string keyword, int state = 1)
         {
             System.Linq.Expressions.Expression<Func<ViewAskForLeaveEntity, bool>> expression = ExtLinq.True<ViewAskForLeaveEntity>();
-            var orgId = OperatorProvider.Provider.GetCurrent().CompanyId;//当前用户所在公司ID
-            expression = expression.And(p => p.OrganizeId == orgId);
+
+            var authorizedata = new List<RoleAuthorizeEntity>();
+            var userId = OperatorProvider.Provider.GetCurrent().UserId;
+            if (!string.IsNullOrEmpty(userId))
+            {
+                authorizedata = roleAuthorizeApp.GetOrganizeList(userId);
+            }
+            if (authorizedata.Count == 0)
+            {
+                var orgId = OperatorProvider.Provider.GetCurrent().CompanyId;//当前用户所在公司ID
+                expression = expression.And(p => p.OrganizeId == orgId);
+            }
+            else
+            {
+                var orgIds = "," + string.Join(",", authorizedata.Select(u => u.F_ItemId)) + ",";
+                expression = expression.And(p => orgIds.Contains("," + p.OrganizeId + ","));
+            }
             if (state != -1)
             {
                 if (state == 1)
@@ -91,8 +109,24 @@ namespace NFine.Web.Areas.Hrm.Controllers
         public ActionResult GetOrgAuditGridJson(string id, Pagination pagination, string keyword, int state = 2)//除了 病假、产假 都是由自己科室审核
         {
             System.Linq.Expressions.Expression<Func<ViewAskForLeaveEntity, bool>> expression = ExtLinq.True<ViewAskForLeaveEntity>();
-            var orgId = OperatorProvider.Provider.GetCurrent().CompanyId;//当前用户所在公司ID
-            expression = expression.And(p => p.OrganizeId == orgId & (p.Flag == false));
+            var authorizedata = new List<RoleAuthorizeEntity>();
+            var userId = OperatorProvider.Provider.GetCurrent().UserId;
+            if (!string.IsNullOrEmpty(userId))
+            {
+                authorizedata = roleAuthorizeApp.GetOrganizeList(userId);
+            }
+            if (authorizedata.Count == 0)
+            {
+                var orgId = OperatorProvider.Provider.GetCurrent().CompanyId;//当前用户所在公司ID
+                expression = expression.And(p => p.OrganizeId == orgId);
+            }
+            else
+            {
+                var orgIds = "," + string.Join(",", authorizedata.Select(u => u.F_ItemId)) + ",";
+                expression = expression.And(p => orgIds.Contains("," + p.OrganizeId + ","));
+            }
+
+            expression = expression.And(p => p.Flag == false);//是否病假产假
             if (state == 0)
             {
                 expression = expression.And(p => p.State == 2 || p.State == 3 || p.State == 4);
@@ -467,7 +501,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 sb.AppendFormat(" and state=3 ");
                 sb.AppendFormat(" and Flag=0 ");//不是产、病假
                 var listIds = askApp.GetIdList(sb.ToString());
-                if(listIds.Count<=0)
+                if (listIds.Count <= 0)
                 {
                     return Error("没有需要推送的数据,请审核后，重新操作。");
                 }

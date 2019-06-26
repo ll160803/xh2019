@@ -1,6 +1,8 @@
 ﻿using NFine.Application.Hrm;
+using NFine.Application.SystemManage;
 using NFine.Code;
 using NFine.Domain.Entity.Hrm;
+using NFine.Domain.Entity.SystemManage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +13,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
 {
     public class OutAndInController : ControllerBase
     {
-        
+        private RoleAuthorizeApp roleAuthorizeApp = new RoleAuthorizeApp();
         private ViewOutAndInApp app = new ViewOutAndInApp();
         [HttpGet]
         [HandlerAjaxOnly]
@@ -26,7 +28,22 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 keyPress = keyPress.Or(t => t.NACHN.Contains(keyword));
                 expression = expression.And(keyPress);
             }
-
+            var authorizedata = new List<RoleAuthorizeEntity>();
+            var userId = OperatorProvider.Provider.GetCurrent().UserId;
+            if (!string.IsNullOrEmpty(userId))
+            {
+                authorizedata = roleAuthorizeApp.GetOrganizeList(userId);
+            }
+            if (authorizedata.Count == 0)
+            {
+                var orgId = OperatorProvider.Provider.GetCurrent().CompanyId;//当前用户所在公司ID
+                expression = expression.And(p => p.OrganizeId == orgId);
+            }
+            else
+            {
+                var orgIds = "," + string.Join(",", authorizedata.Select(u => u.F_ItemId)) + ",";
+                expression = expression.And(p => orgIds.Contains("," + p.OrganizeId + ","));
+            }
             var data = new
             {
                 rows = app.GetList(pagination, expression),
