@@ -23,6 +23,7 @@
                 oncheckboxclick: false,
                 onnodeclick: false,
                 cascadecheck: true,
+                upcascadecheck: true,
                 data: null,
                 clicktoggle: true,
                 theme: "bbit-tree-arrows",
@@ -329,7 +330,9 @@
                     if (r != false) {
                         if (dfop.cascadecheck) {
                             cascade(check, item, s);
-                            bubble(check, item, s);
+                            if (dfop.upcascadecheck) {//是否允许向上级联 点击子元素 父元素被选中
+                                bubble(check, item, s);
+                            }
                         }
                         else {
                             check(item, s, 1);

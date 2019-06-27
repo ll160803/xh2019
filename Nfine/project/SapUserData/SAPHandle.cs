@@ -30,7 +30,7 @@ namespace SapUserData
         }
         public void GetMysqlUserData(SapHrm.Zhr00SKqryxx[] res)
         {
-            cmd = new MySqlCommand("select * from hrm_user", conn);
+            cmd = new MySqlCommand("select F_ID,PERNR,STATXT,ZHRBTTXT,ZHRBTRTL,YGGH,RYLB,PTEXT,PKEXT,PERSK,PERSG,NAME1,WERKS,NACHN,GESCTXT,GESCH,GBDAT,BTRTL,BTEXT,ZCGKSRQ,ZCGJSRQ,ZCGBZ,ZTQKSRQ,ZTQJSRQ,ZTQBZ,STAT2 from hrm_user", conn);
 
             DataSet ds = new DataSet();
             da.SelectCommand = cmd;
@@ -43,11 +43,11 @@ namespace SapUserData
             da.MissingSchemaAction = MissingSchemaAction.AddWithKey;
             da.Fill(ds, "Table");
             var data = ds.Tables["Table"];
-            var data_N = data.Clone();
+            //var data_N = data.Copy();
             foreach (var user in res)
             {
-                var row = data_N.Select("PERNR='" + user.Pernr + "'").FirstOrDefault();
-                if (row != null)
+                var row = data.Select("F_ID='" + user.Pernr + "'").FirstOrDefault();
+                if (row!= null)
                 {
                     row["ZHRBTTXT"] = user.Zhrbttxt;
                     row["ZHRBTRTL"] = user.Zhrbtrtl;
@@ -65,6 +65,22 @@ namespace SapUserData
                     row["GBDAT"] = user.Gbdat;
                     row["BTRTL"] = user.Btrtl;
                     row["BTEXT"] = user.Btext;
+                    row["STAT2"] = user.Stat2;
+
+                    if (user.Zcgksrq != "0000-00-00")
+                    {
+                        row["ZCGKSRQ"] = Convert.ToDateTime(user.Zcgksrq);
+                    }
+                    if (user.Zcgjsrq != "0000-00-00")
+                        row["ZCGJSRQ"] = Convert.ToDateTime(user.Zcgjsrq);
+                    row["ZCGBZ"] = user.Zcgbz;
+                    if (user.Ztqksrq != "0000-00-00")
+                        row["ZTQKSRQ"] = Convert.ToDateTime(user.Ztqksrq);
+                    if (user.Ztqjsrq != "0000-00-00")
+                        row["ZTQJSRQ"] = Convert.ToDateTime(user.Ztqjsrq);
+                    row["ZTQBZ"] = user.Ztqbz;
+                    row["STATXT"] = user.Statxt;
+
                 }
                 else
                 {
@@ -86,12 +102,26 @@ namespace SapUserData
                     nr["BTRTL"] = user.Btrtl;
                     nr["BTEXT"] = user.Btext;
                     nr["PERNR"] = user.Pernr;
-                    nr["F_ID"] = Guid.NewGuid().ToString();
+                    if (user.Zcgksrq != "0000-00-00")
+                    {
+                        nr["ZCGKSRQ"] = Convert.ToDateTime(user.Zcgksrq);
+                    }
+                    if (user.Zcgjsrq != "0000-00-00")
+                        nr["ZCGJSRQ"] = Convert.ToDateTime(user.Zcgjsrq);
+                    nr["ZCGBZ"] = user.Zcgbz;
+                    if (user.Ztqksrq != "0000-00-00")
+                        nr["ZTQKSRQ"] = Convert.ToDateTime(user.Ztqksrq);
+                    if (user.Ztqjsrq != "0000-00-00")
+                        nr["ZTQJSRQ"] = Convert.ToDateTime(user.Ztqjsrq);
+                    nr["ZTQBZ"] = user.Ztqbz;
+                    nr["STAT2"] = user.Stat2;
+                    nr["STATXT"] = user.Statxt;
+                    nr["F_ID"] = user.Pernr;
                     data.Rows.Add(nr);
                 }
             }
             da.Update(ds, "Table");
-           //ds.AcceptChanges();
+            //ds.AcceptChanges();
             LogFactory.GetLogger("GetMysqlUserData").Info("更新或插入数据完成");
         }
 

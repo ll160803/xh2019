@@ -45,6 +45,7 @@
     <Compile Include="01 Infrastructure\IEntity.cs" />
     <Compile Include="01 Infrastructure\IModificationAudited.cs" />
     <Compile Include="03 Entity\Hrm\AskForLeaveEntity.cs" />
+    <Compile Include="03 Entity\Hrm\AskLeaveTypeEnum.cs" />
     <Compile Include="03 Entity\Hrm\HistoryRecordDetailEntity.cs" />
     <Compile Include="03 Entity\Hrm\HrmAskForLeaveRecordDEntity.cs" />
     <Compile Include="03 Entity\Hrm\HrmAskForLeaveRecordEntity.cs" />

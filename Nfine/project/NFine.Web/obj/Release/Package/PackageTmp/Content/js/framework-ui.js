@@ -77,6 +77,47 @@ $.download = function (url, data, method) {
         $('<form action="' + url + '" method="' + (method || 'post') + '">' + inputs + '</form>').appendTo('body').submit().remove();
     };
 };
+//新增弹出
+
+$.modalPrompt = function (options) {
+    var defaults = {
+        formType: 2,    // 弹出文本层类型
+        title: '请输入审核意见',    // 标题
+        value: '',    // 可以设置文本默认值
+        area: ['500px', '300px'],     // 设置弹出层大小
+        btn: ['通过', '不通过', '取消'],    // 自定义设置多个按钮
+        btnclass: ['btn btn-primary', 'btn btn-primary', 'btn btn-danger'],
+        btn2: function (index, value) { alert(value); top.layer.close(index); },
+        btnAlign: 'c',
+        callback: function (value, index, elem) {
+            alert(value);
+            top.layer.close(index);
+        }
+    };
+    var options = $.extend(defaults, options);
+
+
+    top.layer.prompt(
+        {
+            formType: options.formType,    // 弹出文本层类型
+            title: options.title,    // 标题
+            value: options.value,    // 可以设置文本默认值
+            area: options.area,     // 设置弹出层大小
+            btn: options.btn,    // 自定义设置多个按钮
+            btnclass: options.btnclass,
+            btn2: function (index, elem) {
+                // 得到value
+                var value = top.$("#layui-layer" + index).find(".layui-layer-input").val();
+                options.btn2(index, value);
+
+            },
+            btnAlign: options.btnAlign
+        }, function (value, index, elem) {
+            options.callback(value, index, elem);
+
+        });
+}
+
 $.modalOpen = function (options) {
     var defaults = {
         id: null,
@@ -92,14 +133,14 @@ $.modalOpen = function (options) {
     var options = $.extend(defaults, options);
     var _width = top.$(window).width() > parseInt(options.width.replace('px', '')) ? options.width : top.$(window).width() + 'px';
     var _height = top.$(window).height() > parseInt(options.height.replace('px', '')) ? options.height : top.$(window).height() + 'px';
-    top.layer.open({
+    var setOptions = {
         id: options.id,
         type: 2,
         shade: options.shade,
         title: options.title,
         fix: false,
         area: [_width, _height],
-        content: options.url,
+        content: [options.url],
         btn: options.btn,
         btnclass: options.btnclass,
         yes: function () {
@@ -107,7 +148,23 @@ $.modalOpen = function (options) {
         }, cancel: function () {
             return true;
         }
-    });
+    };
+    if (options.btn != null && options.btn != undefined) {
+        if (options.btn.length > 2) {// viki 当多于两个按钮时 
+            var len = options.btn.length;
+            for (var i = 2; i < len; i++) {
+                var f = options["callBack" + i];
+                setOptions["btn" + i] = function () {
+                    var isF = f(options.id);
+                    return false;
+                }
+            }
+        }
+    }
+    if (options.scroll != null && options.scroll != undefined) {
+        setOptions.content.push(options.scroll);//滚动条
+    }
+    top.layer.open(setOptions);
 }
 $.modalConfirm = function (content, callBack) {
     top.layer.confirm(content, {
@@ -275,7 +332,7 @@ $.fn.jqGridRowValue = function () {
     if (selectedRowIds != "") {
         var json = [];
         var len = selectedRowIds.length;
-        for (var i = 0; i < len ; i++) {
+        for (var i = 0; i < len; i++) {
             var rowData = $grid.jqGrid('getRowData', selectedRowIds[i]);
             json.push(rowData);
         }
@@ -427,4 +484,15 @@ $.fn.dataGrid = function (options) {
         })
     };
     $element.jqGrid(options);
+};
+$.days_count = function (sDate1, sDate2) {    //sDate1和sDate2是2006-12-18格式  
+    var dateSpan,
+        tempDate,
+        iDays;
+    sDate1 = Date.parse(sDate1);
+    sDate2 = Date.parse(sDate2);
+    dateSpan = sDate2 - sDate1;
+    dateSpan = Math.abs(dateSpan);
+    iDays = Math.floor(dateSpan / (24 * 3600 * 1000)) + 1;
+    return iDays
 };

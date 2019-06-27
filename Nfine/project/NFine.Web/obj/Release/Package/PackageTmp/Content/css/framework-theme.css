@@ -90,6 +90,11 @@ a:hover,a:focus{color:#475059;}
 #sidebar-nav .nav li .submenu>li>a{display:block;line-height:38px;padding-left:66px;color:#fff;outline:none;text-decoration:none;transition:border-color 0.1s ease-in-out 0s,background-color 0.1s ease-in-out 0s,box-shadow 0.1s ease-in-out 0s;}
 #sidebar-nav .nav li .submenu>li:first-of-type>a{border-top:0}
 #sidebar-nav .nav li .submenu>li>a:hover,#sidebar-nav .nav li .submenu>li>a.active,#sidebar-nav .nav li .submenu>li.active>a,#sidebar-nav .nav li .submenu>li.open>a{text-decoration:none;color:#fff;background-color:#1f2c39;}
+    #sidebar-nav .nav > li .submenu > li > a > i {
+        position: absolute;
+        margin-top: 13px;
+        left:45px;
+    }
 #sidebar-nav .nav li.active>.submenu{display:block}
 #sidebar-nav .nav>.open .submenu .submenu,#sidebar-nav .nav>.active .submenu .submenu{display:none}
 #sidebar-nav .nav>.open .submenu>.open>a,#sidebar-nav .nav>.open .submenu>.active>a,#sidebar-nav .nav>.active .submenu>.open>a,#sidebar-nav .nav>.active .submenu>.active>a{background:inherit;border-bottom-color:#1f2c39;box-shadow:0 -1px 0 #1f2c39 inset;}

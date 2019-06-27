@@ -31,7 +31,7 @@
             var $next = $("#btn_next");
             if (data.direction == "next") {
                 switch (data.step) {
-                    case 1:
+                    case 2:
                         if (!$('#form1').formValid()) {
                             return false;
                         }
@@ -71,6 +71,7 @@
             <ul class="steps">
                 <li data-target="#step-1" class="active"><span class="step">1</span>角色信息<span class="chevron"></span></li>
                 <li data-target="#step-2"><span class="step">2</span>功能权限<span class="chevron"></span></li>
+                <li data-target="#step-3"><span class="step">3</span>部门权限<span class="chevron"></span></li>
             </ul>
         </div>
         <div class="step-content" id="wizard-steps" style="border-left: none; border-bottom: none; border-right: none;">
@@ -88,8 +89,7 @@
                             <tr>
                                 <th class="formTitle">归属组织</th>
                                 <td class="formValue">
-                                    <select id="F_OrganizeId" name="F_OrganizeId" class="form-control required">
-                                    </select>
+                                    <select id="F_OrganizeId" name="F_OrganizeId" class="form-control required"></select>
                                 </td>
                             </tr>
                             <tr>
@@ -107,8 +107,7 @@
                             <tr>
                                 <th class="formTitle">角色类型</th>
                                 <td class="formValue">
-                                    <select id="F_Type" name="F_Type" class="form-control required">
-                                    </select>
+                                    <select id="F_Type" name="F_Type" class="form-control required"></select>
                                 </td>
                             </tr>
                             <tr>
@@ -132,7 +131,8 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th class="formTitle" valign="top" style="padding-top: 5px;">备注
+                                <th class="formTitle" valign="top" style="padding-top: 5px;">
+                                    备注
                                 </th>
                                 <td class="formValue">
                                     <textarea id="F_Description" name="F_Description" class="form-control" style="height: 60px;"></textarea>
@@ -144,6 +144,9 @@
             </div>
             <div class="step-pane" id="step-2">
                 <div id="permissionTree"></div>
+            </div>
+            <div class="step-pane" id="step-3">
+                <div id="Organize"><h3>敬请期待。。。</h3></div>
             </div>
         </div>
         <div class="form-button" id="wizard-actions">

@@ -9,6 +9,7 @@
 //-----------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -64,6 +65,9 @@ namespace NFine.Domain.Entity.Hrm
         public string GESCTXT { get; set; }
         public DateTime? GBDAT { get; set; }
         public string YGGH { get; set; }
+        /// <summary>
+        /// 用户类别
+        /// </summary>
         public string RYLB { get; set; }
         public string STAT2 { get; set; }
         public string F_FullName { get; set; }

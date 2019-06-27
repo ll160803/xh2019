@@ -85,7 +85,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
             }
             if (!string.IsNullOrEmpty(id))
             {
-                expression = expression.And(p => p.RYLB == id);//医生还是护士
+                expression = expression.And(p => p.RYLB == IsDoctor);//医生还是护士
             }
             if (!string.IsNullOrEmpty(keyword))
             {
@@ -126,10 +126,10 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 expression = expression.And(p => orgIds.Contains("," + p.OrganizeId + ","));
             }
 
-            expression = expression.And(p => p.Flag == false);//是否病假产假
+            expression = expression.And(p => p.Flag == (AskLeaveType.非病产假.ToString() == "0" ? true : false));//是否病假产假
             if (state == 0)
             {
-                expression = expression.And(p => p.State == 2 || p.State == 3 || p.State == 4);
+                expression = expression.And(p => p.State == ((int)AskLeaveStateType.已提交) || p.State == (int)AskLeaveStateType.已审核 || p.State == (int)AskLeaveStateType.已推送SAP);
             }
             else
             {
@@ -323,14 +323,14 @@ namespace NFine.Web.Areas.Hrm.Controllers
             }
             if (string.IsNullOrEmpty(keyValue))
             {
-                userEntity.State = 1;//草稿状态
+                userEntity.State = (int)AskLeaveStateType.未提交;//草稿状态
                 userEntity.IsNew = true;//激活的请假
                 userEntity.AskSort = 1;//默认是1
 
             }
             else
             {
-                if (userEntity.State != 1 || userEntity.IsNew == false)
+                if (userEntity.State != (int)AskLeaveStateType.未提交 || userEntity.IsNew == false)
                 {
                     return Error("错误操作。");
                 }
@@ -351,23 +351,23 @@ namespace NFine.Web.Areas.Hrm.Controllers
         {
             if (!string.IsNullOrEmpty(Flag))
             {
-                userEntity.Flag = Flag == "1" ? true : false;
+                userEntity.Flag = Flag == AskLeaveType.病产假.ToString() ? true : false;
             }
             if (string.IsNullOrEmpty(keyValue))
             {
-                userEntity.State = 1;//草稿状态
+                userEntity.State = (int)AskLeaveStateType.未提交;//草稿状态
                 userEntity.IsNew = true;//激活的请假
                 userEntity.AskSort = 1;//默认是1
 
             }
             else
             {
-                if (userEntity.State != 1 || userEntity.IsNew == false)
+                if (!(userEntity.State == (int)AskLeaveStateType.未提交||userEntity.State==(int)AskLeaveStateType.审核未通过) || userEntity.IsNew == false)
                 {
                     return Error("错误操作。");
                 }
             }
-            userEntity.State = 2;//改为提交操作
+            userEntity.State = (int)AskLeaveStateType.已提交;//改为提交操作
             // userEntity.OrganizeId= OperatorProvider.Provider.GetCurrent().CompanyId;//当前科室
             var hasList = askApp.GetLeaveList(userEntity.HrmUserId, userEntity.StartDate.Value, userEntity.EndDate.Value, keyValue);
             if (hasList.Count > 0)
@@ -384,7 +384,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
         {
             if (!string.IsNullOrEmpty(Flag))
             {
-                userEntity.Flag = Flag == "1" ? true : false;
+                userEntity.Flag = Flag == AskLeaveType.病产假.ToString() ? true : false;
             }
             userEntity.State = state;//草稿状态
             userEntity.IsNew = true;//激活的请假
@@ -410,7 +410,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
         public ActionResult DeleteForm(string keyValue)
         {
             AskForLeaveEntity entity = askApp.GetForm(keyValue);
-            if (entity.State != 1 || entity.IsNew == false)
+            if (!(entity.State == (int)AskLeaveStateType.未提交 || entity.State == (int)AskLeaveStateType.审核未通过) || entity.IsNew == false)
             {
                 return Error("此请假不能删除，具体请联系管理员。");
             }
@@ -424,11 +424,11 @@ namespace NFine.Web.Areas.Hrm.Controllers
         public ActionResult SubmitLeave(string keyValue)
         {
             AskForLeaveEntity entity = askApp.GetForm(keyValue);
-            if (entity.State != 1 || entity.IsNew == false)
+            if (!(entity.State == (int)AskLeaveStateType.未提交 || entity.State == (int)AskLeaveStateType.审核未通过) || entity.IsNew == false)
             {
                 return Error("此请假已经提交，请勿重复操作，具体请联系管理员。");
             }
-            entity.State = 2;
+            entity.State = (int)AskLeaveStateType.已提交;
             askApp.SubmitForm(entity, keyValue);
             return Success("提交成功。");
         }
@@ -439,11 +439,11 @@ namespace NFine.Web.Areas.Hrm.Controllers
         public ActionResult SubmitAudit(string keyValue)
         {
             AskForLeaveEntity entity = askApp.GetForm(keyValue);
-            if (entity.State != 1 || entity.IsNew == false)
+            if (!(entity.State == (int)AskLeaveStateType.未提交 || entity.State == (int)AskLeaveStateType.审核未通过) || entity.IsNew == false)
             {
                 return Error("此请假已经提交，请勿重复操作，具体请联系管理员。");
             }
-            entity.State = 3;
+            entity.State = (int)AskLeaveStateType.已审核;
             askApp.SubmitForm(entity, keyValue);
             return Success("审核成功。");
         }
@@ -454,7 +454,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
         public ActionResult AuditSubmitLeave(string keyValue, int state, string suggestion)
         {
             AskForLeaveEntity entity = askApp.GetForm(keyValue);
-            if (entity.State != 2 || entity.IsNew == false)
+            if (entity.State != ((int)AskLeaveStateType.已提交)|| entity.IsNew == false)
             {
                 return Error("此请假已经审核，请勿重复操作，具体请联系管理员。");
             }
@@ -498,8 +498,8 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 StringBuilder sb = new StringBuilder();
                 sb.Append("select *  from hrm_AskForLeave where ");
                 sb.AppendFormat(" OrganizeId='{0}' ", OperatorProvider.Provider.GetCurrent().CompanyId);//科室主任只上传本科室的
-                sb.AppendFormat(" and state=3 ");
-                sb.AppendFormat(" and Flag=0 ");//不是产、病假
+                sb.AppendFormat(" and state={0} ", (int)AskLeaveStateType.已审核);
+                sb.AppendFormat(" and Flag={0} ", (int)AskLeaveType.非病产假);//不是产、病假
                 var listIds = askApp.GetIdList(sb.ToString());
                 if (listIds.Count <= 0)
                 {
@@ -510,7 +510,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 {
                     HrmAskForLeaveRecordDEntity ask_d = new HrmAskForLeaveRecordDEntity { F_Id = Guid.NewGuid().ToString(), Base_Id = entity.F_Id, Ask_Id = item.F_Id };
                     list_d.Add(ask_d);
-                    item.State = 4;
+                    item.State = (int)AskLeaveStateType.已推送SAP;
                     askApp.SubmitForm(item, item.F_Id);
                 }
 
@@ -540,8 +540,8 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 StringBuilder sb = new StringBuilder();
                 sb.Append("select *  from hrm_AskForLeave where ");
                 // sb.AppendFormat(" OrganizeId='{0}' ", OperatorProvider.Provider.GetCurrent().CompanyId);//科室主任只上传本科室的
-                sb.AppendFormat("  state=3 ");
-                sb.AppendFormat(" and Flag=1 ");//是产、病假
+                sb.AppendFormat("  state={0} ", (int)AskLeaveStateType.已审核);
+                sb.AppendFormat(" and Flag={0} ", (int)AskLeaveType.病产假);//是产、病假
                 var listIds = askApp.GetIdList(sb.ToString());
                 if (listIds.Count <= 0)
                 {
@@ -565,7 +565,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
                     {
                         HrmAskForLeaveRecordDEntity ask_d = new HrmAskForLeaveRecordDEntity { F_Id = Guid.NewGuid().ToString(), Base_Id = entity.F_Id, Ask_Id = item.F_Id };
                         list_d.Add(ask_d);
-                        item.State = 4;
+                        item.State = (int)AskLeaveStateType.已推送SAP;
                         askApp.SubmitForm(item, item.F_Id);
                     }
 

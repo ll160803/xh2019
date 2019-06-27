@@ -202,6 +202,20 @@ namespace SapUserData.SapHrm {
         
         private string stat2Field;
         
+        private string statxtField;
+        
+        private string zcgksrqField;
+        
+        private string zcgjsrqField;
+        
+        private string zcgbzField;
+        
+        private string ztqksrqField;
+        
+        private string ztqjsrqField;
+        
+        private string ztqbzField;
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public string Pernr {
@@ -397,6 +411,83 @@ namespace SapUserData.SapHrm {
             }
             set {
                 this.stat2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string Statxt {
+            get {
+                return this.statxtField;
+            }
+            set {
+                this.statxtField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string Zcgksrq {
+            get {
+                return this.zcgksrqField;
+            }
+            set {
+                this.zcgksrqField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string Zcgjsrq {
+            get {
+                return this.zcgjsrqField;
+            }
+            set {
+                this.zcgjsrqField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string Zcgbz {
+            get {
+                return this.zcgbzField;
+            }
+            set {
+                this.zcgbzField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string Ztqksrq {
+            get {
+                return this.ztqksrqField;
+            }
+            set {
+                this.ztqksrqField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string Ztqjsrq {
+            get {
+                return this.ztqjsrqField;
+            }
+            set {
+                this.ztqjsrqField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string Ztqbz {
+            get {
+                return this.ztqbzField;
+            }
+            set {
+                this.ztqbzField = value;
             }
         }
     }
