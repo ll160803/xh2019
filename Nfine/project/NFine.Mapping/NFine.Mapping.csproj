@@ -49,6 +49,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Hrm\AskForLeaveMap.cs" />
+    <Compile Include="Hrm\AttendanceRecordDMap.cs" />
+    <Compile Include="Hrm\AttendanceRecordMap.cs" />
     <Compile Include="Hrm\HistoryRecordDetailMap.cs" />
     <Compile Include="Hrm\HrmAskForLeaveRecordDMap.cs" />
     <Compile Include="Hrm\HrmAskForLeaveRecordMap.cs" />

@@ -46,6 +46,8 @@
     <Compile Include="01 Infrastructure\IModificationAudited.cs" />
     <Compile Include="03 Entity\Hrm\AskForLeaveEntity.cs" />
     <Compile Include="03 Entity\Hrm\AskLeaveTypeEnum.cs" />
+    <Compile Include="03 Entity\Hrm\AttendanceRecordDEntity.cs" />
+    <Compile Include="03 Entity\Hrm\AttendanceRecordEntity.cs" />
     <Compile Include="03 Entity\Hrm\HistoryRecordDetailEntity.cs" />
     <Compile Include="03 Entity\Hrm\HrmAskForLeaveRecordDEntity.cs" />
     <Compile Include="03 Entity\Hrm\HrmAskForLeaveRecordEntity.cs" />
@@ -65,6 +67,8 @@
     <Compile Include="03 Entity\SystemSecurity\LogEntity.cs" />
     <Compile Include="02 ViewModel\AuthorizeActionModel.cs" />
     <Compile Include="04 IRepository\Hrm\IAskForLeaveRepository.cs" />
+    <Compile Include="04 IRepository\Hrm\IAttendanceRecordDRepository.cs" />
+    <Compile Include="04 IRepository\Hrm\IAttendanceRecordRepository.cs" />
     <Compile Include="04 IRepository\Hrm\IHistoryRecordDetailRepository.cs" />
     <Compile Include="04 IRepository\Hrm\IHrmAskForLeaveRecordDRepository.cs" />
     <Compile Include="04 IRepository\Hrm\IHrmAskForLeaveRecordRepository.cs" />
