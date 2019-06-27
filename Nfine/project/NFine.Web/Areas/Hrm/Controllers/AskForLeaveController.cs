@@ -169,8 +169,8 @@ namespace NFine.Web.Areas.Hrm.Controllers
         public ActionResult GetLastAuditGridJson(string id, Pagination pagination, string keyword, int state = 2)
         {
             System.Linq.Expressions.Expression<Func<ViewAskForLeaveEntity, bool>> expression = ExtLinq.True<ViewAskForLeaveEntity>();
-            var orgId = OperatorProvider.Provider.GetCurrent().CompanyId;//当前用户所在公司ID
-            expression = expression.And(p => p.OrganizeId == orgId & (p.Flag == true));
+            // var orgId = OperatorProvider.Provider.GetCurrent().CompanyId;//当前用户所在公司ID
+            expression = expression.And(p => p.Flag == true);
             //if (!string.IsNullOrEmpty(id))//保健科不分医生和护士
             //{
             //    expression = expression.And(p => p.RYLB == id);//医生还是护士
@@ -351,7 +351,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
         {
             if (!string.IsNullOrEmpty(Flag))
             {
-                userEntity.Flag = Flag == AskLeaveType.病产假.ToString() ? true : false;
+                userEntity.Flag = Flag == "1" ? true : false;
             }
             if (string.IsNullOrEmpty(keyValue))
             {
@@ -362,7 +362,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
             }
             else
             {
-                if (!(userEntity.State == (int)AskLeaveStateType.未提交||userEntity.State==(int)AskLeaveStateType.审核未通过) || userEntity.IsNew == false)
+                if (!(userEntity.State == (int)AskLeaveStateType.未提交 || userEntity.State == (int)AskLeaveStateType.审核未通过) || userEntity.IsNew == false)
                 {
                     return Error("错误操作。");
                 }
@@ -384,7 +384,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
         {
             if (!string.IsNullOrEmpty(Flag))
             {
-                userEntity.Flag = Flag == AskLeaveType.病产假.ToString() ? true : false;
+                userEntity.Flag = Flag == "1" ? true : false;
             }
             userEntity.State = state;//草稿状态
             userEntity.IsNew = true;//激活的请假
@@ -454,7 +454,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
         public ActionResult AuditSubmitLeave(string keyValue, int state, string suggestion)
         {
             AskForLeaveEntity entity = askApp.GetForm(keyValue);
-            if (entity.State != ((int)AskLeaveStateType.已提交)|| entity.IsNew == false)
+            if (entity.State != ((int)AskLeaveStateType.已提交) || entity.IsNew == false)
             {
                 return Error("此请假已经审核，请勿重复操作，具体请联系管理员。");
             }
@@ -479,7 +479,6 @@ namespace NFine.Web.Areas.Hrm.Controllers
         /// <param name="type"></param>
         /// <returns></returns>
         [HttpPost]
-        [HandlerAuthorize]
         [HandlerAjaxOnly]
         [ValidateAntiForgeryToken]
         public ActionResult SendLeaveToSapByLeader(string type)//
@@ -530,7 +529,6 @@ namespace NFine.Web.Areas.Hrm.Controllers
         /// <param name="type"></param>
         /// <returns></returns>
         [HttpPost]
-        [HandlerAuthorize]
         [HandlerAjaxOnly]
         [ValidateAntiForgeryToken]
         public ActionResult SendLeaveToSap(string id)//
@@ -547,30 +545,30 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 {
                     return Error("没有需要推送的数据,请审核后，重新操作。");
                 }
-                var orgList = listIds.Select(p => new { orgid = p.OrganizeId, userid = p.F_CreatorUserId }).Distinct();
-                foreach (var org in orgList)
+                //var orgList = listIds.Select(p => new { orgid = p.OrganizeId, userid = p.F_CreatorUserId }).Distinct();
+                //foreach (var org in orgList)
+                //{
+                HrmAskForLeaveRecordApp app = new HrmAskForLeaveRecordApp();
+                var entity = new HrmAskForLeaveRecordEntity
                 {
-                    HrmAskForLeaveRecordApp app = new HrmAskForLeaveRecordApp();
-                    var entity = new HrmAskForLeaveRecordEntity
-                    {
-                        OragnizeId = org.orgid,
-                        UserId = org.userid,
-                        Flag = true
-                    };
-                    app.SubmitForm(entity, "");
-                    HrmAskForLeaveRecordDApp app_d = new HrmAskForLeaveRecordDApp();
+                    //OragnizeId = org.orgid,
+                    //UserId = org.userid,
+                    Flag = true
+                };
+                app.SubmitForm(entity, "");
+                HrmAskForLeaveRecordDApp app_d = new HrmAskForLeaveRecordDApp();
 
-                    List<HrmAskForLeaveRecordDEntity> list_d = new List<HrmAskForLeaveRecordDEntity>();
-                    foreach (var item in listIds.Where(p => p.OrganizeId == org.orgid && p.F_CreatorUserId == org.userid))
-                    {
-                        HrmAskForLeaveRecordDEntity ask_d = new HrmAskForLeaveRecordDEntity { F_Id = Guid.NewGuid().ToString(), Base_Id = entity.F_Id, Ask_Id = item.F_Id };
-                        list_d.Add(ask_d);
-                        item.State = (int)AskLeaveStateType.已推送SAP;
-                        askApp.SubmitForm(item, item.F_Id);
-                    }
-
-                    app_d.InsertForm(list_d);
+                List<HrmAskForLeaveRecordDEntity> list_d = new List<HrmAskForLeaveRecordDEntity>();
+                foreach (var item in listIds)
+                {
+                    HrmAskForLeaveRecordDEntity ask_d = new HrmAskForLeaveRecordDEntity { F_Id = Guid.NewGuid().ToString(), Base_Id = entity.F_Id, Ask_Id = item.F_Id };
+                    list_d.Add(ask_d);
+                    item.State = (int)AskLeaveStateType.已推送SAP;
+                    askApp.SubmitForm(item, item.F_Id);
                 }
+
+                app_d.InsertForm(list_d);
+                //}
 
             }
             catch (Exception ex)
