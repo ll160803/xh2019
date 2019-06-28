@@ -57,6 +57,7 @@
     <Compile Include="Hrm\HrmUserMap.cs" />
     <Compile Include="Hrm\OutAndInMap.cs" />
     <Compile Include="Hrm\ViewAskForLeaveMap.cs" />
+    <Compile Include="Hrm\ViewAttendanceRecordDMap.cs" />
     <Compile Include="Hrm\ViewHrmAskForLeaveRecordMap.cs" />
     <Compile Include="Hrm\ViewOutAndInMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

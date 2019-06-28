@@ -4,7 +4,7 @@
 // * version : 1.0
 // * author  : NFine.Framework
 // * FileName: AttendanceRecordD.cs
-// * history : Created by T4 06/27/2019 10:49:09 
+// * history : Created by T4 06/27/2019 17:02:22 
 // </copyright>
 //-----------------------------------------------------------------------
 using NFine.Domain.Entity.Hrm;
@@ -19,7 +19,7 @@ namespace NFine.Mapping.Hrm
     {
 		 public AttendanceRecordDMap()
         {
-            this.ToTable("AttendanceRecordD");
+            this.ToTable("Hrm_AttendanceRecord_D");
             this.HasKey(t => t.F_Id);
         }
     }

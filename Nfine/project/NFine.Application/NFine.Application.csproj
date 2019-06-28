@@ -53,6 +53,7 @@
     <Compile Include="Hrm\HrmUserApp.cs" />
     <Compile Include="Hrm\OutAndInApp.cs" />
     <Compile Include="Hrm\ViewAskForLeaveApp.cs" />
+    <Compile Include="Hrm\ViewAttendanceRecordDApp.cs" />
     <Compile Include="Hrm\ViewHrmAskForLeaveRecordApp.cs" />
     <Compile Include="Hrm\ViewOutAndInApp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -129,6 +129,7 @@
     <Compile Include="Areas\ExampleManage\Controllers\SignetController.cs" />
     <Compile Include="Areas\ExampleManage\ExampleManageAreaRegistration.cs" />
     <Compile Include="Areas\Hrm\Controllers\AskForLeaveController.cs" />
+    <Compile Include="Areas\Hrm\Controllers\AttendanceController.cs" />
     <Compile Include="Areas\Hrm\Controllers\OutAndInController.cs" />
     <Compile Include="Areas\Hrm\Controllers\SapUserController.cs" />
     <Compile Include="Areas\Hrm\HrmAreaRegistration.cs" />
@@ -1136,6 +1137,9 @@
     <Content Include="Areas\Hrm\Views\AskForLeave\AskLeaveHistoryRecord.cshtml" />
     <Content Include="Areas\Hrm\Views\AskForLeave\HistoryRecordDetail.cshtml" />
     <Content Include="Areas\Hrm\Views\SapUser\UserOrganize.cshtml" />
+    <Content Include="Areas\Hrm\Views\Attendance\AttendanceIndex.cshtml" />
+    <Content Include="Areas\Hrm\Views\Attendance\Form.cshtml" />
+    <Content Include="Areas\Hrm\Views\Attendance\HistoryRecordDetail.cshtml" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />

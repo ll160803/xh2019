@@ -1,0 +1,82 @@
+﻿@{
+    ViewBag.Title = "HistoryRecordDetail";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+}
+
+<script>
+    $(function () {
+        gridList();
+    })
+    function gridList() {
+
+        var url = "/Hrm/Attendance/GetHistoryDetailRecord/@ViewBag.id";
+
+        var $gridList = $("#gridList");
+        $gridList.dataGrid({
+            url: url,
+            height: $(window).height() - 128,
+            colModel: [
+                { label: '主键', name: 'F_Id', hidden: true },
+                { label: '人员编号', name: 'PERNR', width: 80, align: 'left' },
+                { label: '姓名', name: 'NACHN', width: 80, align: 'left' },
+
+                {
+                    label: '性别', name: 'GESCTXT', width: 80, align: 'left'
+                },
+                {
+                    label: '员工工号', name: 'YGGH', width: 80, align: 'left'
+                },
+                {
+                    label: '备注', name: 'Note', width: 200, align: 'left'
+                },{
+                    label: '状态', name: 'State', width: 80, align: 'left',
+                    formatter: function (cellvalue, options, rowObject) {
+                        if (cellvalue == "1") {
+                            return '未提交';
+                        } else if (cellvalue == "2") {
+                            return '已提交';
+                        } else {
+                            return '已审核';
+                        }
+                    }
+                }
+
+            ],
+            pager: "#gridPager",
+            sortname: 'F_CreatorTime desc',
+            viewrecords: true
+        });
+        $("#btn_search").click(function () {
+            $gridList.jqGrid('setGridParam', {
+                postData: { keyword: $("#txt_keyword").val(), id:'@ViewBag.id' }
+            }).trigger('reloadGrid');
+        });
+    }
+
+
+   
+
+
+</script>
+
+<div class="topPanel">
+    <div class="search">
+        <table>
+            <tr>
+                <td>
+                    <div class="input-group">
+                        <input id="txt_keyword" type="text" class="form-control" placeholder="发薪号/姓名" style="width: 200px;">
+                        <span class="input-group-btn">
+                            <button id="btn_search" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </td>
+
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="gridPanel">
+    <table id="gridList"></table>
+    <div id="gridPager"></div>
+</div>

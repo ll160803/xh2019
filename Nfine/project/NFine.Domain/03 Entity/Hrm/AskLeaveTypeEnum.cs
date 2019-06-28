@@ -24,4 +24,9 @@ namespace NFine.Domain.Entity.Hrm
         病产假 = 1,
         非病产假 = 0
     }
+    public class AttendanceNote
+    {
+        public string Id { get; set; }
+        public string Note { get; set; }
+    }
 }

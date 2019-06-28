@@ -32,6 +32,11 @@ namespace NFine.Application.Hrm
             }
             return service.FindList(expression, pagination);
         }
+        public List<AskForLeaveEntity> GetList(Pagination pagination, System.Linq.Expressions.Expression<Func<AskForLeaveEntity, bool>> expression)
+        {
+            //var expression = ExtLinq.True<HrmUserEntity>();
+            return service.FindList(expression, pagination);
+        }
         public List<AskForLeaveEntity> GetLeaveList(string userId, DateTime start, DateTime end, string keyvalue)
         {
             return service.GetItemList(start, end, userId, keyvalue);

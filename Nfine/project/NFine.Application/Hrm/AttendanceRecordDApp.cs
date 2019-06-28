@@ -18,11 +18,11 @@ namespace NFine.Application.Hrm
 {
     public class AttendanceRecordDApp
     {
-		private IAttendanceRecordDRepository service = new AttendanceRecordDRepository();
+        private IAttendanceRecordDRepository service = new AttendanceRecordDRepository();
 
-		public List<AttendanceRecordDEntity> GetList(Pagination pagination, string queryJson)
+        public List<AttendanceRecordDEntity> GetList(Pagination pagination, string queryJson)
         {
-		    var expression = ExtLinq.True<AttendanceRecordDEntity>();
+            var expression = ExtLinq.True<AttendanceRecordDEntity>();
             var queryParam = queryJson.ToJObject();
             if (!queryParam["keyword"].IsEmpty())
             {
@@ -32,7 +32,7 @@ namespace NFine.Application.Hrm
             return service.FindList(expression, pagination);
         }
 
-	    public AttendanceRecordDEntity GetForm(string keyValue)
+        public AttendanceRecordDEntity GetForm(string keyValue)
         {
             return service.FindEntity(keyValue);
         }
@@ -42,7 +42,7 @@ namespace NFine.Application.Hrm
             service.Delete(entity);
         }
 
-		public void SubmitForm(AttendanceRecordDEntity entity, string keyValue)
+        public void SubmitForm(AttendanceRecordDEntity entity, string keyValue)
         {
             if (!string.IsNullOrEmpty(keyValue))
             {
@@ -54,6 +54,10 @@ namespace NFine.Application.Hrm
                 entity.Create();
                 service.Insert(entity);
             }
+        }
+        public void InsertForm(List<AttendanceRecordDEntity> list)
+        {
+            service.Insert(list);
         }
     }
 }

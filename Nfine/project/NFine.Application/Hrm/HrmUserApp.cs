@@ -9,6 +9,7 @@
 //-----------------------------------------------------------------------
 using NFine.Code;
 using NFine.Domain.Entity.Hrm;
+using NFine.Domain.Entity.SystemManage;
 using NFine.Domain.IRepository.Hrm;
 using NFine.Repository.Hrm;
 using System;
@@ -18,18 +19,18 @@ namespace NFine.Application.Hrm
 {
     public class HrmUserApp
     {
-		private IHrmUserRepository service = new HrmUserRepository();
+        private IHrmUserRepository service = new HrmUserRepository();
 
-		public List<HrmUserEntity> GetList(Pagination pagination, System.Linq.Expressions.Expression<Func<HrmUserEntity,bool>> expression)
+        public List<HrmUserEntity> GetList(Pagination pagination, System.Linq.Expressions.Expression<Func<HrmUserEntity, bool>> expression)
         {
 
-		    //var expression = ExtLinq.True<HrmUserEntity>();
-           
-           
+            //var expression = ExtLinq.True<HrmUserEntity>();
+
+
             return service.FindList(expression, pagination);
         }
 
-	    public HrmUserEntity GetForm(string keyValue)
+        public HrmUserEntity GetForm(string keyValue)
         {
             return service.FindEntity(keyValue);
         }
@@ -39,7 +40,7 @@ namespace NFine.Application.Hrm
             service.Delete(entity);
         }
 
-		public void SubmitForm(HrmUserEntity entity, string keyValue)
+        public void SubmitForm(HrmUserEntity entity, string keyValue)
         {
             if (!string.IsNullOrEmpty(keyValue))
             {
@@ -51,6 +52,19 @@ namespace NFine.Application.Hrm
                 entity.Create();
                 service.Insert(entity);
             }
+        }
+
+        public List<HrmUserEntity> GetList(Pagination pagination, List<RoleAuthorizeEntity> authorizedata)
+        {
+            System.Linq.Expressions.Expression<Func<HrmUserEntity, bool>> expression = ExtLinq.True<HrmUserEntity>();
+
+            if (authorizedata.Count > 0)
+            {
+                var orgIds = "," + string.Join(",", authorizedata.Select(u => u.F_ItemId)) + ",";
+                expression = expression.And(p => orgIds.Contains("," + p.OrganizeId + ","));
+            }
+            expression = expression.And(p => p.STAT2 != "0");//ÀëÖ°µÄ 
+            return service.FindList(expression, pagination);
         }
     }
 }

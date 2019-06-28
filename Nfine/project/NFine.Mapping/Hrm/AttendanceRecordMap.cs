@@ -19,7 +19,7 @@ namespace NFine.Mapping.Hrm
     {
 		 public AttendanceRecordMap()
         {
-            this.ToTable("AttendanceRecord");
+            this.ToTable("Hrm_AttendanceRecord");
             this.HasKey(t => t.F_Id);
         }
     }

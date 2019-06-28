@@ -4,7 +4,7 @@
 // * version : 1.0
 // * author  : NFine.Framework
 // * FileName: AttendanceRecordD.cs
-// * history : Created by T4 06/27/2019 10:49:08 
+// * history : Created by T4 06/27/2019 17:11:26 
 // </copyright>
 //-----------------------------------------------------------------------
 using System;

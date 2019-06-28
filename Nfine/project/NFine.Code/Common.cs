@@ -132,5 +132,26 @@ namespace NFine.Code
             return str;
         }
         #endregion
+
+        /// <summary>
+        /// 计算某时间段内某月的天数
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <param name="mon">2019-06格式</param>
+        /// <returns></returns>
+        public static int CalcDays(DateTime start,DateTime end,string mon)
+        {
+            if(start.ToString("yyyy-MM")!=mon)
+            {
+                start = Convert.ToDateTime(mon + "-01");//本月第一天
+            }
+            if (end.ToString("yyyy-MM") != mon)
+            {
+                end = start.AddDays(1- start.Day).AddMonths(1).AddDays(-1);//本月最后一天
+            }
+            TimeSpan ts = end - start;
+            return ts.Days;
+        }
     }
 }
