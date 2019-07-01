@@ -1,4 +1,4 @@
-(function ($) {
+﻿(function ($) {
     $.nfinetab = {
         requestFullScreen: function () {
             var de = document.documentElement;
@@ -41,7 +41,7 @@
                 $(this).addClass('active').siblings('.menuTab').removeClass('active');
                 $.nfinetab.scrollToTab(this);
             }
-            var dataId = $(this).attr('data-mid');//Ȩ������ hsc add 2019 0701 ��ǰģ���ID
+            var dataId = $(this).attr('data-mid');//权限设置 hsc add 2019 0701 当前模块的ID
             if (dataId != "") {
                 top.$.cookie('nfine_currentmoduleid', dataId, { path: "/" });
             }
@@ -118,6 +118,51 @@
             }
             var dataUrl = $(this).attr('href');
             var menuName = $.trim($(this).text());
+            if (menuName == "") menuName = "科室主任考勤审核";
+            var flag = true;
+            if (dataUrl == undefined || $.trim(dataUrl).length == 0) {
+                return false;
+            }
+            $('.menuTab').each(function () {
+                if ($(this).data('id') == dataUrl) {
+                    if (!$(this).hasClass('active')) {
+                        $(this).addClass('active').siblings('.menuTab').removeClass('active');
+                        $.nfinetab.scrollToTab(this);
+                        $('.mainContent .NFine_iframe').each(function () {
+                            if ($(this).data('id') == dataUrl) {
+                                $(this).show().siblings('.NFine_iframe').hide();
+                                return false;
+                            }
+                        });
+                    }
+                    flag = false;
+                    return false;
+                }
+            });
+            if (flag) {
+                var str = '<a href="javascript:;" class="active menuTab" data-mid="' + dataId + '" data-id="' + dataUrl + '">' + menuName + ' <i class="fa fa-remove"></i></a>';
+                $('.menuTab').removeClass('active');
+                var str1 = '<iframe class="NFine_iframe" id="iframe' + dataId + '" name="iframe' + dataId + '"  width="100%" height="100%" src="' + dataUrl + '" frameborder="0" data-id="' + dataUrl + '" seamless></iframe>';
+                $('.mainContent').find('iframe.NFine_iframe').hide();
+                $('.mainContent').append(str1);
+                $.loading(true);
+                $('.mainContent iframe:visible').load(function () {
+                    $.loading(false);
+                });
+                $('.menuTabs .page-tabs-content').append(str);
+                $.nfinetab.scrollToTab($('.menuTab.active'));
+            }
+            return false;
+        },
+        addSubTab: function (obj) {//hsc 子页面添加tab到父框架
+            $("#header-nav>ul>li.open").removeClass("open");
+            var dataId = obj.attr('data-id');
+            if (dataId != "") {
+                top.$.cookie('nfine_currentmoduleid', dataId, { path: "/" });
+            }
+            var dataUrl = obj.attr('data-url');
+
+            menuName = "科室主任考勤审核";
             var flag = true;
             if (dataUrl == undefined || $.trim(dataUrl).length == 0) {
                 return false;

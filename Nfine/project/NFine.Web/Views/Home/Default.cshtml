@@ -11,9 +11,16 @@
     <script src="~/Content/js/charts/Chart.js"></script>
     <script>
         $(function () {
-           // GetSalaryChart();
-          //  GetLeaveChart();
+            // GetSalaryChart();
+            //  GetLeaveChart();
+            $(".panel-body a").on("click", function () {
+                debugger
+                window.parent.$.nfinetab.addSubTab($(this));
+
+            });
+
         });
+
         function GetSalaryChart() {
             var randomScalingFactor = function () { return Math.round(Math.random() * 100) };
             var lineChartData = {
@@ -54,30 +61,30 @@
             var c_value = randomScalingFactor();
             var d_value = randomScalingFactor();
             var doughnutData = [
-	            {
-	                value: a_value,
-	                color: "#F7464A",
-	                highlight: "#FF5A5E",
-	                label: "事假"
-	            },
-	            {
-	                value: b_value,
-	                color: "#46BFBD",
-	                highlight: "#5AD3D1",
-	                label: "病假"
-	            },
-	            {
-	                value: c_value,
-	                color: "#FDB45C",
-	                highlight: "#FFC870",
-	                label: "公休假"
-	            },
-	            {
-	                value: d_value,
-	                color: "#949FB1",
-	                highlight: "#A8B3C5",
-	                label: "调休假"
-	            }
+                {
+                    value: a_value,
+                    color: "#F7464A",
+                    highlight: "#FF5A5E",
+                    label: "事假"
+                },
+                {
+                    value: b_value,
+                    color: "#46BFBD",
+                    highlight: "#5AD3D1",
+                    label: "病假"
+                },
+                {
+                    value: c_value,
+                    color: "#FDB45C",
+                    highlight: "#FFC870",
+                    label: "公休假"
+                },
+                {
+                    value: d_value,
+                    color: "#949FB1",
+                    highlight: "#A8B3C5",
+                    label: "调休假"
+                }
             ];
             var ctx = document.getElementById("leavechart").getContext("2d");
             window.myDoughnut = new Chart(ctx).Doughnut(doughnutData, { responsive: false });
@@ -86,6 +93,8 @@
             $("#c_value").html(c_value + "小时");
             $("#d_value").html(d_value + "小时");
         }
+
+
     </script>
 </head>
 <body>
@@ -94,56 +103,61 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <i class="fa fa-line-chart fa-lg" style="padding-right: 5px;"></i>关键数据实时指标
-                <div style="float: right; position: relative; top: -4px; right: 0px;">
-                    <iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=1" width="330" height="35" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
-                </div>
+                    <div style="float: right; position: relative; top: -4px; right: 0px;">
+                        <iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=1" width="330" height="35" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+                    </div>
                 </div>
                 <div class="panel-body">
-                    <div class="dashboard-stats">
-                        <div class="dashboard-stats-item" style="background-color: #fc8675;">
-                            <h2 class="m-top-none">8</h2>
-                            <h5>对私待处理任务</h5>
-                            <div class="stat-icon">
-                                <i class="fa fa-user fa-3x"></i>
+                    @if (ViewBag.IsView) {
+                        <a data-url="/hrm/attendance/attendanceauditIndex" href="javascript:;" data-id="bb670673-2a89-4e33-ad74-90361e4096c6">
+                            <div class="dashboard-stats">
+                                <div class="dashboard-stats-item" style="background-color: #fc8675;">
+                                    <h2 class="m-top-none">@ViewBag.Count</h2>
+                                    <h5>待处理任务</h5>
+                                    <div class="stat-icon">
+                                        <i class="fa fa-user fa-3x"></i>
+
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        </a>
+                    }
+                        @*<div class="dashboard-stats">
+                <div class="dashboard-stats-item" style="background-color: #6bafbd;">
+                    <h2 class="m-top-none">12</h2>
+                    <h5>对私待签收任务</h5>
+                    <div class="stat-icon">
+                        <i class="fa fa-hdd-o fa-3x"></i>
                     </div>
-                    <div class="dashboard-stats">
-                        <div class="dashboard-stats-item" style="background-color: #6bafbd;">
-                            <h2 class="m-top-none">12</h2>
-                            <h5>对私待签收任务</h5>
-                            <div class="stat-icon">
-                                <i class="fa fa-hdd-o fa-3x"></i>
-                            </div>
-                        </div>
+                </div>
+            </div>
+            <div class="dashboard-stats">
+                <div class="dashboard-stats-item" style="background-color: #f3ce85;">
+                    <h2 class="m-top-none">2</h2>
+                    <h5>对公待处理任务</h5>
+                    <div class="stat-icon">
+                        <i class="fa fa-shopping-cart fa-3x"></i>
                     </div>
-                    <div class="dashboard-stats">
-                        <div class="dashboard-stats-item" style="background-color: #f3ce85;">
-                            <h2 class="m-top-none">2</h2>
-                            <h5>对公待处理任务</h5>
-                            <div class="stat-icon">
-                                <i class="fa fa-shopping-cart fa-3x"></i>
-                            </div>
-                        </div>
+                </div>
+            </div>
+            <div class="dashboard-stats">
+                <div class="dashboard-stats-item" style="background-color: #949FB1;">
+                    <h2 class="m-top-none">6</h2>
+                    <h5>对公待签收任务</h5>
+                    <div class="stat-icon">
+                        <i class="fa fa-gavel fa-3x"></i>
                     </div>
-                    <div class="dashboard-stats">
-                        <div class="dashboard-stats-item" style="background-color: #949FB1;">
-                            <h2 class="m-top-none">6</h2>
-                            <h5>对公待签收任务</h5>
-                            <div class="stat-icon">
-                                <i class="fa fa-gavel fa-3x"></i>
-                            </div>
-                        </div>
+                </div>
+            </div>
+            <div class="dashboard-stats">
+                <div class="dashboard-stats-item" style="background-color: #65cea7; margin-right: 0px;">
+                    <h2 class="m-top-none">268</h2>
+                    <h5>本月交易订单数量</h5>
+                    <div class="stat-icon">
+                        <i class="fa fa-truck fa-3x"></i>
                     </div>
-                    <div class="dashboard-stats">
-                        <div class="dashboard-stats-item" style="background-color: #65cea7; margin-right: 0px;">
-                            <h2 class="m-top-none">268</h2>
-                            <h5>本月交易订单数量</h5>
-                            <div class="stat-icon">
-                                <i class="fa fa-truck fa-3x"></i>
-                            </div>
-                        </div>
-                    </div>
+                </div>
+            </div>*@
                 </div>
             </div>
         </div>
@@ -239,7 +253,8 @@
                 .panel-default > .panel-body ul {
                     overflow: hidden;
                     padding: 0;
-                    margin:0px;margin-top: -5px;
+                    margin: 0px;
+                    margin-top: -5px;
                 }
 
                     .panel-default > .panel-body ul li {
