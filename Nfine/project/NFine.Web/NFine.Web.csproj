@@ -1140,6 +1140,7 @@
     <Content Include="Areas\Hrm\Views\Attendance\AttendanceIndex.cshtml" />
     <Content Include="Areas\Hrm\Views\Attendance\Form.cshtml" />
     <Content Include="Areas\Hrm\Views\Attendance\HistoryRecordDetail.cshtml" />
+    <Content Include="Areas\Hrm\Views\Attendance\AttendanceAuditIndex.cshtml" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />

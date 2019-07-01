@@ -16,7 +16,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
     {
         //
         // GET: /Hrm/Attendance/
-        private bool IsDoctor = OperatorProvider.Provider.GetCurrent().Is_Doctor == UserType.医生.ToString();
+        private bool IsDoctor = OperatorProvider.Provider.GetCurrent().Is_Doctor == ((int)UserType.医生).ToString();
         private RoleAuthorizeApp roleAuthorizeApp = new RoleAuthorizeApp();
         public ActionResult AttendanceIndex()
         {
@@ -25,6 +25,14 @@ namespace NFine.Web.Areas.Hrm.Controllers
         public ActionResult HistoryRecordDetail(string id)
         {
             ViewBag.id = id;
+            return View();
+        }
+        /// <summary>
+        /// 科室主任审核页面
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult AttendanceAuditIndex()
+        {
             return View();
         }
         [HttpGet]
@@ -67,6 +75,55 @@ namespace NFine.Web.Areas.Hrm.Controllers
             };
             return Content(data.ToJson());
         }
+
+        /// <summary>
+        /// 科室主任考勤页面
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="pagination"></param>
+        /// <param name="keyword"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [HandlerAjaxOnly]
+        public ActionResult GetHistoryAuditRecord(string id, Pagination pagination, string keyword)
+        {
+            System.Linq.Expressions.Expression<Func<AttendanceRecordEntity, bool>> expression = ExtLinq.True<AttendanceRecordEntity>();
+
+            var authorizedata = new List<RoleAuthorizeEntity>();
+            var userId = OperatorProvider.Provider.GetCurrent().UserId;
+            if (!string.IsNullOrEmpty(userId))
+            {
+                authorizedata = roleAuthorizeApp.GetOrganizeList(userId);
+            }
+            if (authorizedata.Count == 0)
+            {
+                var orgId = OperatorProvider.Provider.GetCurrent().CompanyId;//当前用户所在公司ID
+                expression = expression.And(p => p.OrganizeId == orgId);
+            }
+            else
+            {
+                var orgIds = "," + string.Join(",", authorizedata.Select(u => u.F_ItemId)) + ",";
+                expression = expression.And(p => orgIds.Contains("," + p.OrganizeId + ","));
+            }
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                var keyPress = ExtLinq.True<AttendanceRecordEntity>();
+                keyPress = keyPress.And(t => t.AttendDate == keyword);
+                expression = expression.And(keyPress);
+            }
+            // expression = expression.And(p => p.Flag == IsDoctor);
+            expression = expression.And(p => p.State > 1);//提交的都可以看到
+            AttendanceRecordApp appRecord = new AttendanceRecordApp();
+
+            var data = new
+            {
+                rows = appRecord.GetList(pagination, expression),
+                total = pagination.total,
+                page = pagination.page,
+                records = pagination.records
+            };
+            return Content(data.ToJson());
+        }
         /// <summary>
         /// 尚未真正的实现
         /// </summary>
@@ -96,11 +153,11 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 var orgIds = "," + string.Join(",", authorizedata.Select(u => u.F_ItemId)) + ",";
                 expression = expression.And(p => orgIds.Contains("," + p.OrganizeId + ","));
             }
-            expression = expression.And(p => p.Flag == IsDoctor & p.IsNew == true & p.State > 1);//提交过的 是最新的 是护士或者医生  
+            expression = expression.And(p => p.DoctorOrNurser == IsDoctor & p.IsNew == true & p.State > 1);//提交过的 是最新的 是护士或者医生  
 
             if (string.IsNullOrEmpty(keyword))
             {
-                keyword = DateTime.Now.ToString("yyyy-MM");
+                keyword = DateTime.Now.AddMonths(-1).ToString("yyyy-MM");
             }
             DateTime dtfirst = Convert.ToDateTime(keyword + "-01");
             DateTime dtlast = dtfirst.AddMonths(1).AddDays(-1);
@@ -111,7 +168,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
             AskForLeaveApp appRecord = new AskForLeaveApp();
             var listAskLeave = appRecord.GetList(new Pagination { page = 1, sidx = "F_Id", sord = "asc", rows = int.MaxValue }, expression);
             HrmUserApp hrmUserApp = new HrmUserApp();
-            var hrmUserList = hrmUserApp.GetList(pagination, authorizedata);
+            var hrmUserList = hrmUserApp.GetList(pagination, authorizedata, IsDoctor);
             var askTypeList = new ItemsDetailApp().GetItemList("AskLeaveType");//请假类型表
             foreach (var user in hrmUserList)
             {
@@ -169,10 +226,53 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 var entity = new AttendanceRecordEntity
                 {
                     AttendDate = keyValue,
-                    Flag = false,
+                    Flag = IsDoctor,
                     OrganizeId = OperatorProvider.Provider.GetCurrent().DepartmentId,
                     State = 1,
-                    SubmitMan = OperatorProvider.Provider.GetCurrent().UserName
+                    SubmitMan = OperatorProvider.Provider.GetCurrent().UserName,
+                    SubmitDate = DateTime.Now
+                };
+                app.SubmitForm(entity, "");
+
+                List<AttendanceRecordDEntity> list_d = new List<AttendanceRecordDEntity>();
+                foreach (var item in listData)
+                {
+                    AttendanceRecordDEntity ask_d = new AttendanceRecordDEntity { F_Id = Guid.NewGuid().ToString(), Base_Id = entity.F_Id, hrm_user_Id = item.Id, Note = item.Note };
+                    list_d.Add(ask_d);
+
+                }
+                app_d.InsertForm(list_d);
+
+            }
+            catch (Exception ex)
+            {
+                return Error("创建考勤失败,原因:" + ex.Message);
+            }
+            return Success("创建成功。");
+        }
+
+        [HttpPost]
+        [HandlerAjaxOnly]
+        [ValidateAntiForgeryToken]
+        public ActionResult SubmitAndSaveForm(string data, string keyValue)
+        {
+            try
+            {
+                List<AttendanceNote> listData = new List<AttendanceNote>();
+                System.Web.Script.Serialization.JavaScriptSerializer json = new System.Web.Script.Serialization.JavaScriptSerializer();
+                listData = json.Deserialize<List<AttendanceNote>>(data);
+
+                AttendanceRecordApp app = new AttendanceRecordApp();
+                AttendanceRecordDApp app_d = new AttendanceRecordDApp();
+                var entity = new AttendanceRecordEntity
+                {
+                    AttendDate = keyValue,
+                    Flag = IsDoctor,
+                    OrganizeId = OperatorProvider.Provider.GetCurrent().DepartmentId,
+                    State = 2,//提交
+                    SubmitMan = OperatorProvider.Provider.GetCurrent().UserName,
+                    SubmitDate = DateTime.Now
+
                 };
                 app.SubmitForm(entity, "");
 
@@ -198,6 +298,10 @@ namespace NFine.Web.Areas.Hrm.Controllers
         {
             System.Linq.Expressions.Expression<Func<ViewAttendanceRecordDEntity, bool>> expression = ExtLinq.True<ViewAttendanceRecordDEntity>();
             expression = expression.And(t => t.Base_Id == id);
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                expression = expression.And(t => t.NACHN.Contains(keyword) || t.PERNR.Contains(keyword));
+            }
             ViewAttendanceRecordDApp hrmUserApp = new ViewAttendanceRecordDApp();
             var hrmUserList = hrmUserApp.GetList(pagination, expression);
             var data = new
@@ -208,10 +312,45 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 records = pagination.records
             };
             return Content(data.ToJson());
-            
+
+        }
+        [HttpPost]
+        [HandlerAuthorize]
+        [HandlerAjaxOnly]
+        [ValidateAntiForgeryToken]
+        public ActionResult SubmitLeave(string keyValue)
+        {
+            AttendanceRecordApp appRecord = new AttendanceRecordApp();
+            AttendanceRecordEntity entity = appRecord.GetForm(keyValue);
+            if (!(entity.State == 1))
+            {
+                return Error("此请假已经提交，请勿重复操作，具体请联系管理员。");
+            }
+            entity.State = (int)AskLeaveStateType.已提交;
+            entity.SubmitDate = DateTime.Now;
+            entity.SubmitMan = OperatorProvider.Provider.GetCurrent().UserName;
+            appRecord.SubmitForm(entity, keyValue);
+            return Success("提交成功。");
         }
 
+        [HttpPost]
+        [HandlerAjaxOnly]
+        [ValidateAntiForgeryToken]
+        public ActionResult AuditSubmit(string keyValue, int state, string suggestion)
+        {
+            AttendanceRecordApp appRecord = new AttendanceRecordApp();
+            AttendanceRecordEntity entity = appRecord.GetForm(keyValue);
+            if (entity.State > 2)
+            {
+                return Error("此请假已经审核，请勿重复操作，具体请联系管理员。");
+            }
 
-
+            entity.State = state;
+            entity.AuditMan = OperatorProvider.Provider.GetCurrent().UserName;
+            entity.AuditDate = DateTime.Now;
+            entity.F_Description = suggestion;
+            appRecord.SubmitForm(entity, keyValue);
+            return Success("审核成功。");
+        }
     }
 }

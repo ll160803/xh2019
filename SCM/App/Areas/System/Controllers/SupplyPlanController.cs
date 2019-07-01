@@ -46,7 +46,7 @@ namespace Ipedf.App.Areas.System.Controllers
         /// <returns></returns>
         public JsonResult GetData(Guid? id, int page, int rows, string order, string sort, string startDate, string endDate, string txtName, string txtEBELN, string WERKST, string BKLAS)
         {
-           // RfcNOC rnc = new RfcNOC(); 
+            // RfcNOC rnc = new RfcNOC(); 
             if (string.IsNullOrEmpty(startDate))
             {
                 startDate = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
@@ -232,11 +232,11 @@ namespace Ipedf.App.Areas.System.Controllers
             foreach (var item in queryData)
             {
                 var file_en = BizLogicObject_V_SCM_D_MATER_PIC_COM_FILE.Proxy.Query(new CauseObject_V_SCM_D_MATER_PIC_COM_FILE
-                 {
-                     GYSACCOUNT = item.GYSACCOUNT,
-                     MATNR = item.MATNR,
-                     CHARGE = item.CHARG
-                 }).FirstOrDefault();
+                {
+                    GYSACCOUNT = item.GYSACCOUNT,
+                    MATNR = item.MATNR,
+                    CHARGE = item.CHARG
+                }).FirstOrDefault();
                 if (file_en != null)
                 {
                     item.FREEUSE3 = file_en.SERVER_NAME;
@@ -414,7 +414,7 @@ namespace Ipedf.App.Areas.System.Controllers
         }
 
         [HttpPost]
-        public ActionResult ExportAll(Guid? id, string startDate, string endDate, string Code, string Status, string txtName, string txtFPHM,string OutCause)
+        public ActionResult ExportAll(Guid? id, string startDate, string endDate, string Code, string Status, string txtName, string txtFPHM, string OutCause)
         {
             PagingParamter paging = new PagingParamter();
 
@@ -480,7 +480,7 @@ namespace Ipedf.App.Areas.System.Controllers
 
         }
 
-        public JsonResult GetAllSubPlanData_admin(Guid? id, int page, int rows, string order, string sort, string startDate, string endDate, string Code, string GysAccount, string Status, string txtName, string txtFPHM, string BKLAS,string OUT_CAUSE)
+        public JsonResult GetAllSubPlanData_admin(Guid? id, int page, int rows, string order, string sort, string startDate, string endDate, string Code, string GysAccount, string Status, string txtName, string txtFPHM, string BKLAS, string OUT_CAUSE)
         {
             int total = 0;
             // object dataSource = null;
@@ -535,7 +535,7 @@ namespace Ipedf.App.Areas.System.Controllers
             {
                 sb.Append(" and MATNR_BKLAS = '" + BKLAS.Trim() + "' ");
             }
-            if (!string.IsNullOrEmpty(OUT_CAUSE) )
+            if (!string.IsNullOrEmpty(OUT_CAUSE))
             {
                 sb.Append(" and OUT_CAUSE = '" + OUT_CAUSE.Trim() + "' ");
             }
@@ -585,7 +585,7 @@ namespace Ipedf.App.Areas.System.Controllers
             //ViewBag.PersonIda = currentId;
             var arrID = form["content"];
             var IDS = arrID.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-            
+
             CauseObject_V_SCM_D_SUPPLIERPLAN c1 = new CauseObject_V_SCM_D_SUPPLIERPLAN();
             foreach (var id in IDS)
             {
@@ -597,7 +597,7 @@ namespace Ipedf.App.Areas.System.Controllers
             sb.AppendFormat(GenerateHeadStr(), e1[0].GYSACCOUNT, e1[0].GYSNAME, e1[0].WERKST);
             sb.AppendFormat(GenerateTabHeadStr(), "订单日期", "供应计划", "药品编码", "药品名称", "计划数量", "送货数量", "基本单位", "单价", "金额", "批次", "发票号码", "发票金额", "缺货原因", "预计补送日期");
 
-           
+
             foreach (DisplayObject_V_SCM_D_SUPPLIERPLAN f2 in e1)
             {
                 sb.AppendFormat(GenerateRowStr(), f2.BEDAT, f2.CODE, f2.MATNR, f2.TXZ01, f2.ORDER_MENGE, f2.MENGE, f2.MSEHT, f2.NETPR, Convert.ToDecimal(f2.NETPR) * f2.MENGE, f2.CHARG, f2.FPHM, f2.FPJR, f2.OUT_CAUSE, Convert.ToDateTime(f2.OUT_DATE).ToString() == DateTime.MinValue.ToString() ? "" : Convert.ToDateTime(f2.OUT_DATE).ToString("yyyy-MM-dd"));
@@ -727,7 +727,7 @@ namespace Ipedf.App.Areas.System.Controllers
             sb.Append("<tr><td colspan=\"3\" style=\"height:40px;font-family:宋体;text-align:left;font-size: 12px;\" >供应商编码：{0}</td>");
             sb.Append("<td colspan=\"5\" style=\"height:40px;font-family:宋体;text-align:left;font-size: 12px;\" >供应商名称：{1}</td>");
             sb.Append("<td colspan=\"4\" style=\"height:40px;font-family:宋体;text-align:left;font-size: 12px;\" >院区：{2}</td><tr>");
-           
+
             return sb.ToString();
 
         }
@@ -878,7 +878,14 @@ namespace Ipedf.App.Areas.System.Controllers
                     }
                 }
                 #endregion
-                   
+
+                #region 发票号与供应计划一一对应
+                if (!IsExistFphm(entity))
+                {
+                    return Json("F:创建失败，发票号码已经存在，一个发票号只对应一个供应计划！", "text/html");
+                }
+                #endregion
+
                 var mengeNumber = GetSupplyPlan(entity.EBELN, entity.GYJH, "") + entity.MENGE;
                 if (mengeNumber > decimal.Parse(form["ORDER_MENGE"]))
                 {
@@ -958,7 +965,7 @@ namespace Ipedf.App.Areas.System.Controllers
             {
                 EBELN = ebeln,
                 GYJH = EBELP,
-                 BSART="Z004"
+                BSART = "Z004"
             });
             if (string.IsNullOrEmpty(id))
             {
@@ -968,6 +975,38 @@ namespace Ipedf.App.Areas.System.Controllers
             {
                 return list.Where(p => p.ID != id).Sum(p => p.MENGE);//编辑使用
             }
+        }
+        /// <summary>
+        /// 发票号与供应计划一一对应
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public bool IsExistFphm(EntityObject_SCM_D_SUPPLYPLAN entity)
+        {
+            if (entity.WERKS == "2000" & (entity.LGORT == "1001" || entity.LGORT == "1008"))
+            {
+                return true;
+            }
+            if (entity.WERKS == "2200" & (entity.LGORT == "1001" || entity.LGORT == "1005"))
+            {
+                return true;
+            }
+            if (entity.WERKS == "2100")
+            {
+                return true;
+            }
+            var cause = new CauseObject_SCM_D_SUPPLYPLAN();
+            cause.FPHM = entity.FPHM.Trim();
+            if (!string.IsNullOrEmpty(entity.ID))
+            {
+                cause.SetCustomCondition(" and SCM_D_SUPPLYPLAN.ID !='" + entity.ID + "'");
+            }
+            var list = BizLogicObject_SCM_D_SUPPLYPLAN.Proxy.Query(cause);
+            if (list.Count() > 0)
+            {
+                return false;
+            }
+            return true;
         }
         /// <summary>
         /// 获取供应计划号
@@ -1088,6 +1127,12 @@ namespace Ipedf.App.Areas.System.Controllers
                 }
             }
             #endregion
+            #region 发票号与供应计划一一对应
+            if (!IsExistFphm(curObj))
+            {
+                return Json("F:创建失败，发票号码已经存在，一个发票号只对应一个供应计划！", "text/html");
+            }
+            #endregion
             //缺货验证
             var listFiles1 = BizLogicObject_SCM_D_PURCHARSEPLAN.Proxy.Query(new CauseObject_SCM_D_PURCHARSEPLAN
             {
@@ -1113,7 +1158,7 @@ namespace Ipedf.App.Areas.System.Controllers
             {
                 return Json("F:保存失败，已经收货供应计划，不允许编辑！", "text/html");
             }
-            int IsAllow = BizLogicObject_SCM_D_PURCHARSEPLAN.Proxy.IsAllowAdd(curObj.EBELN, curObj.GYJH.Trim(), Convert.ToDecimal(from["MENGE"]),curObj.GYSACCOUNT,curObj.MATNR,from["CHARG"].ToString(),0, curObj.ID);
+            int IsAllow = BizLogicObject_SCM_D_PURCHARSEPLAN.Proxy.IsAllowAdd(curObj.EBELN, curObj.GYJH.Trim(), Convert.ToDecimal(from["MENGE"]), curObj.GYSACCOUNT, curObj.MATNR, from["CHARG"].ToString(), 0, curObj.ID);
             if (IsAllow == 1)
             {
                 TryUpdateModel<EntityObject_SCM_D_SUPPLYPLAN>(curObj, from);

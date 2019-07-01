@@ -39,6 +39,8 @@ namespace NFine.Domain.Entity.Hrm
         public DateTime? F_DeleteTime { get; set; }
         public string F_DeleteUserId { get; set; }
         public string OrganizeId { get; set; }
+        public DateTime? SubmitDate { get; set; }
+        public DateTime? AuditDate { get; set; }
 
     }
 }

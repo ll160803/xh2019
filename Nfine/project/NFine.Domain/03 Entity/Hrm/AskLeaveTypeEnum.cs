@@ -10,7 +10,7 @@ namespace NFine.Domain.Entity.Hrm
     {
         未提交 = 1,
         已提交 = 2,
-        审核未通过 = 0,
+        审核未通过 = 5,
         已审核 = 3,
         已推送SAP = 4
     }

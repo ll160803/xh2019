@@ -1,0 +1,2 @@
+D:\project\xh2019\SCM\App\obj\Release\App.csprojAssemblyReference.cache
+D:\project\xh2019\SCM\App\obj\Release\App.csproj.CoreCompileInputs.cache

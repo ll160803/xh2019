@@ -1,0 +1,114 @@
+﻿.laytrnew {
+    width: 748px;
+    height: 36px;
+    border-top: 1px solid #b2ccec;
+    border-left: 1px solid #b2ccec;
+    margin-left: 15px;
+    font: normal 12px/20px "微软雅黑";
+    text-align: center;
+    line-height: 36px;
+}
+.Oneside {
+    width: 248px;
+    height: 36px;
+    border-right: 1px solid #b2ccec;
+    border-bottom: 1px solid #b2ccec;
+    float: left;
+}
+.LeftTwoside {/*昨天两个合并 开始*/
+    width: 497px;
+    height: 36px;
+    border-right: 1px solid #b2ccec;
+    border-bottom: 1px solid #b2ccec;
+    float: left;
+}
+.LeftTwotrendlf {
+    width: 97px;
+    height: 36px;
+    float: left;
+    background-color: #E1EDFC;
+}
+
+.LeftTwotrendrt {
+    width: 399px;
+    height: 34px;
+    border-left: 1px solid #b2ccec;
+    float: left;
+    background-color: #F2F6FF;
+    padding-top: 2px;
+}
+
+
+.rightside {
+    width: 248px;
+    height: 36px;
+    border-right: 1px solid #b2ccec;
+    border-bottom: 1px solid #b2ccec;
+    float: right;
+}
+/*昨天两个合并 结束*/
+.centreside {
+    width: 248px;
+    height: 36px;
+    border-right: 1px solid #b2ccec;
+    border-bottom: 1px solid #b2ccec;
+    float: left;
+}
+
+.trendlf {
+    width: 97px;
+    height: 36px;
+    float: left;
+    background-color: #E1EDFC;
+}
+
+.trendrt {
+    width: 150px;
+    height: 29px;
+    border-left: 1px solid #b2ccec;
+    float: right;
+    background-color: #F2F6FF;
+    line-height: 18px;
+    padding-top: 7px;
+}
+.biglaytrnew {
+    width: 748px;
+    height: 50px;
+    border-top: 1px solid #b2ccec;
+    border-left: 1px solid #b2ccec;
+    margin-left: 15px;
+    font: normal 12px/20px "微软雅黑";
+    text-align: center;
+    line-height: 50px;
+}
+
+.bigsideleft {
+    width: 97px;
+    height: 48px;
+    border-right: 1px solid #b2ccec;
+    border-bottom:1px solid #b2ccec;
+    background-color: #e1edfc;
+    font: normal 12px/20px "微软雅黑";
+    float: left;
+    line-height: 34px;
+}
+
+.bigsideright {
+    width: 648px;
+    height: 48px;
+    border-right: 1px solid #b2ccec;
+    border-bottom:1px solid #b2ccec;
+    background-color: #e1edfc;
+    font: normal 12px/20px "微软雅黑";
+    float: left;
+    line-height: 20px;
+}
+.bigsideright textarea {
+    font: normal 12px/20px "微软雅黑";
+    color: #444;
+    border: 1px solid #CCC;
+    overflow: auto;
+    margin-top: 5px;
+    height:36px;
+    width:634px;
+}

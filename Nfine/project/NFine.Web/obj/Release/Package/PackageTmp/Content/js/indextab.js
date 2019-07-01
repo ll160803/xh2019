@@ -41,6 +41,10 @@
                 $(this).addClass('active').siblings('.menuTab').removeClass('active');
                 $.nfinetab.scrollToTab(this);
             }
+            var dataId = $(this).attr('data-mid');//权限设置 hsc add 2019 0701 当前模块的ID
+            if (dataId != "") {
+                top.$.cookie('nfine_currentmoduleid', dataId, { path: "/" });
+            }
         },
         closeOtherTabs: function () {
             $('.page-tabs-content').children("[data-id]").find('.fa-remove').parents('a').not(".active").each(function () {
@@ -135,7 +139,7 @@
                 }
             });
             if (flag) {
-                var str = '<a href="javascript:;" class="active menuTab" data-id="' + dataUrl + '">' + menuName + ' <i class="fa fa-remove"></i></a>';
+                var str = '<a href="javascript:;" class="active menuTab" data-mid="' + dataId + '" data-id="' + dataUrl + '">' + menuName + ' <i class="fa fa-remove"></i></a>';
                 $('.menuTab').removeClass('active');
                 var str1 = '<iframe class="NFine_iframe" id="iframe' + dataId + '" name="iframe' + dataId + '"  width="100%" height="100%" src="' + dataUrl + '" frameborder="0" data-id="' + dataUrl + '" seamless></iframe>';
                 $('.mainContent').find('iframe.NFine_iframe').hide();

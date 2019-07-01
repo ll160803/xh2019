@@ -1514,13 +1514,13 @@
     <Content Include="Styles\todo.css" />
     <Content Include="Styles\xp.css" />
     <Content Include="Styles\xp.menu.css" />
-    <Content Include="UploadFile\GysDoc\shuoming.txt" />
     <Content Include="Codes\ScmUpload.ashx" />
     <Content Include="Scripts\kindeditor\asp.net\file_manager_json.ashx" />
     <Content Include="Scripts\kindeditor\asp.net\upload_json.ashx" />
     <Content Include="Codes\ImportPicture_Reg.ashx" />
     <Content Include="Areas\XJ\Views\Web.config" />
     <Content Include="Areas\System\Views\SCM_B_SENDORDER\Create.aspx 的副本%282%29" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="SCM详细设计-主数据管理.doc" />
     <None Include="UploadFile\ImportDocument\说明.txt" />
     <Content Include="up\File\TextFile1.txt" />
@@ -1572,6 +1572,7 @@
     <Folder Include="Areas\XJ\Views\Shared\" />
     <Folder Include="bin\" />
     <Folder Include="UploadFile\BaseInfo\" />
+    <Folder Include="UploadFile\GysDoc\" />
     <Folder Include="Views\SAPData\" />
   </ItemGroup>
   <ItemGroup>

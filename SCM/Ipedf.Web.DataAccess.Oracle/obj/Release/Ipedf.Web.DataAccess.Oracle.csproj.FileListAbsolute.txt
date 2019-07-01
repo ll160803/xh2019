@@ -1,0 +1,2 @@
+D:\project\xh2019\SCM\Ipedf.Web.DataAccess.Oracle\obj\Release\Ipedf.Web.DataAccess.Oracle.csprojAssemblyReference.cache
+D:\project\xh2019\SCM\Ipedf.Web.DataAccess.Oracle\obj\Release\Ipedf.Web.DataAccess.Oracle.csproj.CoreCompileInputs.cache

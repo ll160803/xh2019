@@ -1,0 +1,2 @@
+D:\project\xh2019\SCM\Ipedf.Web.Common\obj\Release\Ipedf.Web.Common.csprojAssemblyReference.cache
+D:\project\xh2019\SCM\Ipedf.Web.Common\obj\Release\Ipedf.Web.Common.csproj.CoreCompileInputs.cache

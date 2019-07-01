@@ -51,13 +51,13 @@
                     formatter: function (cellvalue, options, rowObject) {
                         if (cellvalue == "1") {
                             return '未提交';
-                        } else if (cellvalue == "0") {
+                        } else if (cellvalue == "5") {
                             return '审核未通过';
                         }else if (cellvalue == "2") {
                             return '已提交';
                         } else if (cellvalue == "3") {
                             return '已审核';
-                        }else {
+                        } else if (cellvalue == "4"){
                             return '已发送SAP';
                         }
                     }
@@ -112,11 +112,7 @@
             $.modalAlert("此记录已经做过请假改登，不能编辑", "warning");
             return false;
         }
-        if (IsNew == "否") {
-            $.modalAlert("此记录已经做过请假改登，不能编辑", "warning");
-            return false;
-        }
-        if (!(State == "未提交" || State == "审核未通过")) {
+        if (State != "未提交") {
             $.modalAlert("此记录已经提交，不能编辑", "warning");
             return false;
         }
@@ -149,7 +145,7 @@
             $.modalAlert("此记录已经做过请假改登，不能删除", "warning");
             return false;
         }
-        if (!(State == "未提交" || State == "审核未通过")) {
+        if (State != "未提交") {
             $.modalAlert("此记录已经提交，不能删除", "warning");
             return false;
         }
@@ -172,7 +168,7 @@
         //    $.modalAlert("此记录已经做过请假改登，不能删除", "warning");
         //    return false;
         //}
-        if (!(State == "未提交" || State == "审核未通过")) {
+        if (State != "未提交") {
             $.modalAlert("此记录已经提交，无需重复提交", "warning");
             return false;
         }
@@ -209,8 +205,8 @@
         //    $.modalAlert("此记录已经做过请假改登，不能删除", "warning");
         //    return false;
         //}
-        if (State == "未提交" || State == "已提交") {
-            $.modalAlert("此记录未审核，不能进行请假改登", "warning");
+        if (State == "未提交") {
+            $.modalAlert("此记录未提交，不能进行请假改登", "warning");
             return false;
         }
         $.modalOpen({
@@ -269,11 +265,11 @@
                     <div class="input-group">
                         <span class="input-group-addon">审核状态</span>
                         <select id="state" name="state" class="form-control" style="width:200px;" onchange="$('#btn_search').click();">
-                            <option value="-1">全部</option>
-                            <option value="1" selected>未提交</option>
+                            <option value="-1" selected>全部</option>
+                            <option value="1" >未提交</option>
                             <option value="2">已提交</option>
                             <option value="3">已审核</option>
-                            <option value="0">审核未通过</option>
+                            <option value="5">审核未通过</option>
                             <option value="4">已推送SAP</option>
                         </select>
                     </div>

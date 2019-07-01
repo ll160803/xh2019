@@ -1,0 +1,2 @@
+D:\project\xh2019\SCM\Ipedf.Web.BizLogic.Oracle\obj\Release\Ipedf.Web.BizLogic.Oracle.csprojAssemblyReference.cache
+D:\project\xh2019\SCM\Ipedf.Web.BizLogic.Oracle\obj\Release\Ipedf.Web.BizLogic.Oracle.csproj.CoreCompileInputs.cache

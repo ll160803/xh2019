@@ -1,0 +1,119 @@
+#qsfexWrapper
+{
+	width: 697px;
+	height: 454px;
+	
+	background: transparent url(Images/background.jpg) no-repeat top left;
+	
+	position: relative;
+}
+
+#qsfexWrapper label
+{
+	color: #473e2e;
+	font: 11px/10px "Segoe UI", "Myriad Pro", Arial, sans-serif;
+	float: left;
+	clear: left;
+	width: 150px;
+	margin-top: 22px;
+}
+
+#qsfexWrapper .RadComboBox
+{
+	float: left;
+	margin-top: 15px;
+}
+
+.RadComboBoxDropDown_Vista .rcbWidth
+{
+	overflow-x: hidden !important;
+}
+
+#qsfexWrapper .qsfexActions
+{
+	float: left;
+	clear: left;
+	padding: 26px 0 0 150px;
+	width: 200px;
+	font: 11px "Segoe UI", "Myriad Pro", Arial, sans-serif;
+}
+
+#qsfexWrapper .qsfexActions a
+{
+	color: #544a38;
+}
+
+#LinkButton_Schedule
+{
+	display: block;
+	float: left;
+	width: 71px;
+	height: 23px;
+	margin-top: -6px;
+	text-indent: -9999px;
+	font-size: 0;
+	line-height: 0;
+	background: transparent url(Images/schedule-button.gif) no-repeat top left;
+	margin-right: 5px;
+}
+
+#qsfexWrapper fieldset
+{
+	margin: 0;
+	padding: 0;
+	border: 0;
+	
+	position: absolute;
+	
+	top: 210px;
+	left: 30px;
+	
+	width: 360px;
+}
+
+#qsfexWrapper fieldset legend
+{
+	display: none;
+}
+
+.qsfexBrokerView
+{
+	padding: 4px 3px;
+}
+
+.qsfexBrokerView .qsfexBrokerPic
+{
+	vertical-align: middle;
+}
+
+.qsfexBrokerView .qsfexBrokerName
+{
+	vertical-align: middle;
+	padding-left: 5px;
+}
+
+#qsfexTours
+{
+	position: absolute;
+	left: 445px;
+	top: 225px;
+	width: 220px;
+}
+
+#qsfexTours .scheduled_tour
+{
+	background: transparent url(Images/panel-bg.gif) no-repeat 0 5px;
+}
+
+#qsfexTours .scheduled_tour .date
+{
+	font: 14px/19px Garamond, serif;
+	font-weight: bold;
+	color: #a09b7d;
+}
+
+#qsfexTours .scheduled_tour div
+{
+	font: normal 14px/15px Garamond, serif;
+	color: #7d7259;
+}

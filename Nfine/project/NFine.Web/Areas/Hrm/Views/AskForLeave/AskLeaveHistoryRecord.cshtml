@@ -19,14 +19,14 @@
             height: $(window).height() - 128,
             colModel: [
                 { label: '主键', name: 'F_Id', hidden: true },
-                { label: '考勤员', name: 'F_RealName', width: 80, align: 'left' },
+                { label: '提交人', name: 'F_RealName', width: 80, align: 'left' },
+
+                //{
+                //    label: '考勤部门', name: 'F_FullName', width: 80, align: 'left'
+                //},
 
                 {
-                    label: '考勤部门', name: 'F_FullName', width: 80, align: 'left'
-                },
-
-                {
-                    label: '考勤时间', name: 'F_CreatorTime', width: 80, align: 'left',
+                    label: '提交时间', name: 'F_CreatorTime', width: 80, align: 'left',
                     formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' }
                 },
             ],

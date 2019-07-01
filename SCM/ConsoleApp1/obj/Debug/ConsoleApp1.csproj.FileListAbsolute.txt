@@ -5,3 +5,10 @@ C:\work\xiehe\SCM\ConsoleApp1\obj\Debug\ConsoleApp1.csprojAssemblyReference.cach
 C:\work\xiehe\SCM\ConsoleApp1\obj\Debug\ConsoleApp1.csproj.CoreCompileInputs.cache
 C:\work\xiehe\SCM\ConsoleApp1\obj\Debug\ConsoleApp1.exe
 C:\work\xiehe\SCM\ConsoleApp1\obj\Debug\ConsoleApp1.pdb
+D:\project\xh2019\SCM\ConsoleApp1\bin\Debug\ConsoleApp1.exe.config
+D:\project\xh2019\SCM\ConsoleApp1\bin\Debug\ConsoleApp1.exe
+D:\project\xh2019\SCM\ConsoleApp1\bin\Debug\ConsoleApp1.pdb
+D:\project\xh2019\SCM\ConsoleApp1\obj\Debug\ConsoleApp1.csprojAssemblyReference.cache
+D:\project\xh2019\SCM\ConsoleApp1\obj\Debug\ConsoleApp1.csproj.CoreCompileInputs.cache
+D:\project\xh2019\SCM\ConsoleApp1\obj\Debug\ConsoleApp1.exe
+D:\project\xh2019\SCM\ConsoleApp1\obj\Debug\ConsoleApp1.pdb

@@ -51,5 +51,6 @@ namespace NFine.Domain.Entity.Hrm
         public string Ref_Id { get; set; }
         public string Suggestion { get; set; }
         public bool? Flag { get; set; }
+        public bool? DoctorOrNurser { get; set; }
     }
 }

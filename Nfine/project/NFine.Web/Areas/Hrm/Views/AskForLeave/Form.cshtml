@@ -61,14 +61,19 @@
                     $(this).combogrid("setValue", keyword);
                 }
             },
-
+            
             onSelect: function (rowIndex, rowData) {
                 $("#HrmUserId").val(rowData.F_Id);
                 $("#OrganizeId").val(rowData.OrganizeId);
             }
         });
+       
     }
     function submitForm() {//保存
+        var NACHN = $("input[name='NACHN']").val();
+        if (NACHN == "") {
+            $.modalAlert("请选择请假人", "warning");
+        }
         if (!$('#form1').formValid()) {
             return false;
         }
@@ -82,6 +87,10 @@
         })
     }
     function submitAndSaveForm(index) {//保存并提交a
+        var NACHN = $("input[name='NACHN']").val();
+        if (NACHN == "") {
+            $.modalAlert("请选择请假人", "warning");
+        }
         if (!$('#form1').formValid()) {
             return false;
         }
@@ -99,7 +108,7 @@
             return false;
         }
         $.submitForm({
-            url: "/hrm/askforleave/SubmitFormModify?keyValue=" + keyValue,
+            url: "/hrm/askforleave/SubmitFormModify?keyValue=" + keyValue + "&state2=1",
             param: $("#form1").formSerialize(),
             success: function () {
                 $.currentWindow().$("#gridList").trigger("reloadGrid");
@@ -111,7 +120,7 @@
             return false;
         }
         $.submitForm({
-            url: "/hrm/askforleave/SubmitFormModify?keyValue=" + keyValue+"&state=2",
+            url: "/hrm/askforleave/SubmitFormModify?keyValue=" + keyValue+"&state2=2",
             param: $("#form1").formSerialize(),
             success: function () {
                 parent.layer.close(index);
@@ -122,10 +131,10 @@
     function ModifyFlag(obj) {
         var txt = obj.find("option:selected").text();
         if (txt == "病假" || txt == "产假") {
-            $("#Flag").val(1);
+            $("#Flag").val(true);
         }
         else {
-            $("#Flag").val(0);
+            $("#Flag").val(false);
         }
     }
 </script>
@@ -139,14 +148,14 @@
                 <tr>
                     <th class="formTitle">请假人</th>
                     <td class="formValue">
-                        <input id="NACHN" name="NACHN" type="text" class="form-control" placeholder="请输入请假人" />
+                        <input id="NACHN" name="NACHN" type="text" class="form-control required" placeholder="请输入请假人" />
                         <input id="HrmUserId" name="HrmUserId" type="hidden" />
                         <input id="OrganizeId" name="OrganizeId" type="hidden" />
                         <input id="State" name="State" type="hidden" />
                         <input id="IsNew" name="IsNew" type="hidden" />
                         <input id="AskSort" name="AskSort" type="hidden" />
                         <input id="Ref_Id" name="Ref_Id" type="hidden" />
-                        <input id="Flag" name="Flag" type="hidden" value="1" />
+                        <input id="Flag" name="Flag" type="hidden" value="true" />
                     </td>
                     <th class="formTitle">请假类型</th>
                     <td class="formValue">
@@ -168,9 +177,9 @@
                     <td class="formValue">
                         <input id="HosOrganize" name="HosOrganize" type="text" class="form-control" placeholder="请输入住院科室" />
                     </td>
-                    <th class="formTitle">疾病就诊</th>
+                    <th class="formTitle">疾病诊断</th>
                     <td class="formValue">
-                        <input id="SickCheck" name="SickCheck" type="text" class="form-control" placeholder="请输入疾病就诊" />
+                        <input id="SickCheck" name="SickCheck" type="text" class="form-control" placeholder="请输入疾病诊断" />
                     </td>
                 </tr>
                 <tr>

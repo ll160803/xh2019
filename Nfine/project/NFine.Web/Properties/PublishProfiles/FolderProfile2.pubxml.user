@@ -28,16 +28,16 @@
       <publishTime>06/03/2019 18:02:20</publishTime>
     </File>
     <File Include="Areas/Hrm/Views/AskForLeave/AskAuditIndex.cshtml">
-      <publishTime>06/20/2019 15:11:35</publishTime>
+      <publishTime>07/01/2019 09:45:04</publishTime>
     </File>
     <File Include="Areas/Hrm/Views/AskForLeave/AskIndex.cshtml">
-      <publishTime>06/22/2019 18:40:58</publishTime>
+      <publishTime>07/01/2019 15:09:32</publishTime>
     </File>
     <File Include="Areas/Hrm/Views/AskForLeave/AskLastAuditIndex.cshtml">
       <publishTime>06/20/2019 16:49:55</publishTime>
     </File>
     <File Include="Areas/Hrm/Views/AskForLeave/AskLeaveHistoryRecord.cshtml">
-      <publishTime>06/21/2019 11:48:47</publishTime>
+      <publishTime>07/01/2019 10:24:47</publishTime>
     </File>
     <File Include="Areas/Hrm/Views/AskForLeave/AskModifyIndex.cshtml">
       <publishTime>06/19/2019 12:44:51</publishTime>
@@ -46,13 +46,25 @@
       <publishTime>06/17/2019 15:13:06</publishTime>
     </File>
     <File Include="Areas/Hrm/Views/AskForLeave/Form.cshtml">
-      <publishTime>06/27/2019 09:29:14</publishTime>
+      <publishTime>07/01/2019 15:08:54</publishTime>
     </File>
     <File Include="Areas/Hrm/Views/AskForLeave/FormModify.cshtml">
       <publishTime>06/17/2019 16:08:19</publishTime>
     </File>
     <File Include="Areas/Hrm/Views/AskForLeave/HistoryRecordDetail.cshtml">
       <publishTime>06/21/2019 11:52:20</publishTime>
+    </File>
+    <File Include="Areas/Hrm/Views/Attendance/AttendanceAuditIndex.cshtml">
+      <publishTime>06/28/2019 15:19:45</publishTime>
+    </File>
+    <File Include="Areas/Hrm/Views/Attendance/AttendanceIndex.cshtml">
+      <publishTime>07/01/2019 14:05:01</publishTime>
+    </File>
+    <File Include="Areas/Hrm/Views/Attendance/Form.cshtml">
+      <publishTime>07/01/2019 10:20:29</publishTime>
+    </File>
+    <File Include="Areas/Hrm/Views/Attendance/HistoryRecordDetail.cshtml">
+      <publishTime>07/01/2019 10:21:03</publishTime>
     </File>
     <File Include="Areas/Hrm/Views/OutAndIn/Index.cshtml">
       <publishTime>06/14/2019 10:34:14</publishTime>
@@ -265,49 +277,49 @@
       <publishTime>06/03/2019 18:02:22</publishTime>
     </File>
     <File Include="bin/NFine.Application.dll">
-      <publishTime>06/27/2019 09:08:52</publishTime>
+      <publishTime>07/01/2019 14:21:31</publishTime>
     </File>
     <File Include="bin/NFine.Application.pdb">
-      <publishTime>06/27/2019 09:08:52</publishTime>
+      <publishTime>07/01/2019 14:21:31</publishTime>
     </File>
     <File Include="bin/NFine.Code.dll">
-      <publishTime>06/26/2019 16:59:44</publishTime>
+      <publishTime>07/01/2019 14:21:29</publishTime>
     </File>
     <File Include="bin/NFine.Code.pdb">
-      <publishTime>06/26/2019 16:59:44</publishTime>
+      <publishTime>07/01/2019 14:21:29</publishTime>
     </File>
     <File Include="bin/NFine.Data.dll">
-      <publishTime>06/26/2019 16:59:44</publishTime>
+      <publishTime>07/01/2019 14:21:29</publishTime>
     </File>
     <File Include="bin/NFine.Data.pdb">
-      <publishTime>06/26/2019 16:59:44</publishTime>
+      <publishTime>07/01/2019 14:21:29</publishTime>
     </File>
     <File Include="bin/NFine.Domain.dll">
-      <publishTime>06/27/2019 09:08:51</publishTime>
+      <publishTime>07/01/2019 14:21:30</publishTime>
     </File>
     <File Include="bin/NFine.Domain.pdb">
-      <publishTime>06/27/2019 09:08:51</publishTime>
+      <publishTime>07/01/2019 14:21:30</publishTime>
     </File>
     <File Include="bin/NFine.Mapping.dll">
-      <publishTime>06/27/2019 09:08:52</publishTime>
+      <publishTime>07/01/2019 14:21:30</publishTime>
     </File>
     <File Include="bin/NFine.Mapping.pdb">
-      <publishTime>06/27/2019 09:08:52</publishTime>
+      <publishTime>07/01/2019 14:21:30</publishTime>
     </File>
     <File Include="bin/NFine.Repository.dll">
-      <publishTime>06/27/2019 09:08:52</publishTime>
+      <publishTime>07/01/2019 14:21:30</publishTime>
     </File>
     <File Include="bin/NFine.Repository.pdb">
-      <publishTime>06/27/2019 09:08:52</publishTime>
+      <publishTime>07/01/2019 14:21:30</publishTime>
     </File>
     <File Include="bin/NFine.Web.dll">
-      <publishTime>06/27/2019 09:31:35</publishTime>
+      <publishTime>07/01/2019 15:11:21</publishTime>
     </File>
     <File Include="bin/NFine.Web.pdb">
-      <publishTime>06/27/2019 09:31:35</publishTime>
+      <publishTime>07/01/2019 15:11:21</publishTime>
     </File>
     <File Include="bin/NFine.Web.XmlSerializers.dll">
-      <publishTime>06/27/2019 09:31:36</publishTime>
+      <publishTime>07/01/2019 15:11:22</publishTime>
     </File>
     <File Include="bin/NPOI.dll">
       <publishTime>06/03/2019 18:02:22</publishTime>
@@ -2209,7 +2221,7 @@
       <publishTime>06/20/2019 08:58:47</publishTime>
     </File>
     <File Include="Content/js/indextab.js">
-      <publishTime>06/03/2019 18:02:20</publishTime>
+      <publishTime>07/01/2019 13:59:00</publishTime>
     </File>
     <File Include="Content/js/jqgrid/grid.locale-cn.js">
       <publishTime>06/03/2019 18:02:20</publishTime>
@@ -2578,7 +2590,7 @@
       <publishTime>06/03/2019 18:02:20</publishTime>
     </File>
     <File Include="Views/Shared/_LayoutIndex.cshtml">
-      <publishTime>06/03/2019 18:02:20</publishTime>
+      <publishTime>06/27/2019 13:14:05</publishTime>
     </File>
     <File Include="Views/Web.config">
       <publishTime>06/03/2019 18:02:20</publishTime>
