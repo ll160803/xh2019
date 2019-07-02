@@ -60,6 +60,22 @@
     </xsd:schema>
     <xsd:schema xmlns:n0="urn:sap-com:document:sap:rfc:functions" attributeFormDefault="qualified" targetNamespace="urn:sap-com:document:sap:soap:functions:mc-style">
       <xsd:import namespace="urn:sap-com:document:sap:rfc:functions" />
+      <xsd:simpleType name="char10">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char60">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="60" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="date10">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="10" />
+          <xsd:pattern value="\d\d\d\d-\d\d-\d\d" />
+        </xsd:restriction>
+      </xsd:simpleType>
       <xsd:complexType name="Zhr00SKqryxx">
         <xsd:sequence>
           <xsd:element name="Pernr" type="n0:numeric8" />
@@ -80,6 +96,13 @@
           <xsd:element name="Yggh" type="n0:char30" />
           <xsd:element name="Rylb" type="n0:char1" />
           <xsd:element name="Stat2" type="n0:char1" />
+          <xsd:element name="Statxt" type="tns:char10" />
+          <xsd:element name="Zcgksrq" type="tns:date10" />
+          <xsd:element name="Zcgjsrq" type="tns:date10" />
+          <xsd:element name="Zcgbz" type="tns:char60" />
+          <xsd:element name="Ztqksrq" type="tns:date10" />
+          <xsd:element name="Ztqjsrq" type="tns:date10" />
+          <xsd:element name="Ztqbz" type="tns:char60" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="TableOfZhr00SKqryxx">

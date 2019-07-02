@@ -16,8 +16,8 @@ C:\work\xiehe\SCM\Ipedf.Web.Entity.Oracle\obj\Debug\Ipedf.Web.Entity.Oracle.pdb
 C:\work\xiehe\SCM\Ipedf.Web.Entity.Oracle\obj\Debug\Ipedf.Web.Entity.Oracle.csprojAssemblyReference.cache
 D:\project\xh2019\SCM\Ipedf.Web.Entity.Oracle\bin\Debug\Ipedf.Web.Entity.Oracle.dll
 D:\project\xh2019\SCM\Ipedf.Web.Entity.Oracle\bin\Debug\Ipedf.Web.Entity.Oracle.pdb
-D:\project\xh2019\SCM\Ipedf.Web.Entity.Oracle\obj\Debug\Ipedf.Web.Entity.Oracle.csprojAssemblyReference.cache
 D:\project\xh2019\SCM\Ipedf.Web.Entity.Oracle\obj\Debug\Ipedf.Web.Entity.Oracle.csproj.CoreCompileInputs.cache
 D:\project\xh2019\SCM\Ipedf.Web.Entity.Oracle\obj\Debug\Ipedf.Web.Entity.Oracle.csproj.CopyComplete
 D:\project\xh2019\SCM\Ipedf.Web.Entity.Oracle\obj\Debug\Ipedf.Web.Entity.Oracle.dll
 D:\project\xh2019\SCM\Ipedf.Web.Entity.Oracle\obj\Debug\Ipedf.Web.Entity.Oracle.pdb
+D:\project\xh2019\SCM\Ipedf.Web.Entity.Oracle\obj\Debug\Ipedf.Web.Entity.Oracle.csprojAssemblyReference.cache

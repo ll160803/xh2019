@@ -1,1 +1,0 @@
-﻿<%@ ServiceHost Language="C#" Debug="true" Service="Ipedf.App.SAP_WCF.SAPtoSCM" CodeBehind="SAPtoSCM.svc.cs" %>

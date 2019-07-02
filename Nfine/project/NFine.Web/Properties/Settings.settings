@@ -5,5 +5,8 @@
     <Setting Name="NFine_Web_SapHrm_ZWS_KQRYXX" Type="(Web Service URL)" Scope="Application">
       <Value Profile="(Default)">http://p01app2:8001/sap/bc/srt/rfc/sap/zhrws_kqryxx/800/zws_kqryxx/zws_kqryxx</Value>
     </Setting>
+    <Setting Name="NFine_Web_HrmSap_ZHRWS_KQJLMX" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://p01app2:8001/sap/bc/srt/rfc/sap/zhrws_kqjlmx/800/zhrws_kqjlmx/zhrws_kqjlmx</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using System.Text;
 using NFine.Domain.Entity.SystemManage;
 using NFine.Application.SystemManage;
+using NFine.Web.Code;
 
 namespace NFine.Web.Areas.Hrm.Controllers
 {
@@ -378,6 +379,8 @@ namespace NFine.Web.Areas.Hrm.Controllers
             }
             userEntity.DoctorOrNurser = (IsDoctor == "1" ? true : false);
             userEntity.State = (int)AskLeaveStateType.已提交;//改为提交操作
+            userEntity.SubmitUser = OperatorProvider.Provider.GetCurrent().UserCode;
+            userEntity.LeaderAuditTime = DateTime.Now;
             // userEntity.OrganizeId= OperatorProvider.Provider.GetCurrent().CompanyId;//当前科室
             var hasList = askApp.GetLeaveList(userEntity.HrmUserId, userEntity.StartDate.Value, userEntity.EndDate.Value, keyValue);
             if (hasList.Count > 0)
@@ -385,6 +388,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 return Error("此员工在请假时间区间内，已经有请假记录，请核实后重新提交");
             }
             askApp.InsertForm(userEntity, keyValue);
+            SAPHandle.SendAskLeaveToSap(viewApp.GetForm(userEntity.F_Id));
             return Success("操作成功。");
         }
         [HttpPost]
@@ -410,8 +414,14 @@ namespace NFine.Web.Areas.Hrm.Controllers
             var oldEntity = askApp.GetForm(keyValue);
             oldEntity.IsNew = false;//之前的请假记录不激活
             userEntity.F_Id = Guid.NewGuid().ToString();
+            userEntity.SubmitUser = OperatorProvider.Provider.GetCurrent().UserCode;
+            userEntity.LeaderAuditTime = DateTime.Now;//提交时间
             askApp.SubmitForm(oldEntity, keyValue);//之前的请假记录不激活
             askApp.SubmitForm(userEntity, "");
+            if (state2 == 2)
+            {
+                SAPHandle.SendAskLeaveToSap(viewApp.GetForm(userEntity.F_Id));//传送SAP
+            }
             return Success("操作成功。");
         }
         [HttpPost]
@@ -440,7 +450,10 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 return Error("此请假已经提交，请勿重复操作，具体请联系管理员。");
             }
             entity.State = (int)AskLeaveStateType.已提交;
+            entity.SubmitUser = OperatorProvider.Provider.GetCurrent().UserCode;
+            entity.LeaderAuditTime = DateTime.Now;
             askApp.SubmitForm(entity, keyValue);
+            SAPHandle.SendAskLeaveToSap(viewApp.GetForm(keyValue));//传送SAP
             return Success("提交成功。");
         }
         [HttpPost]

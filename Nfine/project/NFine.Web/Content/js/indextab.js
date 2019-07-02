@@ -60,6 +60,12 @@
                 if ($(this).parents('.menuTab').next('.menuTab').size()) {
                     var activeId = $(this).parents('.menuTab').next('.menuTab:eq(0)').data('id');
                     $(this).parents('.menuTab').next('.menuTab:eq(0)').addClass('active');
+                    
+                    var dataId = $(this).parents('.menuTab').next('.menuTab:eq(0)').attr('data-mid');//权限设置 hsc add 2019 0701 当前模块的ID 
+                    if (dataId != "") {
+                        top.$.cookie('nfine_currentmoduleid', dataId, { path: "/" });
+                    }
+
                     $('.mainContent .NFine_iframe').each(function () {
                         if ($(this).data('id') == activeId) {
                             $(this).show().siblings('.NFine_iframe').hide();
@@ -83,6 +89,10 @@
                 if ($(this).parents('.menuTab').prev('.menuTab').size()) {
                     var activeId = $(this).parents('.menuTab').prev('.menuTab:last').data('id');
                     $(this).parents('.menuTab').prev('.menuTab:last').addClass('active');
+                    var dataId = $(this).parents('.menuTab').prev('.menuTab:last').attr('data-mid');//权限设置 hsc add 2019 0701 当前模块的ID 
+                    if (dataId != "") {
+                        top.$.cookie('nfine_currentmoduleid', dataId, { path: "/" });
+                    }
                     $('.mainContent .NFine_iframe').each(function () {
                         if ($(this).data('id') == activeId) {
                             $(this).show().siblings('.NFine_iframe').hide();

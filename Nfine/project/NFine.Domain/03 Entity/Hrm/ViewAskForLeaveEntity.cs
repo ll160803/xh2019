@@ -75,5 +75,18 @@ namespace NFine.Domain.Entity.Hrm
         public string Ref_Id { get; set; }
         public string Suggestion { get; set; }
         public bool? Flag { get; set; }
+        /// <summary>
+        /// 父类科室组织ID
+        /// </summary>
+        public string ParentOrgId { get; set; }
+        /// <summary>
+        /// 父类科室组织名称
+        /// </summary>
+        public string ParentOrgName { get; set; }
+        /// <summary>
+        /// 创建人名称
+        /// </summary>
+        public string F_Account { get; set; }
+        
     }
 }

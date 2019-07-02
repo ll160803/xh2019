@@ -997,6 +997,7 @@ namespace Ipedf.App.Areas.System.Controllers
             }
             var cause = new CauseObject_SCM_D_SUPPLYPLAN();
             cause.FPHM = entity.FPHM.Trim();
+            cause.GYSACCOUNT =  GetCurrentID();
             if (!string.IsNullOrEmpty(entity.ID))
             {
                 cause.SetCustomCondition(" and SCM_D_SUPPLYPLAN.ID !='" + entity.ID + "'");

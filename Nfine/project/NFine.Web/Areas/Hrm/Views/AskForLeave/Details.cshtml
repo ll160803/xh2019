@@ -5,7 +5,7 @@
 <script>
     var keyValue = $.request("keyValue");
     $(function () {
-      //  initControl();
+       // initControl();
         if (!!keyValue) {
             $.ajax({
                 url: "/hrm/askforleave/GetFormJson",
@@ -21,52 +21,16 @@
     });
     function initControl() {
         $("#StartDate").datepicker({
-            format: 'mm/dd/yyyy',
+            format: 'yyyy-mm-dd',
             startDate: '-3d',
             language: 'zh-CN'
         });
         $("#EndDate").datepicker({
-            format: 'mm/dd/yyyy',
+            format: 'yyyy-mm-dd',
             startDate: '-3d',
             language: 'zh-CN'
         });
-        $("#AskTypeId").bindSelect({
-            url: "/SystemManage/ItemsData/GetSelectJson_Own?enCode=AskLeaveType"
-        });
-        $("#NACHN").combogrid({
-            panelWidth: 500,
-            idField: 'F_Id',
-            textField: 'NACHN',
-            url: '/hrm/sapuser/GetComboGridJson/1',
-            method: 'post',
-            pagination: true,
-            columns: [[
-                { title: '主键', field: 'F_Id', hidden: true },
-                { title: '人员编号', field: 'PERNR', width: 80, align: 'left' },
-                { title: '姓名', field: 'NACHN', width: 80, align: 'left' },
-
-                {
-                    title: '员工工号', field: 'YGGH', width: 80, align: 'left'
-                }
-            ]],
-            fitColumns: true,
-            keyHandler: {
-                query: function (keyword) {
-                    $(this).combogrid("grid").datagrid('clearSelections');
-
-                    var queryParams = $(this).combogrid("grid").datagrid('options').queryParams;
-                    queryParams.keyword = keyword;
-                    $(this).combogrid("grid").datagrid('options').queryParams = queryParams;
-                    $(this).combogrid("grid").datagrid("reload");
-                    $(this).combogrid("setValue", keyword);
-                }
-            },
-
-            onSelect: function (rowIndex, rowData) {
-                $("#HrmUserId").val(rowData.F_Id);
-                $("#OrganizeId").val(rowData.OrganizeId);
-            }
-        });
+       
     }
    
 </script>
