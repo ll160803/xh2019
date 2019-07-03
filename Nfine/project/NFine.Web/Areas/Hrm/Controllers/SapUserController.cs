@@ -54,7 +54,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 var orgIds = "," + string.Join(",", authorizedata.Select(u => u.F_ItemId)) + ",";
                 expression = expression.And(p => orgIds.Contains("," + p.OrganizeId + ","));
             }
-           
+
 
             expression = expression.And(p => p.RYLB == IsDoctor);
 
@@ -132,7 +132,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
         }
         [HttpGet]
         [HandlerAjaxOnly]
-        public ActionResult GetGridJsonForIn(string id, Pagination pagination, string keyword)
+        public ActionResult GetGridJsonForIn(string id, Pagination pagination, string keyword, bool Is_all = false)
         {
             System.Linq.Expressions.Expression<Func<HrmUserEntity, bool>> expression = ExtLinq.True<HrmUserEntity>();
 
@@ -148,7 +148,10 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 keyPress = keyPress.Or(t => t.NACHN.Contains(keyword));
                 expression = expression.And(keyPress);
             }
-
+            if (!Is_all)
+            {
+                expression = expression.And(s => s.STAT2 == "3" || (s.STAT2 == "2" & (s.PERSK == "70" || s.PERSK == "73")));
+            }
             var data = new
             {
                 rows = userApp.GetList(pagination, expression),

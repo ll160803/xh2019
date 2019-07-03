@@ -279,7 +279,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 List<AttendanceRecordDEntity> list_d = new List<AttendanceRecordDEntity>();
                 foreach (var item in listData)
                 {
-                    AttendanceRecordDEntity ask_d = new AttendanceRecordDEntity { F_Id = Guid.NewGuid().ToString(), Base_Id = entity.F_Id, hrm_user_Id = item.Id, Note = item.Note };
+                    AttendanceRecordDEntity ask_d = new AttendanceRecordDEntity { F_Id = Guid.NewGuid().ToString(), Base_Id = entity.F_Id, hrm_user_Id = item.Id, Note = item.Note, OrganizeId = item.OrgId };
                     list_d.Add(ask_d);
 
                 }
@@ -350,6 +350,13 @@ namespace NFine.Web.Areas.Hrm.Controllers
             entity.AuditDate = DateTime.Now;
             entity.F_Description = suggestion;
             appRecord.SubmitForm(entity, keyValue);
+            if (state == 3)//审核成功需要发送SAP
+            {
+                System.Linq.Expressions.Expression<Func<ViewHrmAttandaceSapEntity, bool>> expression = ExtLinq.True<ViewHrmAttandaceSapEntity>();
+                expression = expression.And(t => t.Base_Id == keyValue);
+                var listAttendance = new ViewHrmAttandaceSapApp().GetList(new Pagination { page = 1, rows = int.MaxValue, sidx = "F_Id", sord = "asc" }, expression);
+                Code.SAPHandle.SendAttendanceToSap(listAttendance);
+            }
             return Success("审核成功。");
         }
     }

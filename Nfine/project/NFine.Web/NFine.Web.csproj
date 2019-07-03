@@ -171,6 +171,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
+    <Compile Include="Web References\SapAttendance\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
     <Compile Include="Web References\SapHrm\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1171,6 +1176,14 @@
       <DependentUpon>Reference.map</DependentUpon>
     </Content>
     <None Include="Web References\HrmSap\zhrws_kqjlmx.wsdl" />
+    <None Include="Web References\SapAttendance\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <Content Include="Web References\SapAttendance\Zhr00FmKqksspResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <None Include="Web References\SapAttendance\zhrws_kqkshz.wsdl" />
     <None Include="Web References\SapHrm\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
@@ -1208,6 +1221,17 @@
       </CachedDynamicPropName>
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>NFine_Web_HrmSap_ZHRWS_KQJLMX</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://p01app2:8001/sap/bc/srt/wsdl/flv_10002A101AD1/bndg_url/sap/bc/srt/rfc/sap/zhrws_kqkshz/800/zhrws_kqkshz/zhrws_kqkshz%3fsap-client=800">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\SapAttendance\</RelPath>
+      <UpdateFromURL>http://p01app2:8001/sap/bc/srt/wsdl/flv_10002A101AD1/bndg_url/sap/bc/srt/rfc/sap/zhrws_kqkshz/800/zhrws_kqkshz/zhrws_kqkshz%3fsap-client=800</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>NFine_Web_SapAttendance_ZHRWS_KQKSHZ</CachedSettingsPropName>
     </WebReferenceUrl>
   </ItemGroup>
   <PropertyGroup>

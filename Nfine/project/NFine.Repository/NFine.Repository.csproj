@@ -51,6 +51,7 @@
     <Compile Include="Hrm\ViewAskForLeaveRepository.cs" />
     <Compile Include="Hrm\ViewAttendanceRecordDRepository.cs" />
     <Compile Include="Hrm\ViewHrmAskForLeaveRecordRepository.cs" />
+    <Compile Include="Hrm\ViewHrmAttandaceSapRepository.cs" />
     <Compile Include="Hrm\ViewOutAndInRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemManage\ItemsDetailRepository.cs" />

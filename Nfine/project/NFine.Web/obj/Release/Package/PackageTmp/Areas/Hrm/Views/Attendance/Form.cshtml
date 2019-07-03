@@ -13,10 +13,22 @@
         gridList();
     })
     function initControl() {
-        $("#txt_keyword").datepicker({
-            format: 'yyyy-mm',
-            language: 'zh-CN'
+        laydate.render({
+            elem: '#txt_keyword',
+            type: 'month',
+            trigger: 'click',
+            done: function (value, date, endDate) {
+                var $gridList = $("#gridList");
+                $gridList.jqGrid('setGridParam', {
+                    postData: { keyword: value }
+                }).trigger('reloadGrid');
+            }
         });
+
+        //$("#txt_keyword").datepicker({
+        //    format: 'yyyy-mm',
+        //    language: 'zh-CN'
+        //});
         var date = new Date();
         var dateStr = date.getFullYear() + '-';
         var m = (date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth());
@@ -35,9 +47,12 @@
                 { label: '主键', name: 'F_Id', hidden: true },
                 { label: '人员编号', name: 'PERNR', width: 80, align: 'left' },
                 { label: '姓名', name: 'NACHN', width: 80, align: 'left' },
-
+                
                 {
                     label: '性别', name: 'GESCTXT', width: 80, align: 'left'
+                },
+                {
+                    label: '部门', name: 'OrganizeId', width: 80, align: 'left', hidden: true
                 },
                 {
                     label: '出生日期', name: 'GBDAT', width: 80, align: 'left',
@@ -90,13 +105,17 @@
         if (rowIds.length > 0) {
             for (var i = 0; i < rowIds.length; i++) {
                 //rowData=obj.getRowData(rowid);//这里rowid=rowIds[i];
-                arrayData.push({ Id: obj.getRowData(rowIds[i]).F_Id, Note: obj.getRowData(rowIds[i]).F_Description });
+                arrayData.push({ Id: obj.getRowData(rowIds[i]).F_Id, OrgId: obj.getRowData(rowIds[i]).OrganizeId, Note: obj.getRowData(rowIds[i]).F_Description });
             }
         }
         return arrayData;
 
     }
     function submitForm() {//保存
+        if ($("#txt_keyword").val() == "") {
+            $.modalAlert("请选择考勤日期", "warning");
+            return false;
+        }
         var data = GetAllData();
         var dataStr = JSON.stringify(data);
         $.submitForm({
@@ -108,7 +127,11 @@
             }
         })
     }
-    function submitAndSaveForm() {//保存并提交a
+    function submitAndSaveForm() {//保存并提交a\
+        if ($("#txt_keyword").val() == "") {
+            $.modalAlert("请选择考勤日期", "warning");
+            return false;
+        }
         var data = GetAllData();
         var dataStr = JSON.stringify(data);
         $.submitForm({

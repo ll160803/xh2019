@@ -43,5 +43,16 @@ namespace NFine.Web.Properties {
                 return ((string)(this["NFine_Web_HrmSap_ZHRWS_KQJLMX"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://p01app2:8001/sap/bc/srt/rfc/sap/zhrws_kqkshz/800/zhrws_kqkshz/zhrws_kqkshz" +
+            "")]
+        public string NFine_Web_SapAttendance_ZHRWS_KQKSHZ {
+            get {
+                return ((string)(this["NFine_Web_SapAttendance_ZHRWS_KQKSHZ"]));
+            }
+        }
     }
 }

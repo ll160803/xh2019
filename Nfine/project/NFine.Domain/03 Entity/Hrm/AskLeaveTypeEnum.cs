@@ -27,6 +27,7 @@ namespace NFine.Domain.Entity.Hrm
     public class AttendanceNote
     {
         public string Id { get; set; }
+        public string OrgId { get; set; }
         public string Note { get; set; }
     }
 }

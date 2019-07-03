@@ -23,7 +23,8 @@ namespace NFine.Domain.Entity.Hrm
 						public  string  F_Id { get; set; }
 					public  string  Base_Id { get; set; }
 					public  string  hrm_user_Id { get; set; }
-					public  string  Note { get; set; }
+        public string OrganizeId { get; set; }
+        public  string  Note { get; set; }
 					public  bool?  F_AllowEdit { get; set; }
 					public  bool?  F_AllowDelete { get; set; }
 					public  int?  F_SortCode { get; set; }
