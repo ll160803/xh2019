@@ -19,7 +19,8 @@
     <link href="~/Content/js/wizard/wizard.css" rel="stylesheet" />
     <script src="~/Content/js/wizard/wizard.js"></script>
     <script src="~/Content/js/validate/jquery.validate.min.js"></script>
-
+    <script src="~/Content/js/validate/additional-methods.js"></script>
+    <script src="~/Content/js/validate/messages_zh.min.js"></script>
 
     <link href="~/Content/css/framework-ui.css" rel="stylesheet" />
     <script src="~/Content/js/framework-ui.js"></script>
@@ -28,7 +29,35 @@
     <script src="~/Content/js/datepicker_b/locales/bootstrap-datepicker.zh-CN.min.js"></script>
     <link href="~/Content/js/easyui/themes/bootstrap/easyui.css" rel="stylesheet" />
     <script src="~/Content/js/easyui/jquery.easyui.min.js"></script>
+    <script>
+        $(function () {
+            $("#form1").validate({
+                onfocusout: function (element) {
 
+                    return $(element).valid();
+                },
+                errorPlacement: function (error, element) {
+                    if (error.text() != "") {
+                        element.parents('.formValue').addClass('has-error');
+                        element.parents('.has-error').find('i.error').remove();
+                        element.parents('.has-error').append('<i class="form-control-feedback fa fa-exclamation-circle error" data-placement="left" data-toggle="tooltip" title="' + error.text() + '"></i>');
+                        $("[data-toggle='tooltip']").tooltip();
+                        if (element.parents('.input-group').hasClass('input-group')) {
+                            element.parents('.has-error').find('i.error').css('right', '33px')
+                        }
+                        // element.attr("aria-invalid", "false");
+                    }
+                    else {
+                        element.parents('.has-error').find('i.error').remove();
+                        element.parent().removeClass('has-error');
+                    }
+                },
+                success: function (error, element) {
+
+                }
+            });
+        });
+    </script>
 </head>
 <body>
     @RenderBody()

@@ -83,6 +83,14 @@ namespace NFine.Data
         {
             return dbcontext.Database.SqlQuery<TEntity>(strSql).ToList<TEntity>();
         }
+        public int Update(string strSql, DbParameter[] dbParameter)
+        {
+            return dbcontext.Database.ExecuteSqlCommand(strSql, dbParameter);
+        }
+        public int ExecuteScalar(string strSql, DbParameter[] dbParameter)
+        {
+            return dbcontext.Database.SqlQuery<int>(strSql, dbParameter).SingleOrDefault();
+        }
         public List<TEntity> FindList(string strSql, DbParameter[] dbParameter)
         {
             return dbcontext.Database.SqlQuery<TEntity>(strSql, dbParameter).ToList<TEntity>();

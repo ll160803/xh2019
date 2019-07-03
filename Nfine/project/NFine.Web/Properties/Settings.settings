@@ -11,5 +11,8 @@
     <Setting Name="NFine_Web_SapAttendance_ZHRWS_KQKSHZ" Type="(Web Service URL)" Scope="Application">
       <Value Profile="(Default)">http://p01app2:8001/sap/bc/srt/rfc/sap/zhrws_kqkshz/800/zhrws_kqkshz/zhrws_kqkshz</Value>
     </Setting>
+    <Setting Name="NFine_Web_BJK_AskLeave_ZHRWS_ZGBJKTJ" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://p01app2:8001/sap/bc/srt/rfc/sap/zhrws_zgbjktj/800/zhrws_zgbjktj/zhrws_zgbjktj</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

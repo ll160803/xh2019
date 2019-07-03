@@ -58,5 +58,12 @@ namespace NFine.Application.Hrm
                 service.Insert(entity);
             }
         }
+        public void InsertHasF_IDForm(HrmAskForLeaveRecordEntity entity)
+        {
+            
+                entity.Create();
+                service.Insert(entity);
+            
+        }
     }
 }

@@ -31,7 +31,7 @@ namespace NFine.Web.Code
                 {
                     Begda = entity.StartDate.Value.ToString("yyyy-MM-dd"),
                     Endda = entity.EndDate.Value.ToString("yyyy-MM-dd"),
-                    Guid = entity.F_Id,
+                    Guid = entity.Ref_Id,
                     Nachn = entity.NACHN,
                     Pernr = entity.PERNR,
                     Senro = entity.AskSort.ToString().PadLeft(4, '0'),
@@ -96,6 +96,74 @@ namespace NFine.Web.Code
             catch (Exception ex)
             {
                 LogFactory.GetLogger("SendAskLeaveToSap").Error("发送SAP失败:" + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 保健科传送病假考勤给SAP
+        /// </summary>
+        /// <param name="entitys"></param>
+        /// <param name="AuditDate">提交时间</param>
+        /// <param name="AuditMan">提交人</param>
+        /// <param name="mainGuid">主表GUID</param>
+        public static int BJKAskLeaveToSap(List<ViewAskForLeaveEntity> entitys, string AuditDate, string AuditMan, string mainGuid)
+        {
+            try
+            {
+                System.Net.NetworkCredential c = new System.Net.NetworkCredential(System.Configuration.ConfigurationManager.AppSettings["Sap_User"], System.Configuration.ConfigurationManager.AppSettings["Sap_Password"]);
+                BJK_AskLeave.ZHRWS_ZGBJKTJ gf = new BJK_AskLeave.ZHRWS_ZGBJKTJ();
+
+                gf.Credentials = c;
+                BJK_AskLeave.Zhr00FmZgbjktjResponse back = new BJK_AskLeave.Zhr00FmZgbjktjResponse();
+                LogFactory.GetLogger("BJKAskLeaveToSap").Info("链接SAP开始");
+                BJK_AskLeave.Zhr00FmZgbjktj input = new BJK_AskLeave.Zhr00FmZgbjktj();
+
+                var listSap = new List<BJK_AskLeave.Zhr00T099>();
+
+                foreach (var entity in entitys)
+                {
+                    TimeSpan ts = entity.EndDate.Value - entity.StartDate.Value;
+                    listSap.Add(new BJK_AskLeave.Zhr00T099
+                    {
+                        Begda = entity.StartDate.Value.ToString("yyyy-MM-dd"),
+                        Endda = entity.EndDate.Value.ToString("yyyy-MM-dd"),
+
+                        Nachn = entity.NACHN,
+                        Pernr = entity.PERNR,
+
+                        Zhrbz = entity.F_Description,
+                        Zhrjblx = "",
+                        Zhrjbzd = entity.SickCheck,
+                        Zhrks = entity.OrganizeId,
+                        Zhrksms = entity.F_FullName,
+                        Zhrqjlx = entity.AskTypeId,
+                        Zhrqjms = entity.F_ItemName,
+                        Zhrzk = entity.ParentOrgId == "5AB270C0-5D33-4203-A54F-4552699FDA3C" ? entity.OrganizeId : entity.ParentOrgId,
+                        Zhrzkms = entity.ParentOrgId == "5AB270C0-5D33-4203-A54F-4552699FDA3C" ? entity.F_FullName : entity.ParentOrgName,
+                        Zhrzyks = entity.HosOrganize,
+                        Zqjts = ts.Days + 1,
+                        Ztjr = entity.SubmitUser,
+                        Ztjrq = entity.LeaderAuditTime.Value.ToString("yyyy-MM-dd"),
+                        Guiddh = mainGuid,
+                        Guidmx = entity.Ref_Id, //这里是专门传值设置的
+                        Senro = entity.AskSort.ToString()
+                    });
+                }
+                input.T_099 = listSap.ToArray();
+                back = gf.Zhr00FmZgbjktj(input);
+                if (back.Mes == "成功")
+                {
+                    return 1;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogFactory.GetLogger("SynUserDataFromSap").Error("发送SAP失败:" + ex.Message);
+                return 0;
             }
         }
     }

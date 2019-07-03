@@ -192,6 +192,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
             {
                 expression = expression.And(p => p.State == state);
             }
+            expression = expression.And(p => !(p.IsNew == false & p.State == (int)AskLeaveStateType.已提交));
             if (!string.IsNullOrEmpty(keyword))
             {
                 var keyPress = ExtLinq.True<ViewAskForLeaveEntity>();
@@ -478,7 +479,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
         public ActionResult AuditSubmitLeave(string keyValue, int state, string suggestion)
         {
             AskForLeaveEntity entity = askApp.GetForm(keyValue);
-            if (entity.State != ((int)AskLeaveStateType.已提交) || entity.IsNew == false)
+            if (entity.State != ((int)AskLeaveStateType.已提交))
             {
                 return Error("此请假已经审核，请勿重复操作，具体请联系管理员。");
             }
@@ -559,39 +560,51 @@ namespace NFine.Web.Areas.Hrm.Controllers
         {
             try
             {
-                StringBuilder sb = new StringBuilder();
-                sb.Append("select *  from hrm_AskForLeave where ");
-                // sb.AppendFormat(" OrganizeId='{0}' ", OperatorProvider.Provider.GetCurrent().CompanyId);//科室主任只上传本科室的
-                sb.AppendFormat("  state={0} ", (int)AskLeaveStateType.已审核);
-                sb.AppendFormat(" and Flag={0} ", (int)AskLeaveType.病产假);//是产、病假
-                var listIds = askApp.GetIdList(sb.ToString());
-                if (listIds.Count <= 0)
+                //StringBuilder sb = new StringBuilder();
+                //sb.Append("select *  from hrm_AskForLeave where ");
+                //// sb.AppendFormat(" OrganizeId='{0}' ", OperatorProvider.Provider.GetCurrent().CompanyId);//科室主任只上传本科室的
+                //sb.AppendFormat("  state={0} ", (int)AskLeaveStateType.已审核);
+                //sb.AppendFormat(" and Flag={0} ", (int)AskLeaveType.病产假);//是产、病假
+                //var listIds = askApp.GetIdList(sb.ToString());
+                ViewAskForLeaveApp viewAskApp = new ViewAskForLeaveApp();
+                var listIds = viewAskApp.GetList(new Pagination { page = 1, rows = int.MaxValue, sidx = "F_Id", sord = "asc" }, x => x.State == 3 & x.Flag == true);
+               
+                    if (listIds.Count <= 0)
                 {
                     return Error("没有需要推送的数据,请审核后，重新操作。");
                 }
+                var mainGuid = Guid.NewGuid().ToString();
                 //var orgList = listIds.Select(p => new { orgid = p.OrganizeId, userid = p.F_CreatorUserId }).Distinct();
                 //foreach (var org in orgList)
                 //{
-                HrmAskForLeaveRecordApp app = new HrmAskForLeaveRecordApp();
-                var entity = new HrmAskForLeaveRecordEntity
+               var Msg= SAPHandle.BJKAskLeaveToSap(listIds, DateTime.Now.ToString("yyyy-MM-dd"), OperatorProvider.Provider.GetCurrent().UserCode, mainGuid);
+                if (Msg == 1)
                 {
-                    //OragnizeId = org.orgid,
-                    UserId = OperatorProvider.Provider.GetCurrent().UserId,
-                    Flag = true
-                };
-                app.SubmitForm(entity, "");
-                HrmAskForLeaveRecordDApp app_d = new HrmAskForLeaveRecordDApp();
+                    HrmAskForLeaveRecordApp app = new HrmAskForLeaveRecordApp();
+                    var entity = new HrmAskForLeaveRecordEntity
+                    {
+                        F_Id = mainGuid,
+                        UserId = OperatorProvider.Provider.GetCurrent().UserId,
+                        Flag = true
+                    };
+                    app.SubmitForm(entity, "");
+                    HrmAskForLeaveRecordDApp app_d = new HrmAskForLeaveRecordDApp();
 
-                List<HrmAskForLeaveRecordDEntity> list_d = new List<HrmAskForLeaveRecordDEntity>();
-                foreach (var item in listIds)
-                {
-                    HrmAskForLeaveRecordDEntity ask_d = new HrmAskForLeaveRecordDEntity { F_Id = Guid.NewGuid().ToString(), Base_Id = entity.F_Id, Ask_Id = item.F_Id };
-                    list_d.Add(ask_d);
-                    item.State = (int)AskLeaveStateType.已推送SAP;
-                    askApp.SubmitForm(item, item.F_Id);
+                    List<HrmAskForLeaveRecordDEntity> list_d = new List<HrmAskForLeaveRecordDEntity>();
+                    foreach (var item in listIds)
+                    {
+                        HrmAskForLeaveRecordDEntity ask_d = new HrmAskForLeaveRecordDEntity { F_Id = Guid.NewGuid().ToString(), Base_Id = entity.F_Id, Ask_Id = item.F_Id };
+                        list_d.Add(ask_d);
+                        //item.State = (int)AskLeaveStateType.已推送SAP;
+                        askApp.UpdateBySql(item.F_Id, (int)AskLeaveStateType.已推送SAP);
+                    }
+
+                    app_d.InsertForm(list_d);
                 }
-
-                app_d.InsertForm(list_d);
+                else
+                {
+                    return Error("推送SAP失败");
+                }
                 //}
 
             }

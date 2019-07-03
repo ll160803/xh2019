@@ -45,7 +45,10 @@ namespace NFine.Application.Hrm
         {
             return service.FindEntity(keyValue);
         }
-
+        public int UpdateBySql(string keyValue, int state)
+        {
+            return service.UpdateAskState(keyValue, state);
+        }
         public void Delete(AskForLeaveEntity entity)
         {
             service.Delete(entity);
@@ -81,6 +84,6 @@ namespace NFine.Application.Hrm
                 service.Insert(entity);
             }
         }
-       
+
     }
 }

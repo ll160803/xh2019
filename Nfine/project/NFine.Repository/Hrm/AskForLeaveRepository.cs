@@ -46,7 +46,7 @@ WHERE
 
                 return this.FindList(strSql.ToString(), parameter);
             }
-            else 
+            else
             {
                 strSql.Append(@"SELECT
 	* 
@@ -69,6 +69,15 @@ WHERE
 
                 return this.FindList(strSql.ToString(), parameter);
             }
+        }
+        public int UpdateAskState(string keyValue, int state)
+        {
+            DbParameter[] parameter =
+                {
+                    new MySqlParameter("@keyValue",keyValue),
+                 new MySqlParameter("@state",state)
+            };
+            return this.Update("update hrm_askforleave set state=@state where F_Id=@keyValue", parameter);
         }
     }
 }

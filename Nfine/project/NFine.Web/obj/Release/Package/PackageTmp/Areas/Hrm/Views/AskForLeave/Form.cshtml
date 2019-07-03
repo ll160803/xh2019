@@ -73,6 +73,7 @@
         var NACHN = $("input[name='NACHN']").val();
         if (NACHN == "") {
             $.modalAlert("请选择请假人", "warning");
+            return false;
         }
         if (!$('#form1').formValid()) {
             return false;
@@ -90,6 +91,7 @@
         var NACHN = $("input[name='NACHN']").val();
         if (NACHN == "") {
             $.modalAlert("请选择请假人", "warning");
+            return false;
         }
         if (!$('#form1').formValid()) {
             return false;
