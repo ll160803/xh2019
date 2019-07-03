@@ -17,13 +17,16 @@
                 { label: '人员编号', name: 'PERNR', width: 80, align: 'left' },
                 { label: '姓名', name: 'NACHN', width: 80, align: 'left' },
                 {
-                    label: '所在部门', name: 'OrganizeName', width: 150, align: 'left', 
+                    label: '所在部门', name: 'OrganizeId', width: 150, align: 'left', 
                     formatter: function (cellvalue, options, rowObject) {
                         return top.clients.organize[rowObject.OrganizeId] == null ? "" : top.clients.organize[rowObject.OrganizeId].fullname;
                     }
                 },
                 {
-                    label: '所在部门2', name: 'OrganizeId', width: 150, align: 'left', hidden: true
+                    label: '所在部门2', name: 'OrganizeName', width: 150, align: 'left', hidden: true,
+                    formatter: function (cellvalue, options, rowObject) {
+                        return rowObject.OrganizeId;
+                    }
                 },
                 //{
                 //    label: '性别', name: 'F_Gender', width: 60, align: 'center',
@@ -96,7 +99,7 @@
     function btn_add() {
         var daObj = $("#gridList").jqGridRowValue();
         var keyValue = daObj.F_Id;
-        var outOrgId = $("#gridList").jqGridRowValue().OrganizeId;
+        var outOrgId = $("#gridList").jqGridRowValue().OrganizeName;
         //$.modalConfirm("注：您确定要【移出】该员工吗？", function (r) {
         //    if (r) {
         //        $.submitForm({

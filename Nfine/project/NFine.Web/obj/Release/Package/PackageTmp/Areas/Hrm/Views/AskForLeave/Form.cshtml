@@ -1,6 +1,10 @@
 ﻿@{
-    ViewBag.Title = "Form";
-    Layout = "~/Views/Shared/_Form_Hrm.cshtml";
+                /**/
+
+                /**/
+
+                ViewBag.Title = "Form";
+                Layout = "~/Views/Shared/_Form_Hrm.cshtml";
 }
 <script>
     var keyValue = $.request("keyValue");
@@ -20,6 +24,14 @@
         }
     });
     function initControl() {
+        //$("#form1").validate({
+        //    rules: {
+        //        EndDate: {
+        //            compareDate: "#StartDate"
+        //        }
+        //    }
+        //});
+    
         $("#StartDate").datepicker({
             format: 'yyyy-mm-dd',
 
@@ -61,13 +73,13 @@
                     $(this).combogrid("setValue", keyword);
                 }
             },
-            
+
             onSelect: function (rowIndex, rowData) {
                 $("#HrmUserId").val(rowData.F_Id);
                 $("#OrganizeId").val(rowData.OrganizeId);
             }
         });
-       
+
     }
     function submitForm() {//保存
         var NACHN = $("input[name='NACHN']").val();
@@ -82,7 +94,7 @@
             url: "/hrm/askforleave/SubmitForm?keyValue=" + keyValue,
             param: $("#form1").formSerialize(),
             success: function () {
-               
+
                 $.currentWindow().$("#gridList").trigger("reloadGrid");
             }
         })
@@ -167,21 +179,21 @@
                 <tr>
                     <th class="formTitle">开始时间</th>
                     <td class="formValue">
-                        <input id="StartDate" name="StartDate" type="text" autocomplete="off" class="form-control required" placeholder="请输入开始时间" />
+                        <input id="StartDate" name="StartDate" type="text" autocomplete="off" class="form-control required " placeholder="请输入开始时间" />
                     </td>
                     <th class="formTitle">结束时间</th>
                     <td class="formValue">
-                        <input id="EndDate" name="EndDate" type="text" autocomplete="off" class="form-control required" placeholder="请输入结束时间" />
+                        <input id="EndDate" name="EndDate" type="text" compareDate="#StartDate" autocomplete="off" class="form-control required" placeholder="请输入结束时间" />
                     </td>
                 </tr>
                 <tr>
                     <th class="formTitle">住院科室</th>
                     <td class="formValue">
-                        <input id="HosOrganize" name="HosOrganize" type="text" class="form-control" placeholder="请输入住院科室" />
+                        <input id="HosOrganize" name="HosOrganize" type="text" maxlength="50" class="form-control" placeholder="请输入住院科室" />
                     </td>
                     <th class="formTitle">疾病诊断</th>
                     <td class="formValue">
-                        <input id="SickCheck" name="SickCheck" type="text" class="form-control" placeholder="请输入疾病诊断" />
+                        <input id="SickCheck" name="SickCheck" type="text" maxlength="50" class="form-control" placeholder="请输入疾病诊断" />
                     </td>
                 </tr>
                 <tr>
@@ -189,7 +201,7 @@
                         备注
                     </th>
                     <td class="formValue" colspan="3">
-                        <textarea id="F_Description" name="F_Description" class="form-control" style="height: 60px;"></textarea>
+                        <textarea id="F_Description" name="F_Description" maxlength="500" class="form-control" style="height: 60px;"></textarea>
                     </td>
                 </tr>
             </table>

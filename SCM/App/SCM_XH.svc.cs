@@ -123,7 +123,39 @@ namespace Ipedf.App
                 return Msg;
             }
         }
-
+        /// <summary>
+        /// 发票号与供应计划一一对应
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public bool IsExistFphm(string WERKS, string LGORT,string FPHM, string ID,string gysAccount)
+        {
+            if (WERKS == "2000" & (LGORT == "1001" || LGORT == "1008"))
+            {
+                return true;
+            }
+            if (WERKS == "2200" & (LGORT == "1001" || LGORT == "1005"))
+            {
+                return true;
+            }
+            if (WERKS == "2100")
+            {
+                return true;
+            }
+            var cause = new CauseObject_SCM_D_SUPPLYPLAN();
+            cause.FPHM = FPHM.Trim();
+            cause.GYSACCOUNT = gysAccount;
+            if (!string.IsNullOrEmpty(ID))
+            {
+                cause.SetCustomCondition(" and SCM_D_SUPPLYPLAN.ID !='" + ID + "'");
+            }
+            var list = BizLogicObject_SCM_D_SUPPLYPLAN.Proxy.Query(cause);
+            if (list.Count() > 0)
+            {
+                return false;
+            }
+            return true;
+        }
         /// <summary>
         /// 上传供应计划
         /// </summary>
@@ -215,6 +247,11 @@ namespace Ipedf.App
                     if (item.VFDAT < now.AddMonths(6))
                     {
                         ListMess.Add(new WcfPlan_XH { ID = item.ID, MESS = "药品剩余效期不足6个月", IsSuccess = false });
+                        continue;
+                    }
+                    if(!IsExistFphm(item.WERKS,item.LGORT,item.FPHM, item.ID, userName.Trim().Replace("'", "")))
+                    {
+                        ListMess.Add(new WcfPlan_XH { ID = item.ID, MESS = "发票号码已经存在", IsSuccess = false });
                         continue;
                     }
 

@@ -46,7 +46,7 @@
       <publishTime>07/02/2019 14:04:27</publishTime>
     </File>
     <File Include="Areas/Hrm/Views/AskForLeave/Form.cshtml">
-      <publishTime>07/02/2019 17:29:53</publishTime>
+      <publishTime>07/03/2019 16:38:40</publishTime>
     </File>
     <File Include="Areas/Hrm/Views/AskForLeave/FormModify.cshtml">
       <publishTime>06/17/2019 16:08:19</publishTime>
@@ -313,13 +313,13 @@
       <publishTime>07/03/2019 11:22:25</publishTime>
     </File>
     <File Include="bin/NFine.Web.dll">
-      <publishTime>07/03/2019 11:22:59</publishTime>
+      <publishTime>07/03/2019 16:41:35</publishTime>
     </File>
     <File Include="bin/NFine.Web.pdb">
-      <publishTime>07/03/2019 11:22:59</publishTime>
+      <publishTime>07/03/2019 16:41:35</publishTime>
     </File>
     <File Include="bin/NFine.Web.XmlSerializers.dll">
-      <publishTime>07/03/2019 11:23:00</publishTime>
+      <publishTime>07/03/2019 16:41:36</publishTime>
     </File>
     <File Include="bin/NPOI.dll">
       <publishTime>06/03/2019 18:02:22</publishTime>
@@ -2131,7 +2131,7 @@
       <publishTime>06/03/2019 18:02:20</publishTime>
     </File>
     <File Include="Content/js/framework-ui.js">
-      <publishTime>06/25/2019 14:50:44</publishTime>
+      <publishTime>07/03/2019 15:00:02</publishTime>
     </File>
     <File Include="Content/js/highcharts/adapters/mootools-adapter.js">
       <publishTime>06/03/2019 18:02:20</publishTime>
@@ -2364,8 +2364,20 @@
     <File Include="Content/js/simditor/js/uploader.min.js">
       <publishTime>06/03/2019 18:02:20</publishTime>
     </File>
+    <File Include="Content/js/validate/additional-methods.js">
+      <publishTime>07/03/2019 16:22:32</publishTime>
+    </File>
+    <File Include="Content/js/validate/jquery.metadata.js">
+      <publishTime>07/03/2019 13:44:51</publishTime>
+    </File>
     <File Include="Content/js/validate/jquery.validate.min.js">
-      <publishTime>06/03/2019 18:02:20</publishTime>
+      <publishTime>07/03/2019 14:04:22</publishTime>
+    </File>
+    <File Include="Content/js/validate/jquery.validate.min2.js">
+      <publishTime>07/03/2019 13:53:01</publishTime>
+    </File>
+    <File Include="Content/js/validate/messages_zh.min.js">
+      <publishTime>07/03/2019 14:08:25</publishTime>
     </File>
     <File Include="Content/js/wdtree/images/icons/add.png">
       <publishTime>06/03/2019 18:02:20</publishTime>
@@ -2599,10 +2611,10 @@
       <publishTime>07/02/2019 09:35:50</publishTime>
     </File>
     <File Include="Views/Shared/_Form.cshtml">
-      <publishTime>06/15/2019 17:54:20</publishTime>
+      <publishTime>07/03/2019 16:28:32</publishTime>
     </File>
     <File Include="Views/Shared/_Form_Hrm.cshtml">
-      <publishTime>06/15/2019 20:12:38</publishTime>
+      <publishTime>07/03/2019 16:28:01</publishTime>
     </File>
     <File Include="Views/Shared/_Index.cshtml">
       <publishTime>06/03/2019 18:02:20</publishTime>
