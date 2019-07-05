@@ -62,11 +62,11 @@ namespace Ipedf.App
                         {
                             var v_lgort = item.LGORT;//库位表述
                             var v_name = item.NAME;
-                            if (item.BSART == "Z004" && item.WERKS == "2200")
-                            {
-                                v_lgort = Ipedf.Web.Common.SendCode.GetDepartCode(item.SEND_DEAPRT_NAME ?? "");
-                                v_name = v_lgort == "06" ? "药库" : (item.SEND_DEAPRT_NAME ?? "");
-                            }
+                            //if (item.BSART == "Z004" && item.WERKS == "2200")// hsc 2019 07 05 去除限制
+                            //{
+                            //    v_lgort = Ipedf.Web.Common.SendCode.GetDepartCode(item.SEND_DEAPRT_NAME ?? "");
+                            //    v_name = v_lgort == "06" ? "药库" : (item.SEND_DEAPRT_NAME ?? "");
+                            //}
                             reList.Add(new Purchase
                             {
                                 ID = item.EBELN + item.EBELP,
@@ -134,7 +134,7 @@ namespace Ipedf.App
             {
                 return true;
             }
-            if (WERKS == "2200" & (LGORT == "1001" || LGORT == "1005"))
+            if (WERKS == "2200" & (LGORT == "1002" || LGORT == "1005"))
             {
                 return true;
             }

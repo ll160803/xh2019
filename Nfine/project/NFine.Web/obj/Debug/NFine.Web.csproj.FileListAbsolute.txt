@@ -120,3 +120,4 @@ D:\project\xh2019\Nfine\project\NFine.Web\obj\Debug\NFine.Web.csproj.CoreCompile
 D:\project\xh2019\Nfine\project\NFine.Web\obj\Debug\NFine.Web.csproj.CopyComplete
 D:\project\xh2019\Nfine\project\NFine.Web\obj\Debug\NFine.Web.dll
 D:\project\xh2019\Nfine\project\NFine.Web\obj\Debug\NFine.Web.pdb
+D:\project\xh2019\Nfine\project\NFine.Web\bin\NPOI.CSS.dll

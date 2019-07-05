@@ -751,6 +751,7 @@
     <Content Include="Content\js\echarts\echarts.js" />
     <Content Include="Content\js\echarts\echarts.min.js" />
     <Content Include="Content\js\echarts\infographic.js" />
+    <Content Include="Content\js\framework_Until.js" />
     <Content Include="Content\js\highcharts\adapters\mootools-adapter.js" />
     <Content Include="Content\js\highcharts\adapters\mootools-adapter.src.js" />
     <Content Include="Content\js\highcharts\adapters\prototype-adapter.js" />
@@ -1087,6 +1088,7 @@
     <Folder Include="Areas\Hrm\Models\" />
     <Folder Include="Areas\Hrm\Views\Shared\" />
     <Folder Include="Areas\ReportManage\Views\Echarts\" />
+    <Folder Include="UploadFile\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\ReportManage\Views\Highcharts\Sample1.cshtml" />
@@ -1177,6 +1179,8 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <Content Include="Views\Shared\_Form_Hrm.cshtml" />
+    <Content Include="Template\template.xlsx" />
+    <Content Include="Template\template.xls" />
     <None Include="Web References\BJK_AskLeave\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

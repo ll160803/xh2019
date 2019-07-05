@@ -19,7 +19,7 @@ namespace NFine.Domain.Entity.Hrm
     /// <summary>
     /// ViewAskForLeave Entity Model
     /// </summary>
-    public class ViewAskForLeaveEntity : IEntity<ViewAskForLeaveEntity>, ICreationAudited, IDeleteAudited, IModificationAudited
+    public partial class ViewAskForLeaveEntity : IEntity<ViewAskForLeaveEntity>, ICreationAudited, IDeleteAudited, IModificationAudited
     {
         public string F_Id { get; set; }
         public string HrmUserId { get; set; }

@@ -18,7 +18,7 @@ namespace NFine.Domain.Entity.Hrm
     /// <summary>
     /// HistoryRecordDetail Entity Model
     /// </summary>
-    public class HistoryRecordDetailEntity : IEntity<HistoryRecordDetailEntity>, ICreationAudited, IDeleteAudited, IModificationAudited
+    public partial class HistoryRecordDetailEntity : IEntity<HistoryRecordDetailEntity>, ICreationAudited, IDeleteAudited, IModificationAudited
     {
 						public  string  Base_Id { get; set; }
 					public  string  F_Id { get; set; }

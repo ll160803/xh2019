@@ -36,3 +36,4 @@ D:\project\xh2019\Nfine\project\NFine.Code\obj\Debug\NFine.Code.csproj.CopyCompl
 D:\project\xh2019\Nfine\project\NFine.Code\obj\Debug\NFine.Code.dll
 D:\project\xh2019\Nfine\project\NFine.Code\obj\Debug\NFine.Code.pdb
 D:\project\xh2019\Nfine\project\NFine.Code\obj\Debug\NFine.Code.csprojAssemblyReference.cache
+D:\project\xh2019\Nfine\project\NFine.Code\bin\Debug\NPOI.CSS.dll

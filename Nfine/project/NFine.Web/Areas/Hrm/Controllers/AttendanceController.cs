@@ -314,6 +314,33 @@ namespace NFine.Web.Areas.Hrm.Controllers
             return Content(data.ToJson());
 
         }
+
+        [HttpPost]
+        [HandlerAuthorize]
+        [HandlerAjaxOnly]
+        [ValidateAntiForgeryToken]
+        public ActionResult GetHistoryDetailRecordExport(string id, Pagination pagination, string keyword, string titleAndField)
+        {
+            System.Linq.Expressions.Expression<Func<ViewAttendanceRecordDEntity, bool>> expression = ExtLinq.True<ViewAttendanceRecordDEntity>();
+            expression = expression.And(t => t.Base_Id == id);
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                expression = expression.And(t => t.NACHN.Contains(keyword) || t.PERNR.Contains(keyword));
+            }
+            ViewAttendanceRecordDApp hrmUserApp = new ViewAttendanceRecordDApp();
+            pagination.page = 1;
+            pagination.rows = int.MaxValue;
+            var hrmUserList = hrmUserApp.GetList(pagination, expression);
+
+
+            var rows = hrmUserList;
+
+            var dicFields = HandleTitelAndField.GetTitleAndField(titleAndField, 12, 15, 18);
+            var downUrl = NPOIWriteExcel.OutputExcel<ViewAttendanceRecordDEntity>(rows, dicFields, new ExcelCaption { CaptionName =  "考勤记录表", Height = 24 });
+
+            return Success("下载成功", downUrl);
+
+        }
         [HttpPost]
         [HandlerAuthorize]
         [HandlerAjaxOnly]

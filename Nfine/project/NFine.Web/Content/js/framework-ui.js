@@ -87,7 +87,7 @@ $.modalPrompt = function (options) {
         area: ['500px', '300px'],     // 设置弹出层大小
         btn: ['通过', '不通过', '取消'],    // 自定义设置多个按钮
         btnclass: ['btn btn-primary', 'btn btn-primary', 'btn btn-danger'],
-        btn2: function (index, value) { alert(value); top.layer.close(index); },
+        btn2: function (index, value) { top.layer.close(index); },
         btnAlign: 'c',
         callback: function (value, index, elem) {
             alert(value);
@@ -258,6 +258,13 @@ $.submitForm = function (options) {
                 }
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
+                if (textStatus == "parsererror") {
+                    if (XMLHttpRequest.responseText.indexOf("权限不足") > 0) {
+                        $.loading(false);
+                        $.modalMsg("很抱歉！您的权限不足，访问被拒绝！", "error");
+                        return;
+                    }
+                }
                 $.loading(false);
                 $.modalMsg(errorThrown, "error");
             },
@@ -341,6 +348,7 @@ $.fn.jqGridRowValue = function () {
         return $grid.jqGrid('getRowData', $grid.jqGrid('getGridParam', 'selrow'));
     }
 }
+
 $.fn.formValid = function () {
      
    return $(this).valid();
@@ -472,7 +480,7 @@ $.fn.dataGrid = function (options) {
     };
     $element.jqGrid(options);
 };
-$.days_count = function (sDate1, sDate2) {    //sDate1和sDate2是2006-12-18格式  
+$.days_count = function (sDate1, sDate2) {    //sDate1和sDate2是2006-12-18格式  当前月在两个时间之间的天数
     var dateSpan,
         tempDate,
         iDays;

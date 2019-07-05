@@ -44,3 +44,4 @@ D:\project\xh2019\Nfine\project\NFine.Repository\obj\Debug\NFine.Repository.cspr
 D:\project\xh2019\Nfine\project\NFine.Repository\obj\Debug\NFine.Repository.csproj.CopyComplete
 D:\project\xh2019\Nfine\project\NFine.Repository\obj\Debug\NFine.Repository.dll
 D:\project\xh2019\Nfine\project\NFine.Repository\obj\Debug\NFine.Repository.pdb
+D:\project\xh2019\Nfine\project\NFine.Repository\bin\Debug\NPOI.CSS.dll

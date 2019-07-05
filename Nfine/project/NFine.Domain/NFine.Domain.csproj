@@ -49,11 +49,13 @@
     <Compile Include="03 Entity\Hrm\AttendanceRecordDEntity.cs" />
     <Compile Include="03 Entity\Hrm\AttendanceRecordEntity.cs" />
     <Compile Include="03 Entity\Hrm\HistoryRecordDetailEntity.cs" />
+    <Compile Include="03 Entity\Hrm\HistoryRecordDetailEntity_Export.cs" />
     <Compile Include="03 Entity\Hrm\HrmAskForLeaveRecordDEntity.cs" />
     <Compile Include="03 Entity\Hrm\HrmAskForLeaveRecordEntity.cs" />
     <Compile Include="03 Entity\Hrm\HrmUserEntity.cs" />
     <Compile Include="03 Entity\Hrm\OutAndInEntity.cs" />
     <Compile Include="03 Entity\Hrm\ViewAskForLeaveEntity.cs" />
+    <Compile Include="03 Entity\Hrm\ViewAskForLeaveEntity_Export.cs" />
     <Compile Include="03 Entity\Hrm\ViewAttendanceRecordDEntity.cs" />
     <Compile Include="03 Entity\Hrm\ViewHrmAskForLeaveRecordEntity.cs" />
     <Compile Include="03 Entity\Hrm\ViewHrmAttandaceSapEntity.cs" />

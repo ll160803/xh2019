@@ -987,7 +987,7 @@ namespace Ipedf.App.Areas.System.Controllers
             {
                 return true;
             }
-            if (entity.WERKS == "2200" & (entity.LGORT == "1001" || entity.LGORT == "1005"))
+            if (entity.WERKS == "2200" & (entity.LGORT == "1002" || entity.LGORT == "1005"))
             {
                 return true;
             }

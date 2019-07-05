@@ -51,7 +51,7 @@
         });
     }
     function submitForm() {//
-        
+
         $.modalPrompt({
             btn2: function (index, value) { agreeSubmit(index, value, 4); },//0是审核不通过
             value: '同意',
@@ -77,12 +77,19 @@
             }
         })
     }
-   
 
+    function ExportExcel() {
+        $.ExportExcel("gridList", "/Hrm/Attendance/GetHistoryDetailRecordExport", { keyword: $("#txt_keyword").val(), id:'@ViewBag.id'})
+    }
 
 </script>
 
 <div class="topPanel">
+    <div class="toolbar">
+        <div class="btn-group">
+            <a id="NF-Export" authorize="yes" class="btn btn-primary dropdown-text" onclick="ExportExcel()"><i class="fa fa-file-excel-o"></i>导出</a>
+        </div>
+    </div>
     <div class="search">
         <table>
             <tr>

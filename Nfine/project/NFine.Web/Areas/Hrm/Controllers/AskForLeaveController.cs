@@ -105,6 +105,61 @@ namespace NFine.Web.Areas.Hrm.Controllers
             };
             return Content(data.ToJson());
         }
+        [HttpPost]
+        [HandlerAjaxOnly]
+        [ValidateAntiForgeryToken]
+        public ActionResult GetGridJsonExport(string id, Pagination pagination, string keyword, string titleAndField, int state = -1)
+        {
+            System.Linq.Expressions.Expression<Func<ViewAskForLeaveEntity, bool>> expression = ExtLinq.True<ViewAskForLeaveEntity>();
+
+            var authorizedata = new List<RoleAuthorizeEntity>();
+            var userId = OperatorProvider.Provider.GetCurrent().UserId;
+            if (!string.IsNullOrEmpty(userId))
+            {
+                authorizedata = roleAuthorizeApp.GetOrganizeList(userId);
+            }
+            if (authorizedata.Count == 0)
+            {
+                var orgId = OperatorProvider.Provider.GetCurrent().CompanyId;//当前用户所在公司ID
+                expression = expression.And(p => p.OrganizeId == orgId);
+            }
+            else
+            {
+                var orgIds = "," + string.Join(",", authorizedata.Select(u => u.F_ItemId)) + ",";
+                expression = expression.And(p => orgIds.Contains("," + p.OrganizeId + ","));
+            }
+            if (state != -1)
+            {
+                //if (state == 1)
+                //{
+                //    expression = expression.And(p => p.State == 0 || p.State == 1);
+                //}
+                //else
+                //{
+                expression = expression.And(p => p.State == state);
+                //}
+
+            }
+            if (!string.IsNullOrEmpty(id))
+            {
+                expression = expression.And(p => p.RYLB == IsDoctor);//医生还是护士
+            }
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                var keyPress = ExtLinq.True<ViewAskForLeaveEntity>();
+                keyPress = keyPress.And(t => t.PERNR.Contains(keyword));
+                keyPress = keyPress.Or(t => t.NACHN.Contains(keyword));
+                expression = expression.And(keyPress);
+            }
+            pagination.page = 1;
+            pagination.rows = int.MaxValue;
+            var rows = viewApp.GetList(pagination, expression);
+
+            var dicFields = HandleTitelAndField.GetTitleAndField(titleAndField,12,15,18);
+            var downUrl = NPOIWriteExcel.OutputExcel<ViewAskForLeaveEntity>(rows, dicFields, new ExcelCaption { CaptionName = "请假记录表", Height=24 });
+
+            return Success("下载成功", downUrl);
+        }
         /// <summary>
         /// 科室主任审核  这个应该没用到
         /// </summary>
@@ -276,6 +331,34 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 records = pagination.records
             };
             return Content(data.ToJson());
+        }
+
+        [HttpPost]
+        [HandlerAjaxOnly]
+        public ActionResult GetHistoryDetailRecordExport(string id, Pagination pagination, string keyword, string titleAndField)
+        {
+            HistoryRecordDetailApp appRecord = new HistoryRecordDetailApp();
+            System.Linq.Expressions.Expression<Func<HistoryRecordDetailEntity, bool>> expression = ExtLinq.True<HistoryRecordDetailEntity>();
+            expression = expression.And(p => p.Base_Id == id);
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                var keyPress = ExtLinq.True<HistoryRecordDetailEntity>();
+                keyPress = keyPress.And(t => t.PERNR.Contains(keyword));
+                keyPress = keyPress.Or(t => t.NACHN.Contains(keyword));
+                expression = expression.And(keyPress);
+            }
+            
+            pagination.page = 1;
+            pagination.rows = int.MaxValue;
+            var hrmUserList = appRecord.GetList(pagination, expression);
+
+
+            var rows = hrmUserList;//.Cast<HistoryRecordDetailEntity_Export>().ToList();
+
+            var dicFields = HandleTitelAndField.GetTitleAndField(titleAndField, 12, 15, 18);
+            var downUrl = NPOIWriteExcel.OutputExcel<HistoryRecordDetailEntity>(rows, dicFields, new ExcelCaption { CaptionName = "请假记录表", Height = 24 });
+
+            return Success("下载成功", downUrl);
         }
 
         /// <summary>
@@ -568,8 +651,8 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 //var listIds = askApp.GetIdList(sb.ToString());
                 ViewAskForLeaveApp viewAskApp = new ViewAskForLeaveApp();
                 var listIds = viewAskApp.GetList(new Pagination { page = 1, rows = int.MaxValue, sidx = "F_Id", sord = "asc" }, x => x.State == 3 & x.Flag == true);
-               
-                    if (listIds.Count <= 0)
+
+                if (listIds.Count <= 0)
                 {
                     return Error("没有需要推送的数据,请审核后，重新操作。");
                 }
@@ -577,7 +660,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 //var orgList = listIds.Select(p => new { orgid = p.OrganizeId, userid = p.F_CreatorUserId }).Distinct();
                 //foreach (var org in orgList)
                 //{
-               var Msg= SAPHandle.BJKAskLeaveToSap(listIds, DateTime.Now.ToString("yyyy-MM-dd"), OperatorProvider.Provider.GetCurrent().UserCode, mainGuid);
+                var Msg = SAPHandle.BJKAskLeaveToSap(listIds, DateTime.Now.ToString("yyyy-MM-dd"), OperatorProvider.Provider.GetCurrent().UserCode, mainGuid);
                 if (Msg == 1)
                 {
                     HrmAskForLeaveRecordApp app = new HrmAskForLeaveRecordApp();

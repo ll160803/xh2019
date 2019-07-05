@@ -38,3 +38,4 @@ D:\project\xh2019\Nfine\project\NFine.Data\obj\Debug\NFine.Data.csproj.CoreCompi
 D:\project\xh2019\Nfine\project\NFine.Data\obj\Debug\NFine.Data.csproj.CopyComplete
 D:\project\xh2019\Nfine\project\NFine.Data\obj\Debug\NFine.Data.dll
 D:\project\xh2019\Nfine\project\NFine.Data\obj\Debug\NFine.Data.pdb
+D:\project\xh2019\Nfine\project\NFine.Data\bin\Debug\NPOI.CSS.dll
