@@ -47,3 +47,4 @@ D:\project\xh2019\Nfine\project\NFine.Application\obj\Release\NFine.Application.
 D:\project\xh2019\Nfine\project\NFine.Application\obj\Release\NFine.Application.csproj.CopyComplete
 D:\project\xh2019\Nfine\project\NFine.Application\obj\Release\NFine.Application.dll
 D:\project\xh2019\Nfine\project\NFine.Application\obj\Release\NFine.Application.pdb
+D:\project\xh2019\Nfine\project\NFine.Application\bin\Release\NPOI.CSS.dll

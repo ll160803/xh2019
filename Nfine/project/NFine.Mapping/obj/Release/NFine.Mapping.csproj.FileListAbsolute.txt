@@ -46,3 +46,4 @@ D:\project\xh2019\Nfine\project\NFine.Mapping\obj\Release\NFine.Mapping.csproj.C
 D:\project\xh2019\Nfine\project\NFine.Mapping\obj\Release\NFine.Mapping.csproj.CopyComplete
 D:\project\xh2019\Nfine\project\NFine.Mapping\obj\Release\NFine.Mapping.dll
 D:\project\xh2019\Nfine\project\NFine.Mapping\obj\Release\NFine.Mapping.pdb
+D:\project\xh2019\Nfine\project\NFine.Mapping\bin\Release\NPOI.CSS.dll

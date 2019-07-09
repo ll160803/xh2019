@@ -105,7 +105,7 @@
             },
             callBack2: function (iframeId) {
                 return top.frames[iframeId].submitAndSaveForm(iframeId);
-                   
+
             }
         });
     }
@@ -228,9 +228,12 @@
             },
             callBack2: function (iframeId) {
                 return top.frames[iframeId].submitAndSaveFormModify(iframeId);
-                 
+
             }
         });
+    }
+    function ExportExcel() {
+        $.ExportExcel("gridList", "/Hrm/AskForLeave/GetGridJsonExport/", { keyword: $("#txt_keyword").val(), id:'@ViewBag.id', state: $("#state").val()})
     }
 </script>
 
@@ -246,6 +249,10 @@
             </div>*@
         <div class="btn-group">
             <a class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></a>
+        </div>
+        <div class="btn-group">
+            <a id="NF-Export" authorize="yes" class="btn btn-primary dropdown-text" onclick="ExportExcel()"><i class="fa fa-file-excel-o"></i>导出</a>
+
         </div>
         <div class="btn-group">
             <a id="NF-add" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_add()"><i class="fa fa-plus"></i>新建请假</a>
@@ -272,7 +279,7 @@
                         <span class="input-group-addon">审核状态</span>
                         <select id="state" name="state" class="form-control" style="width:200px;" onchange="$('#btn_search').click();">
                             <option value="-1" selected>全部</option>
-                            <option value="1" >未提交</option>
+                            <option value="1">未提交</option>
                             <option value="2">已提交</option>
                             <option value="3">已审核</option>
                             <option value="5">审核未通过</option>
@@ -281,6 +288,7 @@
                     </div>
                 </td>
                 <td style="width:10px;"></td>
+
                 <td>
                     <div class="input-group">
                         <input id="txt_keyword" type="text" class="form-control" placeholder="发薪号/姓名" style="width: 200px;">

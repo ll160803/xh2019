@@ -36,3 +36,4 @@ D:\project\xh2019\Nfine\project\NFine.Code\obj\Release\NFine.Code.csproj.CoreCom
 D:\project\xh2019\Nfine\project\NFine.Code\obj\Release\NFine.Code.csproj.CopyComplete
 D:\project\xh2019\Nfine\project\NFine.Code\obj\Release\NFine.Code.dll
 D:\project\xh2019\Nfine\project\NFine.Code\obj\Release\NFine.Code.pdb
+D:\project\xh2019\Nfine\project\NFine.Code\bin\Release\NPOI.CSS.dll

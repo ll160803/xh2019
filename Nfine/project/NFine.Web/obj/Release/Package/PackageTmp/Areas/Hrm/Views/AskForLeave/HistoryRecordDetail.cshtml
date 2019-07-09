@@ -104,7 +104,9 @@
         });
     }
    
-    
+    function ExportExcel() {
+        $.ExportExcel("gridList", "/Hrm/AskForLeave/GetHistoryDetailRecordExport", { keyword: $("#txt_keyword").val(), id:'@ViewBag.id'})
+    }
 </script>
 
 <div class="topPanel">
@@ -113,7 +115,7 @@
             <a class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></a>
         </div>
         <div class="btn-group">
-            @*<a id="NF-add" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_SubmitAudit()"><i class="fa fa-plus"></i>请假审核</a>*@
+            <a id="NF-Export" authorize="yes" class="btn btn-primary dropdown-text" onclick="ExportExcel()"><i class="fa fa-file-excel-o"></i>导出</a>
         </div>
         <div class="operate">
             <ul class="nav nav-pills">

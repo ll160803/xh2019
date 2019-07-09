@@ -43,3 +43,4 @@ D:\project\xh2019\Nfine\project\NFine.Repository\obj\Release\NFine.Repository.cs
 D:\project\xh2019\Nfine\project\NFine.Repository\obj\Release\NFine.Repository.csproj.CopyComplete
 D:\project\xh2019\Nfine\project\NFine.Repository\obj\Release\NFine.Repository.dll
 D:\project\xh2019\Nfine\project\NFine.Repository\obj\Release\NFine.Repository.pdb
+D:\project\xh2019\Nfine\project\NFine.Repository\bin\Release\NPOI.CSS.dll

@@ -130,6 +130,49 @@ namespace NFine.Web.Areas.Hrm.Controllers
             };
             return Content(data.ToJson());
         }
+        [HttpPost]
+        [HandlerAjaxOnly]
+        public ActionResult GetGridJsonExport(string id, Pagination pagination, string keyword,string titleAndField)
+        {
+            System.Linq.Expressions.Expression<Func<HrmUserEntity, bool>> expression = ExtLinq.True<HrmUserEntity>();
+            var authorizedata = new List<RoleAuthorizeEntity>();
+            var userId = OperatorProvider.Provider.GetCurrent().UserId;
+            if (!string.IsNullOrEmpty(userId))
+            {
+                authorizedata = roleAuthorizeApp.GetOrganizeList(userId);
+            }
+            if (authorizedata.Count == 0)
+            {
+                var orgId = OperatorProvider.Provider.GetCurrent().CompanyId;//当前用户所在公司ID
+                expression = expression.And(p => p.OrganizeId == orgId);
+            }
+            else
+            {
+                var orgIds = "," + string.Join(",", authorizedata.Select(u => u.F_ItemId)) + ",";
+                expression = expression.And(p => orgIds.Contains("," + p.OrganizeId + ","));
+            }
+            if (!string.IsNullOrEmpty(id))
+            {
+                expression = expression.And(p => p.RYLB == id);
+            }
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                var keyPress = ExtLinq.True<HrmUserEntity>();
+                keyPress = keyPress.And(t => t.PERNR.Contains(keyword));
+                keyPress = keyPress.Or(t => t.NACHN.Contains(keyword));
+                expression = expression.And(keyPress);
+            }
+
+           
+            pagination.page = 1;
+            pagination.rows = int.MaxValue;
+            var rows = userApp.GetList(pagination, expression);
+
+            var dicFields = HandleTitelAndField.GetTitleAndField(titleAndField, 12, 15, 18);
+            var downUrl = NPOIWriteExcel.OutputExcel(rows, dicFields, new ExcelCaption { CaptionName = "科室人员清单表", Height = 24 });
+
+            return Success("下载成功", downUrl);
+        }
         [HttpGet]
         [HandlerAjaxOnly]
         public ActionResult GetGridJsonForIn(string id, Pagination pagination, string keyword, bool Is_all = false)
@@ -160,6 +203,38 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 records = pagination.records
             };
             return Content(data.ToJson());
+        }
+        [HttpPost]
+        [HandlerAjaxOnly]
+        public ActionResult GetGridJsonForInExport(string id, Pagination pagination, string keyword, string titleAndField, bool Is_all = false)
+        {
+            System.Linq.Expressions.Expression<Func<HrmUserEntity, bool>> expression = ExtLinq.True<HrmUserEntity>();
+
+            expression = expression.And(p => string.IsNullOrEmpty(p.OrganizeId));
+            if (!string.IsNullOrEmpty(id))
+            {
+                expression = expression.And(p => p.RYLB == id);
+            }
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                var keyPress = ExtLinq.True<HrmUserEntity>();
+                keyPress = keyPress.And(t => t.PERNR.Contains(keyword));
+                keyPress = keyPress.Or(t => t.NACHN.Contains(keyword));
+                expression = expression.And(keyPress);
+            }
+            if (!Is_all)
+            {
+                expression = expression.And(s => s.STAT2 == "3" || (s.STAT2 == "2" & (s.PERSK == "70" || s.PERSK == "73")));
+            }
+           
+            pagination.page = 1;
+            pagination.rows = int.MaxValue;
+            var rows = userApp.GetList(pagination, expression);
+
+            var dicFields = HandleTitelAndField.GetTitleAndField(titleAndField, 12, 15, 18);
+            var downUrl = NPOIWriteExcel.OutputExcel(rows, dicFields, new ExcelCaption { CaptionName = "未分配科室人员表", Height = 24 });
+
+            return Success("下载成功", downUrl);
         }
         [HttpPost]
         [HandlerAuthorize]
