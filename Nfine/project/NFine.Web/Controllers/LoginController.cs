@@ -64,10 +64,10 @@ namespace NFine.Web.Controllers
             try
             {
                 //暂时注销验证码
-                //if (Session["nfine_session_verifycode"].IsEmpty() || Md5.md5(code.ToLower(), 16) != Session["nfine_session_verifycode"].ToString())
-                //{
-                //    throw new Exception("验证码错误，请重新输入");
-                //}
+                if (Session["nfine_session_verifycode"].IsEmpty() || Md5.md5(code.ToLower(), 16) != Session["nfine_session_verifycode"].ToString())
+                {
+                    throw new Exception("验证码错误，请重新输入");
+                }
 
                 UserEntity userEntity = new UserApp().CheckLogin(username, password);
                 if (userEntity != null)
@@ -80,7 +80,7 @@ namespace NFine.Web.Controllers
                     operatorModel.DepartmentId = userEntity.F_DepartmentId;
                     operatorModel.RoleId = userEntity.F_RoleId;
                     operatorModel.LoginIPAddress = Net.Ip;
-                    operatorModel.LoginIPAddressName = Net.GetLocation(operatorModel.LoginIPAddress);
+                    //operatorModel.LoginIPAddressName = Net.GetLocation(operatorModel.LoginIPAddress);
                     operatorModel.LoginTime = DateTime.Now;
                     operatorModel.LoginToken = DESEncrypt.Encrypt(Guid.NewGuid().ToString());
                     operatorModel.Is_Doctor = (userEntity.F_DutyId == "23ED024E-0AAA-4C8D-9216-D1AB93348D26" ? "1" : "2");//医生1 护士2

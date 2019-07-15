@@ -35,7 +35,7 @@ namespace SapUserData
             DataSet ds = new DataSet();
             da.SelectCommand = cmd;
             //da.Fill(ds, "Table");
-            LogFactory.GetLogger("GetMysqlUserData").Info("从mysql获取数据");
+            LogFactory.GetLogger("GetMysqlUserData").Info("从mysql获取数据\n");
             // 创建命令构建器，会自动创建更新命令，不必手动提供或创建。
             MySqlCommandBuilder myCommandBuilder = new MySqlCommandBuilder(da);
 
@@ -122,7 +122,7 @@ namespace SapUserData
             }
             da.Update(ds, "Table");
             //ds.AcceptChanges();
-            LogFactory.GetLogger("GetMysqlUserData").Info("更新或插入数据完成");
+            LogFactory.GetLogger("GetMysqlUserData").Info("更新或插入数据完成\n");
         }
 
         public void InsertMysql(SapHrm.Zhr00SKqryxx[] res, DataTable data)

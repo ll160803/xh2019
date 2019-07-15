@@ -24,10 +24,10 @@ namespace WindowsFormsApp1
         private int type;
         private string id;
         private String printDate = DateTime.Now.ToShortDateString().ToString();
-        private int time=30;
+        private int time = 30;
         private int completeTime = -1;
         public int paperSourceIndex;
-        public print(String data, int type,String id,int paperSourceIndex)
+        public print(String data, int type, String id, int paperSourceIndex)
         {
             this.id = id;
             this.type = type;
@@ -48,10 +48,10 @@ namespace WindowsFormsApp1
         #region
         protected override void OnShown(EventArgs e)
         {
-           
 
-           // Timer1_Tick(sender, e);
-           // Timer2_Tick(sender, e);
+
+            // Timer1_Tick(sender, e);
+            // Timer2_Tick(sender, e);
         }
         #endregion
 
@@ -62,7 +62,7 @@ namespace WindowsFormsApp1
             switch (type)
             {
                 case 1:
-                    
+
                     GetInfo.Zhr00FmZcpsdyResponse res = WebRes.getInfo(id, type + "");
                     if (res.Mes != "")
                     {
@@ -81,7 +81,7 @@ namespace WindowsFormsApp1
 
             }
 
-            if (Printer.printMethod(d, type,this))
+            if (Printer.printMethod(d, type, this))
             {
                 WebRes.CompletePrint(id, type + "");
             }
@@ -89,10 +89,10 @@ namespace WindowsFormsApp1
 
         private void printDocument1_PrintPage(object sender, PrintPageEventArgs e)
         {
-   
+
         }
 
-        
+
         private void Button1_Click(object sender, EventArgs e)
         {
             //Printer.printMethod("吴迪\n精神\n职业病人\n后勤部\n10967373\n2019     4     19");
@@ -119,14 +119,14 @@ namespace WindowsFormsApp1
             timer1.Enabled = false;
             //.Text = time + "";
             if (time != 0)
-            { 
-                if(time == 29)
+            {
+                if (time == 29)
                 {
-                    Console.WriteLine("shijian"+time + "");
+                    Console.WriteLine("shijian" + time + "");
                     System.Drawing.Printing.PrintDocument pd = new System.Drawing.Printing.PrintDocument();
                     if (Printer.printMethod(this.data, this.type, this))
-                    { 
-                        WebRes.CompletePrint(id, type+ "");
+                    {
+                        WebRes.CompletePrint(id, type + "");
                         againPrint(this.type);
                         tick.Visible = true;
                         error.Visible = false;
@@ -139,35 +139,35 @@ namespace WindowsFormsApp1
                         //message.Text = "  打印未成功\n请稍后，  秒后返回主页";
                         return;
                     }
-                   
+
                 }
                 if (time < 29)
                 {
-                    string path = @"win32_printer.DeviceId='" + "HP DeskJet 2130 series" + "'";
+                    string path = @"win32_printer.DeviceId='" + Printer.printerName + "'";
                     ManagementObject printer = new ManagementObject(path);
                     printer.Get();
                     Console.WriteLine("状态值：" + Convert.ToInt32(printer.Properties["PrinterStatus"].Value) + "");
                     if (Convert.ToInt32(printer.Properties["PrinterStatus"].Value) == 3)
                     {
-                        if(completeTime < time)
+                        if (completeTime < time)
                         {
                             completeTime = time;
-                            
+
                         }
-                        else if(completeTime >= time+10&& completeTime < time + 20)
+                        else if (completeTime >= time + 10 && completeTime < time + 20)
                         {
-                            message.Text = "打印已完成，请取打印证件\n\n" + (10 - (completeTime - time-10)) + "秒后跳转到主页";
+                            message.Text = "打印已完成，请取打印证件\n\n" + (10 - (completeTime - time - 10)) + "秒后跳转到主页";
                         }
                         else if (completeTime >= time + 20)
                         {
-                            message.Text = "打印已完成，请取打印证件\n\n" + (10 - (completeTime - time-10)) + "秒后跳转到主页";
+                            message.Text = "打印已完成，请取打印证件\n\n" + (10 - (completeTime - time - 10)) + "秒后跳转到主页";
                             if (time <= 25)
                             {
                                 //message.Text = "      打印已完成";
                                 this.Close();
                             }
                         }
-                       
+
                     }
                     //message.Text = "      打印已开始\n 请稍后，  秒后返回主页";
                     //second.Visible = true;
@@ -233,7 +233,7 @@ namespace WindowsFormsApp1
         private void Timer2_Tick(object sender, EventArgs e)
         {
             timer2.Enabled = false;
-            if(time <= 14)
+            if (time <= 14)
             {
 
             }
@@ -252,14 +252,53 @@ namespace WindowsFormsApp1
         private static print print;
         private static Form2 form;
         //private static PrintEventHandler printDocument1_endPrint;
+        public static string printerName
+        {
 
+            get
+            {
+                return readPaperPrinter();
+            }
+        }
+        public static string printerPos
+        {
 
+            get
+            {
+                return readPaperPos();
+            }
+        }
+        private static string readPaperPos()
+        {
+            StreamReader sr = new StreamReader("position.txt", Encoding.Unicode);
+            var printer = sr.ReadLine();
+            if (string.IsNullOrEmpty(printer))
+            {
+                printer = "0,0";
+            }
+            sr.Dispose();
+            sr.Close();
 
+            return printer;
+        }
+        private static string readPaperPrinter()
+        {
+            StreamReader sr = new StreamReader("printer.txt", Encoding.Unicode);
+            var printer = sr.ReadLine();
+            if (string.IsNullOrEmpty(printer))
+            {
+                printer = "HP DeskJet 2130 series";
+            }
+            sr.Dispose();
+            sr.Close();
+
+            return printer;
+        }
         /// <summary>
         /// 设置PrintDocument 的相关属性
         /// </summary>
         /// <param name="str">要打印的字符串</param>
-        public static bool printMethod(string str,int type,print printFrom)
+        public static bool printMethod(string str, int type, print printFrom)
         {
             print = printFrom;
             try
@@ -268,15 +307,17 @@ namespace WindowsFormsApp1
                 printFont = new Font("宋体", 16);
                 titleFont = new Font("宋体", 24);
                 System.Drawing.Printing.PrintDocument pd = new System.Drawing.Printing.PrintDocument();
-                pd.PrinterSettings.PrinterName = "HP DeskJet 2130 series";
+                pd.PrinterSettings.PrinterName = printerName;
                 pd.DocumentName = pd.PrinterSettings.MaximumCopies.ToString();
                 pd.DefaultPageSettings.PaperSource = pd.PrinterSettings.PaperSources[print.paperSourceIndex];
                 pd.DefaultPageSettings.Landscape = true;
                 //MessageBox.Show(print.paperSourceIndex+ "         "+pd.DefaultPageSettings.PaperSource.SourceName);
-                if (type == 1) {
+                if (type == 1)
+                {
                     pd.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(pd_PrintContract);
                 }
-                else {
+                else
+                {
                     pd.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(pd_PrintProve);
                     pd.DefaultPageSettings.Landscape = false;
                 }
@@ -294,7 +335,7 @@ namespace WindowsFormsApp1
 
 
 
-//打印在职证明
+        //打印在职证明
         private static void pd_PrintProve(object sender, System.Drawing.Printing.PrintPageEventArgs ev)
         {
             float linesPerPage = 0;
@@ -339,14 +380,16 @@ namespace WindowsFormsApp1
                 else if (count == 6)
                 {
                     ev.Graphics.DrawString(line, new Font(new FontFamily("宋体"), 16), System.Drawing.Brushes.Black, 450, 630, new StringFormat());
-                }else if(count == 7)
+                }
+                else if (count == 7)
                 {
                     ev.Graphics.DrawString(line, new Font(new FontFamily("宋体"), 16), System.Drawing.Brushes.Black, 468, 680, new StringFormat());
                 }
                 else if (count == 8)
                 {
                     ev.Graphics.DrawString(line, new Font(new FontFamily("宋体"), 16), System.Drawing.Brushes.Black, 500, 730, new StringFormat());
-                }else if(count == 9)
+                }
+                else if (count == 9)
                 {
                     ev.Graphics.DrawString(line, new Font(new FontFamily("宋体"), 16), System.Drawing.Brushes.Black, 130, 830);
                 }
@@ -369,36 +412,37 @@ namespace WindowsFormsApp1
             float linesPerPage = 0;
             int count = 0;
             String line = null;
-            
+
             linesPerPage = ev.MarginBounds.Height / printFont.GetHeight(ev.Graphics);
-            
+            int pos = int.Parse(Printer.printerPos.Split(',')[0]);int posy = int.Parse(Printer.printerPos.Split(',')[1]);
             while (count < linesPerPage &&
             ((line = streamToPrint.ReadLine()) != null))
             {
                 if (count == 0)
-                {   
+                {
                     //MessageBox.Show(titleFont.Size + "");
-                    ev.Graphics.DrawString(line, titleFont, Brushes.Black, middle(360,line,110,(int)titleFont.Size), 305, new StringFormat());
+                    ev.Graphics.DrawString(line, titleFont, Brushes.Black, middle(360, line, 110, (int)titleFont.Size) + pos, 305 + posy, new StringFormat());
                     //ev.Graphics.DrawString(line, titleFont, Brushes.Black, 360, 296, new StringFormat());
                 }
-                else if(count == 1)
+                else if (count == 1)
                 {
                     //MessageBox.Show(printFont.GetHeight(ev.Graphics) + "");
-                    ev.Graphics.DrawString(line, titleFont, Brushes.Black,  middle(760, line, 125, (int)titleFont.Size), 305, new StringFormat());
-                }else if (count == 2)
+                    ev.Graphics.DrawString(line, titleFont, Brushes.Black, middle(760, line, 125, (int)titleFont.Size) + pos, 305 + posy, new StringFormat());
+                }
+                else if (count == 2)
                 {
                     //MessageBox.Show(printFont.GetHeight(ev.Graphics) + "");
-                    ev.Graphics.DrawString(line, titleFont, Brushes.Black, middle(150, line, 340, (int)titleFont.Size), 370, new StringFormat());
+                    ev.Graphics.DrawString(line, titleFont, Brushes.Black, middle(150, line, 340, (int)titleFont.Size) + pos, 370 + posy, new StringFormat());
                 }
                 else if (count == 3)
                 {
                     //MessageBox.Show(printFont.GetHeight(ev.Graphics) + "");
-                    ev.Graphics.DrawString(line, printFont, Brushes.Black, middle(290, line, 140, (int)printFont.Size), 625, new StringFormat());
+                    ev.Graphics.DrawString(line, printFont, Brushes.Black, middle(290, line, 140, (int)printFont.Size) + pos, 625 + posy, new StringFormat());
                 }
                 else if (count == 4)
                 {
-                    
-                    ev.Graphics.DrawString(line, printFont, Brushes.Black, 635, 625, new StringFormat());
+
+                    ev.Graphics.DrawString(line, printFont, Brushes.Black, 635+pos, 625+posy, new StringFormat());
                 }
                 count++;
             }
@@ -408,12 +452,12 @@ namespace WindowsFormsApp1
                 ev.HasMorePages = false;
 
         }
-        public static int middle(int begin,String text,int length,int size)
+        public static int middle(int begin, String text, int length, int size)
         {
             char[] charArray = text.ToCharArray();
-            
-            return (begin+(length-charArray.Length*size)/2);
-        } 
+
+            return (begin + (length - charArray.Length * size) / 2);
+        }
     }
     public class LocalPrinter
     {

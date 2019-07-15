@@ -12,7 +12,7 @@ namespace SapUserData
         {
             SAPHandle sa = new SAPHandle();
             sa.GetMysqlUserData(SAPHandle.SynUserDataFromSap());
-            Console.ReadLine();
+           // Console.ReadLine();
         }
     }
 }
