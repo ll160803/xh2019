@@ -1,0 +1,9 @@
+D:\project\Item\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Entity\obj\Release\Ipedf.Hrp.Hem.Sap.Entity.csproj.CoreCompileInputs.cache
+D:\project\Item\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Entity\bin\Release\Ipedf.Hrp.Hem.Sap.Entity.dll
+D:\project\Item\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Entity\bin\Release\Ipedf.Hrp.Hem.Sap.Entity.pdb
+D:\project\Item\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Entity\bin\Release\Ipedf.Common.dll
+D:\project\Item\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Entity\bin\Release\Ipedf.Core.Web.dll
+D:\project\Item\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Entity\obj\Release\Ipedf.Hrp.Hem.Sap.Entity.csproj.CopyComplete
+D:\project\Item\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Entity\obj\Release\Ipedf.Hrp.Hem.Sap.Entity.dll
+D:\project\Item\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Entity\obj\Release\Ipedf.Hrp.Hem.Sap.Entity.pdb
+D:\project\Item\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Entity\obj\Release\Ipedf.Hrp.Hem.Sap.Entity.csprojAssemblyReference.cache
