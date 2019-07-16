@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/css/framework-font.css" rel="stylesheet" />
+    <link href="~/Content/css/framework-theme.css" rel="stylesheet" />
+    <script src="~/Content/js/jquery/jquery-2.1.1.min.js"></script>
+    <script src="~/Content/js/bootstrap/bootstrap.js"></script>
+    <link href="~/Content/js/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Content/js/wdtree/tree.js"></script>
+    <link href="~/Content/js/wdtree/tree.css" rel="stylesheet" />
+    <link href="~/Content/js/select2/select2.min.css" rel="stylesheet" />
+    <script src="~/Content/js/select2/select2.min.js"></script>
+    <link href="~/Content/js/wizard/wizard.css" rel="stylesheet" />
+    <script src="~/Content/js/wizard/wizard.js"></script>
+    <script src="~/Content/js/validate/jquery.validate.min.js"></script>
+    <script src="~/Content/js/validate/additional-methods.js"></script>
+    <script src="~/Content/js/validate/messages_zh.min.js"></script>
+
+    <link href="~/Content/css/framework-ui.css" rel="stylesheet" />
+    <script src="~/Content/js/framework-ui.js"></script>
+    <link href="~/Content/js/datepicker_b/css/bootstrap-datepicker.css" rel="stylesheet" />
+    <script src="~/Content/js/datepicker_b/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/Content/js/datepicker_b/locales/bootstrap-datepicker.zh-CN.min.js"></script>
+    <link href="~/Content/js/ComboGrid/jquery.bs-combogrid.css" rel="stylesheet" />
+    <script src="~/Content/js/ComboGrid/jquery.bs-combogrid.js"></script>
+    <script>
+        $(function () {
+            $("#form1").validate({
+                onfocusout: function (element) {
+
+                    return $(element).valid();
+                },
+                errorPlacement: function (error, element) {
+                    if (error.text() != "") {
+                        element.parents('.formValue').addClass('has-error');
+                        element.parents('.has-error').find('i.error').remove();
+                        element.parents('.has-error').append('<i class="form-control-feedback fa fa-exclamation-circle error" data-placement="left" data-toggle="tooltip" title="' + error.text() + '"></i>');
+                        $("[data-toggle='tooltip']").tooltip();
+                        if (element.parents('.input-group').hasClass('input-group')) {
+                            element.parents('.has-error').find('i.error').css('right', '33px')
+                        }
+                        // element.attr("aria-invalid", "false");
+                    }
+                    else {
+                        element.parents('.has-error').find('i.error').remove();
+                        element.parent().removeClass('has-error');
+                    }
+                },
+                success: function (error, element) {
+
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    @RenderBody()
+    @Html.AntiForgeryToken()
+</body>
+</html>

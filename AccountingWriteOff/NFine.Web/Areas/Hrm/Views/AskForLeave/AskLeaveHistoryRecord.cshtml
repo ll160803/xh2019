@@ -1,0 +1,96 @@
+﻿@{
+    ViewBag.Title = "推送SAP历史记录";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+}
+
+<script>
+    $(function () {
+        gridList();
+    })
+    function gridList() {
+        var url = ""
+
+        url = "/Hrm/AskForLeave/GetHistoryBJRecord/";//保健审批
+
+
+        var $gridList = $("#gridList");
+        $gridList.dataGrid({
+            url: url,
+            height: $(window).height() - 128,
+            colModel: [
+                { label: '主键', name: 'F_Id', hidden: true },
+                { label: '提交人', name: 'F_RealName', width: 80, align: 'left' },
+
+                //{
+                //    label: '考勤部门', name: 'F_FullName', width: 80, align: 'left'
+                //},
+
+                {
+                    label: '提交时间', name: 'F_CreatorTime', width: 80, align: 'left',
+                    formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' }
+                },
+            ],
+            pager: "#gridPager",
+            sortname: 'F_CreatorTime desc',
+            viewrecords: true
+        });
+        $("#btn_search").click(function () {
+            $gridList.jqGrid('setGridParam', {
+                postData: { keyword: $("#txt_keyword").val() },
+            }).trigger('reloadGrid');
+        });
+    }
+    function btn_details() {
+        var keyValue = $("#gridList").jqGridRowValue().F_Id;
+        $.modalOpen({
+            id: "Form24",
+            title: "考勤详情",
+            url: "/hrm/askforleave/HistoryRecordDetail/" + keyValue,
+            width: "800px",
+            height: "600px",
+            btn: null,
+            callBack: function (iframeId) {
+
+            }
+        });
+    }
+
+</script>
+
+<div class="topPanel">
+    <div class="toolbar">
+        <div class="btn-group">
+            <a class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></a>
+        </div>
+        <div class="btn-group">
+            @*<a id="NF-add" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_SubmitAudit()"><i class="fa fa-plus"></i>请假审核</a>*@
+        </div>
+        <div class="operate">
+            <ul class="nav nav-pills">
+                <li class="first">已选中<span>1</span>项</li>
+                <li><a id="NF-Details" authorize="yes" onclick="btn_details()"><i class="fa fa-search-plus"></i>查看请假</a></li>
+            </ul>
+            <a href="javascript:;" class="close"></a>
+        </div>
+        <script>$('.toolbar').authorizeButton()</script>
+    </div>
+    <div class="search">
+        <table>
+            <tr>
+                <td>
+                    <div class="input-group">
+                        <input id="txt_keyword" type="text" class="form-control" placeholder="考勤员/考勤部门" style="width: 200px;">
+                        <span class="input-group-btn">
+                            <button id="btn_search" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="gridPanel" id="main_panel">
+    <table id="gridList"></table>
+    <div id="gridPager"></div>
+</div>
+

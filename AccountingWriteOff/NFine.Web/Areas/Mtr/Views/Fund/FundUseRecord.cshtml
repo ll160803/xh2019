@@ -1,0 +1,161 @@
+﻿@{
+    ViewBag.Title = "记账记录";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+}
+<script>
+    $(function () {
+        gridList();
+    })
+    function gridList() {
+        var url = "/mtr/Fund/GetGridJson/";
+
+        var $gridList = $("#gridList");
+        $gridList.dataGrid({
+            url: url,
+            height: $(window).height() - 128,
+            colModel: [
+                { label: '主键', name: 'F_Id', hidden: true },
+                { label: '领用单号', name: 'Code', width: 120, align: 'left' },
+                { label: '行项目', name: 'ItemCode', width: 80, align: 'left' },
+
+                { label: '所在库房', name: 'LgortName', width: 80, align: 'left' },
+                { label: '物资名称', name: 'Mtr_Name', width: 80, align: 'left' },
+                {
+                    label: '单位', name: 'Mtr_UnitName', width: 80, align: 'left'
+                },
+
+                {
+                    label: '规格', name: 'Mtr_Spec', width: 80, align: 'left'
+
+                },
+                {
+                    label: '领用数量', name: 'num', width: 80, align: 'left'
+
+                },
+                {
+                    label: '单价', name: 'Mtr_Price', width: 80, align: 'left'
+
+                },
+                {
+                    label: '领用金额', name: 'Money', width: 80, align: 'left'
+
+                },
+                {
+                    label: '货币单位', name: 'Currency', width: 80, align: 'left'
+
+                },
+                {
+                    label: '经费卡号', name: 'CardNumber', width: 80, align: 'left'
+
+                },
+                {
+                    label: '经费代码', name: 'FundNumber', width: 80, align: 'left'
+
+                },
+                {
+                    label: '物资类别', name: 'TypeName', width: 80, align: 'left'
+
+                },
+                {
+                    label: '发票号码', name: 'FPHM', width: 80, align: 'left'
+
+                },
+                {
+                    label: '单据备注', name: 'F_Description', width: 80, align: 'left'
+
+                },
+                {
+                    label: '操作账号', name: 'UserCode', width: 80, align: 'left'
+
+                },
+                {
+                    label: '过账日期', name: 'OperateTime', width: 80, align: 'left',
+                    formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' }
+
+                },
+                {
+                    label: '过账时间', name: 'OperateTime', width: 80, align: 'left',
+                    formatter: "date", formatoptions: { srcformat: 'Y-m-d hh:MM:ss', newformat: 'hh:MM:ss' }
+
+                },
+                {
+                    label: '是否冲销', name: 'Is_New', width: 80, align: 'left',
+                    formatter: function (cellvalue, options, rowObject) {
+                        if (cellvalue == true) {
+                            return '否';
+                        } else {
+                            return '是';
+                        }
+                    }
+                }
+
+            ],
+            pager: "#gridPager",
+            sortname: 'F_CreatorTime desc',
+            viewrecords: true
+        });
+        $("#btn_search").click(function () {
+            $gridList.jqGrid('setGridParam', {
+                postData: { keyword: $("#txt_keyword").val() },
+            }).trigger('reloadGrid');
+        });
+    }
+    function ExportExcel() {
+        $.ExportExcel("gridList", "/mtr/fund/GetGridJsonExport/", { keyword: $("#txt_keyword").val() });
+    }
+    function btn_Submit() {
+
+        var State = $("#gridList").jqGridRowValue().IsNew;
+
+        if (State == "是") {
+            $.modalAlert("此记录已经冲销，禁止重复冲销", "warning");
+            return false;
+        }
+        $.deleteForm({
+            prompt: "注：您确定要【冲销】该项数据吗？",
+            loading: "正在提交数据...",
+            url: "/mtr/fund/AccountingWriteOff",
+            param: { keyValue: $("#gridList").jqGridRowValue().F_Id },
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+</script>
+<div class="topPanel">
+    <div class="toolbar">
+        <div class="btn-group">
+            <a class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></a>
+        </div>
+        <div class="btn-group">
+            <a id="NF-Export" authorize="yes" class="btn btn-primary dropdown-text" onclick="ExportExcel()"><i class="fa fa-file-excel-o"></i>导出</a>
+        </div>
+        <div class="operate">
+            <ul class="nav nav-pills">
+                <li class="first">已选中<span>1</span>项</li>
+                <li><a id="NF-add" authorize="yes" onclick="btn_Submit()"><i class="fa fa-plus"></i>记账冲销</a></li>
+                <li><a id="NF-Details" authorize="yes" onclick="btn_details()"><i class="fa fa-search-plus"></i>查看记账</a></li>
+            </ul>
+            <a href="javascript:;" class="close"></a>
+        </div>
+        <script>$('.toolbar').authorizeButton()</script>
+    </div>
+    <div class="search">
+        <table>
+            <tr>
+                <td>
+                    <div class="input-group">
+                        <input id="txt_keyword" type="text" class="form-control" placeholder="物资名称/简称" style="width: 200px;">
+                        <span class="input-group-btn">
+                            <button id="btn_search" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="gridPanel">
+    <table id="gridList"></table>
+    <div id="gridPager"></div>
+</div>

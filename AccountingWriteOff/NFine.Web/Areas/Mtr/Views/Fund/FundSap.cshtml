@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Title = "FundSap";
+    Layout = "~/Views/Shared/_Form_Hrm.cshtml";
+}
+<script>
+    var keyValue = $.request("keyValue");
+    $(function () {
+        initControl();
+       
+    });
+    function initControl() {
+        var $gridList = $("#gridList");
+        $gridList.dataGrid({
+            url: '../mtr/fund/GetFundSapJson/'+keyValue,
+            height: $(window).height() - 128,
+            checkbox: true,
+            colModel: [
+                { label: '经费编码', name: 'FundCode', width: 80, align: 'left' },
+                { label: '经费名称', name: 'FundName', width: 80, align: 'left' },
+
+                {
+                    label: '经费金额', name: 'FundAmount', width: 80, align: 'left'
+                }
+
+            ],
+            viewrecords: true
+        });
+    }
+    function submitForm() {
+        if (!$('#form1').formValid()) {
+            return false;
+        }
+        $.submitForm({
+            url: "/SystemManage/Area/SubmitForm?keyValue=" + keyValue,
+            param: $("#form1").formSerialize(),
+            success: function () {
+                $.currentWindow().$("#gridList").resetSelection();
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+</script>
+
+<form id="form1">
+    <div class="gridPanel">
+        <table id="gridList"></table>
+    </div>
+</form>
+

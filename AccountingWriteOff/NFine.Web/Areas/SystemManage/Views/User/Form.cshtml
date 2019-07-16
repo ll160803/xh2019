@@ -1,0 +1,213 @@
+﻿@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<script>
+    var keyValue = $.request("keyValue");
+    $(function () {
+        initControl();
+        if (!!keyValue) {
+            $.ajax({
+                url: "/SystemManage/User/GetFormJson",
+                data: { keyValue: keyValue },
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    $("#form1").formSerialize(data);
+                    $("#F_UserPassword").val("******").attr('disabled', 'disabled');
+                }
+            });
+        }
+    });
+    function initControl() {
+        $('#wizard').wizard().on('change', function (e, data) {
+            var $finish = $("#btn_finish");
+            var $next = $("#btn_next");
+            if (data.direction == "next") {
+                switch (data.step) {
+                    case 1:
+                        if (!$('#form1').formValid()) {
+                            return false;
+                        }
+                        $finish.show();
+                        $next.hide();
+                        break;
+                    default:
+                        break;
+                }
+            } else {
+                $finish.hide();
+                $next.show();
+            }
+        });
+        $("#F_Gender").bindSelect()
+        $("#F_IsAdministrator").bindSelect()
+        $("#F_EnabledMark").bindSelect()
+        $("#F_OrganizeId").bindSelect({
+            url: "/SystemManage/Organize/GetTreeSelectJson"
+        });
+        $("#F_DepartmentId").bindSelect({
+            url: "/SystemManage/Organize/GetTreeSelectJson",
+        });
+        $("#F_RoleId").bindSelect({
+            url: "/SystemManage/Role/GetGridJson",
+            id: "F_Id",
+            text: "F_FullName"
+        });
+        $("#F_DutyId").bindSelect({
+            url: "/SystemManage/Duty/GetGridJson",
+            id: "F_Id",
+            text: "F_FullName"
+        });
+        $("#permissionTree").treeview({
+            height: 444,
+            showcheck: true,
+            cascadecheck: false,//不级联
+            upcascadecheck: false,//向上级联取消
+            url: "/SystemManage/Organize/GetOrganizeTreeJson/",
+            param: { userId: keyValue, categoryId: 'WorkGroup' }//院区
+        });
+    }
+    function submitForm() {
+        if (!$('#form1').formValid()) {
+            return false;
+        }
+        var postData = $("#form1").formSerialize();
+        postData["permissionIds"] = String($("#permissionTree").getCheckedNodes());
+        $.submitForm({
+            url: "/SystemManage/User/SubmitForm?keyValue=" + keyValue,
+            param: postData,
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+</script>
+<form id="form1">
+    <div class="widget-body">
+        <div id="wizard" class="wizard" data-target="#wizard-steps" style="border-left: none; border-top: none; border-right: none;">
+            <ul class="steps">
+                <li data-target="#step-1" class="active"><span class="step">1</span>基本信息<span class="chevron"></span></li>
+                <li data-target="#step-2"><span class="step">2</span>部门设置<span class="chevron"></span></li>
+            </ul>
+        </div>
+        <div class="step-content" id="wizard-steps" style="border-left: none; border-bottom: none; border-right: none;">
+            <div class="step-pane active" id="step-1" style="margin: 10px; margin-bottom: 0px;">
+                <div class="alert alert-danger" style="text-align: left; margin-bottom: 10px;">
+                    <i class="fa fa-warning alert-dismissible" style="position: relative; top: 1px; font-size: 15px; padding-right: 5px;"></i>
+                    请填写用户信息，用于创建或修改用户信息！
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">表单信息</h3>
+                    </div>
+                    <div class="panel-body" style="width: 98%; height:300px;overflow:auto ">
+                        <table class="form">
+                            <tr>
+                                <th class="formTitle">账户</th>
+                                <td class="formValue">
+                                    <input id="F_Account" name="F_Account" type="text" class="form-control required" placeholder="请输入账户" />
+                                </td>
+                                <th class="formTitle">密码</th>
+                                <td class="formValue">
+                                    <input id="F_UserPassword" name="F_UserPassword" type="password" class="form-control required" placeholder="请输入密码" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="formTitle">公司</th>
+                                <td class="formValue">
+                                    <select id="F_OrganizeId" name="F_OrganizeId" class="form-control required"></select>
+                                </td>
+                                <th class="formTitle">部门</th>
+                                <td class="formValue">
+                                    <select id="F_DepartmentId" name="F_DepartmentId" class="form-control required">
+                                        <option value="">==请选择==</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="formTitle">角色</th>
+                                <td class="formValue">
+                                    <select id="F_RoleId" name="F_RoleId" class="form-control required">
+                                        <option value="">==请选择==</option>
+                                    </select>
+                                </td>
+                                <th class="formTitle">岗位</th>
+                                <td class="formValue">
+                                    <select id="F_DutyId" name="F_DutyId" class="form-control required">
+                                        <option value="">==请选择==</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="formTitle">姓名</th>
+                                <td class="formValue">
+                                    <input id="F_RealName" name="F_RealName" type="text" class="form-control required" placeholder="请输入姓名" />
+                                </td>
+                                <th class="formTitle">性别</th>
+                                <td class="formValue">
+                                    <select id="F_Gender" name="F_Gender" class="form-control required">
+                                        <option value="true">男</option>
+                                        <option value="false">女</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="formTitle">手机</th>
+                                <td class="formValue">
+                                    <input id="F_MobilePhone" name="F_MobilePhone" type="text" class="form-control" />
+                                </td>
+                                <th class="formTitle">生日</th>
+                                <td class="formValue">
+                                    <input id="F_Birthday" name="F_Birthday" type="text" class="form-control input-wdatepicker" onfocus="WdatePicker()" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="formTitle">微信</th>
+                                <td class="formValue">
+                                    <input id="F_WeChat" name="F_WeChat" type="text" class="form-control" />
+                                </td>
+                                <th class="formTitle">邮箱</th>
+                                <td class="formValue">
+                                    <input id="F_Email" name="F_Email" type="text" class="form-control" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="formTitle">类型</th>
+                                <td class="formValue">
+                                    <select id="F_IsAdministrator" name="F_IsAdministrator" class="form-control">
+                                        <option value="false">普通用户</option>
+                                        <option value="true">系统管理员</option>
+                                    </select>
+                                </td>
+                                <th class="formTitle">允许登录</th>
+                                <td class="formValue">
+                                    <select id="F_EnabledMark" name="F_EnabledMark" class="form-control">
+                                        <option value="true">是</option>
+                                        <option value="false">否</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="formTitle" valign="top" style="padding-top: 5px;">
+                                    备注
+                                </th>
+                                <td class="formValue" colspan="3">
+                                    <textarea id="F_Description" name="F_Description" class="form-control" style="height: 60px;"></textarea>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="step-pane" id="step-2">
+                <div id="permissionTree"></div>
+            </div>
+        </div>
+        <div class="form-button" id="wizard-actions">
+            <a id="btn_last" disabled class="btn btn-default btn-prev">上一步</a>
+            <a id="btn_next" class="btn btn-default btn-next">下一步</a>
+            <a id="btn_finish" class="btn btn-default" style="display: none;" onclick="submitForm()">完成</a>
+        </div>
+    </div>
+</form>

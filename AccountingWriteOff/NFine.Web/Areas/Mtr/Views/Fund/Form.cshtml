@@ -1,0 +1,577 @@
+﻿@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Form_Hrm.cshtml";
+}
+
+<script>
+    var selectRowId = -1;
+    var keyValue = $.request("keyValue");
+    $(function () {
+        initControl();
+        
+        $.ajax({
+            url: "/mtr/fund/GetFormJson/",
+            data: { keyValue: keyValue },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                $("#form1").formSerialize(data);
+            }
+        });
+
+    });
+    function initControl() {
+        // gridList();
+        $("#WerksId").bindSelect({
+            url: "/SystemManage/RoleAuthorize/GetYQJson/1",
+            id: "F_Id",
+            text: "F_FullName",
+            change: function (obj, text) {
+                if (obj != undefined) {
+                    $("#Werks").val(text);
+                    $("#Lgort").bindSelect({
+                        url: "/SystemManage/RoleAuthorize/GetYQJson/2?parentId=" + obj.F_Id,
+                        id: "F_Id",
+                        text: "F_FullName",
+                        change: function (obj, text) {
+                            $("#LgortName").val(text);
+                        }
+                    });
+                }
+            }
+        });
+        
+    }
+    function submitForm() {//保存
+        if (!$('#form1').formValid()) {
+            return false;
+        }
+        $.submitForm({
+            url: "/mtr/mtr_d_mtr/SubmitForm?keyValue=" + keyValue,
+            param: $("#form1").formSerialize(),
+            success: function () {
+
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+    //选中行启用行编辑
+    function EditSelectRow(id) {
+
+        var oldSelectRowId = selectRowId;
+        $("#gridList").jqGrid('editRow', selectRowId, false);
+        //当前选中行
+        selectRowId = id;//临时存储当前选中行
+        //$("#fieldGrid").jqGrid('editRow', id);
+        $("#gridList").jqGrid('editRow', id);
+    }
+    function addRows() {
+        var grid = $("#gridList");
+        var ids = grid.jqGrid('getDataIDs');
+
+        for (var i = 0; i < ids.length; i++) {
+            grid.jqGrid('saveRow', ids[i]);
+        }
+    }
+    $.extend($.fn.datagrid.defaults.editors, {
+        combogrid: {
+            init: function (container, options) {
+                var input = $('<input type="text" class="datagrid-editable-input">').appendTo(container);
+                input.combogrid(options);
+                return input;
+            },
+            destroy: function (target) {
+                $(target).combogrid('destroy');
+            },
+            getValue: function (target) {
+                return $(target).combogrid('getValue');
+            },
+            setValue: function (target, value) {
+                $(target).combogrid('setValue', value);
+            },
+            resize: function (target, width) {
+                $(target).combogrid('resize', width);
+            }
+        }
+    });
+    $(function () {
+        var datagrid = $("#gridList");
+        // var datagrid; //定义全局变量datagrid
+        var editRow = undefined; //定义全局变量：当前编辑的行
+        var arr = [];
+        datagrid.datagrid({
+            iconCls: 'icon-save', //图标
+            striped: true, //行背景交换
+            nowap: true, //列内容多时自动折至第二行
+            border: false,
+            showFooter: true,
+            height: $(window).height() - 228 - 50,
+            singleSelect: true,
+            idField: 'F_Id', //主键
+            columns: [[//显示的列
+                { title: '主键', field: 'F_Id', hidden: true },
+                { field: 'ck', checkbox: true },
+                {
+                    title: '发票号码', field: 'FPHM', width: 120, align: 'left', editable: true,
+                    editor: { type: 'validatebox', options: { required: true } }
+                },
+                {
+                    title: '物资编码', field: 'Mtr_Code', width: 200, align: 'left',
+                    editor: {
+                        type: 'combogrid',
+                        options: {
+                            panelWidth: 500,
+                            idField: 'F_Id',
+                            textField: 'F_Id',
+                            url: '/mtr/mtr_d_mtr/GetComboGridJson/',
+                            method: 'post',
+                            required: true,
+                            // pagination: true,
+                            columns: [[
+                                { title: '主键', field: 'F_Id', hidden: true },
+                                { title: '物资名称', field: 'Name', width: 80, align: 'left' },
+                                { title: '物资规格', field: 'Spec', width: 80, align: 'left' },
+                                {
+                                    title: '物资类型', field: 'TypeName', width: 80, align: 'left'
+                                },
+                                {
+                                    title: '单价', field: 'Price', width: 80, align: 'left'
+                                }
+                            ]],
+                            fitColumns: true,
+                            keyHandler: {
+                                query: function (keyword) {
+                                    $(this).combogrid("grid").datagrid('clearSelections');
+
+                                    var queryParams = $(this).combogrid("grid").datagrid('options').queryParams;
+                                    queryParams.keyword = keyword;
+                                    $(this).combogrid("grid").datagrid('options').queryParams = queryParams;
+                                    $(this).combogrid("grid").datagrid("reload");
+                                    $(this).combogrid("setValue", keyword);
+                                }
+                            },
+
+                            onSelect: function (rowIndex, rowData) {
+                                SetReadOnly(editRow, "MtrName", rowData.Name);
+                                SetReadOnly(editRow, "UnitName", rowData.UnitName);
+                                SetReadOnly(editRow, "Spec", rowData.Spec);
+                                SetReadOnly(editRow, "TypeName", rowData.TypeName);
+                                SetReadOnly(editRow, "Mtr_Price", rowData.Price, 1);//值支持数字
+                            }
+                        }
+                    }
+                },
+                {
+                    title: '物资名称', field: 'MtrName', width: 200, align: 'left',
+                    editor: { type: 'validatebox', options: { required: true } }
+                },
+                {
+                    title: '单位', field: 'UnitName', width: 60, align: 'left',
+                    editor: { type: 'validatebox', options: { required: true } }
+                },
+
+                {
+                    title: '规格', field: 'Spec', width: 120, align: 'left',
+                    editor: { type: 'validatebox', options: { required: true } }
+                },
+                {
+                    title: '物资类别', field: 'TypeName', width: 120, align: 'left',
+                    editor: { type: 'validatebox', options: { required: true } }
+                },
+                {
+                    title: '领用数量', field: 'num', width: 80, align: 'left', editable: true,
+                    editor: { type: 'numberbox', options: { required: true } }
+                },
+                {
+                    title: '单价', field: 'Mtr_Price', width: 80, align: 'left', editable: true,
+                    editor: { type: 'numberbox', options: { required: true } }
+                },
+                {
+                    title: '领用金额', field: 'Money', width: 80, align: 'left', editor: { type: 'numberbox' }
+                }
+                ,
+                {
+                    title: '货币单位', field: 'Currency', width: 80, align: 'left',
+                    formatter: function (value) {
+                        return "CNY";
+                    }
+                }
+            ]],
+
+            toolbar: [{
+                text: '新增', iconCls: 'icon-add', handler: function () {//添加列表的操作按钮添加，修改，删除等
+                    //添加时如果没有正在编辑的行，则在datagrid的第一行插入一行
+                    if (editRow == undefined) {
+                        datagrid.datagrid("insertRow", {
+                            index: 0, // index start with 0
+                            row: {}
+                        });
+                        //将新插入的那一行开户编辑状态
+                        datagrid.datagrid("beginEdit", 0);
+                        SetReadOnly(0, "MtrName");
+                        SetReadOnly(0, "UnitName");
+                        SetReadOnly(0, "Spec");
+                        SetReadOnly(0, "TypeName");
+                        SetReadOnly(0, "Money");
+                        //给当前编辑的行赋值
+                        editRow = 0;
+                    }
+
+                }
+            }, '-',
+            {
+                text: '删除', iconCls: 'icon-remove',
+                handler: function () {
+                    //删除时先获取选择行
+                    var rows = datagrid.datagrid("getSelections");
+                    //选择要删除的行
+                    if (rows.length > 0) {
+                        $.messager.confirm("提示", "你确定要删除吗?", function (r) {
+                            if (r) {
+                                var index = datagrid.datagrid("getRowIndex", rows[0]);
+                                datagrid.datagrid("deleteRow", index);
+                                UpdateFooter();
+                                if (index == 0) {
+                                    editRow = undefined;
+                                }
+                            }
+                        });
+                    } else {
+                        $.messager.alert("提示", "请选择要删除的行", "error");
+                    }
+                }
+            }, '-',
+            {
+                text: '修改', iconCls: 'icon-edit',
+                handler: function () {
+                    //修改时要获取选择到的行
+                    var rows = datagrid.datagrid("getSelections");
+                    //如果只选择了一行则可以进行修改，否则不操作
+                    if (rows.length == 1) {
+                        //当无编辑行时
+                        if (editRow == undefined) {
+                            //获取到当前选择行的下标
+                            var index = datagrid.datagrid("getRowIndex", rows[0]);
+                            //开启编辑
+                            datagrid.datagrid("beginEdit", index);
+                            SetReadOnly(index, "MtrName");
+                            SetReadOnly(index, "UnitName");
+                            SetReadOnly(index, "Spec");
+                            SetReadOnly(index, "Money");
+                            SetReadOnly(index, "TypeName");
+                            //把当前开启编辑的行赋值给全局变量editRow
+                            editRow = index;
+                            //当开启了当前选择行的编辑状态之后，
+                            //应该取消当前列表的所有选择行，要不然双击之后无法再选择其他行进行编辑
+                            datagrid.datagrid("unselectAll");
+                        }
+                    }
+                }
+            }, '-',
+            {
+                text: '保存', iconCls: 'icon-save',
+                handler: function () {
+                    //保存时结束当前编辑的行，自动触发onAfterEdit事件如果要与后台交互可将数据通过Ajax提交后台
+                    SettingMoney(editRow);
+                    datagrid.datagrid("endEdit", editRow);
+                    editRow = undefined;
+                    datagrid.datagrid("acceptChanges");
+
+                }
+            }, '-'],
+            onAfterEdit: function (rowIndex, rowData, changes) {
+
+                UpdateFooter();
+                ////endEdit该方法触发此事件
+                ////var row = datagrid.datagrid("getData").rows[rowIndex];  //获取某一行的值
+                //var inserted = datagrid.datagrid('getChanges', 'inserted');
+                //var updated = datagrid.datagrid('getChanges', 'updated');
+                //if (inserted.length < 1 && updated.length < 1) {
+                //    editRow = undefined;
+                //    datagrid.datagrid('unselectAll');
+                //    return;
+                //}
+
+
+                //$.ajax({
+                //    url: url,
+                //    type: 'POST',
+                //    data: {
+                //        'pluid': $('#addpluid').val(),
+                //        'packetid': rowData.packetid,
+                //        'packunit': rowData.packunit,
+                //        'packqty': rowData.packqty,
+                //        'packspec': rowData.packspec
+                //    },
+                //    beforeSend: function () {
+                //        $.messager.progress({
+                //            text: '正在处理中...'
+                //        })
+                //    },
+                //    success: function (data) {
+                //        $.messager.progress('close');
+                //        if (data > 0) {
+                //            datagrid.datagrid("acceptChanges");
+                //            $.messager.show({
+                //                title: '操作提示',
+                //                msg: '添加成功'
+                //            });
+                //            editRow = undefined;
+                //            datagrid.datagrid("reload");
+                //            $('#addcheck').val(1);
+                //        } else if (data == -999) {
+                //            $.messager.alert('添加失败', '抱歉！您没有权限！', 'warning');
+                //        } else {
+                //            datagrid.datagrid("beginEdit", editRow);
+                //            $.messager.alert('警告操作', '未知错误！请重新刷新后提交！', 'warning');
+                //        }
+                //        datagrid.datagrid("unselectAll");
+                //    }
+                //});
+                //////////////////
+            },
+            onDblClickRow: function (rowIndex, rowData) {
+                //双击开启编辑行
+                if (editRow == undefined) {
+                    datagrid.datagrid("beginEdit", rowIndex);
+                    editRow = rowIndex;
+                }
+            }
+        });
+        datagrid.datagrid("loadData", { "total": "0", rows: [], "footer": [{ "MtrName": "合计:", "Money": "0" }] });
+        GetCombogridOptions();
+    });
+    function UpdateFooter() {
+        var moneySum = 0;
+
+        var rows = $('#gridList').datagrid("getRows");
+        for (var i = 0; i < rows.length; i++) {
+            //获取每一行的数据
+            moneySum += parseFloat(rows[i].Money);
+        }
+        var rows2 = $('#gridList').datagrid('getFooterRows');
+        rows2[0]["Money"] = moneySum;
+        $('#gridList').datagrid('reloadFooter');
+    }
+    function SetReadOnly(rowIndex, field, value, isReadonly) {
+        var cellEdit = $("#gridList").datagrid('getEditor', { index: rowIndex, field: field });
+        if (cellEdit == undefined) {
+            return;
+        }
+        var $input = cellEdit.target; // 得到文本框对象
+
+        //$input.val('aaa'); // 设值
+        if (isReadonly == undefined) {
+            $input.prop('readonly', true); // 设值只读
+        }
+
+        if (value != undefined) {
+
+            if (isReadonly != undefined) {
+                if (value != "") {
+                    $input.numberbox('setValue', value);
+                }
+            }
+            else {
+                $input.val(value);
+            }
+        }
+    }
+    function SettingMoney(rowIndex) {
+        var cellEdit = $("#gridList").datagrid('getEditor', { index: rowIndex, field: "Mtr_Price" });
+        if (cellEdit == undefined) {
+            return;
+        }
+        var $Price = cellEdit.target; // 得到文本框对象
+
+        var cellEdit2 = $("#gridList").datagrid('getEditor', { index: rowIndex, field: "num" });
+        var $Num = cellEdit2.target; // 得到文本框对象
+
+        var cellEdit3 = $("#gridList").datagrid('getEditor', { index: rowIndex, field: "Money" });
+        var $Money = cellEdit3.target; // 得到文本框对象
+        var price = $Price.val();
+        var num = $Num.val();
+        $Money.numberbox('setValue', price * num);
+    }
+    function GetCombogridOptions() {
+        $("#CardNumber").combogrid({
+            panelWidth: 500,
+            idField: 'FundCode',
+            textField: 'FundName',
+            url: '/mtr/fund/GetFundSapJson/',
+            method: 'post',
+            // pagination: true,
+            columns: [[
+                { title: '经费编码', field: 'FundCode', width: 80, align: 'left' },
+                { title: '经费名称', field: 'FundName', width: 80, align: 'left' },
+
+                {
+                    title: '经费金额', field: 'FundAmount', width: 80, align: 'left'
+                }
+            ]],
+            fitColumns: true,
+            keyHandler: {
+                query: function (keyword) {
+                    $(this).combogrid("grid").datagrid('clearSelections');
+
+                    var queryParams = $(this).combogrid("grid").datagrid('options').queryParams;
+                    queryParams.keyword = keyword;
+                    $(this).combogrid("grid").datagrid('options').queryParams = queryParams;
+                    $(this).combogrid("grid").datagrid("reload");
+                    $(this).combogrid("setValue", keyword);
+                }
+            },
+            onSelect: function (rowIndex, rowData) {
+                $("#FundNumber").val(rowData.FundCode);
+                $("#FundName").val(rowData.FundName);
+                $("#FundAmount").val(rowData.FundAmount);
+                
+            }
+        });
+    }
+</script>
+<script>
+
+    function submitForm() {//保存
+        if (!$('#form1').formValid()) {
+            return false;
+        }
+        var rows = $('#gridList').datagrid("getRows");
+        if (rows.length == 0) {
+            $.modalAlert("请填写领用记录", "warning");
+            return false;
+        }
+        var moneySum = 0;
+        var arr = [];
+        var msg = "";
+        for (var i = 0; i < rows.length; i++) {
+            //获取每一行的数据
+            var rowMsg = "";
+            moneySum += parseFloat(rows[i].Money);
+            if (rows[i].FPHM == "" || rows[i].FPHM == undefined) {
+                rowMsg += "发票号码不能为空;";
+            }
+            if (rows[i].Mtr_Code == "" || rows[i].Mtr_Code == undefined) {
+                rowMsg += "物资编码不能为空;";
+            }
+            if (rows[i].MtrName == "" || rows[i].MtrName == undefined) {
+                rowMsg += "物资名称不能为空;";
+            }
+            if (rows[i].Mtr_Price == "" || rows[i].Mtr_Price == undefined) {
+                rowMsg += "物资单价不能为空;";
+            }
+            if (rows[i].num == "" || rows[i].num == undefined) {
+                rowMsg += "领用数量不能为空;";
+            }
+            if (rowMsg != "") {
+                msg += "第" + (i + 1) + "行:" + rowMsg;
+            }
+            arr.push({
+                FPHM: rows[i].FPHM,
+                Mtr_Id: rows[i].Mtr_Code,
+                Mtr_Name: rows[i].MtrName,
+                Mtr_Spec: rows[i].Spec,
+                Mtr_UnitName: rows[i].UnitName,
+                Mtr_Price: rows[i].Mtr_Price,
+                Mtr_TypeName: rows[i].TypeName,
+                num: rows[i].num,
+                Money: rows[i].Money,
+                Currency: 'CNY'
+            });
+        }
+        if (msg != "") {
+            $.modalAlert(msg, "warning");
+            return false;
+        }
+        var fund_b_consume = {
+            Werks: $("#Werks").val(),
+            WerksId: $("#WerksId").val(),
+            LgortName: $("#LgortName").val(),
+            Lgort: $("#Lgort").val(),
+            CardNumber: $("#CardNumber").val(),
+            FundNumber: $("#FundNumber").val(),
+            FundName: $("#FundName").val(),
+            FundAmount: $("#FundAmount").val(),
+            F_Description: $("#F_Description").val()
+        };
+        if (moneySum > fund_b_consume.FundAmount) {
+            $.modalAlert("下账金额总数不能大于卡内余额", "warning");
+            return false;
+        }
+        var dataStr = JSON.stringify(arr);
+        $.submitForm({
+            url: "/mtr/fund/SubmitForm",
+            param: { data: dataStr, fund_b_consume: JSON.stringify(fund_b_consume) },
+            success: function () {
+
+                location.href = '../../mtr/fund/form';
+            }
+        })
+    }
+</script>
+<form id="form1">
+    <div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#">基本信息</a></li>
+        </ul>
+        <div style="padding-top: 20px; margin-right: 30px;">
+            <table class="form">
+                <tr>
+                    <th class="formTitle">院区</th>
+                    <td class="formValue">
+                        <input id="Werks" name="Werks" type="hidden" />
+                        <select id="WerksId" name="WerksId" class="form-control required">
+                            <option value="">==请选择==</option>
+                        </select>
+                    </td>
+                    <th class="formTitle">库房</th>
+                    <td class="formValue">
+                        <input id="LgortName" name="LgortName" type="hidden" />
+                        <select id="Lgort" name="Lgort" class="form-control required">
+                            <option value="">==请选择==</option>
+                        </select>
+                    </td>
+                    <th class="formTitle">工号</th>
+                    <td class="formValue">
+                        <input id="UserCode" name="UserCode" type="text" class="form-control required" readonly placeholder="请输入工号" />
+                    </td>
+                    <th class="formTitle">时间</th>
+                    <td class="formValue">
+                        <input id="OperateTime" name="OperateTime" type="text" class="form-control required" readonly placeholder="请输入时间" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">经费卡号</th>
+                    <td class="formValue">
+                        <input id="CardNumber" name="CardNumber" type="text" class="form-control required" placeholder="请输入经费卡号" />
+                    </td>
+                    <th class="formTitle">经费代码</th>
+                    <td class="formValue">
+                        <input id="FundNumber" name="FundNumber" type="text" class="form-control required" readonly placeholder="请输入经费代码" />
+                    </td>
+                    <th class="formTitle">经费名称</th>
+                    <td class="formValue">
+                        <input id="FundName" name="FundName" type="text" class="form-control required" readonly placeholder="请输入经费名称" />
+                    </td>
+                    <th class="formTitle">经费余额</th>
+                    <td class="formValue">
+                        <input id="FundAmount" name="FundAmount" type="text" class="form-control required" readonly placeholder="请输入经费余额" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <th class="formTitle" valign="top" style="padding-top: 5px;">
+                        备注
+                    </th>
+                    <td class="formValue" colspan="5">
+                        <textarea id="F_Description" name="F_Description" maxlength="500" class="form-control" style="height: 60px;"></textarea>
+                    </td>
+                </tr>
+            </table>
+            <div class="gridPanel">
+                <table id="gridList"></table>
+            </div>
+            <div style="width:100%; text-align:center"><input class="btn btn-primary" type="button" value="保存" onclick="submitForm();"></div>
+        </div>
+    </div>
+</form>

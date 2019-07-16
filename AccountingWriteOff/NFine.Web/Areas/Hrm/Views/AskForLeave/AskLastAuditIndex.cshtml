@@ -1,0 +1,228 @@
+﻿@{
+    ViewBag.Title = "保健科审核";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+}
+
+<script>
+    $(function () {
+        gridList();
+    })
+    function gridList() {
+
+        var url = "/Hrm/AskForLeave/GetLastAuditGridJson/@ViewBag.id";//
+
+        var $gridList = $("#gridList");
+        $gridList.dataGrid({
+            url: url,
+            height: $(window).height() - 128,
+            colModel: [
+                { label: '主键', name: 'F_Id', hidden: true },
+                { label: '人员编号', name: 'PERNR', width: 80, align: 'left' },
+                { label: '姓名', name: 'NACHN', width: 80, align: 'left' },
+
+                {
+                    label: '请假类型', name: 'F_ItemName', width: 80, align: 'left'
+                },
+
+                {
+                    label: '请假开始时间', name: 'StartDate', width: 80, align: 'left',
+                    formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' }
+                },
+                {
+                    label: '请假结束时间', name: 'EndDate', width: 80, align: 'left',
+                    formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' }
+                },
+
+                {
+                    label: '请假天数', name: 'days', width: 80, align: 'left',
+                    formatter: function (cellvalue, options, rowObject) {
+                        return $.days_count(rowObject.StartDate, rowObject.EndDate)+"天";
+                    }
+                },
+                {
+                    label: '住院科室', name: 'HosOrganize', width: 80, align: 'left'
+                },
+                {
+                    label: '疾病诊断', name: 'SickCheck', width: 80, align: 'left'
+                },
+                {
+                    label: '性别', name: 'GESCTXT', width: 80, align: 'left'
+                },
+                {
+                    label: '员工工号', name: 'YGGH', width: 80, align: 'left'
+                },
+                {
+                    label: '备注', name: 'F_Description', width: 80, align: 'left'
+                },{
+                    label: '状态', name: 'State', width: 80, align: 'left',
+                    formatter: function (cellvalue, options, rowObject) {
+                        if (cellvalue == "1") {
+                            return '未提交';
+                        } else if (cellvalue == "2") {
+                            return '已提交';
+                        } else if (cellvalue == "3") {
+                            return '已审核';
+                        }else {
+                            return '已发送SAP';
+                        }
+                    }
+                }, {
+                    label: '是否有效', name: 'IsNew', width: 80, align: 'left',
+                    formatter: function (cellvalue, options, rowObject) {
+                        if (cellvalue == true) {
+                            return '是';
+                        } else {
+                            return '否';
+                        }
+                    }
+                }, {
+                    label: '序列值', name: 'AskSort', width: 80, align: 'left'
+                }
+
+            ],
+            pager: "#gridPager",
+            sortname: 'F_CreatorTime desc',
+            viewrecords: true
+        });
+        $("#btn_search").click(function () {
+            $gridList.jqGrid('setGridParam', {
+                postData: { keyword: $("#txt_keyword").val(), id:@ViewBag.id , state: $("#state").val() },
+            }).trigger('reloadGrid');
+        });
+    }
+
+
+    function btn_details() {
+        var keyValue = $("#gridList").jqGridRowValue().F_Id;
+        $.modalOpen({
+            id: "Details",
+            title: "查看用户",
+            url: "/hrm/askforleave/Details?keyValue=" + keyValue,
+            width: "700px",
+            height: "550px",
+            btn: null,
+        });
+    }
+    function btn_SubmitAudit() {//
+        var State = $("#gridList").jqGridRowValue().State;
+        if (State == "已审核") {
+            $.modalAlert("此记录已审核，请勿重复操作", "warning");
+            return false;
+        }
+        $.modalPrompt({
+            btn2: function (index, value) { agreeSubmit(index,value, 0); },//0是审核不通过
+            value:'同意',
+            callback: function (value, index, elem) {
+                agreeSubmit(index,value, 3);//审核通过
+            }
+        });
+    }
+    function agreeSubmit(index,value,state) {
+        //if (value == "") {
+        //    $.modalAlert("请填写审核意见", "warning");
+        //    return false;
+        //}
+
+        $.deleteForm({
+            prompt: "注：您确定要提交该项数据吗？",
+            loading: "正在提交数据...",
+            url: "/hrm/askforleave/AuditSubmitLeave",
+            param: { keyValue: $("#gridList").jqGridRowValue().F_Id, state: state, suggestion: value },
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+                top.layer.close(index);
+            }
+        })
+    }
+    function sendSap() {
+        //if (value == "") {
+        //    $.modalAlert("请填写审核意见", "warning");
+        //    return false;
+        //}
+
+        $.deleteForm({
+            prompt: "注：您确定要推送SAP考勤数据吗？",
+            loading: "正在提交数据...",
+            url: "/hrm/askforleave/SendLeaveToSap/",
+            param: {  },
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
+</script>
+
+<div class="topPanel">
+    <div class="toolbar">
+        @*<div id="txt_condition" class="btn-group">
+                <a class="btn btn-default dropdown-text" data-toggle="dropdown">选择条件</a>
+                <a class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="javascript:void()" data-value="DbName">数据库名</a></li>
+                    <li><a href="javascript:void()" data-value="FileName">备份名称</a></li>
+                </ul>
+            </div>*@
+        <div class="btn-group">
+            <a class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></a>
+        </div>
+        <div class="btn-group">
+            @*<a id="NF-add" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_SubmitAudit()"><i class="fa fa-plus"></i>请假审核</a>*@
+        </div>
+        <div class="operate">
+            <ul class="nav nav-pills">
+                <li class="first">已选中<span>1</span>项</li>
+                <li><a id="NF-Details" authorize="yes" onclick="btn_details()"><i class="fa fa-search-plus"></i>查看请假</a></li>
+                <li><a id="NF-edit" authorize="yes" onclick="btn_SubmitAudit()"><i class="fa fa-pencil-square-o"></i>请假审核</a></li>
+            </ul>
+            <a href="javascript:;" class="close"></a>
+        </div>
+        <script>$('.toolbar').authorizeButton()</script>
+    </div>
+    <div class="search">
+        <table>
+            <tr>
+                <td>
+                    <div class="input-group">
+                        <span class="input-group-addon">审核状态</span>
+                        <select id="state" name="state" class="form-control" style="width:200px;" onchange="$('#btn_search').click();">
+                            <option value="0">全部</option>
+                            <option value="3">已审核</option>
+                            <option value="2" selected>未审核</option>
+                            <option value="4">已推送SAP</option>
+                        </select>
+                       
+                        @*<span class="input-group-btn" style="margin-left:10px;">
+                                <button id="btn_search" type="button" class="btn  btn-primary">考勤推送</button>
+                            </span>*@
+                    </div>
+                </td>
+                <td style="width:10px;">
+                    
+                </td>
+                <td>
+                    <div class="input-group">
+
+                        <input id="txt_keyword" type="text" class="form-control" placeholder="发薪号/姓名" style="width: 200px;">
+                        <span class="input-group-btn">
+                            <button id="btn_search" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
+                        </span>
+                        @*<span class="input-group-btn" style="margin-left:10px;">
+                                <button id="btn_search" type="button" class="btn  btn-primary">考勤推送</button>
+                            </span>*@
+                    </div>
+                </td>
+                <td>
+                    @*<div class="input-group2">*@
+                    <span class="btn-group" style="padding-left:10px;">
+                        <button id="btn_send" type="button" onclick="sendSap();" class="btn btn-success">考勤推送</button>
+                    </span>
+                    @*</div>*@
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="gridPanel">
+    <table id="gridList"></table>
+    <div id="gridPager"></div>
+</div>

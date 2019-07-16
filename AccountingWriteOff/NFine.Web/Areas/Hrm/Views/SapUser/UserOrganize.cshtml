@@ -1,0 +1,55 @@
+﻿@{
+    ViewBag.Title = "用户部门权限";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<script>
+    $(function () {
+        initControl();
+
+    });
+    function initControl() {
+        $("#permissionTree").treeview({
+            height: 444,
+            showcheck: true,
+            cascadecheck: false,//向上级联取消
+            clicktoggle: false,
+            url: "/SystemManage/Organize/GetAuthorityOrganizeTreeJson/"
+        });
+    }
+    function submitForm(keyValue) {
+        var orgId = String($("#permissionTree").getCheckedNodes());
+        if (orgId.indexOf(",") > -1) {
+            $.modalAlert("只能选择一个科室", "warning");
+            return false;
+        }
+        $.submitForm({
+            url: "/Hrm/SapUser/InUser",
+            param: { keyValue: keyValue, orgId: orgId},
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        });
+    }
+    function submitOutForm(keyValue,outOrgId) {//选择移出的科室
+        var orgId = String($("#permissionTree").getCheckedNodes());
+        if (orgId.indexOf(",") > -1) {
+            $.modalAlert("只能选择一个科室", "warning");
+            return false;
+        }
+        $.submitForm({
+            url: "/Hrm/SapUser/RemoveUser",
+            param: { keyValue: keyValue, outOrgId: outOrgId, orgInId: orgId },
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        });
+    }
+</script>
+<div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+    <ul class="nav nav-tabs">
+        <li role="presentation" class="active"><a href="#">部门信息</a></li>
+    </ul>
+    <div style="padding-top: 20px; margin-right: 30px;">
+        <div id="permissionTree"></div>
+    </div>
+</div>

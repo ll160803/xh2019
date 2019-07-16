@@ -1,0 +1,147 @@
+﻿@{
+    ViewBag.Title = "Info";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<script>
+    $(function () {
+        $('.wrapper').height($(window).height() - 11);
+        $("#form1").validate({
+            rules: {
+                txt_OldPassword: {
+                    required: true
+                },
+                txt_NewPassword: {
+                    required: true,
+                    minlength: 3
+                },
+                txt_NewTwoPassword: {
+                    required: true,
+                    minlength: 3,
+                    equalTo: "#txt_NewPassword"
+                }
+            },
+            messages: {
+                txt_NewPassword: {
+                    required: "*请输入密码",
+                    minlength: "*密码不能小于3个字符"
+                },
+                txt_NewTwoPassword: {
+                    required: "*请输入确认密码",
+                    minlength: "*密码不能小于3个字符",
+                    equalTo: "*请再次输入相同的值"
+                },
+                txt_OldPassword: {
+                    required: "*请输入密码"
+                }
+            }, errorPlacement: function (error, element) {
+                element.parents('.formValue').addClass('has-error');
+                element.parents('.has-error').find('i.error').remove();
+                element.parents('.has-error').append('<i class="form-control-feedback fa fa-exclamation-circle error" data-placement="left" data-toggle="tooltip" title="' + error + '"></i>');
+                $("[data-toggle='tooltip']").tooltip();
+                if (element.parents('.input-group').hasClass('input-group')) {
+                    element.parents('.has-error').find('i.error').css('right', '33px')
+                }
+            },
+            success: function (element) {
+                element.parents('.has-error').find('i.error').remove();
+                element.parent().removeClass('has-error');
+            }
+        });
+    });
+    function btn_passwordSave() {//密码修改
+        if (!$('#form1').formValid()) {
+            return false;
+        }
+        $.submitForm({
+            url: "/SystemManage/User/SubmitChangePassword/",
+            param: { oldP: $.md5($.trim($("#txt_OldPassword").val())), newP: $("#txt_NewPassword").val() },
+            success: function () {
+                $("#txt_OldPassword").val("");
+                $("#txt_NewPassword").val("");
+                $("#txt_NewTwoPassword").val("");
+            }
+        })
+    }
+</script>
+<script src="~/Content/js/md5/jquery.md5.js"></script>
+<form id="form1" class="form">
+    <div class="wrapper">
+        <ul class="nav nav-tabs">
+            @*<li class="active"><a href="#a" data-toggle="tab">基本信息</a></li>*@
+            <li class="active"><a href="#b" data-toggle="tab">密码修改</a></li>
+        </ul>
+        <div class="tab-content" style="padding-top: 5px;">
+            @*<div id="a" class="tab-pane active" style="padding: 15px;">
+                    <ul class="pop-list">
+                        <li>
+                            <label>账户</label>
+                            <span class="formValue"><input id="F_Account" name="F_Account" type="text" class="form-control required" readonly placeholder="请输入账户" /></span>
+                        </li>
+                        <li>
+                            <label>姓名</label>
+                            <input id="F_RealName" name="F_RealName" type="text" class="form-control required" placeholder="请输入姓名" />
+                        </li>
+                        <li>
+                            <label>性别</label>
+
+                            <select id="F_Gender" name="F_Gender" class="form-control required">
+                                <option value="true">男</option>
+                                <option value="false">女</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label>出生日期</label>
+                            <input id="F_Birthday" name="F_Birthday" type="text" class="form-control input-wdatepicker" onfocus="WdatePicker()" />
+                        </li>
+
+                        <li class="line">
+                            <h5><span>联系方式</span></h5>
+                        </li>
+                        <li>
+                            <label>手机号码</label>
+                            <input id="F_MobilePhone" name="F_MobilePhone" type="text" class="form-control" />
+                        </li>
+                        <li>
+                            <label>电子邮箱</label>
+                            <input id="F_Email" name="F_Email" type="text" class="form-control" />
+                        </li>
+                        <li>
+                            <label>微信号</label>
+                            <input id="F_WeChat" name="F_WeChat" type="text" class="form-control" />
+                        </li>
+                        <li>
+                            <div style="padding-left: 115px;">
+                                <a class="btn btn-primary" onclick="btn_save()"><i class="fa fa-save" style="margin-right:5px;"></i>保存</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>*@
+
+            <div id="b" class="tab-pane  active" style="padding: 15px;">
+                <ul class="pop-list">
+                    <li class="line">
+                        <h5><span>修改密码</span></h5>
+                    </li>
+                    <li>
+                        <label>旧密码</label>
+                        <span style="display:table-cell;max-width:400px;" class="formValue"> <input type="password" class="form-control required" autocomplete="off" placeholder="请输入密码" id="txt_OldPassword" name="txt_OldPassword" /></span>
+                    </li>
+                    <li>
+                        <label>新密码</label>
+                        <span style="display:table-cell;max-width:400px;" class="formValue"><input type="password" class="form-control required" autocomplete="off" placeholder="请输入密码" id="txt_NewPassword" name="txt_NewPassword" /></span>
+                    </li>
+                    <li>
+                        <label>确认新密码</label>
+                        <span style="display:table-cell;max-width:400px;" class="formValue"><input type="password" class="form-control required" autocomplete="off" placeholder="请输入密码" id="txt_NewTwoPassword" name="txt_NewTwoPassword" /></span>
+                    </li>
+                    <li>
+                        <div style="padding-left: 115px;">
+                            <a class="btn btn-primary" onclick="btn_passwordSave()"><i class="fa fa-save" style="margin-right:5px;"></i>确认修改</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</form>
