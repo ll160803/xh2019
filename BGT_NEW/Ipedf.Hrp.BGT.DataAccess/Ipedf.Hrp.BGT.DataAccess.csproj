@@ -1,0 +1,308 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{39FAB5C5-BE72-4401-BEC8-F0B7F1A7A6CD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Ipedf.Hrp.DataAccess</RootNamespace>
+    <AssemblyName>Ipedf.Hrp.BGT.DataAccess</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Ipedf.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=3f7b15dfdd0baa1d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Reference.Common\Ipedf.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Ipedf.Core.Web, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Reference.Common\Ipedf.Core.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.OracleClient" />
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.ServiceModel">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Compile Include="BGT_DICT\HelperObject_BGT_D_BUDGET_ITEM.cs" />
+    <Compile Include="BGT_DICT\HelperObject_BGT_D_ACCOUNT_ITEM.cs" />
+    <Compile Include="BGT_DICT\HelperObject_BGT_D_PLAN_ITEM.cs" />
+    <Compile Include="BGT_DICT\HelperObject_BGT_D_BUDGET_DEPT.cs" />
+    <Compile Include="BGT_DICT\HelperObject_BGT_D_BUDGET_ACCOUNT.cs" />
+    <Compile Include="BGT_DICT\HelperObject_BGT_D_VERIFICATION.cs" />
+    <Compile Include="BGT_DICT\HelperObject_BGT_D_VERIFICATION_D.cs" />
+    <Compile Include="BGT_DICT\HelperObject_BGT_D_BUDGET_YEAR.cs" />
+    <Compile Include="bgt_dict\HelperObject_BGT_D_BUDGET_T.cs" />
+    <Compile Include="bgt_dict\HelperObject_BGT_D_BUDGET_T_D.cs" />
+    <Compile Include="bgt_dict\HelperObject_BGT_D_BUDGET_T_A.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BGT_ADJUST\HelperObject_BGT_B_BUDGET_ADJUST.cs" />
+    <Compile Include="BGT_ADJUST\HelperObject_BGT_B_DEPT_MON_ADJUST.cs" />
+    <Compile Include="BGT_ADJUST\HelperObject_BGT_B_DEPT_MON_ADJUST_D.cs" />
+    <Compile Include="BGT_ADJUST\HelperObject_BGT_B_DEPT_YEAR_ADJUST.cs" />
+    <Compile Include="BGT_ADJUST\HelperObject_BGT_B_DEPT_YEAR_ADJUST_D.cs" />
+    <Compile Include="BGT_ADJUST\HelperObject_BGT_B_BUDGET_ADJUST_.cs" />
+    <Compile Include="BGT_ADJUST\HelperObject_BGT_B_DEPT_MON_ADJUST_D_.cs" />
+    <Compile Include="BGT_ADJUST\HelperObject_BGT_B_DEPT_YEAR_ADJUST_D_.cs" />
+    <Compile Include="BGT_ADJUST_NEW\HelperObject_BGT_B_ADJUST_EXE.cs" />
+    <Compile Include="BGT_ADJUST_NEW\HelperObject_BGT_B_ADJUST_EXE_D.cs" />
+    <Compile Include="BGT_ADJUST_NEW\HelperObject_V_BGT_ADJUST_FUND_MONEY.cs" />
+    <Compile Include="BGT_ADJUST_NEW\HelperObject_V_BGT_ADJUST_FUND_MONEY_ECT.cs" />
+    <Compile Include="BGT_ADJUST_NEW\HelperObject_V_BGT_ADJUST_TO_SAP.cs" />
+    <Compile Include="BGT_ADJUST_NEW\HelperObject_V_BGT_B_FUND_EXE_ADD_UPDATE.cs" />
+    <Compile Include="BGT_ADJUST_NEW\HelperObject_V_BGT_B_FUND_EXE_ADD_UPDATE_.cs" />
+    <Compile Include="BGT_ADJUST_NEW\HelperObject_BGT_B_DEPT_FUND_EXE_ADD_UPDATE_.cs" />
+    <Compile Include="BGT_CONTROL\HelperObject_BGT_B_BUDGET_CONTROL.cs" />
+    <Compile Include="BGT_CONTROL\HelperObject_BGT_B_BUDGET_CONTROL_D.cs" />
+    <Compile Include="BGT_CONTROL\HelperObject_BGT_B_BUDGET_CONTROL_D_.cs" />
+    <Compile Include="BGT_CONTROL\HelperObject_BGT_B_BUDGET_CONTROL_D_EXE.cs" />
+    <Compile Include="BGT_CONTROL\HelperObject_BGT_B_BUDGET_CONTROL_STAGE.cs" />
+    <Compile Include="BGT_CONTROL\HelperObject_BGT_B_BUDGET_CONTROL_S_DEPT.cs" />
+    <Compile Include="BGT_CONTROL\HelperObject_BGT_B_DEPT_EXPENSE.cs" />
+    <Compile Include="BGT_CONTROL\HelperObject_BGT_B_DEPT_EXPENSE_D.cs" />
+    <Compile Include="BGT_CONTROL\HelperObject_BGT_B_BUDGET_CONTROL_.cs" />
+    <Compile Include="BGT_CONTROL\HelperObject_BGT_B_BUDGET_CONTROL_STAGE_.cs" />
+    <Compile Include="BGT_DATA\HelperObject_BGT_B_BUDGET_DATA.cs" />
+    <Compile Include="BGT_DATA\HelperObject_BGT_B_BUDGET_DATA_D.cs" />
+    <Compile Include="BGT_DATA\HelperObject_BGT_B_BUDGET_DATA_DEPT.cs" />
+    <Compile Include="BGT_DATA\HelperObject_BGT_B_BUDGET_DATA_D_.cs" />
+    <Compile Include="BGT_DATA\HelperObject_V_BGT_DEPT_BUDGET_DATA_PROCESS.cs" />
+    <Compile Include="BGT_DATA\HelperObject_V_BGT_INC_BUDGET_DATA.cs" />
+    <Compile Include="BGT_DATA\HelperObject_V_BGT_INC_BUDGET_DATA_.cs" />
+    <Compile Include="BGT_DATA\HelperObject_V_BGT_PAY_BUDGET_DATA.cs" />
+    <Compile Include="BGT_DATA\HelperObject_V_BGT_PAY_BUDGET_DATA_.cs" />
+    <Compile Include="BGT_DATA\HelperObject_V_BGT_PLAN_BUDGET_DATA.cs" />
+    <Compile Include="BGT_DATA\HelperObject_BGT_B_BUDGET_DATA_.cs" />
+    <Compile Include="BGT_DICT\HelperObject_BGT_D_BUDGET_CPN_YEAR_R.cs" />
+    <Compile Include="BGT_DICT\HelperObject_BGT_D_BUDGET_CPN_YEAR_R_I.cs" />
+    <Compile Include="BGT_DICT\HelperObject_BGT_D_BUDGET_CPN_YEAR_R_I_D.cs" />
+    <Compile Include="BGT_DICT\HelperObject_BGT_D_BUDGET_DEPT_BUDGET_ITEM.cs" />
+    <Compile Include="BGT_DICT\HelperObject_BGT_D_BUDGET_DEPT_USER.cs" />
+    <Compile Include="BGT_DICT\HelperObject_BGT_D_BUDGET_DEPT_YEAR_R_I.cs" />
+    <Compile Include="BGT_DICT\HelperObject_BGT_D_BUDGET_MONTH.cs" />
+    <Compile Include="BGT_DICT\HelperObject_BGT_D_BUDGET_PATTERN.cs" />
+    <Compile Include="BGT_DICT\HelperObject_BGT_D_BUDGET_T_CPN_I.cs" />
+    <Compile Include="BGT_DICT\HelperObject_BGT_D_BUDGET_T_CPN_I_D.cs" />
+    <Compile Include="BGT_DICT\HelperObject_BGT_D_BUDGET_T_DEPT_I.cs" />
+    <Compile Include="BGT_DICT\HelperObject_BGT_D_BUDGET_T_DEPT_I_D.cs" />
+    <Compile Include="BGT_DICT\HelperObject_BGT_D_BUDGET_T_D_.cs" />
+    <Compile Include="BGT_DICT\HelperObject_BGT_D_BUDGET_T_DEPT_I_D_.cs" />
+    <Compile Include="BGT_DICT\HelperObject_BGT_D_BUDGET_YEAR_R.cs" />
+    <Compile Include="BGT_DICT\HelperObject_BGT_D_BUDGET_DEPT_YEAR_R_I_.cs" />
+    <Compile Include="BGT_DICT\HelperObject_BGT_D_BUDGET_YEAR_R_I_D.cs" />
+    <Compile Include="BGT_DICT\HelperObject_BGT_D_FEE_ITEM.cs" />
+    <Compile Include="BGT_DICT\HelperObject_BGT_D_BUDGET_T_CPN_I_D_.cs" />
+    <Compile Include="BGT_DICT\HelperObject_BGT_D_BUDGET_CPN_YEAR_R_I_.cs" />
+    <Compile Include="BGT_DICT\HelperObject_BGT_D_BUDGET_YEAR_.cs" />
+    <Compile Include="BGT_DICT\HelperObject_BGT_D_BUDGET_PATTERN_.cs" />
+    <Compile Include="BGT_DICT\HelperObject_V_BGT_D_BUDGET_DEPT_USER.cs" />
+    <Compile Include="BGT_DICT\HelperObject_BGT_D_BUDGET_DEPT_BUDGET_ITEM_.cs" />
+    <Compile Include="BGT_DICT\HelperObject_V_BGT_D_BUDGET_ITEM.cs" />
+    <Compile Include="BGT_EXE\HelperObject_BGT_B_CPN_MON_EXE.cs" />
+    <Compile Include="BGT_EXE\HelperObject_BGT_B_CPN_MON_EXE_D_.cs" />
+    <Compile Include="BGT_EXE\HelperObject_BGT_B_CPN_YEAR_EXE.cs" />
+    <Compile Include="BGT_EXE\HelperObject_BGT_B_CPN_YEAR_EXE_D_.cs" />
+    <Compile Include="BGT_EXE\HelperObject_BGT_B_DEPT_MON_EXE.cs" />
+    <Compile Include="BGT_EXE\HelperObject_BGT_B_DEPT_MON_EXE_D_.cs" />
+    <Compile Include="BGT_EXE\HelperObject_BGT_B_DEPT_YEAR_EXE.cs" />
+    <Compile Include="BGT_EXE\HelperObject_BGT_B_DEPT_YEAR_EXE_D.cs" />
+    <Compile Include="BGT_FACT\HelperObject_BGT_B_DEPT_INC_MON_FACT.cs" />
+    <Compile Include="BGT_FACT\HelperObject_BGT_B_DEPT_INC_MON_FACT_D.cs" />
+    <Compile Include="BGT_FACT\HelperObject_BGT_B_DEPT_INC_MON_FACT_D_.cs" />
+    <Compile Include="BGT_FACT\HelperObject_BGT_B_DEPT_PAY_MON_FACT.cs" />
+    <Compile Include="BGT_FACT\HelperObject_BGT_B_DEPT_PAY_MON_FACT_D.cs" />
+    <Compile Include="BGT_FACT\HelperObject_BGT_B_DEPT_PAY_MON_FACT_D_.cs" />
+    <Compile Include="BGT_FACT\HelperObject_BGT_B_DEPT_PLAN_MON_FACT.cs" />
+    <Compile Include="BGT_FACT\HelperObject_BGT_B_DEPT_PLAN_MON_FACT_D.cs" />
+    <Compile Include="BGT_FACT\HelperObject_BGT_B_DEPT_INC_MON_FACT_.cs" />
+    <Compile Include="BGT_FACT\HelperObject_BGT_B_DEPT_PAY_MON_FACT_.cs" />
+    <Compile Include="BGT_FACT\HelperObject_BGT_B_DEPT_PLAN_MON_FACT_.cs" />
+    <Compile Include="BGT_FACT\HelperObject_BGT_B_DEPT_PLAN_MON_FACT_D_.cs" />
+    <Compile Include="BGT_INC\HelperObject_BGT_B_CPN_INC_BASIC.cs" />
+    <Compile Include="BGT_INC\HelperObject_BGT_B_CPN_INC_BASIC_D.cs" />
+    <Compile Include="BGT_INC\HelperObject_BGT_B_CPN_INC_MEDICAL.cs" />
+    <Compile Include="BGT_INC\HelperObject_BGT_B_CPN_INC_MON.cs" />
+    <Compile Include="BGT_INC\HelperObject_BGT_B_CPN_INC_MON_D.cs" />
+    <Compile Include="BGT_INC\HelperObject_BGT_B_CPN_INC_MON_D_.cs" />
+    <Compile Include="BGT_INC\HelperObject_BGT_B_CPN_INC_PERSON_FEE.cs" />
+    <Compile Include="BGT_INC\HelperObject_BGT_B_CPN_INC_PERSON_FEE_D.cs" />
+    <Compile Include="BGT_INC\HelperObject_BGT_B_CPN_INC_PROJECT.cs" />
+    <Compile Include="BGT_INC\HelperObject_BGT_B_CPN_INC_PROJECT_D.cs" />
+    <Compile Include="BGT_INC\HelperObject_BGT_B_CPN_INC_YEAR.cs" />
+    <Compile Include="BGT_INC\HelperObject_BGT_B_CPN_INC_YEAR_D.cs" />
+    <Compile Include="BGT_INC\HelperObject_BGT_B_CPN_INC_YEAR_D_.cs" />
+    <Compile Include="BGT_INC\HelperObject_BGT_B_DEPT_INC_MON.cs" />
+    <Compile Include="BGT_INC\HelperObject_BGT_B_DEPT_INC_MON_D.cs" />
+    <Compile Include="BGT_INC\HelperObject_BGT_B_DEPT_INC_MON_D_.cs" />
+    <Compile Include="BGT_INC\HelperObject_BGT_B_DEPT_INC_YEAR.cs" />
+    <Compile Include="BGT_INC\HelperObject_BGT_B_DEPT_INC_YEAR_D.cs" />
+    <Compile Include="BGT_INC\HelperObject_BGT_B_DEPT_INC_YEAR_.cs" />
+    <Compile Include="BGT_INC\HelperObject_BGT_B_DEPT_INC_MON_.cs" />
+    <Compile Include="BGT_INC\HelperObject_BGT_B_CPN_INC_YEAR_.cs" />
+    <Compile Include="BGT_INC\HelperObject_BGT_B_CPN_INC_MON_.cs" />
+    <Compile Include="BGT_INC\HelperObject_BGT_B_DEPT_INC_YEAR_D_.cs" />
+    <Compile Include="BGT_INC\HelperObject_V_BGT_B_CPN_INC_MEDICAL.cs" />
+    <Compile Include="BGT_PAY\HelperObject_BGT_B_CPN_PAY_MON.cs" />
+    <Compile Include="BGT_PAY\HelperObject_BGT_B_CPN_PAY_MON_D.cs" />
+    <Compile Include="BGT_PAY\HelperObject_BGT_B_CPN_PAY_MON_D_.cs" />
+    <Compile Include="BGT_PAY\HelperObject_BGT_B_CPN_PAY_YEAR.cs" />
+    <Compile Include="BGT_PAY\HelperObject_BGT_B_CPN_PAY_YEAR_D.cs" />
+    <Compile Include="BGT_PAY\HelperObject_BGT_B_CPN_PAY_YEAR_D_.cs" />
+    <Compile Include="BGT_PAY\HelperObject_BGT_B_DEPT_PAY_MON.cs" />
+    <Compile Include="BGT_PAY\HelperObject_BGT_B_DEPT_PAY_MON_D.cs" />
+    <Compile Include="BGT_PAY\HelperObject_BGT_B_DEPT_PAY_MON_D_.cs" />
+    <Compile Include="BGT_PAY\HelperObject_BGT_B_DEPT_PAY_YEAR.cs" />
+    <Compile Include="BGT_PAY\HelperObject_BGT_B_DEPT_PAY_YEAR_D.cs" />
+    <Compile Include="BGT_PAY\HelperObject_BGT_B_DEPT_PAY_YEAR_D_.cs" />
+    <Compile Include="BGT_PAY\HelperObject_BGT_B_DEPT_PAY_YEAR_FUND.cs" />
+    <Compile Include="BGT_PAY\HelperObject_BGT_B_DEPT_PAY_YEAY_D_FUND.cs" />
+    <Compile Include="BGT_PAY\HelperObject_BGT_B_PAY_PERSON.cs" />
+    <Compile Include="BGT_PAY\HelperObject_BGT_B_PAY_PERSON_D.cs" />
+    <Compile Include="BGT_PAY\HelperObject_BGT_D_MACHINE.cs" />
+    <Compile Include="BGT_PAY\HelperObject_BGT_D_MGR_DEPT_ITEM.cs" />
+    <Compile Include="BGT_PAY\HelperObject_BGT_D_MGR_DEPT_ITEM_D.cs" />
+    <Compile Include="BGT_PAY\HelperObject_BGT_B_DEPT_PAY_YEAR_.cs" />
+    <Compile Include="BGT_PAY\HelperObject_BGT_B_DEPT_PAY_MON_.cs" />
+    <Compile Include="BGT_PAY\HelperObject_BGT_B_CPN_PAY_YEAR_.cs" />
+    <Compile Include="BGT_PAY\HelperObject_BGT_B_CPN_PAY_MON_.cs" />
+    <Compile Include="BGT_PAY\HelperObject_V_BGT_BGT_B_DEPT_PAY_YEAR_FUND.cs" />
+    <Compile Include="BGT_PAY\HelperObject_V_BGT_BGT_B_DEPT_PAY_YEAR_FUND_.cs" />
+    <Compile Include="BGT_PAY_EXE\HelperObject_BGT_B_DEPT_FUND_EXE.cs" />
+    <Compile Include="BGT_ADJUST_NEW\HelperObject_BGT_B_DEPT_FUND_EXE_ADD_UPDATE.cs" />
+    <Compile Include="BGT_PAY_NEW\HelperObject_BGT_B_CPN_INC_PERSONFUND.cs" />
+    <Compile Include="BGT_PAY_NEW\HelperObject_BGT_B_CPN_INC_PERSONFUND_.cs" />
+    <Compile Include="BGT_PAY_NEW\HelperObject_BGT_B_CPN_INC_PF_D.cs" />
+    <Compile Include="BGT_PAY_NEW\HelperObject_BGT_B_CPN_INC_PF_D_D.cs" />
+    <Compile Include="BGT_PAY_NEW\HelperObject_BGT_B_DEPT_PAY_YEAR_FUND_H.cs" />
+    <Compile Include="BGT_PAY_NEW\HelperObject_BGT_B_DEPT_PAY_YEAY_D_FUND_H.cs" />
+    <Compile Include="BGT_PAY_NEW\HelperObject_BGT_B_DEPT_PAY_YEAR_FUND_H_.cs" />
+    <Compile Include="BGT_PAY_NEW\HelperObject_V_BGT_B_CPN_INC_PERSONFUND.cs" />
+    <Compile Include="BGT_PAY_NEW\HelperObject_V_BGT_FIRST_UP.cs" />
+    <Compile Include="BGT_PLAN\HelperObject_BGT_B_CPN_HIS_DATA.cs" />
+    <Compile Include="BGT_PLAN\HelperObject_BGT_B_CPN_HIS_DATA_D.cs" />
+    <Compile Include="BGT_PLAN\HelperObject_BGT_B_CPN_PLAN_MON.cs" />
+    <Compile Include="BGT_PLAN\HelperObject_BGT_B_CPN_PLAN_MON_D.cs" />
+    <Compile Include="BGT_PLAN\HelperObject_BGT_B_CPN_PLAN_MON_D_.cs" />
+    <Compile Include="BGT_PLAN\HelperObject_BGT_B_CPN_PLAN_YEAR.cs" />
+    <Compile Include="BGT_PLAN\HelperObject_BGT_B_CPN_PLAN_YEAR_D.cs" />
+    <Compile Include="BGT_PLAN\HelperObject_BGT_B_CPN_PLAN_YEAR_D_.cs" />
+    <Compile Include="BGT_PLAN\HelperObject_BGT_B_DEPT_HIS_DATA.cs" />
+    <Compile Include="BGT_PLAN\HelperObject_BGT_B_DEPT_HIS_DATA_D.cs" />
+    <Compile Include="BGT_PLAN\HelperObject_BGT_B_DEPT_HIS_DATA_D_.cs" />
+    <Compile Include="BGT_PLAN\HelperObject_BGT_B_DEPT_PLAN_FEE.cs" />
+    <Compile Include="BGT_PLAN\HelperObject_BGT_B_DEPT_PLAN_FEE_D.cs" />
+    <Compile Include="BGT_PLAN\HelperObject_BGT_B_DEPT_PLAN_MON.cs" />
+    <Compile Include="BGT_PLAN\HelperObject_BGT_B_DEPT_PLAN_MON_D.cs" />
+    <Compile Include="BGT_PLAN\HelperObject_BGT_B_DEPT_PLAN_MON_D_.cs" />
+    <Compile Include="BGT_PLAN\HelperObject_BGT_B_DEPT_PLAN_YEAR.cs" />
+    <Compile Include="BGT_PLAN\HelperObject_BGT_B_DEPT_PLAN_YEAR_D.cs" />
+    <Compile Include="BGT_PLAN\HelperObject_BGT_B_DEPT_PLAN_YEAR_D_HIS.cs" />
+    <Compile Include="BGT_PLAN\HelperObject_BGT_B_DEPT_PLAN_YEAR_.cs" />
+    <Compile Include="BGT_PLAN\HelperObject_BGT_B_DEPT_PLAN_MON_.cs" />
+    <Compile Include="BGT_PLAN\HelperObject_BGT_B_CPN_PLAN_YEAR_.cs" />
+    <Compile Include="BGT_PLAN\HelperObject_BGT_B_CPN_PLAN_MON_.cs" />
+    <Compile Include="BGT_PLAN\HelperObject_BGT_B_CPN_HIS_DATA_D_.cs" />
+    <Compile Include="BGT_PROJ\HelperObject_BGT_B_BUDGET_PROJ.cs" />
+    <Compile Include="BGT_PROJ\HelperObject_BGT_B_BUDGET_PROJ_ADJUST.cs" />
+    <Compile Include="BGT_PROJ\HelperObject_BGT_B_BUDGET_PROJ_ADJUST_D.cs" />
+    <Compile Include="BGT_PROJ\HelperObject_BGT_B_BUDGET_PROJ_CO.cs" />
+    <Compile Include="BGT_PROJ\HelperObject_BGT_B_BUDGET_PROJ_CO_D.cs" />
+    <Compile Include="BGT_PROJ\HelperObject_BGT_B_BUDGET_PROJ_D.cs" />
+    <Compile Include="BGT_PROJ\HelperObject_BGT_B_BUDGET_PROJ_EXE.cs" />
+    <Compile Include="BGT_PROJ\HelperObject_BGT_B_BUDGET_PROJ_EXE_D.cs" />
+    <Compile Include="BGT_PROJ\HelperObject_BGT_B_BUDGET_PROJ_CO_.cs" />
+    <Compile Include="BGT_PROJ\HelperObject_BGT_B_BUDGET_PROJ_EXE_.cs" />
+    <Compile Include="BGT_PROJ\HelperObject_BGT_B_BUDGET_PROJ_ADJUST_D_.cs" />
+    <Compile Include="BGT_PROJ\HelperObject_BGT_B_BUDGET_PROJ_D_.cs" />
+    <Compile Include="BGT_PROJ\HelperObject_BGT_B_BUDGET_PROJ_ADJUST_.cs" />
+    <Compile Include="BGT_RPT\HelperObject_V_BGT_INC_CPN_ALL_MONTH.cs" />
+    <Compile Include="BGT_RPT\HelperObject_V_BGT_INC_ITEM_DEPT_ALL_MONTH.cs" />
+    <Compile Include="BGT_RPT\HelperObject_V_BGT_PAY_CPN_ALL_MONTH.cs" />
+    <Compile Include="BGT_RPT\HelperObject_V_BGT_PAY_ITEM_DEPT_ALL_MONTH.cs" />
+    <Compile Include="BGT_RPT\HelperObject_V_BGT_PLAN_CPN_ALL_MONTH.cs" />
+    <Compile Include="BGT_RPT\HelperObject_V_BGT_PLAN_ITEM_DEPT_ALL_MONTH.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ipedf.Hrp.BGT.Entity\Ipedf.Hrp.BGT.Entity.csproj">
+      <Project>{D23C1013-A3F1-4855-9214-8FA0CAA87528}</Project>
+      <Name>Ipedf.Hrp.BGT.Entity</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>xcopy $(TargetDir)$(TargetFileName) C:\work\xiehe\Reference.Common /R/C/Y</PostBuildEvent>
+  </PropertyGroup>
+</Project>

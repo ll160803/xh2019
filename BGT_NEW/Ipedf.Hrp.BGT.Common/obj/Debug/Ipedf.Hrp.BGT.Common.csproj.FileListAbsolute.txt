@@ -1,0 +1,10 @@
+D:\Ipedf\v2.2\BGT\Ipedf.Hrp.BGT.Common\bin\Debug\Ipedf.Hrp.BGT.Common.dll
+D:\Ipedf\v2.2\BGT\Ipedf.Hrp.BGT.Common\bin\Debug\Ipedf.Hrp.BGT.Common.pdb
+D:\Ipedf\v2.2\BGT\Ipedf.Hrp.BGT.Common\obj\Debug\ResolveAssemblyReference.cache
+D:\Ipedf\v2.2\BGT\Ipedf.Hrp.BGT.Common\obj\Debug\Ipedf.Hrp.BGT.Common.dll
+D:\Ipedf\v2.2\BGT\Ipedf.Hrp.BGT.Common\obj\Debug\Ipedf.Hrp.BGT.Common.pdb
+C:\work\xiehe\BGT\Ipedf.Hrp.BGT.Common\bin\Debug\Ipedf.Hrp.BGT.Common.dll
+C:\work\xiehe\BGT\Ipedf.Hrp.BGT.Common\bin\Debug\Ipedf.Hrp.BGT.Common.pdb
+C:\work\xiehe\BGT\Ipedf.Hrp.BGT.Common\obj\Debug\ResolveAssemblyReference.cache
+C:\work\xiehe\BGT\Ipedf.Hrp.BGT.Common\obj\Debug\Ipedf.Hrp.BGT.Common.dll
+C:\work\xiehe\BGT\Ipedf.Hrp.BGT.Common\obj\Debug\Ipedf.Hrp.BGT.Common.pdb
