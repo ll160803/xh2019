@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ipedf.Hrp.Hem.Sap.Web", "Ipedf.Hrp.Hem.Sap.Web\Ipedf.Hrp.Hem.Sap.Web.csproj", "{95FB6915-2AC1-45B6-9760-383351FC9308}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ipedf.Hrp.Hem.Sap.Entity", "Ipedf.Hrp.Hem.Sap.Entity\Ipedf.Hrp.Hem.Sap.Entity.csproj", "{42603400-D1A7-4C5F-9DD7-968D249DC09A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ipedf.Hrp.Hem.Sap.DataAccess", "Ipedf.Hrp.Hem.Sap.DataAccess\Ipedf.Hrp.Hem.Sap.DataAccess.csproj", "{AED74697-312A-455F-BE4E-BE4C04661C9C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ipedf.Hrp.Hem.Sap.BizLogic", "Ipedf.Hrp.Hem.Sap.BizLogic\Ipedf.Hrp.Hem.Sap.BizLogic.csproj", "{595B3B05-82B4-4C91-B226-C89A18A6F7E6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{95FB6915-2AC1-45B6-9760-383351FC9308}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{95FB6915-2AC1-45B6-9760-383351FC9308}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{95FB6915-2AC1-45B6-9760-383351FC9308}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95FB6915-2AC1-45B6-9760-383351FC9308}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42603400-D1A7-4C5F-9DD7-968D249DC09A}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{42603400-D1A7-4C5F-9DD7-968D249DC09A}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{42603400-D1A7-4C5F-9DD7-968D249DC09A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42603400-D1A7-4C5F-9DD7-968D249DC09A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AED74697-312A-455F-BE4E-BE4C04661C9C}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{AED74697-312A-455F-BE4E-BE4C04661C9C}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{AED74697-312A-455F-BE4E-BE4C04661C9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AED74697-312A-455F-BE4E-BE4C04661C9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{595B3B05-82B4-4C91-B226-C89A18A6F7E6}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{595B3B05-82B4-4C91-B226-C89A18A6F7E6}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{595B3B05-82B4-4C91-B226-C89A18A6F7E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{595B3B05-82B4-4C91-B226-C89A18A6F7E6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+EndGlobal
