@@ -17,6 +17,7 @@ namespace NFine.Web.Areas.Mtr.Controllers
     {
         private Fund_B_ConsumeApp mtrApp = new Fund_B_ConsumeApp();
         private Fund_B_Consume_DApp dApp = new Fund_B_Consume_DApp();
+
         //
         // GET: /Mtr/Fund/
         [HttpGet]
@@ -28,10 +29,7 @@ namespace NFine.Web.Areas.Mtr.Controllers
             {
                 data.UserCode = OperatorProvider.Provider.GetCurrent().UserCode;
                 data.OperateTime = DateTime.Now;
-                data.FundAmount = 1000;
-                data.FundName = "测试数据";
-                data.FundNumber = "测试数据";
-                data.CardNumber = "1233223";
+               
                 data.F_Id = Guid.NewGuid().ToString();
             }
             else
@@ -52,6 +50,9 @@ namespace NFine.Web.Areas.Mtr.Controllers
             entity.UserCode = OperatorProvider.Provider.GetCurrent().UserCode;
             entity.UserId = OperatorProvider.Provider.GetCurrent().UserId;
             entity.UserName = OperatorProvider.Provider.GetCurrent().UserName;
+            entity.OperateTime = DateTime.Now;
+
+
             if (entity.Werks == "" || entity.Lgort == "")
             {
                 return Error("请选择院区");
@@ -60,6 +61,18 @@ namespace NFine.Web.Areas.Mtr.Controllers
             {
                 return Error("请输入卡号");
             }
+            //从SAP接口中获取经费的金额
+            var ListFund = SAPHandle.GetFundByCardNumberSap(entity.CardNumber.Trim(), entity.WerksId.Trim(), entity.password.Trim(), entity.Lgort.Trim());
+            if (ListFund.Count < 0)
+            {
+                return Error("密码或者卡号有误,请核实");
+            }
+            var fundEn = ListFund.Where(p => p.FundCode == entity.FundNumber.Trim()).FirstOrDefault();
+            if (fundEn == null)
+            {
+                return Error("不存在的经费代码,请核实");
+            }
+            entity.FundAmount = fundEn.FundAmound;
             var amount = listD.Sum(p => p.Money);
             if (amount.Value > entity.FundAmount)
             {
@@ -69,12 +82,20 @@ namespace NFine.Web.Areas.Mtr.Controllers
             entity.F_Id = F_Id;
             mtrApp.SubmitForm(entity, "");
             int codeNUM = 1;
+
+            MtrFund_D_MtrApp mapp = new MtrFund_D_MtrApp();
+            var mtrIds = new List<string>();
             foreach (var item in listD)
             {
                 item.Base_Id = F_Id;
                 item.Is_New = true;
                 item.ItemCode = codeNUM.ToString().PadLeft(4, '0');
                 dApp.SubmitForm(item, "");
+                if (!mtrIds.Contains(item.Mtr_Id))
+                {
+                    mapp.Update(item.Mtr_Price.Value, item.Mtr_Id);//更新物资的价格
+                    mtrIds.Add(item.Mtr_Id);
+                }
                 codeNUM++;
             }
             return Success("操作成功。");
@@ -84,20 +105,19 @@ namespace NFine.Web.Areas.Mtr.Controllers
         {
             return View();
         }
-        [HttpGet]
-        [HandlerAjaxOnly]
+
+
         public ActionResult FundSap()
         {
             return View();
         }
-        [HttpPost]
-        [HandlerAjaxOnly]
-        public ActionResult GetFundSapJson(string keyword)
+
+        public ActionResult GetFundSapJson(string WerksId, string LgortId, string CardNumber, string password)
         {
             var data2 = new List<FundSapEntity>();
-            if (!string.IsNullOrEmpty(keyword))
+            if (!string.IsNullOrEmpty(CardNumber))
             {
-                data2 = SAPHandle.GetFundByCardNumberSap(keyword);
+                data2 = SAPHandle.GetFundByCardNumberSap(CardNumber, WerksId, password, LgortId);
             }
             var data = new
             {
@@ -173,7 +193,7 @@ namespace NFine.Web.Areas.Mtr.Controllers
         [HttpPost]
         [HandlerAjaxOnly]
         [ValidateAntiForgeryToken]
-        public ActionResult AccountingWriteOff(string keyValue)
+        public ActionResult AccountingWriteOff(string keyValue,string password)
         {
             var accountingD_Entity = dApp.GetForm(keyValue);
             if (accountingD_Entity.Is_New == false)
@@ -181,15 +201,35 @@ namespace NFine.Web.Areas.Mtr.Controllers
                 return Error("此记录已经做过冲销,禁止二次操作。");
             }
             accountingD_Entity.Is_New = false;
-            new Fund_B_Consume_DApp().SubmitForm(accountingD_Entity, keyValue);//修改为已经做过记账
-
+          
             var accountingEntity = mtrApp.GetForm(accountingD_Entity.Base_Id);
+
+            var ListFund = SAPHandle.GetFundByCardNumberSap(accountingEntity.CardNumber.Trim(), accountingEntity.WerksId.Trim(), password.Trim(), accountingEntity.Lgort.Trim());
+            if (ListFund.Count < 0)
+            {
+                return Error("密码或者卡号有误,请核实");
+            }
+            var fundEn = ListFund.Where(p => p.FundCode == accountingEntity.FundNumber.Trim()).FirstOrDefault();
+            if (fundEn == null)
+            {
+                return Error("不存在的经费代码,请核实");
+            }
+            if(fundEn.FundAmound< -accountingD_Entity.Money)
+            {
+                return Error("经费金额不足，请核实后操作");
+            }
+            
+            new Fund_B_Consume_DApp().SubmitForm(accountingD_Entity, keyValue);//修改为已经做过记账
+                                                                               //从SAP接口中获取经费的金额
+            accountingEntity.Ref_Code = accountingEntity.Code;
             accountingEntity.F_Id = Guid.NewGuid().ToString();
             accountingEntity.UserCode = OperatorProvider.Provider.GetCurrent().UserCode;
             accountingEntity.UserId = OperatorProvider.Provider.GetCurrent().UserId;
             accountingEntity.UserName = OperatorProvider.Provider.GetCurrent().UserName;
             new Fund_B_ConsumeApp().SubmitForm(accountingEntity, "");
             accountingD_Entity.Base_Id = accountingEntity.F_Id;
+            
+            accountingD_Entity.ItemCode = "0001";
             accountingD_Entity.F_Id = Guid.NewGuid().ToString();
             accountingD_Entity.num = -accountingD_Entity.num;
             accountingD_Entity.Money = -accountingD_Entity.Money;

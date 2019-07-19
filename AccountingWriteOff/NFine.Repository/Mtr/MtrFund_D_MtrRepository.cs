@@ -10,15 +10,26 @@
 using NFine.Data;
 using NFine.Domain.Entity.Mtr;
 using NFine.Domain.IRepository.Mtr;
-using System;
+using NFine.Repository.Hrm;
 using System.Collections.Generic;
-using System.Linq;
+using System.Data.Common;
+using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace NFine.Repository.Mtr
 {
     public class MtrFund_D_MtrRepository : RepositoryBase<MtrFund_D_MtrEntity>, IMtrFund_D_MtrRepository
     {
+        public int UpdatePrice(string keyValue, decimal price)
+        {
+            DbParameter[] parameter =
+              {
+                    new MySqlParameter("@Price",price),
+
+                    new MySqlParameter("@keyValue",keyValue),
+            };
+            return this.Update("update MtrFund_D_Mtr set Price=@Price where F_Id=@keyValue", parameter);
+        }
     }
 }

@@ -13,6 +13,7 @@ using NFine.Domain.IRepository.Mtr;
 using NFine.Repository.Mtr;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 namespace NFine.Application.Mtr
 {
@@ -44,7 +45,10 @@ namespace NFine.Application.Mtr
         {
             service.Delete(entity);
         }
-
+        public void Update(decimal price, string keyValue)
+        {
+            service.UpdatePrice(keyValue, price);
+        }
         public void SubmitForm(MtrFund_D_MtrEntity entity, string keyValue)
         {
             if (!string.IsNullOrEmpty(keyValue))

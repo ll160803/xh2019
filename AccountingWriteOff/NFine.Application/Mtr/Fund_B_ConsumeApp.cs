@@ -67,10 +67,10 @@ namespace NFine.Application.Mtr
             }
             else
             {
-                if (string.IsNullOrEmpty(entity.Code))
-                {
+                //if (string.IsNullOrEmpty(entity.Code))
+                //{
                     entity.Code = GetMaxCode();
-                }
+                //}
                 entity.Create();
                 service.Insert(entity);
             }

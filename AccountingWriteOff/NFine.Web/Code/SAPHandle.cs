@@ -169,7 +169,7 @@ namespace NFine.Web.Code
         #endregion
 
 
-        public static List<FundSapEntity> GetFundByCardNumberSap(string cardNumber)
+        public static List<FundSapEntity> GetFundByCardNumberSap(string cardNumber, string werks, string password, string lgort)
         {
             try
             {
@@ -177,18 +177,34 @@ namespace NFine.Web.Code
                 FundSap.ZWS_WWKF gf = new FundSap.ZWS_WWKF();
 
                 gf.Credentials = c;
-              
+
                 LogFactory.GetLogger("GetFundByCardNumberSap").Info("GetFundByCardNumberSap链接SAP开始\n");
-                
+
 
                 var ry = gf.Zfi02FmWwkf(new FundSap.Zfi02FmWwkf
                 {
-                      ICardid= cardNumber
-                     
+                    ICardid = cardNumber,
+                    ILgort = lgort,
+                    IPasswd = password
                 });
-                var result= ry.TAufk;
+                var result = ry.TAufk;
                 List<FundSapEntity> list = new List<FundSapEntity>();
-                foreach(var item in result)
+                //list.Add(new FundSapEntity
+                //{
+                //    CardNumber = "123",
+                //    FundAmound = 2341,
+                //    FundCode = "234",
+                //    FundName = "时间金飞"
+                //});
+                //list.Add(new FundSapEntity
+                //{
+                //    CardNumber = "123",
+                //    FundAmound = 345,
+
+                //    FundCode = "235",
+                //    FundName = "运输费"
+                //});
+                foreach (var item in result)
                 {
                     list.Add(new FundSapEntity
                     {

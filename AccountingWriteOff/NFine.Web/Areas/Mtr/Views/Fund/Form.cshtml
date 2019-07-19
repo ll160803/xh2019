@@ -2,13 +2,12 @@
     ViewBag.Title = "Form";
     Layout = "~/Views/Shared/_Form_Hrm.cshtml";
 }
-
 <script>
     var selectRowId = -1;
     var keyValue = $.request("keyValue");
     $(function () {
         initControl();
-        
+
         $.ajax({
             url: "/mtr/fund/GetFormJson/",
             data: { keyValue: keyValue },
@@ -40,7 +39,7 @@
                 }
             }
         });
-        
+
     }
     function submitForm() {//保存
         if (!$('#form1').formValid()) {
@@ -98,6 +97,8 @@
         var datagrid = $("#gridList");
         // var datagrid; //定义全局变量datagrid
         var editRow = undefined; //定义全局变量：当前编辑的行
+        var selectIndex = undefined;
+        var lastIndex = undefined;
         var arr = [];
         datagrid.datagrid({
             iconCls: 'icon-save', //图标
@@ -110,7 +111,9 @@
             idField: 'F_Id', //主键
             columns: [[//显示的列
                 { title: '主键', field: 'F_Id', hidden: true },
-                { field: 'ck', checkbox: true },
+                {
+                    field: 'ck', checkbox: true
+                },
                 {
                     title: '发票号码', field: 'FPHM', width: 120, align: 'left', editable: true,
                     editor: { type: 'validatebox', options: { required: true } }
@@ -135,6 +138,9 @@
                                     title: '物资类型', field: 'TypeName', width: 80, align: 'left'
                                 },
                                 {
+                                    title: '物资类型编码', field: 'TypeId', width: 80, align: 'left'
+                                },
+                                {
                                     title: '单价', field: 'Price', width: 80, align: 'left'
                                 }
                             ]],
@@ -156,6 +162,7 @@
                                 SetReadOnly(editRow, "UnitName", rowData.UnitName);
                                 SetReadOnly(editRow, "Spec", rowData.Spec);
                                 SetReadOnly(editRow, "TypeName", rowData.TypeName);
+                                SetReadOnly(editRow, "TypeId", rowData.TypeId);
                                 SetReadOnly(editRow, "Mtr_Price", rowData.Price, 1);//值支持数字
                             }
                         }
@@ -163,19 +170,6 @@
                 },
                 {
                     title: '物资名称', field: 'MtrName', width: 200, align: 'left',
-                    editor: { type: 'validatebox', options: { required: true } }
-                },
-                {
-                    title: '单位', field: 'UnitName', width: 60, align: 'left',
-                    editor: { type: 'validatebox', options: { required: true } }
-                },
-
-                {
-                    title: '规格', field: 'Spec', width: 120, align: 'left',
-                    editor: { type: 'validatebox', options: { required: true } }
-                },
-                {
-                    title: '物资类别', field: 'TypeName', width: 120, align: 'left',
                     editor: { type: 'validatebox', options: { required: true } }
                 },
                 {
@@ -190,6 +184,24 @@
                     title: '领用金额', field: 'Money', width: 80, align: 'left', editor: { type: 'numberbox' }
                 }
                 ,
+                {
+                    title: '单位', field: 'UnitName', width: 60, align: 'left',
+                    editor: { type: 'validatebox', options: { required: true } }
+                },
+
+                {
+                    title: '规格', field: 'Spec', width: 120, align: 'left',
+                    editor: { type: 'validatebox', options: { required: true } }
+                },
+                {
+                    title: '物资类别', field: 'TypeName', width: 120, align: 'left',
+                    editor: { type: 'validatebox', options: { required: true } }
+                },
+                {
+                    title: '物资类别编码', field: 'TypeId', width: 120, align: 'left',
+                    editor: { type: 'validatebox', options: { required: true } }
+                },
+               
                 {
                     title: '货币单位', field: 'Currency', width: 80, align: 'left',
                     formatter: function (value) {
@@ -212,6 +224,7 @@
                         SetReadOnly(0, "UnitName");
                         SetReadOnly(0, "Spec");
                         SetReadOnly(0, "TypeName");
+                        SetReadOnly(0, "TypeId");
                         SetReadOnly(0, "Money");
                         //给当前编辑的行赋值
                         editRow = 0;
@@ -259,6 +272,7 @@
                             SetReadOnly(index, "Spec");
                             SetReadOnly(index, "Money");
                             SetReadOnly(index, "TypeName");
+                            SetReadOnly(index, "TypeId");
                             //把当前开启编辑的行赋值给全局变量editRow
                             editRow = index;
                             //当开启了当前选择行的编辑状态之后，
@@ -330,16 +344,18 @@
                 //});
                 //////////////////
             },
-            onDblClickRow: function (rowIndex, rowData) {
+            onClickRow: function (rowIndex, rowData) {
                 //双击开启编辑行
-                if (editRow == undefined) {
-                    datagrid.datagrid("beginEdit", rowIndex);
-                    editRow = rowIndex;
+                if (selectIndex == rowIndex) {
+                    datagrid.datagrid("unselectAll");
                 }
+                selectIndex = rowIndex;
+
             }
+
         });
         datagrid.datagrid("loadData", { "total": "0", rows: [], "footer": [{ "MtrName": "合计:", "Money": "0" }] });
-        GetCombogridOptions();
+        //GetCombogridOptions();
     });
     function UpdateFooter() {
         var moneySum = 0;
@@ -425,7 +441,7 @@
                 $("#FundNumber").val(rowData.FundCode);
                 $("#FundName").val(rowData.FundName);
                 $("#FundAmount").val(rowData.FundAmount);
-                
+
             }
         });
     }
@@ -474,6 +490,7 @@
                 Mtr_UnitName: rows[i].UnitName,
                 Mtr_Price: rows[i].Mtr_Price,
                 Mtr_TypeName: rows[i].TypeName,
+                Mtr_TypeCode: rows[i].TypeId,
                 num: rows[i].num,
                 Money: rows[i].Money,
                 Currency: 'CNY'
@@ -492,7 +509,8 @@
             FundNumber: $("#FundNumber").val(),
             FundName: $("#FundName").val(),
             FundAmount: $("#FundAmount").val(),
-            F_Description: $("#F_Description").val()
+            F_Description: $("#F_Description").val(),
+            password:$("#password").val()
         };
         if (moneySum > fund_b_consume.FundAmount) {
             $.modalAlert("下账金额总数不能大于卡内余额", "warning");
@@ -509,6 +527,67 @@
         })
     }
 </script>
+<script>
+    function InputPassword() {
+        top.layer.prompt({
+            formType: 1,
+            title: '请输入密码',
+            area: ['200px', '180px'], //自定义文本域宽高
+            btn: ['确定', '取消'],    // 自定义设置多个按钮
+            btnclass: ['btn btn-primary', 'btn btn-danger']
+        }, function (value, index, elem) {
+            $("#password").val(value);
+           var subIndex= $.modalOpen({
+                id: "FundSapForm",
+                title: "经费选择",
+                url: '/mtr/fund/FundSap/?WerksId=' + $("#WerksId").val() + '&LgortId=' + $.trim($("#Lgort").val()) + '&CardNumber=' + $.trim($("#CardNumber").val()) + '&password=' +$.trim(value),
+                width: "400px",
+                height: "400px",
+                callBack: function (iframeId) {
+                    var objFund = top.frames[iframeId].submitForm();
+                    if (objFund == undefined || objFund == false) return false;
+                    $("#FundNumber").val(objFund.FundCode);
+                    $("#FundName").val(objFund.FundName);
+                    $("#FundAmount").val(objFund.FundAmount);
+                   
+                    top.layer.close(subIndex);
+                },
+            });
+            top.layer.close(index);
+        });
+    }
+    $(function () {
+        $("#CardNumber").keydown(function (event) {
+            if (event.keyCode == 13) {
+                if ($.trim($(this).val()) != "") {
+                    if ($.trim($("#Lgort").val()) == "") {
+                        $.modalAlert("请填写药库", "warning");
+                        return false;
+                    }
+                    InputPassword();
+                }
+            }
+        })
+
+    });
+    function initControl2() {
+        $("#gridList_Fund").dataGrid({
+            url: '/mtr/fund/GetFundSapJson/',
+            height: 300,
+            colModel: [
+                { label: '经费编码', name: 'FundCode', width: 80, align: 'left' },
+                { label: '经费名称', name: 'FundName', width: 80, align: 'left' },
+
+                {
+                    label: '经费金额', name: 'FundAmount', width: 80, align: 'left'
+                }
+
+            ],
+            viewrecords: true
+        });
+    }
+
+</script>
 <form id="form1">
     <div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
         <ul class="nav nav-tabs">
@@ -520,6 +599,7 @@
                     <th class="formTitle">院区</th>
                     <td class="formValue">
                         <input id="Werks" name="Werks" type="hidden" />
+                        <input id="password" name="password" type="hidden" />
                         <select id="WerksId" name="WerksId" class="form-control required">
                             <option value="">==请选择==</option>
                         </select>
@@ -528,7 +608,7 @@
                     <td class="formValue">
                         <input id="LgortName" name="LgortName" type="hidden" />
                         <select id="Lgort" name="Lgort" class="form-control required">
-                            <option value="">==请选择==</option>
+                            <option value="" >==请选择==</option>
                         </select>
                     </td>
                     <th class="formTitle">工号</th>
@@ -548,10 +628,12 @@
                     <th class="formTitle">经费代码</th>
                     <td class="formValue">
                         <input id="FundNumber" name="FundNumber" type="text" class="form-control required" readonly placeholder="请输入经费代码" />
+                        
                     </td>
                     <th class="formTitle">经费名称</th>
                     <td class="formValue">
                         <input id="FundName" name="FundName" type="text" class="form-control required" readonly placeholder="请输入经费名称" />
+                       
                     </td>
                     <th class="formTitle">经费余额</th>
                     <td class="formValue">

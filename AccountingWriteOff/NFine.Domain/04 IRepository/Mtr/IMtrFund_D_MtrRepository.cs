@@ -19,5 +19,6 @@ namespace NFine.Domain.IRepository.Mtr
 {
     public interface IMtrFund_D_MtrRepository : IRepositoryBase<MtrFund_D_MtrEntity>
     {
+        int UpdatePrice(string keyValue, decimal price);
     }
 }

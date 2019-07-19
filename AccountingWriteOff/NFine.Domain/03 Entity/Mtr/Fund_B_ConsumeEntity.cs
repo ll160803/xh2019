@@ -18,7 +18,7 @@ namespace NFine.Domain.Entity.Mtr
     /// <summary>
     /// Fund_B_Consume Entity Model
     /// </summary>
-    public class Fund_B_ConsumeEntity : IEntity<Fund_B_ConsumeEntity>, ICreationAudited, IDeleteAudited, IModificationAudited
+    public partial class Fund_B_ConsumeEntity : IEntity<Fund_B_ConsumeEntity>, ICreationAudited, IDeleteAudited, IModificationAudited
     {
 						public  string  F_Id { get; set; }
         public string Code { get; set; }
@@ -29,7 +29,8 @@ namespace NFine.Domain.Entity.Mtr
 					public  string  UserId { get; set; }
 					public  string  UserName { get; set; }
 					public  string  UserCode { get; set; }
-					public  DateTime?  OperateTime { get; set; }
+        public string Ref_Code { get; set; }
+        public  DateTime?  OperateTime { get; set; }
 					public  string  CardNumber { get; set; }
 					public  string  FundNumber { get; set; }
 					public  string  FundName { get; set; }

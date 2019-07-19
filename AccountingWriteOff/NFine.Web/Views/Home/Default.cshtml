@@ -104,15 +104,15 @@
                 <div class="panel-heading">
                     <i class="fa fa-line-chart fa-lg" style="padding-right: 5px;"></i>关键数据实时指标
                     <div style="float: right; position: relative; top: -4px; right: 0px;">
-                        <iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=1" width="330" height="35" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+                        @*<iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=1" width="330" height="35" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>*@
                     </div>
                 </div>
                 <div class="panel-body">
-                    @if (ViewBag.IsView) {
+                    @*if (ViewBag.IsView) {
                         <a data-url="/hrm/attendance/attendanceauditIndex" href="javascript:;" data-id="bb670673-2a89-4e33-ad74-90361e4096c6">
                             <div class="dashboard-stats">
                                 <div class="dashboard-stats-item" style="background-color: #fc8675;">
-                                    <h2 class="m-top-none">@ViewBag.Count</h2>
+                                    <h2 class="m-top-none"></h2>
                                     <h5>待处理任务</h5>
                                     <div class="stat-icon">
                                         <i class="fa fa-user fa-3x"></i>
@@ -122,7 +122,7 @@
                             </div>
                         </a>
                     }
-                        @*<div class="dashboard-stats">
+                        <div class="dashboard-stats">
                 <div class="dashboard-stats-item" style="background-color: #6bafbd;">
                     <h2 class="m-top-none">12</h2>
                     <h5>对私待签收任务</h5>

@@ -62,11 +62,11 @@ namespace Ipedf.App
                         {
                             var v_lgort = item.LGORT;//库位表述
                             var v_name = item.NAME;
-                            //if (item.BSART == "Z004" && item.WERKS == "2200")// hsc 2019 07 05 去除限制
-                            //{
-                            //    v_lgort = Ipedf.Web.Common.SendCode.GetDepartCode(item.SEND_DEAPRT_NAME ?? "");
-                            //    v_name = v_lgort == "06" ? "药库" : (item.SEND_DEAPRT_NAME ?? "");
-                            //}
+                            if (item.BSART == "Z004" && item.WERKS == "2200")// hsc 2019 07 05 去除限制
+                            {
+                                // var v_lgort2 = Ipedf.Web.Common.SendCode.GetDepartCode(item.SEND_DEAPRT_NAME ?? "");
+                                v_name = item.SEND_DEAPRT_NAME ?? "药库";
+                            }
                             reList.Add(new Purchase
                             {
                                 ID = item.EBELN + item.EBELP,
@@ -128,7 +128,7 @@ namespace Ipedf.App
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public bool IsExistFphm(string WERKS, string LGORT,string FPHM, string ID,string gysAccount)
+        public bool IsExistFphm(string WERKS, string LGORT, string FPHM, string ID, string gysAccount)
         {
             if (WERKS == "2000" & (LGORT == "1001" || LGORT == "1008"))
             {
@@ -249,7 +249,7 @@ namespace Ipedf.App
                         ListMess.Add(new WcfPlan_XH { ID = item.ID, MESS = "药品剩余效期不足6个月", IsSuccess = false });
                         continue;
                     }
-                    if(!IsExistFphm(item.WERKS,item.LGORT,item.FPHM, item.ID, userName.Trim().Replace("'", "")))
+                    if (!IsExistFphm(item.WERKS, item.LGORT, item.FPHM, item.ID, userName.Trim().Replace("'", "")))
                     {
                         ListMess.Add(new WcfPlan_XH { ID = item.ID, MESS = "发票号码已经存在", IsSuccess = false });
                         continue;

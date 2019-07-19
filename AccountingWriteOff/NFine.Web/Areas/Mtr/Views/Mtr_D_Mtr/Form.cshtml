@@ -27,7 +27,15 @@
                 $("#StockName").val(text);
             }
         });
-
+        $("#TypeId").bindSelect({
+            url: "/SystemManage/ItemsData/GetGridJson?itemId=6dd60099-e593-4b34-963c-1adf7c8d6731",
+            id: "F_ItemCode",
+            search:true,
+            text: "F_ItemName",
+            change: function (obj, text) {
+                $("#TypeName").val(text);
+            }
+        });
     }
     function submitForm() {//保存
         if (!$('#form1').formValid()) {
@@ -60,7 +68,10 @@
                     </td>
                     <th class="formTitle">物资类别</th>
                     <td class="formValue">
-                        <input id="TypeName" name="TypeName" type="text" class="form-control required" placeholder="请输入物资类别" />
+                        <input id="TypeName" name="TypeName" type="hidden" />
+                        <select id="TypeId" name="TypeId" class="form-control required">
+                            <option value="">==请选择==</option>
+                        </select>
                     </td>
                 </tr>
                 <tr>

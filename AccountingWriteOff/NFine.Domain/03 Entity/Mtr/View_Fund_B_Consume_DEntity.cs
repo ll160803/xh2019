@@ -33,7 +33,7 @@ namespace NFine.Domain.Entity.Mtr
         public string AbbreviationName { get; set; }
         public string Code { get; set; }
         public string ItemCode { get; set; }
-
+        public string Mtr_TypeName { get; set; }
         public string num { get; set; }
         public string Money { get; set; }
         public string Currency { get; set; }
@@ -62,5 +62,7 @@ namespace NFine.Domain.Entity.Mtr
         public string FundNumber { get; set; }
         public string FundName { get; set; }
         public string FundAmount { get; set; }
+        public string Ref_Code { get; set; }
+        
     }
 }

@@ -164,7 +164,7 @@ $.modalOpen = function (options) {
     if (options.scroll != null && options.scroll != undefined) {
         setOptions.content.push(options.scroll);//滚动条
     }
-    top.layer.open(setOptions);
+    return top.layer.open(setOptions);
 }
 $.modalConfirm = function (content, callBack) {
     top.layer.confirm(content, {
@@ -350,8 +350,8 @@ $.fn.jqGridRowValue = function () {
 }
 
 $.fn.formValid = function () {
-     
-   return $(this).valid();
+
+    return $(this).valid();
 }
 $.fn.formSerialize = function (formdate) {
     var element = $(this);
@@ -425,16 +425,22 @@ $.fn.bindSelect = function (options) {
                 $.each(data, function (i) {
                     $element.append($("<option></option>").val(data[i][options.id]).html(data[i][options.text]));
                 });
+
                 $element.select2({
                     minimumResultsForSearch: options.search == true ? 0 : -1
                 });
                 //var obj = data[$(this).find("option:selected").index()];
                 $element.on("change", function (e) {
                     if (options.change != null) {
-                        options.change(data[$(this).find("option:selected").index()-1], $(this).find("option:selected").text().replace(/　　/g, ''));
+                        options.change(data[$(this).find("option:selected").index() - 1], $(this).find("option:selected").text().replace(/　　/g, ''));
                     }
                     $("#select2-" + $element.attr('id') + "-container").html($(this).find("option:selected").text().replace(/　　/g, ''));
                 });
+                if (data.length == 1) {//当只有一个值时设置选中
+                    setTimeout(function () {
+                        $element.select2().val(data[0][options.id]).trigger("change");
+                    }, 200);
+                }
             }
         });
     } else {

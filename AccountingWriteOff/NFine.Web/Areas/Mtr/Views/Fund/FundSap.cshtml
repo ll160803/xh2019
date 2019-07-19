@@ -3,7 +3,10 @@
     Layout = "~/Views/Shared/_Form_Hrm.cshtml";
 }
 <script>
-    var keyValue = $.request("keyValue");
+    var WerksId = $.request("WerksId");
+    var LgortId = $.request("LgortId");
+    var CardNumber = $.request("CardNumber");
+    var password = $.request("password");
     $(function () {
         initControl();
        
@@ -11,15 +14,17 @@
     function initControl() {
         var $gridList = $("#gridList");
         $gridList.dataGrid({
-            url: '../mtr/fund/GetFundSapJson/'+keyValue,
+            url: '../../../mtr/fund/GetFundSapJson/',
+            postData: { WerksId: WerksId, LgortId: LgortId, CardNumber: CardNumber, password: $.trim(password) },
             height: $(window).height() - 128,
+            emptyRecords:'卡号或者密码有误，数据不存在',
             checkbox: true,
             colModel: [
                 { label: '经费编码', name: 'FundCode', width: 80, align: 'left' },
                 { label: '经费名称', name: 'FundName', width: 80, align: 'left' },
 
                 {
-                    label: '经费金额', name: 'FundAmount', width: 80, align: 'left'
+                    label: '经费金额', name: 'FundAmound', width: 80, align: 'left'
                 }
 
             ],
@@ -27,18 +32,20 @@
         });
     }
     function submitForm() {
-        if (!$('#form1').formValid()) {
+        var FundCode = $("#gridList").jqGridRowValue().FundCode;
+        if (FundCode == undefined || FundCode == "") {
+            $.modalAlert("请选择经费", "warning");
             return false;
         }
-        $.submitForm({
-            url: "/SystemManage/Area/SubmitForm?keyValue=" + keyValue,
-            param: $("#form1").formSerialize(),
-            success: function () {
-                $.currentWindow().$("#gridList").resetSelection();
-                $.currentWindow().$("#gridList").trigger("reloadGrid");
-            }
-        })
+        var FundName = $("#gridList").jqGridRowValue().FundName;
+        var FundAmount = $("#gridList").jqGridRowValue().FundAmound;
+        return {
+            FundCode: FundCode,
+            FundName: FundName,
+            FundAmount: FundAmount
+        }
     }
+   
 </script>
 
 <form id="form1">

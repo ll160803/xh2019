@@ -53,7 +53,11 @@
 
                 },
                 {
-                    label: '物资类别', name: 'TypeName', width: 80, align: 'left'
+                    label: '经费名称', name: 'FundName', width: 80, align: 'left'
+
+                },
+                {
+                    label: '物资类别', name: 'Mtr_TypeName', width: 80, align: 'left'
 
                 },
                 {
@@ -75,7 +79,11 @@
                 },
                 {
                     label: '过账时间', name: 'OperateTime', width: 80, align: 'left',
-                    formatter: "date", formatoptions: { srcformat: 'Y-m-d hh:MM:ss', newformat: 'hh:MM:ss' }
+                    formatter: "date", formatoptions: { srcformat: 'Y-m-d H:i:s', newformat: 'H:i:s' }
+
+                },
+                {
+                    label: '冲销编码', name: 'Ref_Code', width: 80, align: 'left'
 
                 },
                 {
@@ -111,15 +119,24 @@
             $.modalAlert("此记录已经冲销，禁止重复冲销", "warning");
             return false;
         }
-        $.deleteForm({
-            prompt: "注：您确定要【冲销】该项数据吗？",
-            loading: "正在提交数据...",
-            url: "/mtr/fund/AccountingWriteOff",
-            param: { keyValue: $("#gridList").jqGridRowValue().F_Id },
-            success: function () {
-                $.currentWindow().$("#gridList").trigger("reloadGrid");
-            }
-        })
+        top.layer.prompt({
+            formType: 1,
+            title: '请输入密码',
+            area: ['200px', '180px'], //自定义文本域宽高
+            btn: ['确定', '取消'],    // 自定义设置多个按钮
+            btnclass: ['btn btn-primary', 'btn btn-danger']
+        }, function (value, index, elem) {
+            $.submitForm({
+                loading: "正在提交数据...",
+                url: "/mtr/fund/AccountingWriteOff",
+                param: { keyValue: $("#gridList").jqGridRowValue().F_Id, password: $.trim(value) },
+                success: function () {
+                    $.currentWindow().$("#gridList").trigger("reloadGrid");
+                }
+            });
+            top.layer.close(index);
+        });
+       
     }
 </script>
 <div class="topPanel">

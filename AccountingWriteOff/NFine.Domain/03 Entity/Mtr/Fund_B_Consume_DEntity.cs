@@ -29,6 +29,9 @@ namespace NFine.Domain.Entity.Mtr
         public string Mtr_Spec { get; set; }
         public string Mtr_UnitName { get; set; }
         public string Mtr_TypeName { get; set; }
+       
+        
+        public string Mtr_TypeCode { get; set; }
         public decimal? Mtr_Price { get; set; }
         public decimal? num { get; set; }
         public decimal? Money { get; set; }
