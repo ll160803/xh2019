@@ -53,8 +53,8 @@ namespace NFine.Application.Mtr
             }
             else
             {
-                int num = int.Parse(maxCode.Substring(4, 4)) + 1;
-                maxCode = maxCode.Substring(0, 4) + num.ToString().PadLeft(4, '0');
+                int num = int.Parse(maxCode.Substring(8, 4)) + 1;
+                maxCode = maxCode.Substring(0, 8) + num.ToString().PadLeft(4, '0');
             }
             return maxCode;
         }

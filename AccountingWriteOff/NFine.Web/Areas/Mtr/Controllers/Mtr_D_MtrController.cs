@@ -47,9 +47,45 @@ namespace NFine.Web.Areas.Mtr.Controllers
             return Content(data.ToJson());
         }
 
+
+        public ActionResult HistoryIndex()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [HandlerAjaxOnly]
+        public ActionResult GetGridJson_history(string id, Pagination pagination, string keyword)
+        {
+            System.Linq.Expressions.Expression<Func<Mtr_Fund_D_Mtr_HistoryEntity, bool>> expression = ExtLinq.True<Mtr_Fund_D_Mtr_HistoryEntity>();
+
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                var keyPress = ExtLinq.True<Mtr_Fund_D_Mtr_HistoryEntity>();
+                keyPress = keyPress.And(t => t.Name.Contains(keyword));
+                keyPress = keyPress.Or(t => t.AbbreviationName.Contains(keyword));
+                keyPress = keyPress.Or(t => t.Ref_Id.Contains(keyword));
+                expression = expression.And(keyPress);
+            }
+            var authorizedata = new OrganizeApp().GetListByUserId(OperatorProvider.Provider.GetCurrent().UserId);
+            var mtrData = new Mtr_Fund_D_Mtr_HistoryApp().GetList(pagination, expression);
+            var reData = from m in mtrData
+                         join au in authorizedata
+                         on m.StockId equals au.F_Id
+                         select m;
+            var data = new
+            {
+                rows = reData,
+                total = pagination.total,
+                page = pagination.page,
+                records = pagination.records
+            };
+            return Content(data.ToJson());
+        }
+
         [HttpPost]
         [HandlerAjaxOnly]
-        public JsonResult GetComboGridJson(string id, string order, string sort, string keyword, int page = 1, int rows = int.MaxValue)
+        public JsonResult GetComboGridJson(string id, string order, string sort, string keyword, string Lgort, int page = 1, int rows = int.MaxValue)
         {
             Pagination pagination = new Pagination { page = page, rows = rows, sidx = order, sord = sort };
             System.Linq.Expressions.Expression<Func<MtrFund_D_MtrEntity, bool>> expression = ExtLinq.True<MtrFund_D_MtrEntity>();
@@ -62,6 +98,10 @@ namespace NFine.Web.Areas.Mtr.Controllers
                 keyPress = keyPress.And(t => t.Name.Contains(keyword));
                 keyPress = keyPress.Or(t => t.AbbreviationName.Contains(keyword));
                 expression = expression.And(keyPress);
+            }
+            if (!string.IsNullOrEmpty(Lgort))
+            {
+                expression = expression.And(g => g.StockId == Lgort);
             }
             var authorizedata = new OrganizeApp().GetListByUserId(OperatorProvider.Provider.GetCurrent().UserId);
             var mtrData = mtrApp.GetList(pagination, expression);
@@ -111,10 +151,16 @@ namespace NFine.Web.Areas.Mtr.Controllers
             }
             pagination.page = 1;
             pagination.rows = int.MaxValue;
-            var rows = mtrApp.GetList(pagination, expression);
+            var authorizedata = new OrganizeApp().GetListByUserId(OperatorProvider.Provider.GetCurrent().UserId);
+            var mtrData = mtrApp.GetList(pagination, expression);
+            var reData = from m in mtrData
+                         join au in authorizedata
+                         on m.StockId equals au.F_Id
+                         select m;
+            //  var rows = mtrApp.GetList(pagination, expression);
 
             var dicFields = HandleTitelAndField.GetTitleAndField(titleAndField, 12, 15, 18);
-            var downUrl = NPOIWriteExcel.OutputExcel(rows, dicFields, new ExcelCaption { CaptionName = "物资表", Height = 24 });
+            var downUrl = NPOIWriteExcel.OutputExcel(reData.ToList(), dicFields, new ExcelCaption { CaptionName = "物资表", Height = 24 });
 
             return Success("下载成功", downUrl);
         }
@@ -123,14 +169,30 @@ namespace NFine.Web.Areas.Mtr.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult SubmitForm(MtrFund_D_MtrEntity userEntity, string keyValue)
         {
-            if(!mtrApp.IsExist(userEntity,keyValue))
+            if (!mtrApp.IsExist(userEntity, keyValue))
             {
                 return Error("已经存在相同名称和规格的物资。");
             }
             userEntity.AbbreviationName = PinYin.GetCodstring(userEntity.Name);
             mtrApp.SubmitForm(userEntity, keyValue);
+            new Mtr_Fund_D_Mtr_HistoryApp().SubmitForm(//增加一条历史记录
+                 new Mtr_Fund_D_Mtr_HistoryEntity
+                 {
+                     Code = userEntity.Code,
+                     StockId = userEntity.StockId,
+                     AbbreviationName = userEntity.AbbreviationName,
+                     Name = userEntity.Name,
+                     Ref_Id = userEntity.F_Id,
+                     Spec = userEntity.Spec,
+                     StockName = userEntity.StockName,
+                     TypeId = userEntity.TypeId,
+                     TypeName = userEntity.TypeName,
+                     UnitId = userEntity.UnitId,
+                     UnitName = userEntity.UnitName
+                 }, ""
+                );
             return Success("操作成功。");
         }
-       
+
     }
 }

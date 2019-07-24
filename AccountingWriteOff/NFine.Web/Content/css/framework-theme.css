@@ -142,12 +142,14 @@ a:hover,a:focus{color:#475059;}
 .nav-small #nav-col #user-left-box{display:none}
 .nav-small #nav-col #sidebar-nav .nav>li>a{padding-left:15px!important;padding-right:15px;text-align:center;}
 .nav-small #nav-col #sidebar-nav .nav>li>a>i{position:relative;font-size:1.25em;}
-.nav-small #nav-col #sidebar-nav .nav>li>a>span{display:none}
 .nav-small #nav-col #sidebar-nav .nav>li.nav-header{display:none}
 .nav-small #nav-col #sidebar-nav .nav li>a.dropdown-toggle>.drop-icon{display:none}
 .nav-small #nav-col #sidebar-nav .nav .submenu>li>a.dropdown-toggle>.drop-icon{display:block}
 .nav-small #nav-col #sidebar-nav .nav li .submenu{left:64px;position:absolute;top:0;width:210px;}
 .nav-small #nav-col #sidebar-nav .nav li .submenu>li>a{padding-left:28px}
+    .nav-small #nav-col #sidebar-nav .nav li .submenu > li > a >span {
+        padding-left: 45px
+    }
 .nav-small #nav-col #sidebar-nav .nav>.open>.submenu>li>.submenu,.nav-small #nav-col #sidebar-nav .nav>.active>.submenu>li>.submenu{left:auto;position:relative;top:auto;width:100%;}
 .nav-small #nav-col #sidebar-nav .nav>.open>.submenu>li>.submenu a,.nav-small #nav-col #sidebar-nav .nav>.active>.submenu>li>.submenu a{padding-left:48px}
 .nav-small #sidebar-nav .nav li.active>.submenu{display:none}

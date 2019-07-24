@@ -104,12 +104,12 @@
         });
         $("#btn_search").click(function () {
             $gridList.jqGrid('setGridParam', {
-                postData: { keyword: $("#txt_keyword").val(), startTime: $("#starttime").val(), endTime: $("#endtime").val() },
+                postData: { keyword: $("#txt_keyword").val(), startTime: $("#starttime").val(), endTime: $("#endtime").val(), cardNumber: $.trim($("#txt_cardNumber").val()) },
             }).trigger('reloadGrid');
         });
     }
     function ExportExcel() {
-        $.ExportExcel("gridList", "/mtr/fund/GetGridJsonExport/", { keyword: $("#txt_keyword").val(), startTime: $("#starttime").val(), endTime: $("#endtime").val() });
+        $.ExportExcel("gridList", "/mtr/fund/GetGridJsonExport/", { keyword: $("#txt_keyword").val(), startTime: $("#starttime").val(), endTime: $("#endtime").val(), cardNumber: $.trim($("#txt_cardNumber").val()) });
     }
     function btn_Submit() {
 

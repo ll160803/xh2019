@@ -64,6 +64,7 @@
     <Compile Include="Mtr\Fund_B_ConsumeMap.cs" />
     <Compile Include="Mtr\Fund_B_Consume_DMap.cs" />
     <Compile Include="Mtr\MtrFund_D_MtrMap.cs" />
+    <Compile Include="Mtr\Mtr_Fund_D_Mtr_HistoryMap.cs" />
     <Compile Include="Mtr\View_Fund_B_Consume_DMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemManage\AreaMap.cs" />

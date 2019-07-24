@@ -129,7 +129,7 @@ namespace NFine.Web.Areas.Mtr.Controllers
         }
         [HttpGet]
         [HandlerAjaxOnly]
-        public ActionResult GetGridJson(string id, Pagination pagination, string keyword, string startTime, string endTime, int state = -1)
+        public ActionResult GetGridJson(string id, Pagination pagination, string keyword, string startTime, string endTime,string cardNumber, int state = -1)
         {
             System.Linq.Expressions.Expression<Func<View_Fund_B_Consume_DEntity, bool>> expression = ExtLinq.True<View_Fund_B_Consume_DEntity>();
 
@@ -150,10 +150,14 @@ namespace NFine.Web.Areas.Mtr.Controllers
                 var st = Convert.ToDateTime(startTime);
                 expression = expression.And(t => t.OperateTime.Value >= st);
             }
-            if (!string.IsNullOrEmpty(startTime))
+            if (!string.IsNullOrEmpty(endTime))
             {
-                var et = Convert.ToDateTime(endTime);
+                var et = Convert.ToDateTime(endTime).AddDays(1);
                 expression = expression.And(t => t.OperateTime.Value <= et);
+            }
+            if(!string.IsNullOrEmpty(cardNumber))
+            {
+                expression = expression.And(k => k.CardNumber == cardNumber.Trim());
             }
             var viewApp = new View_Fund_B_Consume_DApp();
             var data = new
@@ -169,7 +173,7 @@ namespace NFine.Web.Areas.Mtr.Controllers
         [HttpPost]
         [HandlerAjaxOnly]
         [ValidateAntiForgeryToken]
-        public ActionResult GetGridJsonExport(string id, Pagination pagination, string keyword, string titleAndField, int state = -1)
+        public ActionResult GetGridJsonExport(string id, Pagination pagination, string keyword, string titleAndField,string startTime, string endTime, string cardNumber, int state = -1)
         {
             System.Linq.Expressions.Expression<Func<View_Fund_B_Consume_DEntity, bool>> expression = ExtLinq.True<View_Fund_B_Consume_DEntity>();
 
@@ -186,6 +190,20 @@ namespace NFine.Web.Areas.Mtr.Controllers
                 keyPress = keyPress.And(t => t.Mtr_Name.Contains(keyword));
                 keyPress = keyPress.Or(t => t.AbbreviationName.Contains(keyword));
                 expression = expression.And(keyPress);
+            }
+            if (!string.IsNullOrEmpty(startTime))
+            {
+                var st = Convert.ToDateTime(startTime);
+                expression = expression.And(t => t.OperateTime.Value >= st);
+            }
+            if (!string.IsNullOrEmpty(endTime))
+            {
+                var et = Convert.ToDateTime(endTime).AddDays(1);;
+                expression = expression.And(t => t.OperateTime.Value <= et);
+            }
+            if (!string.IsNullOrEmpty(cardNumber.Trim()))
+            {
+                expression = expression.And(k => k.CardNumber == cardNumber.Trim());
             }
             var viewApp = new View_Fund_B_Consume_DApp();
             var rows = viewApp.GetList(pagination, expression);

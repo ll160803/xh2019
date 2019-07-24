@@ -130,6 +130,9 @@
                             url: '/mtr/mtr_d_mtr/GetComboGridJson/',
                             method: 'post',
                             required: true,
+                            queryParams: {
+                                Lgort: $.trim($("#Lgort").val())
+                            },
                             // pagination: true,
                             columns: [[
                                 { title: '主键', field: 'F_Id', hidden: true },
@@ -214,6 +217,10 @@
             toolbar: [{
                 text: '新增', iconCls: 'icon-add', handler: function () {//添加列表的操作按钮添加，修改，删除等
                     //添加时如果没有正在编辑的行，则在datagrid的第一行插入一行
+                    if ($.trim($("#Lgort").val()) == "") {
+                        $.modalAlert("请填写库房信息", "warning");
+                        return;
+                    }
                     if (editRow != undefined) {
                         if (datagrid.datagrid('validateRow', editRow)) {
                             var gf = $("#SaveId");
