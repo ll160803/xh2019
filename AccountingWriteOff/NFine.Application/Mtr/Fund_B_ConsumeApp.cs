@@ -49,12 +49,12 @@ namespace NFine.Application.Mtr
             string maxCode = new Data.RepositoryBase<Fund_B_ConsumeEntity>().Max(ExtLinq.True<Fund_B_ConsumeEntity>(), p => p.Code);
             if (string.IsNullOrEmpty(maxCode))
             {
-                maxCode = DateTime.Now.ToString("yyyyMMdd") + "00000001";
+                maxCode = DateTime.Now.ToString("yyyyMMdd") + "0001";
             }
             else
             {
-                int num = int.Parse(maxCode.Substring(8, 8)) + 1;
-                maxCode = maxCode.Substring(0, 8) + num.ToString().PadLeft(8, '0');
+                int num = int.Parse(maxCode.Substring(4, 4)) + 1;
+                maxCode = maxCode.Substring(0, 4) + num.ToString().PadLeft(4, '0');
             }
             return maxCode;
         }

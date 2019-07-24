@@ -5,6 +5,7 @@
 <script>
     var selectRowId = -1;
     var keyValue = $.request("keyValue");
+    var editRow = undefined; //定义全局变量：当前编辑的行
     $(function () {
         initControl();
 
@@ -96,7 +97,7 @@
     $(function () {
         var datagrid = $("#gridList");
         // var datagrid; //定义全局变量datagrid
-        var editRow = undefined; //定义全局变量：当前编辑的行
+
         var selectIndex = undefined;
         var lastIndex = undefined;
         var arr = [];
@@ -111,9 +112,9 @@
             idField: 'F_Id', //主键
             columns: [[//显示的列
                 { title: '主键', field: 'F_Id', hidden: true },
-                {
-                    field: 'ck', checkbox: true
-                },
+                //{
+                //    field: 'ck', checkbox: true
+                //},
                 {
                     title: '发票号码', field: 'FPHM', width: 120, align: 'left', editable: true,
                     editor: { type: 'validatebox', options: { required: true } }
@@ -201,7 +202,7 @@
                     title: '物资类别编码', field: 'TypeId', width: 120, align: 'left',
                     editor: { type: 'validatebox', options: { required: true } }
                 },
-               
+
                 {
                     title: '货币单位', field: 'Currency', width: 80, align: 'left',
                     formatter: function (value) {
@@ -213,6 +214,16 @@
             toolbar: [{
                 text: '新增', iconCls: 'icon-add', handler: function () {//添加列表的操作按钮添加，修改，删除等
                     //添加时如果没有正在编辑的行，则在datagrid的第一行插入一行
+                    if (editRow != undefined) {
+                        if (datagrid.datagrid('validateRow', editRow)) {
+                            var gf = $("#SaveId");
+                            gf.click();
+                        }
+                        else {
+                            return;
+                        }
+
+                    }
                     if (editRow == undefined) {
                         datagrid.datagrid("insertRow", {
                             index: 0, // index start with 0
@@ -230,6 +241,7 @@
                         editRow = 0;
                     }
 
+
                 }
             }, '-',
             {
@@ -238,10 +250,23 @@
                     //删除时先获取选择行
                     var rows = datagrid.datagrid("getSelections");
                     //选择要删除的行
+                    var index = datagrid.datagrid("getRowIndex", rows[0]);
+                    if (editRow != undefined & editRow != index) {//不是当前编辑行
+                        if (datagrid.datagrid('validateRow', editRow)) {
+                            var gf = $("#SaveId");
+                            gf.click();
+                        }
+                        else {
+                            $.messager.alert("提示", "请先处理编辑中数据", "error");
+                            return;
+                        }
+
+                    }
+
                     if (rows.length > 0) {
                         $.messager.confirm("提示", "你确定要删除吗?", function (r) {
                             if (r) {
-                                var index = datagrid.datagrid("getRowIndex", rows[0]);
+
                                 datagrid.datagrid("deleteRow", index);
                                 UpdateFooter();
                                 if (index == 0) {
@@ -253,37 +278,38 @@
                         $.messager.alert("提示", "请选择要删除的行", "error");
                     }
                 }
-            }, '-',
+            },
+            //    '-',
+            //{
+            //    text: '修改', iconCls: 'icon-edit',
+            //    handler: function () {
+            //        //修改时要获取选择到的行
+            //        var rows = datagrid.datagrid("getSelections");
+            //        //如果只选择了一行则可以进行修改，否则不操作
+            //        if (rows.length == 1) {
+            //            //当无编辑行时
+            //            if (editRow == undefined) {
+            //                //获取到当前选择行的下标
+            //                var index = datagrid.datagrid("getRowIndex", rows[0]);
+            //                //开启编辑
+            //                datagrid.datagrid("beginEdit", index);
+            //                SetReadOnly(index, "MtrName");
+            //                SetReadOnly(index, "UnitName");
+            //                SetReadOnly(index, "Spec");
+            //                SetReadOnly(index, "Money");
+            //                SetReadOnly(index, "TypeName");
+            //                SetReadOnly(index, "TypeId");
+            //                //把当前开启编辑的行赋值给全局变量editRow
+            //                editRow = index;
+            //                //当开启了当前选择行的编辑状态之后，
+            //                //应该取消当前列表的所有选择行，要不然双击之后无法再选择其他行进行编辑
+            //                datagrid.datagrid("unselectAll");
+            //            }
+            //        }
+            //    }
+            //},
             {
-                text: '修改', iconCls: 'icon-edit',
-                handler: function () {
-                    //修改时要获取选择到的行
-                    var rows = datagrid.datagrid("getSelections");
-                    //如果只选择了一行则可以进行修改，否则不操作
-                    if (rows.length == 1) {
-                        //当无编辑行时
-                        if (editRow == undefined) {
-                            //获取到当前选择行的下标
-                            var index = datagrid.datagrid("getRowIndex", rows[0]);
-                            //开启编辑
-                            datagrid.datagrid("beginEdit", index);
-                            SetReadOnly(index, "MtrName");
-                            SetReadOnly(index, "UnitName");
-                            SetReadOnly(index, "Spec");
-                            SetReadOnly(index, "Money");
-                            SetReadOnly(index, "TypeName");
-                            SetReadOnly(index, "TypeId");
-                            //把当前开启编辑的行赋值给全局变量editRow
-                            editRow = index;
-                            //当开启了当前选择行的编辑状态之后，
-                            //应该取消当前列表的所有选择行，要不然双击之后无法再选择其他行进行编辑
-                            datagrid.datagrid("unselectAll");
-                        }
-                    }
-                }
-            }, '-',
-            {
-                text: '保存', iconCls: 'icon-save',
+                text: '保存', iconCls: 'icon-save', id: 'SaveId',
                 handler: function () {
                     //保存时结束当前编辑的行，自动触发onAfterEdit事件如果要与后台交互可将数据通过Ajax提交后台
                     SettingMoney(editRow);
@@ -354,7 +380,10 @@
             }
 
         });
+
         datagrid.datagrid("loadData", { "total": "0", rows: [], "footer": [{ "MtrName": "合计:", "Money": "0" }] });
+        var gf = $("#SaveId");
+         gf.hide();
         //GetCombogridOptions();
     });
     function UpdateFooter() {
@@ -449,6 +478,15 @@
 <script>
 
     function submitForm() {//保存
+        if (editRow != undefined) {
+            if ($("#gridList").datagrid('validateRow', editRow)) {
+                var gf = $("#SaveId");
+                gf.click();
+            }
+            else {
+                return false;
+            }
+        }
         if (!$('#form1').formValid()) {
             return false;
         }
@@ -510,7 +548,7 @@
             FundName: $("#FundName").val(),
             FundAmount: $("#FundAmount").val(),
             F_Description: $("#F_Description").val(),
-            password:$("#password").val()
+            password: $("#password").val()
         };
         if (moneySum > fund_b_consume.FundAmount) {
             $.modalAlert("下账金额总数不能大于卡内余额", "warning");
@@ -537,10 +575,10 @@
             btnclass: ['btn btn-primary', 'btn btn-danger']
         }, function (value, index, elem) {
             $("#password").val(value);
-           var subIndex= $.modalOpen({
+            var subIndex = $.modalOpen({
                 id: "FundSapForm",
                 title: "经费选择",
-                url: '/mtr/fund/FundSap/?WerksId=' + $("#WerksId").val() + '&LgortId=' + $.trim($("#Lgort").val()) + '&CardNumber=' + $.trim($("#CardNumber").val()) + '&password=' +$.trim(value),
+                url: '/mtr/fund/FundSap/?WerksId=' + $("#WerksId").val() + '&LgortId=' + $.trim($("#Lgort").val()) + '&CardNumber=' + $.trim($("#CardNumber").val()) + '&password=' + $.trim(value),
                 width: "400px",
                 height: "400px",
                 callBack: function (iframeId) {
@@ -549,7 +587,7 @@
                     $("#FundNumber").val(objFund.FundCode);
                     $("#FundName").val(objFund.FundName);
                     $("#FundAmount").val(objFund.FundAmount);
-                   
+
                     top.layer.close(subIndex);
                 },
             });
@@ -567,8 +605,17 @@
                     InputPassword();
                 }
             }
-        })
-
+        });
+        $(document).keyup(function (event) {
+            if (event.keyCode == 13) {
+                if (editRow != undefined) {
+                    if ($("#gridList").datagrid('validateRow', editRow)) {
+                        var gf = $("#SaveId");
+                        gf.click();
+                    }
+                }
+            }
+        });
     });
     function initControl2() {
         $("#gridList_Fund").dataGrid({
@@ -608,7 +655,7 @@
                     <td class="formValue">
                         <input id="LgortName" name="LgortName" type="hidden" />
                         <select id="Lgort" name="Lgort" class="form-control required">
-                            <option value="" >==请选择==</option>
+                            <option value="">==请选择==</option>
                         </select>
                     </td>
                     <th class="formTitle">工号</th>
@@ -628,12 +675,12 @@
                     <th class="formTitle">经费代码</th>
                     <td class="formValue">
                         <input id="FundNumber" name="FundNumber" type="text" class="form-control required" readonly placeholder="请输入经费代码" />
-                        
+
                     </td>
                     <th class="formTitle">经费名称</th>
                     <td class="formValue">
-                        <input id="FundName" name="FundName" type="text" class="form-control required" readonly placeholder="请输入经费名称" />
-                       
+                        <input id="FundName" name="FundName" type="text" class="form-control " readonly placeholder="请输入经费名称" />
+
                     </td>
                     <th class="formTitle">经费余额</th>
                     <td class="formValue">

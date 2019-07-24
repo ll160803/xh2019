@@ -104,12 +104,12 @@
         });
         $("#btn_search").click(function () {
             $gridList.jqGrid('setGridParam', {
-                postData: { keyword: $("#txt_keyword").val() },
+                postData: { keyword: $("#txt_keyword").val(), startTime: $("#starttime").val(), endTime: $("#endtime").val() },
             }).trigger('reloadGrid');
         });
     }
     function ExportExcel() {
-        $.ExportExcel("gridList", "/mtr/fund/GetGridJsonExport/", { keyword: $("#txt_keyword").val() });
+        $.ExportExcel("gridList", "/mtr/fund/GetGridJsonExport/", { keyword: $("#txt_keyword").val(), startTime: $("#starttime").val(), endTime: $("#endtime").val() });
     }
     function btn_Submit() {
 
@@ -136,9 +136,38 @@
             });
             top.layer.close(index);
         });
-       
+
     }
 </script>
+<script>
+    $(function () {
+        var startTime = laydate.render({
+            elem: '#starttime'
+            , type: 'datetime', //时间格式：yyyy/MM/dd HH:mm:ss
+            format: 'yyyy/MM/dd'
+            , done: function (value, date, endDate) {
+                endTime.config.min = {
+                    year: date.year,
+                    month: date.month - 1,//重点！！！
+                    date: date.date
+                }
+
+                var stime = new Date(Date.parse(value.replace("-", "/")));
+                var etime = new Date(Date.parse($("#endtime").val().replace("-", "/")));
+                if (stime > etime) { //开始时间若大于结束时间，则把开始时间的日期回填到结束时间
+                    $("#endtime").val(value);
+                }
+            }
+        });
+        var endTime = laydate.render({
+            elem: '#endtime',
+            type: 'datetime',
+            format: 'yyyy/MM/dd'
+            , min: $("#starttime").val() //可选择的最小日期为开始日期
+        });
+    });
+</script>
+
 <div class="topPanel">
     <div class="toolbar">
         <div class="btn-group">
@@ -160,6 +189,33 @@
     <div class="search">
         <table>
             <tr>
+                <td>
+                    <div class="input-group">
+                        <span class="input-group-addon">经费卡号</span>
+                        <input id="txt_cardNumber" type="text" class="form-control" placeholder="请输入经费卡号" style="width: 120px;">
+                    </div>
+                </td>
+                <td style="width:10px;"></td>
+
+
+                <td>
+                    <div class="input-group">
+                        <span class="input-group-addon">过账时间</span>
+                        <input type="text" id='starttime' name='starttime' autocomplete="off" style="width: 80px;" class="form-control input-date" />
+                    </div>
+                </td>
+                <td style="width:3px;">
+                    -
+                </td>
+
+                <td>
+                    <div class="input-group">
+                        <input type="text" id='endtime' style="width: 80px;" autocomplete="off" name='endtime' class="form-control input-date" />
+                    </div>
+                </td>
+                <td style="width:10px;"></td>
+
+
                 <td>
                     <div class="input-group">
                         <input id="txt_keyword" type="text" class="form-control" placeholder="物资名称/简称" style="width: 200px;">

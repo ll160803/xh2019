@@ -49,6 +49,20 @@ namespace NFine.Application.Mtr
         {
             service.UpdatePrice(keyValue, price);
         }
+        public string GetMaxCode()
+        {
+            string maxCode = new Data.RepositoryBase<MtrFund_D_MtrEntity>().Max(ExtLinq.True<MtrFund_D_MtrEntity>(), p => p.F_Id);
+            if (string.IsNullOrEmpty(maxCode))
+            {
+                maxCode = DateTime.Now.ToString("yyyy") + "000001";
+            }
+            else
+            {
+                int num = int.Parse(maxCode.Substring(4, 6)) + 1;
+                maxCode = maxCode.Substring(0, 4) + num.ToString().PadLeft(6, '0');
+            }
+            return maxCode;
+        }
         public void SubmitForm(MtrFund_D_MtrEntity entity, string keyValue)
         {
             if (!string.IsNullOrEmpty(keyValue))
@@ -58,6 +72,8 @@ namespace NFine.Application.Mtr
             }
             else
             {
+                entity.F_Id = GetMaxCode();
+               // entity.Code = GetMaxCode();
                 entity.Create();
                 service.Insert(entity);
             }

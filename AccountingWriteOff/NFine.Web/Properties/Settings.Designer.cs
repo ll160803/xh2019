@@ -76,5 +76,16 @@ namespace NFine.Web.Properties {
                 return ((string)(this["NFine_Web_FundSap_ZWS_WWKF"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://saptest-app1.WHXH.COM:8000/sap/bc/srt/rfc/sap/zfi02ws_006/300/zfi02ws_006/" +
+            "zfi02ws_006")]
+        public string NFine_Web_FundSapInput_ZFI02WS_006 {
+            get {
+                return ((string)(this["NFine_Web_FundSapInput_ZFI02WS_006"]));
+            }
+        }
     }
 }

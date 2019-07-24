@@ -29,7 +29,7 @@ namespace NFine.Web.Areas.Mtr.Controllers
             {
                 data.UserCode = OperatorProvider.Provider.GetCurrent().UserCode;
                 data.OperateTime = DateTime.Now;
-               
+
                 data.F_Id = Guid.NewGuid().ToString();
             }
             else
@@ -57,7 +57,7 @@ namespace NFine.Web.Areas.Mtr.Controllers
             {
                 return Error("请选择院区");
             }
-            if (entity.FundName == "" || entity.CardNumber == "")
+            if (entity.FundNumber == "" || entity.CardNumber == "")
             {
                 return Error("请输入卡号");
             }
@@ -98,6 +98,7 @@ namespace NFine.Web.Areas.Mtr.Controllers
                 }
                 codeNUM++;
             }
+            SAPHandle.InsertValueToSap(entity, listD);//发送数据到SAP
             return Success("操作成功。");
         }
 
@@ -128,7 +129,7 @@ namespace NFine.Web.Areas.Mtr.Controllers
         }
         [HttpGet]
         [HandlerAjaxOnly]
-        public ActionResult GetGridJson(string id, Pagination pagination, string keyword, int state = -1)
+        public ActionResult GetGridJson(string id, Pagination pagination, string keyword, string startTime, string endTime, int state = -1)
         {
             System.Linq.Expressions.Expression<Func<View_Fund_B_Consume_DEntity, bool>> expression = ExtLinq.True<View_Fund_B_Consume_DEntity>();
 
@@ -143,6 +144,16 @@ namespace NFine.Web.Areas.Mtr.Controllers
                 keyPress = keyPress.And(t => t.Mtr_Name.Contains(keyword));
                 keyPress = keyPress.Or(t => t.AbbreviationName.Contains(keyword));
                 expression = expression.And(keyPress);
+            }
+            if (!string.IsNullOrEmpty(startTime))
+            {
+                var st = Convert.ToDateTime(startTime);
+                expression = expression.And(t => t.OperateTime.Value >= st);
+            }
+            if (!string.IsNullOrEmpty(startTime))
+            {
+                var et = Convert.ToDateTime(endTime);
+                expression = expression.And(t => t.OperateTime.Value <= et);
             }
             var viewApp = new View_Fund_B_Consume_DApp();
             var data = new
@@ -193,7 +204,7 @@ namespace NFine.Web.Areas.Mtr.Controllers
         [HttpPost]
         [HandlerAjaxOnly]
         [ValidateAntiForgeryToken]
-        public ActionResult AccountingWriteOff(string keyValue,string password)
+        public ActionResult AccountingWriteOff(string keyValue, string password)
         {
             var accountingD_Entity = dApp.GetForm(keyValue);
             if (accountingD_Entity.Is_New == false)
@@ -201,7 +212,7 @@ namespace NFine.Web.Areas.Mtr.Controllers
                 return Error("此记录已经做过冲销,禁止二次操作。");
             }
             accountingD_Entity.Is_New = false;
-          
+
             var accountingEntity = mtrApp.GetForm(accountingD_Entity.Base_Id);
 
             var ListFund = SAPHandle.GetFundByCardNumberSap(accountingEntity.CardNumber.Trim(), accountingEntity.WerksId.Trim(), password.Trim(), accountingEntity.Lgort.Trim());
@@ -214,11 +225,11 @@ namespace NFine.Web.Areas.Mtr.Controllers
             {
                 return Error("不存在的经费代码,请核实");
             }
-            if(fundEn.FundAmound< -accountingD_Entity.Money)
+            if (fundEn.FundAmound < -accountingD_Entity.Money)
             {
                 return Error("经费金额不足，请核实后操作");
             }
-            
+
             new Fund_B_Consume_DApp().SubmitForm(accountingD_Entity, keyValue);//修改为已经做过记账
                                                                                //从SAP接口中获取经费的金额
             accountingEntity.Ref_Code = accountingEntity.Code;
@@ -228,7 +239,7 @@ namespace NFine.Web.Areas.Mtr.Controllers
             accountingEntity.UserName = OperatorProvider.Provider.GetCurrent().UserName;
             new Fund_B_ConsumeApp().SubmitForm(accountingEntity, "");
             accountingD_Entity.Base_Id = accountingEntity.F_Id;
-            
+
             accountingD_Entity.ItemCode = "0001";
             accountingD_Entity.F_Id = Guid.NewGuid().ToString();
             accountingD_Entity.num = -accountingD_Entity.num;
@@ -236,6 +247,7 @@ namespace NFine.Web.Areas.Mtr.Controllers
             accountingD_Entity.Is_New = true;
             new Fund_B_Consume_DApp().SubmitForm(accountingD_Entity, "");
 
+            SAPHandle.InsertValueToSap(accountingEntity, new List<Fund_B_Consume_DEntity> { accountingD_Entity });//发送数据到SAP
 
             return Success("操作成功。");
         }

@@ -180,13 +180,16 @@ namespace NFine.Web.Code
 
                 LogFactory.GetLogger("GetFundByCardNumberSap").Info("GetFundByCardNumberSap链接SAP开始\n");
 
-
-                var ry = gf.Zfi02FmWwkf(new FundSap.Zfi02FmWwkf
+                FundSap.Zfi02S026[] py = new FundSap.Zfi02S026[] { };
+                var input = new FundSap.Zfi02FmWwkf
                 {
                     ICardid = cardNumber,
                     ILgort = lgort,
-                    IPasswd = password
-                });
+                    IPasswd = password,
+                    TAufk = py
+
+                };
+                var ry = gf.Zfi02FmWwkf(input);
                 var result = ry.TAufk;
                 List<FundSapEntity> list = new List<FundSapEntity>();
                 //list.Add(new FundSapEntity
@@ -221,6 +224,41 @@ namespace NFine.Web.Code
                 LogFactory.GetLogger("SynUserDataFromSap").Error("发送SAP失败:" + ex.Message);
             }
             return null;
+        }
+
+        public static void InsertValueToSap(Fund_B_ConsumeEntity entity, List<Fund_B_Consume_DEntity> listDs)
+        {
+            try
+            {
+                System.Net.NetworkCredential c = new System.Net.NetworkCredential(System.Configuration.ConfigurationManager.AppSettings["Sap_User"], System.Configuration.ConfigurationManager.AppSettings["Sap_Password"]);
+                FundSapInput.ZFI02WS_006 gf = new FundSapInput.ZFI02WS_006();
+
+                gf.Credentials = c;
+
+                LogFactory.GetLogger("InsertValueToSap").Info("InsertValueToSap插入SAP数据开始\n");
+
+                foreach (var item in listDs)
+                {
+                    var ry = gf.Zfi02Fm006(new FundSapInput.Zfi02Fm006
+                    {
+                        IZfiLyxh = item.ItemCode,
+                        IWerks = entity.WerksId.Replace("YQ-",""),
+                        ILgort = entity.Lgort,
+                        IZfiJfdm = entity.FundNumber,
+                        IAufnr = entity.Code,
+                        IDmbtr = item.Money.Value.ToString(),
+                        IWaers = "CNY",
+                        IZjpno = entity.Code,
+                        ILbbm = item.Mtr_TypeCode,
+                        ISgtxt = entity.F_Description,
+                        IFlag="I"
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                LogFactory.GetLogger("InsertValueToSap").Error("发送SAP失败:" + ex.Message);
+            }
         }
     }
 }
