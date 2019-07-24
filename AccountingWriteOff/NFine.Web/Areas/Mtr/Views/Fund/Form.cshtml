@@ -77,6 +77,7 @@
         combogrid: {
             init: function (container, options) {
                 var input = $('<input type="text" class="datagrid-editable-input">').appendTo(container);
+                options.queryParams.Lgort = $.trim($("#Lgort").val());
                 input.combogrid(options);
                 return input;
             },
@@ -130,10 +131,10 @@
                             url: '/mtr/mtr_d_mtr/GetComboGridJson/',
                             method: 'post',
                             required: true,
-                            queryParams: {
-                                Lgort: $.trim($("#Lgort").val())
-                            },
                             // pagination: true,
+                            queryParams: {
+                                Lgort:""
+                            },
                             columns: [[
                                 { title: '主键', field: 'F_Id', hidden: true },
                                 { title: '物资名称', field: 'Name', width: 80, align: 'left' },
@@ -155,12 +156,17 @@
 
                                     var queryParams = $(this).combogrid("grid").datagrid('options').queryParams;
                                     queryParams.keyword = keyword;
+                                    queryParams.Lgort = $.trim($("#Lgort").val());
                                     $(this).combogrid("grid").datagrid('options').queryParams = queryParams;
                                     $(this).combogrid("grid").datagrid("reload");
                                     $(this).combogrid("setValue", keyword);
                                 }
                             },
-
+                            onBeforeRender: function () {
+                                var queryParams = $(this).combogrid("grid").datagrid('options').queryParams;
+                                queryParams.Lgort = $.trim($("#Lgort").val());
+                                $(this).combogrid("grid").datagrid('options').queryParams = queryParams;
+                            },
                             onSelect: function (rowIndex, rowData) {
                                 SetReadOnly(editRow, "MtrName", rowData.Name);
                                 SetReadOnly(editRow, "UnitName", rowData.UnitName);
