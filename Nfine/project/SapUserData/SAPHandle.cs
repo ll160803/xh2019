@@ -30,7 +30,7 @@ namespace SapUserData
         }
         public void GetMysqlUserData(SapHrm.Zhr00SKqryxx[] res)
         {
-            cmd = new MySqlCommand("select F_ID,PERNR,STATXT,ZHRBTTXT,ZHRBTRTL,YGGH,RYLB,PTEXT,PKEXT,PERSK,PERSG,NAME1,WERKS,NACHN,GESCTXT,GESCH,GBDAT,BTRTL,BTEXT,ZCGKSRQ,ZCGJSRQ,ZCGBZ,ZTQKSRQ,ZTQJSRQ,ZTQBZ,STAT2 from hrm_user", conn);
+            cmd = new MySqlCommand("select F_ID,PERNR,STATXT,ZHRBTTXT,ZHRBTRTL,YGGH,RYLB,PTEXT,PKEXT,PERSK,PERSG,NAME1,WERKS,NACHN,GESCTXT,GESCH,GBDAT,BTRTL,BTEXT,ZCGKSRQ,ZCGJSRQ,ZCGBZ,ZTQKSRQ,ZTQJSRQ,ZTQBZ,STAT2,OrganizeId from hrm_user", conn);
 
             DataSet ds = new DataSet();
             da.SelectCommand = cmd;
@@ -47,7 +47,7 @@ namespace SapUserData
             foreach (var user in res)
             {
                 var row = data.Select("F_ID='" + user.Pernr + "'").FirstOrDefault();
-                if (row!= null)
+                if (row != null)
                 {
                     row["ZHRBTTXT"] = user.Zhrbttxt;
                     row["ZHRBTRTL"] = user.Zhrbtrtl;
@@ -117,6 +117,10 @@ namespace SapUserData
                     nr["STAT2"] = user.Stat2;
                     nr["STATXT"] = user.Statxt;
                     nr["F_ID"] = user.Pernr;
+                    if (user.Stat2 == "0")//离职的数据自动清空部门
+                    {
+                        nr["OrganizeId"] = "";
+                    }
                     data.Rows.Add(nr);
                 }
             }

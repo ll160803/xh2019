@@ -28,22 +28,23 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 keyPress = keyPress.Or(t => t.NACHN.Contains(keyword));
                 expression = expression.And(keyPress);
             }
-            var authorizedata = new List<RoleAuthorizeEntity>();
+           // var authorizedata = new List<RoleAuthorizeEntity>();
             var userId = OperatorProvider.Provider.GetCurrent().UserId;
-            if (!string.IsNullOrEmpty(userId))
-            {
-                authorizedata = roleAuthorizeApp.GetOrganizeList(userId);
-            }
-            if (authorizedata.Count == 0)
-            {
-                var orgId = OperatorProvider.Provider.GetCurrent().CompanyId;//当前用户所在公司ID
-                expression = expression.And(p => p.OrganizeId == orgId);
-            }
-            else
-            {
-                var orgIds = "," + string.Join(",", authorizedata.Select(u => u.F_ItemId)) + ",";
-                expression = expression.And(p => orgIds.Contains("," + p.OrganizeId + ","));
-            }
+            expression = expression.And(t => t.F_CreatorUserId == userId);
+            //if (!string.IsNullOrEmpty(userId))
+            //{
+            //    authorizedata = roleAuthorizeApp.GetOrganizeList(userId);
+            //}
+            //if (authorizedata.Count == 0)
+            //{
+            //    var orgId = OperatorProvider.Provider.GetCurrent().CompanyId;//当前用户所在公司ID
+            //    expression = expression.And(p => p.OrganizeId == orgId);
+            //}
+            //else
+            //{
+            //    var orgIds = "," + string.Join(",", authorizedata.Select(u => u.F_ItemId)) + ",";
+            //    expression = expression.And(p => orgIds.Contains("," + p.OrganizeId + ","));
+            //}
             var data = new
             {
                 rows = app.GetList(pagination, expression),

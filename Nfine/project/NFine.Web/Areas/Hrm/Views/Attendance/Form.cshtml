@@ -47,7 +47,7 @@
                 { label: '主键', name: 'F_Id', hidden: true },
                 { label: '人员编号', name: 'PERNR', width: 80, align: 'left' },
                 { label: '姓名', name: 'NACHN', width: 80, align: 'left' },
-                
+
                 {
                     label: '性别', name: 'GESCTXT', width: 80, align: 'left'
                 },
@@ -120,9 +120,9 @@
         var dataStr = JSON.stringify(data);
         $.submitForm({
             url: "/hrm/attendance/SubmitForm",
-            param: { data: dataStr , keyValue: $("#txt_keyword").val()},
+            param: { data: dataStr, keyValue: $("#txt_keyword").val() },
             success: function () {
-               // parent.layer.close(index);
+                // parent.layer.close(index);
                 $.currentWindow().$("#gridList").trigger("reloadGrid");
             }
         })
@@ -143,9 +143,16 @@
             }
         })
     }
-
+     function ExportExcel() {
+         $.ExportExcel("gridList", "/Hrm/Attendance/GetAskLeaveSumRecordExport", { keyword: $("#txt_keyword").val()})
+    }
 </script>
 <div class="topPanel">
+    <div class="toolbar">
+        <div class="btn-group">
+            <a id="NF-Export" class="btn btn-primary dropdown-text" onclick="ExportExcel()"><i class="fa fa-file-excel-o"></i>导出</a>
+        </div>
+    </div>
     <div class="search">
         <table>
             <tr>

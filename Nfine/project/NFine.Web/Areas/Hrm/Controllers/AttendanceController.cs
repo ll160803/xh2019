@@ -209,6 +209,83 @@ namespace NFine.Web.Areas.Hrm.Controllers
             };
             return Content(data.ToJson());
         }
+        [HttpPost]
+        public ActionResult GetAskLeaveSumRecordExport(string id, Pagination pagination, string keyword,string titleAndField)
+        {
+            pagination.page = 1;
+            pagination.rows = int.MaxValue;
+            System.Linq.Expressions.Expression<Func<AskForLeaveEntity, bool>> expression = ExtLinq.True<AskForLeaveEntity>();
+
+            var authorizedata = new List<RoleAuthorizeEntity>();
+            var userId = OperatorProvider.Provider.GetCurrent().UserId;
+            if (!string.IsNullOrEmpty(userId))
+            {
+                authorizedata = roleAuthorizeApp.GetOrganizeList(userId);
+            }
+            if (authorizedata.Count == 0)
+            {
+                var orgId = OperatorProvider.Provider.GetCurrent().CompanyId;//当前用户所在公司ID
+                expression = expression.And(p => p.OrganizeId == orgId);
+            }
+            else
+            {
+                var orgIds = "," + string.Join(",", authorizedata.Select(u => u.F_ItemId)) + ",";
+                expression = expression.And(p => orgIds.Contains("," + p.OrganizeId + ","));
+            }
+            expression = expression.And(p => p.DoctorOrNurser == IsDoctor & p.IsNew == true & p.State > 1);//提交过的 是最新的 是护士或者医生  
+
+            if (string.IsNullOrEmpty(keyword))
+            {
+                keyword = DateTime.Now.AddMonths(-1).ToString("yyyy-MM");
+            }
+            DateTime dtfirst = Convert.ToDateTime(keyword + "-01");
+            DateTime dtlast = dtfirst.AddMonths(1).AddDays(-1);
+            var keyPress = ExtLinq.True<AskForLeaveEntity>();
+            keyPress = keyPress.And(t => t.StartDate <= dtlast & t.EndDate >= dtfirst);
+            expression = expression.And(keyPress);
+
+            AskForLeaveApp appRecord = new AskForLeaveApp();
+            var listAskLeave = appRecord.GetList(new Pagination { page = 1, sidx = "F_Id", sord = "asc", rows = int.MaxValue }, expression);
+            HrmUserApp hrmUserApp = new HrmUserApp();
+            var hrmUserList = hrmUserApp.GetList(pagination, authorizedata, IsDoctor);
+            var askTypeList = new ItemsDetailApp().GetItemList("AskLeaveType");//请假类型表
+            foreach (var user in hrmUserList)
+            {
+                var comments = "";
+                foreach (var askType in askTypeList)
+                {
+                    var list = listAskLeave.Where(p => p.AskTypeId == askType.F_Id & p.HrmUserId == user.F_Id);
+                    var days = 0;
+                    foreach (var item in list)
+                    {
+                        days += Common.CalcDays(item.StartDate.Value, item.EndDate.Value, keyword);
+                    }
+                    if (days > 0)
+                    {
+                        comments += askType.F_ItemName + "：" + days + "天；";
+                    }
+                }
+                if (!string.IsNullOrEmpty(user.ZCGBZ))
+                {
+                    comments += user.ZCGBZ + "；";
+                }
+                if (!string.IsNullOrEmpty(user.ZTQBZ))
+                {
+                    comments += user.ZTQBZ + "；";
+                }
+                if (comments == "")
+                {
+                    comments = "全勤";
+                }
+                user.F_Description = comments;
+            }
+
+            var dicFields = HandleTitelAndField.GetTitleAndField(titleAndField, 12, 15, 18);
+            var downUrl = NPOIWriteExcel.OutputExcel(hrmUserList, dicFields, new ExcelCaption { CaptionName = "考勤记录表", Height = 24 });
+
+            return Success("下载成功", downUrl);
+           
+        }
 
         [HttpPost]
         [HandlerAjaxOnly]
