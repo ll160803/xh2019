@@ -153,5 +153,15 @@ namespace NFine.Code
             TimeSpan ts = end - start;
             return ts.Days + 1;
         }
+        public static int GetAgeByBirthdate(DateTime birthdate)
+        {
+            DateTime now = DateTime.Now;
+            int age = now.Year - birthdate.Year;
+            if (now.Month < birthdate.Month || (now.Month == birthdate.Month && now.Day < birthdate.Day))
+            {
+                age--;
+            }
+            return age < 0 ? 0 : age;
+        }
     }
 }

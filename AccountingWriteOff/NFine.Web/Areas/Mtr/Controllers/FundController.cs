@@ -99,7 +99,7 @@ namespace NFine.Web.Areas.Mtr.Controllers
                 codeNUM++;
             }
             SAPHandle.InsertValueToSap(entity, listD);//发送数据到SAP
-            return Success("操作成功。");
+            return Success("操作成功。", Generate(entity, listD));
         }
 
         public ActionResult FundUseRecord()
@@ -129,7 +129,7 @@ namespace NFine.Web.Areas.Mtr.Controllers
         }
         [HttpGet]
         [HandlerAjaxOnly]
-        public ActionResult GetGridJson(string id, Pagination pagination, string keyword, string startTime, string endTime,string cardNumber, int state = -1)
+        public ActionResult GetGridJson(string id, Pagination pagination, string keyword, string startTime, string endTime, string cardNumber, int state = -1)
         {
             System.Linq.Expressions.Expression<Func<View_Fund_B_Consume_DEntity, bool>> expression = ExtLinq.True<View_Fund_B_Consume_DEntity>();
 
@@ -155,7 +155,7 @@ namespace NFine.Web.Areas.Mtr.Controllers
                 var et = Convert.ToDateTime(endTime).AddDays(1);
                 expression = expression.And(t => t.OperateTime.Value <= et);
             }
-            if(!string.IsNullOrEmpty(cardNumber))
+            if (!string.IsNullOrEmpty(cardNumber))
             {
                 expression = expression.And(k => k.CardNumber == cardNumber.Trim());
             }
@@ -173,7 +173,7 @@ namespace NFine.Web.Areas.Mtr.Controllers
         [HttpPost]
         [HandlerAjaxOnly]
         [ValidateAntiForgeryToken]
-        public ActionResult GetGridJsonExport(string id, Pagination pagination, string keyword, string titleAndField,string startTime, string endTime, string cardNumber, int state = -1)
+        public ActionResult GetGridJsonExport(string id, Pagination pagination, string keyword, string titleAndField, string startTime, string endTime, string cardNumber, int state = -1)
         {
             System.Linq.Expressions.Expression<Func<View_Fund_B_Consume_DEntity, bool>> expression = ExtLinq.True<View_Fund_B_Consume_DEntity>();
 
@@ -198,7 +198,7 @@ namespace NFine.Web.Areas.Mtr.Controllers
             }
             if (!string.IsNullOrEmpty(endTime))
             {
-                var et = Convert.ToDateTime(endTime).AddDays(1);;
+                var et = Convert.ToDateTime(endTime).AddDays(1); ;
                 expression = expression.And(t => t.OperateTime.Value <= et);
             }
             if (!string.IsNullOrEmpty(cardNumber.Trim()))
@@ -268,6 +268,44 @@ namespace NFine.Web.Areas.Mtr.Controllers
             SAPHandle.InsertValueToSap(accountingEntity, new List<Fund_B_Consume_DEntity> { accountingD_Entity });//发送数据到SAP
 
             return Success("操作成功。");
+        }
+
+        public string Generate(Fund_B_ConsumeEntity main, List<Fund_B_Consume_DEntity> subList)
+        {
+            string caption = "武汉协和医院总务库房领物单";
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("<table class='mtr-table1'><tr><td colspan='6'>{0}</td></tr>", caption);
+            sb.AppendFormat("<tr><td>经费类型：</td><td>{0}</td><td>出库日期：</td><td>{1}</td><td>领物单：</td><td>{2}</td></tr>", main.FundName, main.OperateTime.Value.ToString("yyyyMMdd"), main.Code);
+            sb.AppendFormat("<tr><td>送货位置：</td><td>{0}</td><td>备注信息：</td><td>{1}</td><td></td><td></td></tr>", "", main.F_Description);
+            sb.AppendFormat("<tr><td>经费卡号：</td><td>{0}</td><td>经费代码：</td><td>{1}</td><td>当前余额：</td><td>{2}</td></tr></table>", main.CardNumber, main.FundNumber, main.FundAmount);
+
+            sb.AppendFormat("<table class='mtr-table2'>");
+            sb.AppendFormat("<thead><tr><td>序号</td><td>物品编号</td><td>物品品名</td><td>单位</td><td>批号</td><td>数量</td><td>单价</td><td>金额</td></tr></thead>");
+            foreach (var item in subList)
+            {
+                sb.AppendFormat("<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td><td>{6}</td><td>{7}</td></tr>",
+                    item.ItemCode.Trim('0'), item.Mtr_Id, item.Mtr_Name, item.Mtr_UnitName, "", item.num, item.Mtr_Price, item.Money);
+            }
+            sb.Append("</table>");
+            sb.Append("<table class='mtr-table3'>");
+            sb.AppendFormat("<tr><td></td><td></td><td></td><td></td><td></td><td></td><td>金额合计</td><td>{0}元</td></tr>", subList.Sum(p => p.Money));
+            sb.AppendFormat("<tr><td colspan='2'>{0}</td><td>{1}</td><td>{2}</td><td></td><td></td><td>{3}</td><td></td></tr>", "制单：", "库管员:", "记账:", "领物人");
+            sb.Append("</table>");
+            return sb.ToString();
+        }
+        [HandlerAjaxOnly]
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult GetPrintDataByCode(string Code)
+        {
+            var main=mtrApp.GetList(new Pagination { page = 1, rows = int.MaxValue }, p => p.Code == Code).FirstOrDefault();
+            if(main==null)
+            {
+                return Error("不存在的订单");
+            }
+            var subList = dApp.GetList(new Pagination { page = 1, rows = int.MaxValue }, p => p.Base_Id == main.F_Id);
+            var printStr = Generate(main, subList);
+            return Success("打印数据获取成功", printStr);
         }
     }
 }

@@ -25,5 +25,75 @@ namespace NFine.Domain.Entity.Hrm
                 days = "";
             }
         }
+        /// <summary>
+        /// 年龄
+        /// </summary>
+        [NotMapped]
+        public int Ages
+        {
+            get
+            {
+                return NFine.Code.Common.GetAgeByBirthdate(GBDAT.Value);
+            }
+            set
+            {
+                days = "";
+            }
+        }
+        /// <summary>
+        /// 状态
+        /// </summary>
+        [NotMapped]
+        public string StateName
+        {
+            get
+            {
+                var state = "";
+                switch (State.Value)
+                {
+                    case 1:
+                        state = "未提交";
+                        break;
+                    case 2:
+                        state = "已提交";
+                        break;
+                    case 3:
+                        state = "已审核";
+                        break;
+                    case 4:
+                        state = "已发送SAP";
+                        break;
+                }
+                return state;
+
+            }
+            set
+            {
+                days = "";
+            }
+        }
+        /// <summary>
+        /// 状态
+        /// </summary>
+        [NotMapped]
+        public string IsNewName
+        {
+            get
+            {
+                if (IsNew.Value)
+                {
+                    return "是";
+                }
+                else
+                {
+                    return "否";
+                }
+
+            }
+            set
+            {
+                days = "";
+            }
+        }
     }
 }

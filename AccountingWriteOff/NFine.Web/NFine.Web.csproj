@@ -847,6 +847,10 @@
     <Content Include="Content\js\validate\jquery.validate.min.js" />
     <Content Include="Content\js\validate\jquery.validate.min2.js" />
     <Content Include="Content\js\validate\messages_zh.min.js" />
+    <Content Include="Content\js\Vue\axios.js" />
+    <Content Include="Content\js\Vue\axios.min.js" />
+    <Content Include="Content\js\Vue\vue.js" />
+    <Content Include="Content\js\Vue\vue.min.js" />
     <Content Include="Content\js\wdtree\images\icons\add.png" />
     <Content Include="Content\js\wdtree\images\icons\addStep.gif" />
     <Content Include="Content\js\wdtree\images\icons\addStep_dsbl.gif" />

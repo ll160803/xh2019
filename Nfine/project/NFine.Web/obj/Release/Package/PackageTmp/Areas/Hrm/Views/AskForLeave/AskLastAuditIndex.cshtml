@@ -2,7 +2,14 @@
     ViewBag.Title = "保健科审核";
     Layout = "~/Views/Shared/_LayoutIndex.cshtml";
 }
-
+<style type="text/css">
+    body {
+        font-size: 16px !important;
+    }
+    .input-group-addon {
+        font-size: 16px !important;
+    }
+</style>
 <script>
     $(function () {
         gridList();
@@ -18,23 +25,30 @@
             colModel: [
                 { label: '主键', name: 'F_Id', hidden: true },
                 { label: '人员编号', name: 'PERNR', width: 80, align: 'left' },
-                { label: '姓名', name: 'NACHN', width: 80, align: 'left' },
-
+                { label: '姓名', name: 'NACHN', width: 60, align: 'left' },
                 {
-                    label: '请假类型', name: 'F_ItemName', width: 80, align: 'left'
+                    label: '性别', name: 'GESCTXT', width: 80, align: 'left'
                 },
-
                 {
-                    label: '请假开始时间', name: 'StartDate', width: 80, align: 'left',
+                    label: '就职科室', name: 'F_FullName', width: 120, align: 'left'
+                },
+                { label: '职业类别', name: 'BTEXT', width: 80, align: 'left' },
+                
+               
+                {
+                    label: '年龄', name: 'Ages', width: 60, align: 'left'
+                },
+                {
+                    label: '请假开始时间', name: 'StartDate', width: 100, align: 'left',
                     formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' }
                 },
                 {
-                    label: '请假结束时间', name: 'EndDate', width: 80, align: 'left',
+                    label: '请假结束时间', name: 'EndDate', width: 100, align: 'left',
                     formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' }
                 },
 
                 {
-                    label: '请假天数', name: 'days', width: 80, align: 'left',
+                    label: '请假天数', name: 'days', width: 60, align: 'left',
                     formatter: function (cellvalue, options, rowObject) {
                         return $.days_count(rowObject.StartDate, rowObject.EndDate)+"天";
                     }
@@ -46,37 +60,20 @@
                     label: '疾病诊断', name: 'SickCheck', width: 80, align: 'left'
                 },
                 {
-                    label: '性别', name: 'GESCTXT', width: 80, align: 'left'
+                    label: '请假类型', name: 'F_ItemName', width: 80, align: 'left'
                 },
                 {
                     label: '员工工号', name: 'YGGH', width: 80, align: 'left'
                 },
                 {
-                    label: '备注', name: 'F_Description', width: 80, align: 'left'
+                    label: '备注', name: 'F_Description', width: 200, align: 'left'
                 },{
-                    label: '状态', name: 'State', width: 80, align: 'left',
-                    formatter: function (cellvalue, options, rowObject) {
-                        if (cellvalue == "1") {
-                            return '未提交';
-                        } else if (cellvalue == "2") {
-                            return '已提交';
-                        } else if (cellvalue == "3") {
-                            return '已审核';
-                        }else {
-                            return '已发送SAP';
-                        }
-                    }
+                    label: '状态', name: 'StateName', width: 80, align: 'left'
                 }, {
-                    label: '是否有效', name: 'IsNew', width: 80, align: 'left',
-                    formatter: function (cellvalue, options, rowObject) {
-                        if (cellvalue == true) {
-                            return '是';
-                        } else {
-                            return '否';
-                        }
-                    }
+                    label: '是否有效', name: 'IsNewName', width: 80, align: 'left'
+                   
                 }, {
-                    label: '序列值', name: 'AskSort', width: 80, align: 'left'
+                    label: '序列值', name: 'AskSort', width: 60, align: 'left'
                 }
 
             ],
@@ -104,8 +101,8 @@
         });
     }
     function btn_SubmitAudit() {//
-        var State = $("#gridList").jqGridRowValue().State;
-        if (State == "已审核") {
+        var State = $("#gridList").jqGridRowValue().StateName;
+        if (State == "已审核" || State == "已发送SAP") {
             $.modalAlert("此记录已审核，请勿重复操作", "warning");
             return false;
         }
@@ -150,6 +147,9 @@
             }
         })
     }
+     function ExportExcel() {
+        $.ExportExcel("gridList", "/Hrm/AskForLeave/GetLastAuditGridJsonExport/", { keyword: $("#txt_keyword").val(), id:@ViewBag.id , state: $("#state").val()})
+    }
 </script>
 
 <div class="topPanel">
@@ -166,7 +166,7 @@
             <a class="btn btn-primary" onclick="$.reload()"><span class="glyphicon glyphicon-refresh"></span></a>
         </div>
         <div class="btn-group">
-            @*<a id="NF-add" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_SubmitAudit()"><i class="fa fa-plus"></i>请假审核</a>*@
+            <a id="NF-Export" authorize="yes" class="btn btn-primary dropdown-text" onclick="ExportExcel()"><i class="fa fa-file-excel-o"></i>导出</a>
         </div>
         <div class="operate">
             <ul class="nav nav-pills">
@@ -190,15 +190,13 @@
                             <option value="2" selected>未审核</option>
                             <option value="4">已推送SAP</option>
                         </select>
-                       
+
                         @*<span class="input-group-btn" style="margin-left:10px;">
                                 <button id="btn_search" type="button" class="btn  btn-primary">考勤推送</button>
                             </span>*@
                     </div>
                 </td>
-                <td style="width:10px;">
-                    
-                </td>
+                <td style="width:10px;"></td>
                 <td>
                     <div class="input-group">
 

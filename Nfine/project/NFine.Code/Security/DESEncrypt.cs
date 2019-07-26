@@ -38,8 +38,11 @@ namespace NFine.Code
             DESCryptoServiceProvider des = new DESCryptoServiceProvider();
             byte[] inputByteArray;
             inputByteArray = Encoding.Default.GetBytes(Text);
-            des.Key = ASCIIEncoding.ASCII.GetBytes(System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(sKey, "md5").Substring(0, 8));
-            des.IV = ASCIIEncoding.ASCII.GetBytes(System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(sKey, "md5").Substring(0, 8));
+            System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create();
+           var strmd5= BitConverter.ToString(md5.ComputeHash(Encoding.UTF8.GetBytes(sKey))).Replace("-", null);
+            var ksv= ASCIIEncoding.ASCII.GetBytes(strmd5.Substring(0, 8));
+            des.Key = ksv;// ASCIIEncoding.ASCII.GetBytes(strmd5.Substring(0, 8));
+            des.IV = ksv;// ASCIIEncoding.ASCII.GetBytes(strmd5.Substring(0, 8));
             System.IO.MemoryStream ms = new System.IO.MemoryStream();
             CryptoStream cs = new CryptoStream(ms, des.CreateEncryptor(), CryptoStreamMode.Write);
             cs.Write(inputByteArray, 0, inputByteArray.Length);

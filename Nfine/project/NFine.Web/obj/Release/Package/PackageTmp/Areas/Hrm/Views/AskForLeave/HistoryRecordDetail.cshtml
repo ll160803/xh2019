@@ -2,7 +2,11 @@
     ViewBag.Title = "HistoryRecordDetail";
     Layout = "~/Views/Shared/_LayoutIndex.cshtml";
 }
-
+<style type="text/css">
+    body {
+        font-size: 16px !important;
+    }
+</style>
 <script>
     $(function () {
         gridList();
@@ -19,10 +23,21 @@
                 { label: '主键', name: 'F_Id', hidden: true },
                 { label: '人员编号', name: 'PERNR', width: 80, align: 'left' },
                 { label: '姓名', name: 'NACHN', width: 80, align: 'left' },
+                {
+                    label: '性别', name: 'GESCTXT', width: 80, align: 'left'
+                },
+                {
+                    label: '就职科室', name: 'F_FullName', width: 150, align: 'left'
+                    //formatter: function (cellvalue, options, rowObject) {
+                    //    return top.clients.organize[rowObject.OrganizeId] == null ? "" : top.clients.organize[rowObject.OrganizeId].fullname;
+                    //}
+                },
+                { label: '职业类别', name: 'BTEXT', width: 80, align: 'left' },
 
                 {
-                    label: '请假类型', name: 'F_ItemName', width: 80, align: 'left'
+                    label: '年龄', name: 'Ages', width: 80, align: 'left'
                 },
+
 
                 {
                     label: '请假开始时间', name: 'StartDate', width: 80, align: 'left',
@@ -46,7 +61,7 @@
                     label: '疾病诊断', name: 'SickCheck', width: 80, align: 'left'
                 },
                 {
-                    label: '性别', name: 'GESCTXT', width: 80, align: 'left'
+                    label: '请假类型', name: 'F_ItemName', width: 80, align: 'left'
                 },
                 {
                     label: '员工工号', name: 'YGGH', width: 80, align: 'left'
@@ -54,27 +69,9 @@
                 {
                     label: '备注', name: 'F_Description', width: 80, align: 'left'
                 },{
-                    label: '状态', name: 'State', width: 80, align: 'left',
-                    formatter: function (cellvalue, options, rowObject) {
-                        if (cellvalue == "1") {
-                            return '未提交';
-                        } else if (cellvalue == "2") {
-                            return '已提交';
-                        } else if (cellvalue == "3") {
-                            return '已审核';
-                        }else {
-                            return '已发送SAP';
-                        }
-                    }
+                    label: '状态', name: 'StateName', width: 80, align: 'left'
                 }, {
-                    label: '是否有效', name: 'IsNew', width: 80, align: 'left',
-                    formatter: function (cellvalue, options, rowObject) {
-                        if (cellvalue == true) {
-                            return '是';
-                        } else {
-                            return '否';
-                        }
-                    }
+                    label: '是否有效', name: 'IsNewName', width: 80, align: 'left'
                 }, {
                     label: '序列值', name: 'AskSort', width: 80, align: 'left'
                 }
@@ -103,7 +100,7 @@
             btn: null,
         });
     }
-   
+
     function ExportExcel() {
         $.ExportExcel("gridList", "/Hrm/AskForLeave/GetHistoryDetailRecordExport", { keyword: $("#txt_keyword").val(), id:'@ViewBag.id'})
     }
@@ -137,7 +134,7 @@
                         </span>
                     </div>
                 </td>
-               
+
             </tr>
         </table>
     </div>

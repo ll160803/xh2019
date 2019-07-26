@@ -46,7 +46,8 @@ namespace NFine.Application.Mtr
         }
         public string GetMaxCode()
         {
-            string maxCode = new Data.RepositoryBase<Fund_B_ConsumeEntity>().Max(ExtLinq.True<Fund_B_ConsumeEntity>(), p => p.Code);
+            var da = DateTime.Now.ToString("yyyyMMdd");
+            string maxCode = new Data.RepositoryBase<Fund_B_ConsumeEntity>().Max(t => t.Code.StartsWith(da), p => p.Code);
             if (string.IsNullOrEmpty(maxCode))
             {
                 maxCode = DateTime.Now.ToString("yyyyMMdd") + "0001";
@@ -69,7 +70,7 @@ namespace NFine.Application.Mtr
             {
                 //if (string.IsNullOrEmpty(entity.Code))
                 //{
-                    entity.Code = GetMaxCode();
+                entity.Code = GetMaxCode();
                 //}
                 entity.Create();
                 service.Insert(entity);

@@ -51,7 +51,8 @@ namespace NFine.Application.Mtr
         }
         public string GetMaxCode()
         {
-            string maxCode = new Data.RepositoryBase<MtrFund_D_MtrEntity>().Max(ExtLinq.True<MtrFund_D_MtrEntity>(), p => p.F_Id);
+            var da = DateTime.Now.ToString("yyyy");
+            string maxCode = new Data.RepositoryBase<MtrFund_D_MtrEntity>().Max(p=>p.Code.StartsWith(da), p => p.F_Id);
             if (string.IsNullOrEmpty(maxCode))
             {
                 maxCode = DateTime.Now.ToString("yyyy") + "000001";

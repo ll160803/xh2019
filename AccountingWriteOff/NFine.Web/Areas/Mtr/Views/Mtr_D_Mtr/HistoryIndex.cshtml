@@ -44,6 +44,10 @@
                              return '否';
                          }
                      }
+                },
+                {
+                    label: '更新时间', name: 'F_CreatorTime', width: 80, align: 'left',
+                    formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' }
                 }
             ],
             pager: "#gridPager",

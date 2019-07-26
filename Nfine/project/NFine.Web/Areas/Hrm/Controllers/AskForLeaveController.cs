@@ -155,8 +155,8 @@ namespace NFine.Web.Areas.Hrm.Controllers
             pagination.rows = int.MaxValue;
             var rows = viewApp.GetList(pagination, expression);
 
-            var dicFields = HandleTitelAndField.GetTitleAndField(titleAndField,12,15,18);
-            var downUrl = NPOIWriteExcel.OutputExcel<ViewAskForLeaveEntity>(rows, dicFields, new ExcelCaption { CaptionName = "请假记录表", Height=24 });
+            var dicFields = HandleTitelAndField.GetTitleAndField(titleAndField, 12, 15, 18);
+            var downUrl = NPOIWriteExcel.OutputExcel<ViewAskForLeaveEntity>(rows, dicFields, new ExcelCaption { CaptionName = "请假记录表", Height = 24 });
 
             return Success("下载成功", downUrl);
         }
@@ -265,6 +265,46 @@ namespace NFine.Web.Areas.Hrm.Controllers
             };
             return Content(data.ToJson());
         }
+
+        public ActionResult GetLastAuditGridJsonExport(string id, Pagination pagination, string keyword, string titleAndField, int state = 2)
+        {
+            System.Linq.Expressions.Expression<Func<ViewAskForLeaveEntity, bool>> expression = ExtLinq.True<ViewAskForLeaveEntity>();
+            // var orgId = OperatorProvider.Provider.GetCurrent().CompanyId;//当前用户所在公司ID
+            expression = expression.And(p => p.Flag == true);
+            //if (!string.IsNullOrEmpty(id))//保健科不分医生和护士
+            //{
+            //    expression = expression.And(p => p.RYLB == id);//医生还是护士
+            //}
+            if (state == 0)//全部数据 所有提交过的数据
+            {
+                expression = expression.And(p => p.State > (int)AskLeaveStateType.未提交);
+            }
+            else
+            {
+                expression = expression.And(p => p.State == state);
+            }
+            expression = expression.And(p => !(p.IsNew == false & p.State == (int)AskLeaveStateType.已提交));
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                var keyPress = ExtLinq.True<ViewAskForLeaveEntity>();
+                keyPress = keyPress.And(t => t.PERNR.Contains(keyword));
+                keyPress = keyPress.Or(t => t.NACHN.Contains(keyword));
+                expression = expression.And(keyPress);
+            }
+
+
+            pagination.page = 1;
+            pagination.rows = int.MaxValue;
+            var hrmUserList = viewApp.GetList(pagination, expression);
+
+
+            var rows = hrmUserList;
+
+            var dicFields = HandleTitelAndField.GetTitleAndField(titleAndField, 12, 15, 18);
+            var downUrl = NPOIWriteExcel.OutputExcel(rows, dicFields, new ExcelCaption { CaptionName = "请假记录表", Height = 24 });
+
+            return Success("下载成功", downUrl);
+        }
         /// <summary>
         /// 科室主任审核记录
         /// </summary>
@@ -347,7 +387,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 keyPress = keyPress.Or(t => t.NACHN.Contains(keyword));
                 expression = expression.And(keyPress);
             }
-            
+
             pagination.page = 1;
             pagination.rows = int.MaxValue;
             var hrmUserList = appRecord.GetList(pagination, expression);

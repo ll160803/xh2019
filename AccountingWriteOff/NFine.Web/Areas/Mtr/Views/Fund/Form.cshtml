@@ -2,11 +2,21 @@
     ViewBag.Title = "Form";
     Layout = "~/Views/Shared/_Form_Hrm.cshtml";
 }
+<script src="~/Content/js/jqprint/jquery.jqprint-0.3.js"></script>
+<link media="print" href="~/Content/js/jqprint/jquery.jqprint.css" rel="stylesheet" />
+<script>
+    function btn_print() {
+        $("#print").jqprint();
+    }
+</script>
 <script>
     var selectRowId = -1;
     var keyValue = $.request("keyValue");
     var editRow = undefined; //定义全局变量：当前编辑的行
     $(function () {
+        Initform();
+    });
+    function Initform() {
         initControl();
 
         $.ajax({
@@ -18,8 +28,7 @@
                 $("#form1").formSerialize(data);
             }
         });
-
-    });
+    }
     function initControl() {
         // gridList();
         $("#WerksId").bindSelect({
@@ -133,7 +142,7 @@
                             required: true,
                             // pagination: true,
                             queryParams: {
-                                Lgort:""
+                                Lgort: ""
                             },
                             columns: [[
                                 { title: '主键', field: 'F_Id', hidden: true },
@@ -396,7 +405,7 @@
 
         datagrid.datagrid("loadData", { "total": "0", rows: [], "footer": [{ "MtrName": "合计:", "Money": "0" }] });
         var gf = $("#SaveId");
-         gf.hide();
+        gf.hide();
         //GetCombogridOptions();
     });
     function UpdateFooter() {
@@ -491,6 +500,8 @@
 <script>
 
     function submitForm() {//保存
+
+       
         if (editRow != undefined) {
             if ($("#gridList").datagrid('validateRow', editRow)) {
                 var gf = $("#SaveId");
@@ -571,11 +582,18 @@
         $.submitForm({
             url: "/mtr/fund/SubmitForm",
             param: { data: dataStr, fund_b_consume: JSON.stringify(fund_b_consume) },
-            success: function () {
-
-                location.href = '../../mtr/fund/form';
+            success: function (res) {
+                $("#print").append($(res.data));
+                $("#print").jqprint();
+                Initform();
+                //   location.href = '../../mtr/fund/form';
+                $("#gridList").datagrid('loadData', { total: 0, rows: [] });
+                
             }
         })
+    }
+    function newForm() {//新增
+        location.href = '../../mtr/fund/form';
     }
 </script>
 <script>
@@ -713,7 +731,11 @@
             <div class="gridPanel">
                 <table id="gridList"></table>
             </div>
-            <div style="width:100%; text-align:center"><input class="btn btn-primary" type="button" value="保存" onclick="submitForm();"></div>
+            <div style="width:100%; text-align:center"><input class="btn btn-primary" type="button" value="保存并打印" onclick="submitForm();"></div>
         </div>
     </div>
 </form>
+<div style="display:none">
+    <div id="print">
+    </div>
+</div>
