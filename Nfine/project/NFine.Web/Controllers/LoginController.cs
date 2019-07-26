@@ -79,7 +79,7 @@ namespace NFine.Web.Controllers
                     operatorModel.CompanyId = userEntity.F_OrganizeId;
                     operatorModel.DepartmentId = userEntity.F_DepartmentId;
                     operatorModel.RoleId = userEntity.F_RoleId;
-                    operatorModel.LoginIPAddress = Net.Ip;
+                   // operatorModel.LoginIPAddress = Net.Ip;
                     //operatorModel.LoginIPAddressName = Net.GetLocation(operatorModel.LoginIPAddress);
                     operatorModel.LoginTime = DateTime.Now;
                     operatorModel.LoginToken = DESEncrypt.Encrypt(Guid.NewGuid().ToString());
