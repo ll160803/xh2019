@@ -2,8 +2,7 @@
     ViewBag.Title = "Form";
     Layout = "~/Views/Shared/_Form_Hrm.cshtml";
 }
-<script src="~/Content/js/jqprint/jquery.jqprint-0.3.js"></script>
-<link media="print" href="~/Content/js/jqprint/jquery.jqprint.css" rel="stylesheet" />
+<script src="~/Content/js/Lodop/LodopFuncs.js"></script>
 <script>
     function btn_print() {
         $("#print").jqprint();
@@ -501,7 +500,7 @@
 
     function submitForm() {//保存
 
-       
+
         if (editRow != undefined) {
             if ($("#gridList").datagrid('validateRow', editRow)) {
                 var gf = $("#SaveId");
@@ -584,11 +583,14 @@
             param: { data: dataStr, fund_b_consume: JSON.stringify(fund_b_consume) },
             success: function (res) {
                 $("#print").append($(res.data));
-                $("#print").jqprint();
+                
+                   
                 Initform();
+               
                 //   location.href = '../../mtr/fund/form';
                 $("#gridList").datagrid('loadData', { total: 0, rows: [] });
-                
+                $.loading(false);
+                myPrint();
             }
         })
     }
@@ -735,7 +737,30 @@
         </div>
     </div>
 </form>
-<div style="display:none">
+<div style="display:none;">
     <div id="print">
     </div>
 </div>
+<script language="javascript" type="text/javascript">
+    var LODOP;
+    function myPrint() {
+        LODOP = getLodop();
+        if (LODOP != undefined) {
+            createOnePage();
+
+            LODOP.PRINTA();
+        }
+    };
+    function myPreview() {
+        LODOP = getLodop();
+        createOnePage();
+        LODOP.PREVIEW();
+    };
+    function createOnePage() {
+        LODOP = getLodop();
+        LODOP.PRINT_INIT("打印物资下账单");
+        LODOP.SET_PRINT_PAGESIZE(1, '21.5cm', '9.3cm', "");
+        LODOP.ADD_PRINT_HTM("5mm", 25, "21.5cm", "8cm", document.getElementById("print").innerHTML);
+    };
+
+</script>

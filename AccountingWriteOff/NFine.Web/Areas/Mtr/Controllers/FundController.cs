@@ -273,23 +273,35 @@ namespace NFine.Web.Areas.Mtr.Controllers
         public string Generate(Fund_B_ConsumeEntity main, List<Fund_B_Consume_DEntity> subList)
         {
             string caption = "武汉协和医院总务库房领物单";
+            var styletable1= " style='width: 90%;height:110px;;margin: 0px;padding: 0px;border-collapse: collapse;table-layout: fixed;font-size:12px;'";
+            var styletable1_td_1 = "style='height: 35px;line-height: 35px;word-break: break-all;text-align: center;font-size: 20px;'";
             StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("<table class='mtr-table1'><tr><td colspan='6'>{0}</td></tr>", caption);
-            sb.AppendFormat("<tr><td>经费类型：</td><td>{0}</td><td>出库日期：</td><td>{1}</td><td>领物单：</td><td>{2}</td></tr>", main.FundName, main.OperateTime.Value.ToString("yyyyMMdd"), main.Code);
-            sb.AppendFormat("<tr><td>送货位置：</td><td>{0}</td><td>备注信息：</td><td>{1}</td><td></td><td></td></tr>", "", main.F_Description);
-            sb.AppendFormat("<tr><td>经费卡号：</td><td>{0}</td><td>经费代码：</td><td>{1}</td><td>当前余额：</td><td>{2}</td></tr></table>", main.CardNumber, main.FundNumber, main.FundAmount);
-
-            sb.AppendFormat("<table class='mtr-table2'>");
-            sb.AppendFormat("<thead><tr><td>序号</td><td>物品编号</td><td>物品品名</td><td>单位</td><td>批号</td><td>数量</td><td>单价</td><td>金额</td></tr></thead>");
-            foreach (var item in subList)
+            sb.AppendFormat("<table {1}><tr><td colspan='6' {2}>{0}</td></tr>", caption,styletable1,styletable1_td_1);
+            var styletable2_td_1 = "style='height: 25px;line-height: 25px;word-break: break-all;text-align: left;font-size: 12px;width:10%;'";
+            var styletable2_td_1_2 = "style='height: 25px;line-height: 25px;word-break: break-all;text-align: left;font-size: 12px;'";
+            sb.AppendFormat("<tr><td {3}>经费类型：</td><td {4}>{0}</td><td {3}>出库日期：</td><td {4}>{1}</td><td {3}>领物单：</td><td {4}>{2}</td></tr>", main.FundName, main.OperateTime.Value.ToString("yyyyMMdd"), main.Code, styletable2_td_1, styletable2_td_1_2);
+            sb.AppendFormat("<tr><td  {2}>送货位置：</td><td {3}>{0}</td><td {2}>备注信息：</td><td {3}>{1}</td><td {2}></td><td {3}></td></tr>", "", main.F_Description,styletable2_td_1, styletable2_td_1_2);
+            sb.AppendFormat("<tr><td {3}>经费卡号：</td><td {4}>{0}</td><td {3}>经费代码：</td><td  {4}>{1}</td><td {3}>当前余额：</td><td  {4}>{2}</td></tr></table>", main.CardNumber, main.FundNumber, main.FundAmount, styletable2_td_1, styletable2_td_1_2);
+            var styleTable2_2 = "style='width: 90%;margin: 0px;padding: 0px;border-left: 1px solid #666;border-bottom: 1px solid #666;border-collapse: collapse;table-layout: fixed;'";
+            sb.AppendFormat("<table  {0}>",styleTable2_2);
+            var styleTable2_3 = " style='border-top: 1px solid #666;border-right: 1px solid #666;height: 25px;line-height: 25px;word-break: break-all;padding-left: 5px;font-size: 12px;text-align: center;'";
+            sb.AppendFormat("<thead><tr><td {0}>序号</td><td {0}>物品编号</td><td {0}>物品品名</td><td {0}>单位</td><td {0}>批号</td><td {0}>数量</td><td {0}>单价</td><td {0}>金额</td></tr></thead>", styleTable2_3);
+            var styleTable2_4 = "style='border-top: 1px solid #666;border-right: 1px solid #666;height: 25px;line-height: 25px;word-break: break-all;padding-left: 5px;font-size: 12px;text-align: center;'";
+            var styleTable2_5 = "style='border-top: 1px solid #666;border-right: 1px solid #666;height: 25px;line-height: 25px;word-break: break-all;padding-left: 5px;font-size: 12px;text-align: right;'";
+            var sortList = subList.OrderBy(p => p.ItemCode);
+            foreach (var item in sortList)
             {
-                sb.AppendFormat("<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td><td>{6}</td><td>{7}</td></tr>",
-                    item.ItemCode.Trim('0'), item.Mtr_Id, item.Mtr_Name, item.Mtr_UnitName, "", item.num, item.Mtr_Price, item.Money);
+                sb.AppendFormat("<tr><td {8}>{0}</td><td {8}>{1}</td><td {8}>{2}</td><td {8}>{3}</td><td {8}>{4}</td><td {9}>{5}</td><td {9}>{6}</td><td {9}> {7}</td></tr>",
+                    item.ItemCode.Trim('0'), item.Mtr_Id, item.Mtr_Name, item.Mtr_UnitName, "", item.num, item.Mtr_Price, item.Money,styleTable2_4, styleTable2_5);
             }
             sb.Append("</table>");
-            sb.Append("<table class='mtr-table3'>");
-            sb.AppendFormat("<tr><td></td><td></td><td></td><td></td><td></td><td></td><td>金额合计</td><td>{0}元</td></tr>", subList.Sum(p => p.Money));
-            sb.AppendFormat("<tr><td colspan='2'>{0}</td><td>{1}</td><td>{2}</td><td></td><td></td><td>{3}</td><td></td></tr>", "制单：", "库管员:", "记账:", "领物人");
+            var styleTable3 = "style='width: 90%;height:auto;margin: 0px;padding: 0px;border-collapse: collapse;table-layout: fixed;'";
+
+            sb.AppendFormat("<table {0}>", styleTable3);
+            var styleTable3_td = "style=' height: 35px;line-height: 35px;word-break: break-all;'";
+            var styleTable3_td_1 = "style=' height: 35px;line-height: 35px;word-break: break-all;text-align:right'";
+            sb.AppendFormat("<tr><td {1}></td><td {1}></td><td {1}></td><td {1}></td><td {1}></td><td {1}></td><td {1}>金额合计</td><td {1}>{0}元</td></tr>", subList.Sum(p => p.Money), styleTable3_td);
+            sb.AppendFormat("<tr><td colspan='2' {4}>{0}</td><td {4}>{1}</td><td {5}>{2}</td><td {4}></td><td {4}></td><td {4}>{3}</td><td {4}></td></tr>", "制单：", "库管员:", "记账:", "领物人", styleTable3_td, styleTable3_td_1);
             sb.Append("</table>");
             return sb.ToString();
         }

@@ -828,6 +828,11 @@
     <Content Include="Content\js\laydate\theme\default\laydate.css" />
     <Content Include="Content\js\layout\jquery.layout.js" />
     <Content Include="Content\js\loading\pace.min.js" />
+    <Content Include="Content\js\Lodop\CheckActivX.js" />
+    <Content Include="Content\js\Lodop\CLodop_Setup_for_Win32NT.exe" />
+    <Content Include="Content\js\Lodop\install_lodop32.exe" />
+    <Content Include="Content\js\Lodop\install_lodop64.exe" />
+    <Content Include="Content\js\Lodop\LodopFuncs.js" />
     <Content Include="Content\js\md5\jquery.md5.js" />
     <Content Include="Content\js\qrcode\jquery.qrcode.js" />
     <Content Include="Content\js\qrcode\qrcode.js" />
