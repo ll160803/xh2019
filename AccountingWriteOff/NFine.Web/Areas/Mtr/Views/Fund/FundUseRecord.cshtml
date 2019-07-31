@@ -180,7 +180,7 @@
                     $.modalAlert(res.message, "warning");
                     return false;
                 }
-                $("#print").append($(res.data));
+                $("#print").empty().append($(res.data));
                 $.loading(false);
                 myPreview();
             }
@@ -254,8 +254,8 @@
     <table id="gridList"></table>
     <div id="gridPager"></div>
 </div>
-<div style="display:none;">
-    <div id="print">
+<div >
+    <div id="print" style="text-align:center; width:1200px;">
         
     </div>
 </div>
@@ -277,8 +277,9 @@
     function createOnePage() {
         LODOP = getLodop();
         LODOP.PRINT_INIT("打印物资下账单");
-        LODOP.SET_PRINT_PAGESIZE(1, '21.5cm', '9.3cm', "");
-        LODOP.ADD_PRINT_HTM("5mm", 25, "21.5cm", "8cm", document.getElementById("print").innerHTML);
+        LODOP.SET_PRINT_PAGESIZE(1, '24.1cm', '9.3cm', "");
+        //LODOP.SET_PRINT_MODE("FULL_HEIGHT_FOR_OVERFLOW", true);
+        LODOP.ADD_PRINT_HTM("0", "80", "100%", "100%", document.getElementById("print").innerHTML);
     };
 
 </script>

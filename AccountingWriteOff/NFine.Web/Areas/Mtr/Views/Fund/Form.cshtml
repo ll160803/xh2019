@@ -582,7 +582,7 @@
             url: "/mtr/fund/SubmitForm",
             param: { data: dataStr, fund_b_consume: JSON.stringify(fund_b_consume) },
             success: function (res) {
-                $("#print").append($(res.data));
+                $("#print").empty().append($(res.data));
                 
                    
                 Initform();
@@ -759,8 +759,9 @@
     function createOnePage() {
         LODOP = getLodop();
         LODOP.PRINT_INIT("打印物资下账单");
-        LODOP.SET_PRINT_PAGESIZE(1, '21.5cm', '9.3cm', "");
-        LODOP.ADD_PRINT_HTM("5mm", 25, "21.5cm", "8cm", document.getElementById("print").innerHTML);
+        LODOP.SET_PRINT_PAGESIZE(1, '24.1cm', '9.3cm', "");
+        //LODOP.SET_PRINT_MODE("FULL_HEIGHT_FOR_OVERFLOW", true);
+        LODOP.ADD_PRINT_HTM("0", "80", "100%", "100%", document.getElementById("print").innerHTML);
     };
 
 </script>

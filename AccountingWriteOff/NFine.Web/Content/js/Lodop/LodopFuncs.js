@@ -133,6 +133,8 @@ function getLodop(oOBJECT, oEMBED) {
 
        // LODOP.SET_LICENSES("杭州银货通科技技术有限公司", "964597079737383919278901905623", "", "");
         LODOP.SET_LICENSES("北京紫枫科技开发有限公司", "653726269717472919278901905623", "", "");
+        //LODOP.SET_LICENSES("易族智汇(北京)科技有限公司", "9D32CB078EE17DE9676D08BCA683CAEB", "", "");
+         
         //=======================================================
         return LODOP;
     } catch (err) {
