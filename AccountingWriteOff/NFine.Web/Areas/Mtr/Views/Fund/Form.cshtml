@@ -612,7 +612,7 @@
                 id: "FundSapForm",
                 title: "经费选择",
                 url: '/mtr/fund/FundSap/?WerksId=' + $("#WerksId").val() + '&LgortId=' + $.trim($("#Lgort").val()) + '&CardNumber=' + $.trim($("#CardNumber").val()) + '&password=' + $.trim(value),
-                width: "400px",
+                width: "500px",
                 height: "400px",
                 callBack: function (iframeId) {
                     var objFund = top.frames[iframeId].submitForm();
@@ -655,8 +655,8 @@
             url: '/mtr/fund/GetFundSapJson/',
             height: 300,
             colModel: [
-                { label: '经费编码', name: 'FundCode', width: 80, align: 'left' },
-                { label: '经费名称', name: 'FundName', width: 80, align: 'left' },
+                { label: '经费编码', name: 'FundCode', width: 100, align: 'left' },
+                { label: '经费名称', name: 'FundName', width: 200, align: 'left' },
 
                 {
                     label: '经费金额', name: 'FundAmount', width: 80, align: 'left'
