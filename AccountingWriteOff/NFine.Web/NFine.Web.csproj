@@ -321,6 +321,7 @@
     <Content Include="Content\js\dialog\img\loading-0.gif" />
     <Content Include="Content\js\dialog\img\loading-1.gif" />
     <Content Include="Content\js\dialog\img\loading-2.gif" />
+    <Content Include="Content\js\easyui\easyui-lang-zh_CN.js" />
     <Content Include="Content\js\easyui\jquery.easyui.min.js" />
     <Content Include="Content\js\easyui\themes\angular.css" />
     <Content Include="Content\js\easyui\themes\black\accordion.css" />
