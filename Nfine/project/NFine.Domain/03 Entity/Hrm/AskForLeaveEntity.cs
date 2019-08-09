@@ -9,6 +9,7 @@
 //-----------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,14 +19,16 @@ namespace NFine.Domain.Entity.Hrm
     /// <summary>
     /// AskForLeave Entity Model
     /// </summary>
-    public class AskForLeaveEntity : IEntity<AskForLeaveEntity>, ICreationAudited, IDeleteAudited, IModificationAudited
+    public partial class AskForLeaveEntity : IEntity<AskForLeaveEntity>, ICreationAudited, IDeleteAudited, IModificationAudited
     {
         public string F_Id { get; set; }
         public string HrmUserId { get; set; }
         public string OrganizeId { get; set; }
         public string AskTypeId { get; set; }
         public DateTime? StartDate { get; set; }
+        
         public DateTime? EndDate { get; set; }
+        
         public string HosOrganize { get; set; }
         public string SickCheck { get; set; }
         public int? AskSort { get; set; }

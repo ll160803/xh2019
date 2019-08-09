@@ -171,6 +171,7 @@ namespace NFine.Web.Code
 
         public static List<FundSapEntity> GetFundByCardNumberSap(string cardNumber, string werks, string password, string lgort)
         {
+            List<FundSapEntity> list = new List<FundSapEntity>();
             try
             {
                 System.Net.NetworkCredential c = new System.Net.NetworkCredential(System.Configuration.ConfigurationManager.AppSettings["Sap_User"], System.Configuration.ConfigurationManager.AppSettings["Sap_Password"]);
@@ -190,23 +191,21 @@ namespace NFine.Web.Code
 
                 };
                 var ry = gf.Zfi02FmWwkf(input);
-                var result = ry.TAufk;
-                List<FundSapEntity> list = new List<FundSapEntity>();
-                //list.Add(new FundSapEntity
-                //{
-                //    CardNumber = "123",
-                //    FundAmound = 2341,
-                //    FundCode = "234",
-                //    FundName = "时间金飞"
-                //});
-                //list.Add(new FundSapEntity
-                //{
-                //    CardNumber = "123",
-                //    FundAmound = 345,
 
-                //    FundCode = "235",
-                //    FundName = "运输费"
-                //});
+                if (ry.OsMsg.Msgty == "E")
+                {
+                    list.Add(new FundSapEntity
+                    {
+                        CardNumber = cardNumber,
+
+
+                        FundName = "<p style='color:red'>" + ry.OsMsg.Msgtx + "</p>"
+                    });
+                    return list;
+                }
+                var result = ry.TAufk;
+
+
                 foreach (var item in result)
                 {
                     list.Add(new FundSapEntity
@@ -222,8 +221,17 @@ namespace NFine.Web.Code
             catch (Exception ex)
             {
                 LogFactory.GetLogger("SynUserDataFromSap").Error("发送SAP失败:" + ex.Message);
+                list.Add(new FundSapEntity
+                {
+                    CardNumber = cardNumber,
+
+
+                    FundName = "与SAP链接有误!请检查网络"
+                });
+                return list;
+
             }
-            return null;
+
         }
 
         public static void InsertValueToSap(Fund_B_ConsumeEntity entity, List<Fund_B_Consume_DEntity> listDs)
@@ -242,7 +250,7 @@ namespace NFine.Web.Code
                     var ry = gf.Zfi02Fm006(new FundSapInput.Zfi02Fm006
                     {
                         IZfiLyxh = item.ItemCode,
-                        IWerks = entity.WerksId.Replace("YQ-",""),
+                        IWerks = entity.WerksId.Replace("YQ-", ""),
                         ILgort = entity.Lgort,
                         IZfiJfdm = entity.FundNumber,
                         IAufnr = entity.Code,
@@ -251,7 +259,7 @@ namespace NFine.Web.Code
                         IZjpno = entity.Code,
                         ILbbm = item.Mtr_TypeCode,
                         ISgtxt = entity.F_Description,
-                        IFlag="I"
+                        IFlag = "I"
                     });
                 }
             }

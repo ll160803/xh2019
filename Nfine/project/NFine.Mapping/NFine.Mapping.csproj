@@ -61,6 +61,7 @@
     <Compile Include="Hrm\ViewHrmAskForLeaveRecordMap.cs" />
     <Compile Include="Hrm\ViewHrmAttandaceSapMap.cs" />
     <Compile Include="Hrm\ViewOutAndInMap.cs" />
+    <Compile Include="Hrm\View_Hrm_User_OrgMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemManage\AreaMap.cs" />
     <Compile Include="SystemManage\ItemsDetailMap.cs" />

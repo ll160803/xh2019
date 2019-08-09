@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NFine.Domain.Entity.Hrm
 {
-  public partial  class ViewAskForLeaveEntity
+    public partial class ViewAskForLeaveEntity
     {
         /// <summary>
         /// 请假天数
@@ -17,8 +17,13 @@ namespace NFine.Domain.Entity.Hrm
         {
             get
             {
-                TimeSpan ts = EndDate.Value - StartDate.Value;
-                return (ts.Days + 1) + "天";
+                if (EndDate.Value.Year == 9999)
+                { return ""; }
+                else
+                {
+                    TimeSpan ts = EndDate.Value - StartDate.Value;
+                    return (ts.Days + 1) + "天";
+                }
             }
             set
             {

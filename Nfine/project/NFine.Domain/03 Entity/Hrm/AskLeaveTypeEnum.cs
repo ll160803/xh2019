@@ -29,5 +29,6 @@ namespace NFine.Domain.Entity.Hrm
         public string Id { get; set; }
         public string OrgId { get; set; }
         public string Note { get; set; }
+        public string IsDoctor { get; set; }
     }
 }

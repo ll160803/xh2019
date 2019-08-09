@@ -380,7 +380,12 @@ $.fn.formSerialize = function (formdate) {
                     $id.val(value).trigger("change");
                     break;
                 default:
-                    $id.val(value);
+                    if (value.indexOf("9999-12-31") >= 0) {
+                        $id.val("");
+                    }
+                    else {
+                        $id.val(value);
+                    }
                     break;
             }
         };
@@ -490,13 +495,40 @@ $.days_count = function (sDate1, sDate2) {    //sDate1和sDate2是2006-12-18格�
     var dateSpan,
         tempDate,
         iDays;
+    if (sDate2.indexOf('9999') >= 0) return "";
     sDate1 = Date.parse(sDate1);
     sDate2 = Date.parse(sDate2);
+
+
+   
     dateSpan = sDate2 - sDate1;
     dateSpan = Math.abs(dateSpan);
     iDays = Math.floor(dateSpan / (24 * 3600 * 1000)) + 1;
-    return iDays
+    return iDays+"天"
 };
+$.dateAddDays = function (dataStr, dayCount) {
+    var strdate = dataStr; //日期字符串
+    var isdate = new Date(strdate.replace(/-/g, "/"));  //把日期字符串转换成日期格式
+    isdate = new Date((isdate / 1000 + (86400 * dayCount)) * 1000);  //日期加1天
+    var month = isdate.getMonth() + 1;
+    var day = isdate.getDate();
+    var mm = "'" + month + "'";
+    var dd = "'" + day + "'";
+
+    //单位数前面加0
+    if (mm.length == 3) {
+        month = "0" + month;
+    }
+    if (dd.length == 3) {
+        day = "0" + day;
+    }
+
+    var time = isdate.getFullYear() + "-" + month + "-" + day
+    return time;
+
+   
+}
+
 $.jsGetAge = function (strBirthday) {
     var returnAge;
     var strBirthdayArr = strBirthday.split("-");

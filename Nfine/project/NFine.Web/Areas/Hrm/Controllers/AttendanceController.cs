@@ -16,7 +16,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
     {
         //
         // GET: /Hrm/Attendance/
-        private bool IsDoctor = OperatorProvider.Provider.GetCurrent().Is_Doctor == ((int)UserType.医生).ToString();
+        private string IsDoctor = OperatorProvider.Provider.GetCurrent().Is_Doctor;
         private RoleAuthorizeApp roleAuthorizeApp = new RoleAuthorizeApp();
         public ActionResult AttendanceIndex()
         {
@@ -63,7 +63,11 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 keyPress = keyPress.And(t => t.AttendDate == keyword);
                 expression = expression.And(keyPress);
             }
-            expression = expression.And(p => p.Flag == IsDoctor);
+            if (IsDoctor != "3")
+            {
+                //这里是取  Flag为空 或者是医生、护士的
+                expression = expression.And(p => p.Flag != (IsDoctor == "2" ? true : false));
+            }
             AttendanceRecordApp appRecord = new AttendanceRecordApp();
 
             var data = new
@@ -153,7 +157,11 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 var orgIds = "," + string.Join(",", authorizedata.Select(u => u.F_ItemId)) + ",";
                 expression = expression.And(p => orgIds.Contains("," + p.OrganizeId + ","));
             }
-            expression = expression.And(p => p.DoctorOrNurser == IsDoctor & p.IsNew == true & p.State > 1);//提交过的 是最新的 是护士或者医生  
+            if (IsDoctor != "3")
+            {
+                expression = expression.And(p => p.DoctorOrNurser == (IsDoctor == "1" ? true : false));
+            }
+            expression = expression.And(p => p.IsNew == true & p.State > 1);//提交过的 是最新的 是护士或者医生  
 
             if (string.IsNullOrEmpty(keyword))
             {
@@ -210,7 +218,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
             return Content(data.ToJson());
         }
         [HttpPost]
-        public ActionResult GetAskLeaveSumRecordExport(string id, Pagination pagination, string keyword,string titleAndField)
+        public ActionResult GetAskLeaveSumRecordExport(string id, Pagination pagination, string keyword, string titleAndField)
         {
             pagination.page = 1;
             pagination.rows = int.MaxValue;
@@ -232,7 +240,11 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 var orgIds = "," + string.Join(",", authorizedata.Select(u => u.F_ItemId)) + ",";
                 expression = expression.And(p => orgIds.Contains("," + p.OrganizeId + ","));
             }
-            expression = expression.And(p => p.DoctorOrNurser == IsDoctor & p.IsNew == true & p.State > 1);//提交过的 是最新的 是护士或者医生  
+            if (IsDoctor != "3")
+            {
+                expression = expression.And(p => p.DoctorOrNurser == (IsDoctor == "1" ? true : false));
+            }
+            expression = expression.And(p => p.IsNew == true & p.State > 1);//提交过的 是最新的 是护士或者医生  
 
             if (string.IsNullOrEmpty(keyword))
             {
@@ -284,7 +296,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
             var downUrl = NPOIWriteExcel.OutputExcel(hrmUserList, dicFields, new ExcelCaption { CaptionName = "考勤记录表", Height = 24 });
 
             return Success("下载成功", downUrl);
-           
+
         }
 
         [HttpPost]
@@ -300,15 +312,20 @@ namespace NFine.Web.Areas.Hrm.Controllers
 
                 AttendanceRecordApp app = new AttendanceRecordApp();
                 AttendanceRecordDApp app_d = new AttendanceRecordDApp();
+
+                bool? flag = null;
+                if (IsDoctor == "2") flag = false;
+                if (IsDoctor == "1") flag = true;
                 var entity = new AttendanceRecordEntity
                 {
                     AttendDate = keyValue,
-                    Flag = IsDoctor,
+                    Flag = flag,
                     OrganizeId = OperatorProvider.Provider.GetCurrent().DepartmentId,
                     State = 1,
                     SubmitMan = OperatorProvider.Provider.GetCurrent().UserName,
                     SubmitDate = DateTime.Now
                 };
+
                 app.SubmitForm(entity, "");
 
                 List<AttendanceRecordDEntity> list_d = new List<AttendanceRecordDEntity>();
@@ -341,10 +358,13 @@ namespace NFine.Web.Areas.Hrm.Controllers
 
                 AttendanceRecordApp app = new AttendanceRecordApp();
                 AttendanceRecordDApp app_d = new AttendanceRecordDApp();
+                bool? flag = null;
+                if (IsDoctor == "2") flag = false;
+                if (IsDoctor == "1") flag = true;
                 var entity = new AttendanceRecordEntity
                 {
                     AttendDate = keyValue,
-                    Flag = IsDoctor,
+                    Flag = flag,
                     OrganizeId = OperatorProvider.Provider.GetCurrent().DepartmentId,
                     State = 2,//提交
                     SubmitMan = OperatorProvider.Provider.GetCurrent().UserName,
@@ -379,7 +399,12 @@ namespace NFine.Web.Areas.Hrm.Controllers
             {
                 expression = expression.And(t => t.NACHN.Contains(keyword) || t.PERNR.Contains(keyword));
             }
+            if (IsDoctor != "3")
+            {
+                expression = expression.And(t => t.RYLB == IsDoctor);
+            }
             ViewAttendanceRecordDApp hrmUserApp = new ViewAttendanceRecordDApp();
+
             var hrmUserList = hrmUserApp.GetList(pagination, expression);
             var data = new
             {
@@ -404,6 +429,10 @@ namespace NFine.Web.Areas.Hrm.Controllers
             {
                 expression = expression.And(t => t.NACHN.Contains(keyword) || t.PERNR.Contains(keyword));
             }
+            if (IsDoctor != "3")
+            {
+                expression = expression.And(t => t.RYLB == IsDoctor);
+            }
             ViewAttendanceRecordDApp hrmUserApp = new ViewAttendanceRecordDApp();
             pagination.page = 1;
             pagination.rows = int.MaxValue;
@@ -413,7 +442,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
             var rows = hrmUserList;
 
             var dicFields = HandleTitelAndField.GetTitleAndField(titleAndField, 12, 15, 18);
-            var downUrl = NPOIWriteExcel.OutputExcel<ViewAttendanceRecordDEntity>(rows, dicFields, new ExcelCaption { CaptionName =  "考勤记录表", Height = 24 });
+            var downUrl = NPOIWriteExcel.OutputExcel<ViewAttendanceRecordDEntity>(rows, dicFields, new ExcelCaption { CaptionName = "考勤记录表", Height = 24 });
 
             return Success("下载成功", downUrl);
 

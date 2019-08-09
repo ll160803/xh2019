@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,7 +27,9 @@ namespace NFine.Domain.Entity.Hrm
         public string OrganizeId { get; set; }
         public string AskTypeId { get; set; }
         public DateTime? StartDate { get; set; }
+        
         public DateTime? EndDate { get; set; }
+
         public string HosOrganize { get; set; }
         public string SickCheck { get; set; }
         public int? State { get; set; }
@@ -87,6 +90,6 @@ namespace NFine.Domain.Entity.Hrm
         /// 创建人名称
         /// </summary>
         public string F_Account { get; set; }
-        
+
     }
 }

@@ -1,10 +1,7 @@
 ﻿@{
-                /**/
 
-                /**/
-
-                ViewBag.Title = "Form";
-                Layout = "~/Views/Shared/_Form_Hrm.cshtml";
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Form_Hrm.cshtml";
 }
 <script>
     var keyValue = $.request("keyValue");
@@ -17,7 +14,9 @@
                 dataType: "json",
                 async: false,
                 success: function (data) {
+                    data.days = data.days.replace(/天/g, "");
                     $("#form1").formSerialize(data);
+                    
                     $("#NACHN").combogrid("setValue", data.NACHN);
                 }
             });
@@ -31,7 +30,7 @@
         //        }
         //    }
         //});
-    
+
         $("#StartDate").datepicker({
             format: 'yyyy-mm-dd',
 
@@ -51,7 +50,7 @@
             textField: 'NACHN',
             url: '/hrm/sapuser/GetComboGridJson/',
             method: 'post',
-           // pagination: true,
+            // pagination: true,
             columns: [[
                 { title: '主键', field: 'F_Id', hidden: true },
                 { title: '人员编号', field: 'PERNR', width: 80, align: 'left' },
@@ -59,6 +58,9 @@
 
                 {
                     title: '员工工号', field: 'YGGH', width: 80, align: 'left'
+                },
+                {
+                    title: '考勤类别', field: 'RYLB', width: 80, align: 'left'
                 }
             ]],
             fitColumns: true,
@@ -77,6 +79,12 @@
             onSelect: function (rowIndex, rowData) {
                 $("#HrmUserId").val(rowData.F_Id);
                 $("#OrganizeId").val(rowData.OrganizeId);
+                if (rowData.RYLB == "2") {
+                    $("#DoctorOrNurser").val(false);
+                }
+                else {
+                    $("#DoctorOrNurser").val(true);
+                }
             }
         });
 
@@ -86,6 +94,13 @@
         if (NACHN == "") {
             $.modalAlert("请选择请假人", "warning");
             return false;
+        }
+        var bt = $("#AskTypeId").find("option:selected").text();
+        if (bt != "病假") {
+            if ($.trim($("#EndDate").val()) == "") {
+                $.modalAlert("请选择结束时间", "warning");
+                return false;
+            }
         }
         if (!$('#form1').formValid()) {
             return false;
@@ -105,6 +120,13 @@
             $.modalAlert("请选择请假人", "warning");
             return false;
         }
+        var bt = $("#AskTypeId").find("option:selected").text();
+        if (bt != "病假") {
+            if ($.trim($("#EndDate").val()) == "") {
+                $.modalAlert("请选择结束时间", "warning");
+                return false;
+            }
+        }
         if (!$('#form1').formValid()) {
             return false;
         }
@@ -118,8 +140,16 @@
         })
     }
     function submitFormModify() {//改登保存
+
         if (!$('#form1').formValid()) {
             return false;
+        }
+        var bt = $("#AskTypeId").find("option:selected").text();
+        if (bt != "病假") {
+            if ($.trim($("#EndDate").val()) == "") {
+                $.modalAlert("请选择结束时间", "warning");
+                return false;
+            }
         }
         $.submitForm({
             url: "/hrm/askforleave/SubmitFormModify?keyValue=" + keyValue + "&state2=1",
@@ -134,7 +164,7 @@
             return false;
         }
         $.submitForm({
-            url: "/hrm/askforleave/SubmitFormModify?keyValue=" + keyValue+"&state2=2",
+            url: "/hrm/askforleave/SubmitFormModify?keyValue=" + keyValue + "&state2=2",
             param: $("#form1").formSerialize(),
             success: function () {
                 parent.layer.close(index);
@@ -151,6 +181,37 @@
             $("#Flag").val(false);
         }
     }
+    function CalcEndDate() {
+        var ds = $("#days").val();
+        if ($("#StartDate").val() != "" & ds > 0) {
+            //console.info($("#StartDate").val());
+            $("#EndDate").val($.dateAddDays($("#StartDate").val(), (parseInt(ds) - 1)));
+
+        }
+    }
+    function CalcDays() {
+
+        var sd1 = $("#StartDate").val();
+        var sd2 = $("#EndDate").val();
+        if (sd1 != "" & sd2 != "") {
+            $("#days").val(calcDays_common(sd1, sd2));
+        }
+    }
+    function calcDays_common(sDate1, sDate2) {    //sDate1和sDate2是2006-12-18格式  当前月在两个时间之间的天数
+        var dateSpan,
+            tempDate,
+            iDays;
+        if (sDate2.indexOf('9999') >= 0) return "";
+        sDate1 = Date.parse(sDate1);
+        sDate2 = Date.parse(sDate2);
+
+
+
+        dateSpan = sDate2 - sDate1;
+        dateSpan = Math.abs(dateSpan);
+        iDays = Math.floor(dateSpan / (24 * 3600 * 1000)) + 1;
+        return iDays;
+    };
 </script>
 <form id="form1">
     <div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
@@ -170,6 +231,7 @@
                         <input id="AskSort" name="AskSort" type="hidden" />
                         <input id="Ref_Id" name="Ref_Id" type="hidden" />
                         <input id="Flag" name="Flag" type="hidden" value="true" />
+                        <input id="DoctorOrNurser" name="DoctorOrNurser" type="hidden" value="true" />
                     </td>
                     <th class="formTitle">请假类型</th>
                     <td class="formValue">
@@ -179,12 +241,21 @@
                 <tr>
                     <th class="formTitle">开始时间</th>
                     <td class="formValue">
-                        <input id="StartDate" name="StartDate" type="text" autocomplete="off" class="form-control required " placeholder="请输入开始时间" />
+                        <input id="StartDate" name="StartDate" type="text" onblur="CalcEndDate();" autocomplete="off" class="form-control required " placeholder="请输入开始时间" />
                     </td>
+                    <th class="formTitle">请假天数</th>
+                    <td class="formValue">
+                        <input id="days" name="days" type="text" onblur="CalcEndDate();" autocomplete="off" class="form-control number" placeholder="请输入结束时间" />
+                    </td>
+                </tr>
+                <tr>
+
                     <th class="formTitle">结束时间</th>
                     <td class="formValue">
-                        <input id="EndDate" name="EndDate" type="text" compareDate="#StartDate" autocomplete="off" class="form-control required" placeholder="请输入结束时间" />
+                        <input id="EndDate" name="EndDate" type="text" onblur="CalcDays();" compareDate="#StartDate" autocomplete="off" class="form-control" placeholder="请输入结束时间" />
                     </td>
+                    <th></th>
+                    <td></td>
                 </tr>
                 <tr>
                     <th class="formTitle">住院科室</th>

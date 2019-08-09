@@ -84,7 +84,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 //}
 
             }
-            if (!string.IsNullOrEmpty(id))
+            if (!string.IsNullOrEmpty(id) & IsDoctor != "3")
             {
                 expression = expression.And(p => p.RYLB == IsDoctor);//医生还是护士
             }
@@ -140,7 +140,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 //}
 
             }
-            if (!string.IsNullOrEmpty(id))
+            if (!string.IsNullOrEmpty(id) & IsDoctor != "3")
             {
                 expression = expression.And(p => p.RYLB == IsDoctor);//医生还是护士
             }
@@ -468,7 +468,11 @@ namespace NFine.Web.Areas.Hrm.Controllers
                     return Error("错误操作。");
                 }
             }
-            userEntity.DoctorOrNurser = (IsDoctor == "1" ? true : false);
+            if(userEntity.EndDate==null)
+            {
+                userEntity.EndDate = Convert.ToDateTime("9999-12-31");
+            }
+           // userEntity.DoctorOrNurser = (IsDoctor == "1" ? true : false);
             // userEntity.OrganizeId= OperatorProvider.Provider.GetCurrent().CompanyId;//当前科室
             var hasList = askApp.GetLeaveList(userEntity.HrmUserId, userEntity.StartDate.Value, userEntity.EndDate.Value, keyValue);
             if (hasList.Count > 0)
@@ -501,7 +505,11 @@ namespace NFine.Web.Areas.Hrm.Controllers
                     return Error("错误操作。");
                 }
             }
-            userEntity.DoctorOrNurser = (IsDoctor == "1" ? true : false);
+            if (userEntity.EndDate == null)
+            {
+                userEntity.EndDate = Convert.ToDateTime("9999-12-31");
+            }
+            //userEntity.DoctorOrNurser = (IsDoctor == "1" ? true : false);
             userEntity.State = (int)AskLeaveStateType.已提交;//改为提交操作
             userEntity.SubmitUser = OperatorProvider.Provider.GetCurrent().UserCode;
             userEntity.LeaderAuditTime = DateTime.Now;
@@ -524,11 +532,15 @@ namespace NFine.Web.Areas.Hrm.Controllers
             //{
             //    userEntity.Flag = Flag == "1" ? true : false;//是病假还是产假 
             //}
+            if (userEntity.EndDate == null)
+            {
+                userEntity.EndDate = Convert.ToDateTime("9999-12-31");
+            }
             userEntity.State = state2;//草稿状态
             userEntity.IsNew = true;//激活的请假
             userEntity.AskSort = userEntity.AskSort + 1;//默认是增加1个
             userEntity.Ref_Id = userEntity.Ref_Id;//请假和请假改登之间的唯一标识
-            userEntity.DoctorOrNurser = (IsDoctor == "1" ? true : false);
+           // userEntity.DoctorOrNurser = (IsDoctor == "1" ? true : false);
             // userEntity.OrganizeId= OperatorProvider.Provider.GetCurrent().CompanyId;//当前科室
             var hasList = askApp.GetLeaveList(userEntity.HrmUserId, userEntity.StartDate.Value, userEntity.EndDate.Value, keyValue);
             if (hasList.Count > 0)

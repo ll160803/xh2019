@@ -30,6 +30,9 @@
     }
     function initControl() {
         // gridList();
+        
+        $("#WerksId").find("option").remove();
+        $("#WerksId").append("<option value=''>==请选择==</option>");
         $("#WerksId").bindSelect({
             url: "/SystemManage/RoleAuthorize/GetYQJson/1",
             id: "F_Id",
@@ -37,6 +40,8 @@
             change: function (obj, text) {
                 if (obj != undefined) {
                     $("#Werks").val(text);
+                    $("#Lgort").find("option").remove();
+                    $("#Lgort").append("<option value=''>==请选择==</option>");
                     $("#Lgort").bindSelect({
                         url: "/SystemManage/RoleAuthorize/GetYQJson/2?parentId=" + obj.F_Id,
                         id: "F_Id",
@@ -583,8 +588,8 @@
             param: { data: dataStr, fund_b_consume: JSON.stringify(fund_b_consume) },
             success: function (res) {
                 $("#print").empty().append($(res.data));
+
                 
-                   
                 Initform();
                
                 //   location.href = '../../mtr/fund/form';

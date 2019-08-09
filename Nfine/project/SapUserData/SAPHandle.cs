@@ -80,6 +80,10 @@ namespace SapUserData
                         row["ZTQJSRQ"] = Convert.ToDateTime(user.Ztqjsrq);
                     row["ZTQBZ"] = user.Ztqbz;
                     row["STATXT"] = user.Statxt;
+                    if (user.Stat2 == "0")//离职的数据自动清空部门
+                    {
+                        row["OrganizeId"] = "";
+                    }
 
                 }
                 else

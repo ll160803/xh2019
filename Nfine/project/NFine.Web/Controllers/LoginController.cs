@@ -64,10 +64,10 @@ namespace NFine.Web.Controllers
             try
             {
                 //暂时注销验证码
-                if (Session["nfine_session_verifycode"].IsEmpty() || Md5.md5(code.ToLower(), 16) != Session["nfine_session_verifycode"].ToString())
-                {
-                    throw new Exception("验证码错误，请重新输入");
-                }
+                //if (Session["nfine_session_verifycode"].IsEmpty() || Md5.md5(code.ToLower(), 16) != Session["nfine_session_verifycode"].ToString())
+                //{
+                //    throw new Exception("验证码错误，请重新输入");
+                //}
 
                 UserEntity userEntity = new UserApp().CheckLogin(username, password);
                 if (userEntity != null)
@@ -79,11 +79,11 @@ namespace NFine.Web.Controllers
                     operatorModel.CompanyId = userEntity.F_OrganizeId;
                     operatorModel.DepartmentId = userEntity.F_DepartmentId;
                     operatorModel.RoleId = userEntity.F_RoleId;
-                   // operatorModel.LoginIPAddress = Net.Ip;
+                    // operatorModel.LoginIPAddress = Net.Ip;
                     //operatorModel.LoginIPAddressName = Net.GetLocation(operatorModel.LoginIPAddress);
                     operatorModel.LoginTime = DateTime.Now;
                     operatorModel.LoginToken = DESEncrypt.Encrypt(Guid.NewGuid().ToString());
-                    operatorModel.Is_Doctor = (userEntity.F_DutyId == "23ED024E-0AAA-4C8D-9216-D1AB93348D26" ? "1" : "2");//医生1 护士2
+                    operatorModel.Is_Doctor = GetIs_Doctor(userEntity.F_DutyId);// (userEntity.F_DutyId == "23ED024E-0AAA-4C8D-9216-D1AB93348D26" ? "1" : "2");//医生1 护士2
                     if (userEntity.F_Account == "admin")
                     {
                         operatorModel.IsSystem = true;
@@ -110,6 +110,19 @@ namespace NFine.Web.Controllers
                 new LogApp().WriteDbLog(logEntity);
                 return Content(new AjaxResult { state = ResultType.error.ToString(), message = ex.Message }.ToJson());
             }
+        }
+
+        private string GetIs_Doctor(string dutyId)
+        {
+            if (dutyId == "23ED024E-0AAA-4C8D-9216-D1AB93348D26")
+            {
+                return "1";//医生 
+            }
+            if (dutyId == "0b847d16-7c22-45c6-b228-0b214a28ad39")
+            {
+                return "2";//护士 
+            }
+            return "3";//全部
         }
     }
 }

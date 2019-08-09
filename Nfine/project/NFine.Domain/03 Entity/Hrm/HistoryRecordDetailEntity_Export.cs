@@ -17,6 +17,7 @@ namespace NFine.Domain.Entity.Hrm
         {
             get
             {
+                if (EndDate == null) return "";
                 TimeSpan ts = EndDate.Value - StartDate.Value;
                 return (ts.Days + 1) + "天";
             }

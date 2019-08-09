@@ -54,7 +54,7 @@ namespace NFine.Application.Hrm
             }
         }
 
-        public List<HrmUserEntity> GetList(Pagination pagination, List<RoleAuthorizeEntity> authorizedata, bool IsFlag)
+        public List<HrmUserEntity> GetList(Pagination pagination, List<RoleAuthorizeEntity> authorizedata, string IsFlag)
         {
             System.Linq.Expressions.Expression<Func<HrmUserEntity, bool>> expression = ExtLinq.True<HrmUserEntity>();
 
@@ -63,9 +63,12 @@ namespace NFine.Application.Hrm
                 var orgIds = "," + string.Join(",", authorizedata.Select(u => u.F_ItemId)) + ",";
                 expression = expression.And(p => orgIds.Contains("," + p.OrganizeId + ","));
             }
-            var RYLB = IsFlag ? "1" : "2";//Docotor is 1  and nurse is 2
+           
             expression = expression.And(p => p.STAT2 != "0");//ÀëÖ°µÄ 
-            expression = expression.And(p => p.RYLB == RYLB);//
+            if (IsFlag != "3")
+            {
+                expression = expression.And(p => p.RYLB == IsFlag);//
+            }
             return service.FindList(expression, pagination);
         }
     }

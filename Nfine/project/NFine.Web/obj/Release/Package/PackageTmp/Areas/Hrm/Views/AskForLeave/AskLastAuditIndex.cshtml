@@ -50,7 +50,7 @@
                 {
                     label: '请假天数', name: 'days', width: 60, align: 'left',
                     formatter: function (cellvalue, options, rowObject) {
-                        return $.days_count(rowObject.StartDate, rowObject.EndDate)+"天";
+                        return $.days_count(rowObject.StartDate, rowObject.EndDate);
                     }
                 },
                 {

@@ -996,7 +996,7 @@
     }, "Your ZIP-code must be in the range 902xx-xxxx to 905xx-xxxx");
     //hsc 2019 0703 日期比较
     $.validator.addMethod("compareDate", function (value, element, param) {
-
+        if (value == "") return true;
         var startDate = $(param).val();
 
         var date1 = new Date(Date.parse(startDate.replace("-", "/")));

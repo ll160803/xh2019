@@ -801,6 +801,8 @@
                 return a == d.val()
             },
             compareDate: function (a, b, d) {
+                console.info(a);
+                if (a == "") return true;
                 var startDate = c(d).val();
                 var date1 = new Date(Date.parse(startDate.replace("-", "/")));
                 var date2 = new Date(Date.parse(a.replace("-", "/")));

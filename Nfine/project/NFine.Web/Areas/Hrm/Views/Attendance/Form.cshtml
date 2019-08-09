@@ -67,6 +67,9 @@
                     label: '员工工号', name: 'YGGH', width: 80, align: 'left'
                 },
                 {
+                    label: '考勤类别', name: 'RYLB', width: 80, align: 'left'
+                },
+                {
                     label: '备注', name: 'F_Description', width: 200, align: 'left'
                 }
 
@@ -105,7 +108,7 @@
         if (rowIds.length > 0) {
             for (var i = 0; i < rowIds.length; i++) {
                 //rowData=obj.getRowData(rowid);//这里rowid=rowIds[i];
-                arrayData.push({ Id: obj.getRowData(rowIds[i]).F_Id, OrgId: obj.getRowData(rowIds[i]).OrganizeId, Note: obj.getRowData(rowIds[i]).F_Description });
+                arrayData.push({ Id: obj.getRowData(rowIds[i]).F_Id, OrgId: obj.getRowData(rowIds[i]).OrganizeId, Note: obj.getRowData(rowIds[i]).F_Description, IsDoctor: obj.getRowData(rowIds[i]).RYLB});
             }
         }
         return arrayData;

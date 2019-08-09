@@ -45,6 +45,7 @@
     <Compile Include="01 Infrastructure\IEntity.cs" />
     <Compile Include="01 Infrastructure\IModificationAudited.cs" />
     <Compile Include="03 Entity\Hrm\AskForLeaveEntity.cs" />
+    <Compile Include="03 Entity\Hrm\AskForLeaveEntity_.cs" />
     <Compile Include="03 Entity\Hrm\AskLeaveTypeEnum.cs" />
     <Compile Include="03 Entity\Hrm\AttendanceRecordDEntity.cs" />
     <Compile Include="03 Entity\Hrm\AttendanceRecordEntity.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="03 Entity\Hrm\ViewHrmAskForLeaveRecordEntity.cs" />
     <Compile Include="03 Entity\Hrm\ViewHrmAttandaceSapEntity.cs" />
     <Compile Include="03 Entity\Hrm\ViewOutAndInEntity.cs" />
+    <Compile Include="03 Entity\Hrm\View_Hrm_User_OrgEntity.cs" />
     <Compile Include="03 Entity\SystemManage\AreaEntity.cs" />
     <Compile Include="03 Entity\SystemManage\ModuleButtonEntity.cs" />
     <Compile Include="03 Entity\SystemManage\ModuleEntity.cs" />
@@ -83,6 +85,7 @@
     <Compile Include="04 IRepository\Hrm\IViewHrmAskForLeaveRecordRepository.cs" />
     <Compile Include="04 IRepository\Hrm\IViewHrmAttandaceSapRepository.cs" />
     <Compile Include="04 IRepository\Hrm\IViewOutAndInRepository.cs" />
+    <Compile Include="04 IRepository\Hrm\IView_Hrm_User_OrgRepository.cs" />
     <Compile Include="04 IRepository\SystemManage\IAreaRepository.cs" />
     <Compile Include="04 IRepository\SystemManage\IItemsDetailRepository.cs" />
     <Compile Include="04 IRepository\SystemManage\IItemsRepository.cs" />

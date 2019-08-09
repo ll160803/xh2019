@@ -55,8 +55,10 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 expression = expression.And(p => orgIds.Contains("," + p.OrganizeId + ","));
             }
 
-
-            expression = expression.And(p => p.RYLB == IsDoctor);
+            if (IsDoctor != "3")
+            {
+                expression = expression.And(p => p.RYLB == IsDoctor);
+            }
 
             if (!string.IsNullOrEmpty(keyword))
             {
@@ -109,7 +111,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 var orgIds = "," + string.Join(",", authorizedata.Select(u => u.F_ItemId)) + ",";
                 expression = expression.And(p => orgIds.Contains("," + p.OrganizeId + ","));
             }
-            if (!string.IsNullOrEmpty(id))
+            if (!string.IsNullOrEmpty(id) & IsDoctor != "3")
             {
                 expression = expression.And(p => p.RYLB == id);
             }
@@ -132,9 +134,9 @@ namespace NFine.Web.Areas.Hrm.Controllers
         }
         [HttpPost]
         [HandlerAjaxOnly]
-        public ActionResult GetGridJsonExport(string id, Pagination pagination, string keyword,string titleAndField)
+        public ActionResult GetGridJsonExport(string id, Pagination pagination, string keyword, string titleAndField)
         {
-            System.Linq.Expressions.Expression<Func<HrmUserEntity, bool>> expression = ExtLinq.True<HrmUserEntity>();
+            System.Linq.Expressions.Expression<Func<View_Hrm_User_OrgEntity, bool>> expression = ExtLinq.True<View_Hrm_User_OrgEntity>();
             var authorizedata = new List<RoleAuthorizeEntity>();
             var userId = OperatorProvider.Provider.GetCurrent().UserId;
             if (!string.IsNullOrEmpty(userId))
@@ -151,23 +153,23 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 var orgIds = "," + string.Join(",", authorizedata.Select(u => u.F_ItemId)) + ",";
                 expression = expression.And(p => orgIds.Contains("," + p.OrganizeId + ","));
             }
-            if (!string.IsNullOrEmpty(id))
+            if (!string.IsNullOrEmpty(id) & IsDoctor != "3")
             {
                 expression = expression.And(p => p.RYLB == id);
             }
             if (!string.IsNullOrEmpty(keyword))
             {
-                var keyPress = ExtLinq.True<HrmUserEntity>();
+                var keyPress = ExtLinq.True<View_Hrm_User_OrgEntity>();
                 keyPress = keyPress.And(t => t.PERNR.Contains(keyword));
                 keyPress = keyPress.Or(t => t.NACHN.Contains(keyword));
                 expression = expression.And(keyPress);
             }
 
-           
+
             pagination.page = 1;
             pagination.rows = int.MaxValue;
-            var rows = userApp.GetList(pagination, expression);
-
+            var rows = new View_Hrm_User_OrgApp().GetList(pagination, expression);
+            titleAndField = titleAndField.Replace("OrganizeId", "F_FullName");//组织使用名称
             var dicFields = HandleTitelAndField.GetTitleAndField(titleAndField, 12, 15, 18);
             var downUrl = NPOIWriteExcel.OutputExcel(rows, dicFields, new ExcelCaption { CaptionName = "科室人员清单表", Height = 24 });
 
@@ -180,7 +182,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
             System.Linq.Expressions.Expression<Func<HrmUserEntity, bool>> expression = ExtLinq.True<HrmUserEntity>();
 
             expression = expression.And(p => string.IsNullOrEmpty(p.OrganizeId));
-            if (!string.IsNullOrEmpty(id))
+            if (!string.IsNullOrEmpty(id) & IsDoctor != "3")
             {
                 expression = expression.And(p => p.RYLB == id);
             }
@@ -211,7 +213,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
             System.Linq.Expressions.Expression<Func<HrmUserEntity, bool>> expression = ExtLinq.True<HrmUserEntity>();
 
             expression = expression.And(p => string.IsNullOrEmpty(p.OrganizeId));
-            if (!string.IsNullOrEmpty(id))
+            if (!string.IsNullOrEmpty(id) & IsDoctor != "3")
             {
                 expression = expression.And(p => p.RYLB == id);
             }
@@ -226,7 +228,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
             {
                 expression = expression.And(s => s.STAT2 == "3" || (s.STAT2 == "2" & (s.PERSK == "70" || s.PERSK == "73")));
             }
-           
+
             pagination.page = 1;
             pagination.rows = int.MaxValue;
             var rows = userApp.GetList(pagination, expression);
