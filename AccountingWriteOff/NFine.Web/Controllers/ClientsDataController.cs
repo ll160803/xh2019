@@ -19,19 +19,44 @@ namespace NFine.Web.Controllers
     {
         [HttpGet]
         [HandlerAjaxOnly]
-        public ActionResult GetClientsDataJson()
+        public ActionResult GetClientsDataJson(string id)
         {
-            var data = new
+            //var data = new
+            //{
+            //    dataItems = this.GetDataItemList(),
+            //    organize = this.GetOrganizeList(),
+            //    role = this.GetRoleList(),
+            //    duty = this.GetDutyList(),
+
+            //    authorizeMenu = this.GetMenuList(),
+            //    authorizeButton = this.GetMenuButtonList(),
+            //};
+
+            if (id == "1")
             {
-                dataItems = this.GetDataItemList(),
-                organize = this.GetOrganizeList(),
-                role = this.GetRoleList(),
-                duty = this.GetDutyList(),
-                user = "",
-                authorizeMenu = this.GetMenuList(),
-                authorizeButton = this.GetMenuButtonList(),
-            };
-            return Content(data.ToJson());
+                return Content((new { dataItems = this.GetDataItemList() }).ToJson());
+            }
+            if (id == "2")
+            {
+                return Content((new { organize = this.GetOrganizeList() }).ToJson());
+            }
+            if (id == "3")
+            {
+                return Content((new { role = this.GetRoleList() }).ToJson());
+            }
+            if (id == "4")
+            {
+                return Content((new { duty = this.GetDutyList() }).ToJson());
+            }
+            if (id == "5")
+            {
+                return Content((new { authorizeMenu = this.GetMenuList() }).ToJson());
+            }
+            if (id == "6")
+            {
+                return Content((new { authorizeButton = this.GetMenuButtonList() }).ToJson());
+            }
+            return Content("");
         }
         private object GetDataItemList()
         {

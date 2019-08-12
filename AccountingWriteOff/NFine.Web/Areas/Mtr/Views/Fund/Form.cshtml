@@ -31,7 +31,7 @@
     }
     function initControl() {
         // gridList();
-        
+
         $("#WerksId").find("option").remove();
         $("#WerksId").append("<option value=''>==请选择==</option>");
         $("#WerksId").bindSelect({
@@ -590,9 +590,9 @@
             success: function (res) {
                 $("#print").empty().append($(res.data));
 
-                
+
                 Initform();
-               
+
                 //   location.href = '../../mtr/fund/form';
                 $("#gridList").datagrid('loadData', { total: 0, rows: [] });
                 $.loading(false);
@@ -606,9 +606,37 @@
 </script>
 <script>
     function InputPassword() {
+
         top.layer.prompt({
             formType: 1,
             title: '请输入密码',
+            "success": function (layero, index) {
+                $(layero).find("input[type='password']").focus();
+                $(layero).find("input[type='password']").on('keydown', function (e) {
+                    if (e.which == '13') {
+                        var value = $(this).val();
+                        $("#password").val(value);
+                        var subIndex = $.modalOpen({
+                            id: "FundSapForm",
+                            title: "经费选择",
+                            url: '/mtr/fund/FundSap/?WerksId=' + $("#WerksId").val() + '&LgortId=' + $.trim($("#Lgort").val()) + '&CardNumber=' + $.trim($("#CardNumber").val()) + '&password=' + $.trim(value),
+                            width: "500px",
+                            height: "400px",
+                            callBack: function (iframeId) {
+                                var objFund = top.frames[iframeId].submitForm();
+                                if (objFund == undefined || objFund == false) return false;
+                                $("#FundNumber").val(objFund.FundCode);
+                                $("#FundName").val(objFund.FundName);
+                                $("#FundAmount").val(objFund.FundAmount);
+
+                                top.layer.close(subIndex);
+                            },
+                        });
+                        top.layer.close(index);
+                       
+                    }
+                });
+            },
             area: ['200px', '180px'], //自定义文本域宽高
             btn: ['确定', '取消'],    // 自定义设置多个按钮
             btnclass: ['btn btn-primary', 'btn btn-danger']
@@ -632,6 +660,7 @@
             });
             top.layer.close(index);
         });
+      
     }
     $(function () {
         $("#CardNumber").keydown(function (event) {
@@ -645,6 +674,7 @@
                 }
             }
         });
+
         $(document).keyup(function (event) {
             if (event.keyCode == 13) {
                 if (editRow != undefined) {
