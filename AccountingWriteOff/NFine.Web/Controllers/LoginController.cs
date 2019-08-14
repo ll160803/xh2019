@@ -78,9 +78,21 @@ namespace NFine.Web.Controllers
                     operatorModel.UserName = userEntity.F_RealName;
                     operatorModel.CompanyId = userEntity.F_OrganizeId;
                     operatorModel.DepartmentId = userEntity.F_DepartmentId;
+                    if (username.ToLower() == "admin")
+                    {
+                        operatorModel.DepartmentName = "管理员";
+                    }
+                    else
+                    {
+                        var dep = new OrganizeApp().GetForm(userEntity.F_DepartmentId);
+                        if (dep != null)
+                        {
+                            operatorModel.DepartmentName = dep.F_FullName;
+                        }
+                    }
                     operatorModel.RoleId = userEntity.F_RoleId;
                     operatorModel.LoginIPAddress = Net.Ip;
-                   // operatorModel.LoginIPAddressName = Net.GetLocation(operatorModel.LoginIPAddress);
+                    // operatorModel.LoginIPAddressName = Net.GetLocation(operatorModel.LoginIPAddress);
                     operatorModel.LoginTime = DateTime.Now;
                     operatorModel.LoginToken = DESEncrypt.Encrypt(Guid.NewGuid().ToString());
                     //operatorModel.Is_Doctor = (userEntity.F_DutyId == "23ED024E-0AAA-4C8D-9216-D1AB93348D26" ? "1" : "2");//医生1 护士2

@@ -633,32 +633,36 @@
                             },
                         });
                         top.layer.close(index);
-                       
+
                     }
                 });
             },
             area: ['200px', '180px'], //自定义文本域宽高
             btn: ['确定', '取消'],    // 自定义设置多个按钮
-            btnclass: ['btn btn-primary', 'btn btn-danger']
-        }, function (value, index, elem) {
-            $("#password").val(value);
-            var subIndex = $.modalOpen({
-                id: "FundSapForm",
-                title: "经费选择",
-                url: '/mtr/fund/FundSap/?WerksId=' + $("#WerksId").val() + '&LgortId=' + $.trim($("#Lgort").val()) + '&CardNumber=' + $.trim($("#CardNumber").val()) + '&password=' + $.trim(value),
-                width: "500px",
-                height: "400px",
-                callBack: function (iframeId) {
-                    var objFund = top.frames[iframeId].submitForm();
-                    if (objFund == undefined || objFund == false) return false;
-                    $("#FundNumber").val(objFund.FundCode);
-                    $("#FundName").val(objFund.FundName);
-                    $("#FundAmount").val(objFund.FundAmount);
+            btnclass: ['btn btn-primary', 'btn btn-danger'],
+            yes: function (index, layero) {
+                console.info("index" + index);
+                console.info("layero" + layero);
+                value = $(layero).find("input[type='password']").val();
+                $("#password").val(value);
+                var subIndex = $.modalOpen({
+                    id: "FundSapForm",
+                    title: "经费选择",
+                    url: '/mtr/fund/FundSap/?WerksId=' + $("#WerksId").val() + '&LgortId=' + $.trim($("#Lgort").val()) + '&CardNumber=' + $.trim($("#CardNumber").val()) + '&password=' + $.trim(value),
+                    width: "500px",
+                    height: "400px",
+                    callBack: function (iframeId) {
+                        var objFund = top.frames[iframeId].submitForm();
+                        if (objFund == undefined || objFund == false) return false;
+                        $("#FundNumber").val(objFund.FundCode);
+                        $("#FundName").val(objFund.FundName);
+                        $("#FundAmount").val(objFund.FundAmount);
 
-                    top.layer.close(subIndex);
-                },
-            });
-            top.layer.close(index);
+                        top.layer.close(subIndex);
+                    },
+                });
+                top.layer.close(index);
+            }
         });
       
     }

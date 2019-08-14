@@ -16,6 +16,7 @@ namespace NFine.Code
         public string UserPwd { get; set; }
         public string CompanyId { get; set; }
         public string DepartmentId { get; set; }
+        public string DepartmentName { get; set; }
         public string RoleId { get; set; }
         public string LoginIPAddress { get; set; }
         public string LoginIPAddressName { get; set; }

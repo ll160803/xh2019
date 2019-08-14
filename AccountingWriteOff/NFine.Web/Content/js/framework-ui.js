@@ -473,7 +473,7 @@ $.fn.dataGrid = function (options) {
     };
     var options = $.extend(defaults, options);
     var $element = $(this);
-    options["onSelectRow"] = function (rowid) {
+    options["ondblClickRow"] = function (rowid) {
         var length = $(this).jqGrid("getGridParam", "selrow").length;
         var $operate = $(".operate");
         if (length > 0) {

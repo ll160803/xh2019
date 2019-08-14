@@ -46,8 +46,12 @@
                      }
                 },
                 {
-                    label: '更新时间', name: 'F_CreatorTime', width: 80, align: 'left',
+                    label: '更新日期', name: 'F_CreatorTime', width: 80, align: 'left',
                     formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' }
+                },
+                {
+                    label: '更新时间', name: 'F_CreatorTime', width: 80, align: 'left',
+                    formatter: "date", formatoptions: { srcformat: 'Y-m-d H:i:s', newformat: 'H:i:s' }
                 }
             ],
             pager: "#gridPager",

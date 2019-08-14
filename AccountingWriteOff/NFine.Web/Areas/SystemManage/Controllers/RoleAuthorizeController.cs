@@ -76,7 +76,7 @@ namespace NFine.Web.Areas.SystemManage.Controllers
         {
             var authorizedata = new OrganizeApp().GetListByUserId(OperatorProvider.Provider.GetCurrent().UserId);
 
-            var data = authorizedata;
+            var data = authorizedata.Where(p=> !"YQ,YQ-2000".Contains(p.F_Id));
 
             return Content(data.ToJson());
         }

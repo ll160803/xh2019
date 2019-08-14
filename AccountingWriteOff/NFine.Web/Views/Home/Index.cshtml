@@ -65,6 +65,7 @@
                             <li class="dropdown profile-dropdown">
                                 <a href="#" class="dropdown" data-toggle="dropdown">
                                     <img src="~/Content/img/samples/scarlet-159.png" alt="" />
+                                    <span class="hidden-xs">[@NFine.Code.OperatorProvider.Provider.GetCurrent().DepartmentName]</span>&nbsp;&nbsp;
                                     <span class="hidden-xs">@NFine.Code.OperatorProvider.Provider.GetCurrent().UserCode</span>
                                 </a>
                                 <ul class="dropdown-menu pull-right">
@@ -133,9 +134,9 @@
                         </div>
                         <div id="content-wrapper">
                             <div class="content-tabs">
-                                <button class="roll-nav roll-left tabLeft">
+                                @*<button class="roll-nav roll-left tabLeft">
                                     <i class="fa fa-backward"></i>
-                                </button>
+                                </button>*@
                                 <nav class="page-tabs menuTabs">
                                     <div class="page-tabs-content" style="margin-left: 0px;">
                                         
@@ -143,9 +144,9 @@
                                     @*<a href="javascript:;" class="menuTab" data-id="/Home/About" style="padding-right: 15px;">平台介绍</a>*@
                                     </div>
                         </nav>
-                        <button class="roll-nav roll-right tabRight">
+                        @*<button class="roll-nav roll-right tabRight">
                             <i class="fa fa-forward" style="margin-left: 3px;"></i>
-                        </button>
+                        </button>*@
                         <div class="btn-group roll-nav roll-right">
                             <button class="dropdown tabClose" data-toggle="dropdown">
                                 页签操作<i class="fa fa-caret-down" style="padding-left: 3px;"></i>
@@ -157,7 +158,7 @@
                                 <li><a class="tabCloseOther" href="javascript:void();">除此之外全部关闭</a></li>
                             </ul>
                         </div>
-                        <button class="roll-nav roll-right fullscreen"><i class="fa fa-arrows-alt"></i></button>
+                        @*<button class="roll-nav roll-right fullscreen"><i class="fa fa-arrows-alt"></i></button>*@
                     </div>
                     <div class="content-iframe" style="background-color: #f9f9f9; overflow: hidden;">
                         <div class="mainContent" id="content-main" style="margin: 10px; margin-bottom: 0px; padding: 0;">

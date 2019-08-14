@@ -43,9 +43,9 @@
         $("#F_Gender").bindSelect()
         $("#F_IsAdministrator").bindSelect()
         $("#F_EnabledMark").bindSelect()
-        $("#F_OrganizeId").bindSelect({
-            url: "/SystemManage/Organize/GetTreeSelectJson"
-        });
+        //$("#F_OrganizeId").bindSelect({
+        //    url: "/SystemManage/Organize/GetTreeSelectJson"
+        //});
         $("#F_DepartmentId").bindSelect({
             url: "/SystemManage/Organize/GetTreeSelectJson",
         });
@@ -62,8 +62,8 @@
         $("#permissionTree").treeview({
             height: 444,
             showcheck: true,
-            cascadecheck: false,//不级联
-            upcascadecheck: false,//向上级联取消
+            cascadecheck: true,//不级联
+            upcascadecheck: true,//向上级联取消
             url: "/SystemManage/Organize/GetOrganizeTreeJson/",
             param: { userId: keyValue, categoryId: 'WorkGroup' }//院区
         });
@@ -88,7 +88,7 @@
         <div id="wizard" class="wizard" data-target="#wizard-steps" style="border-left: none; border-top: none; border-right: none;">
             <ul class="steps">
                 <li data-target="#step-1" class="active"><span class="step">1</span>基本信息<span class="chevron"></span></li>
-                <li data-target="#step-2"><span class="step">2</span>部门设置<span class="chevron"></span></li>
+                <li data-target="#step-2"><span class="step">2</span>权限设置<span class="chevron"></span></li>
             </ul>
         </div>
         <div class="step-content" id="wizard-steps" style="border-left: none; border-bottom: none; border-right: none;">
@@ -116,7 +116,8 @@
                             <tr>
                                 <th class="formTitle">公司</th>
                                 <td class="formValue">
-                                    <select id="F_OrganizeId" name="F_OrganizeId" class="form-control required"></select>
+                                    <input id="F_OrganizeId" type="hidden" name="F_OrganizeId" value="YQ"/>
+                                    <input id="F_OrganizeName" name="F_OrganizeName" type="text" value="武汉协和医院" class="form-control required" placeholder="请输入账户" />
                                 </td>
                                 <th class="formTitle">部门</th>
                                 <td class="formValue">
@@ -132,11 +133,10 @@
                                         <option value="">==请选择==</option>
                                     </select>
                                 </td>
-                                <th class="formTitle">岗位</th>
+                               
+                                <th class="formTitle">邮箱</th>
                                 <td class="formValue">
-                                    <select id="F_DutyId" name="F_DutyId" class="form-control required">
-                                        <option value="">==请选择==</option>
-                                    </select>
+                                    <input id="F_Email" name="F_Email" autocomplete="off" type="text" value="" class="form-control" placeholder="请输入邮箱" />
                                 </td>
                             </tr>
                             <tr>
@@ -162,16 +162,7 @@
                                     <input id="F_Birthday" name="F_Birthday" type="text" class="form-control input-wdatepicker" onfocus="WdatePicker()" />
                                 </td>
                             </tr>
-                            <tr>
-                                <th class="formTitle">微信</th>
-                                <td class="formValue">
-                                    <input id="F_WeChat" name="F_WeChat" type="text" class="form-control" />
-                                </td>
-                                <th class="formTitle">邮箱</th>
-                                <td class="formValue">
-                                    <input id="F_Email" name="F_Email" type="text" class="form-control" />
-                                </td>
-                            </tr>
+                           
                             <tr>
                                 <th class="formTitle">类型</th>
                                 <td class="formValue">
