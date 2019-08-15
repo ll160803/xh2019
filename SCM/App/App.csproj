@@ -1546,6 +1546,7 @@
     <Content Include="Views\Notice\Details.aspx" />
     <Content Include="Views\Notice\Edit.aspx" />
     <Content Include="Views\Notice\Index.aspx" />
+    <Content Include="Views\SAPData\Index.aspx" />
     <Content Include="Views\Scm_Register\Register.aspx" />
     <Content Include="Views\Scm_Register\RegisterEdit.aspx" />
     <Content Include="Views\Scm_Register\RegisterEdit_Pre.aspx" />
@@ -1562,6 +1563,7 @@
     <Content Include="Views\Web.config" />
     <Content Include="xsl\pb.taskscheme.xslt" />
     <Content Include="xsl\xp.menu.xslt" />
+    <Content Include="up\科室领用.xls" />
     <None Include="询价UI接口定义.doc" />
   </ItemGroup>
   <ItemGroup>
@@ -1573,7 +1575,6 @@
     <Folder Include="bin\" />
     <Folder Include="UploadFile\BaseInfo\" />
     <Folder Include="UploadFile\GysDoc\" />
-    <Folder Include="Views\SAPData\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

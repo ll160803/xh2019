@@ -635,7 +635,7 @@
                 Initform();
 
                 //   location.href = '../../mtr/fund/form';
-                $("#gridList").datagrid('loadData', { total: 0, rows: [] });
+                $("#gridList").datagrid('loadData', { total: 0, rows: [], "footer": [{ "MtrName": "合计:", "Money": "0" }] });
                 $.loading(false);
                 myPrint();
             }
