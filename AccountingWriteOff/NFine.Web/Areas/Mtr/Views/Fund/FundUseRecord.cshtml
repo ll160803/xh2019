@@ -71,7 +71,10 @@
                 {
                     label: '经费名称', name: 'FundName', width: 80, align: 'left'
 
-                },
+                }, {
+                    label: '经费余额', name: 'FundAmount', width: 80, align: 'left'
+
+                }, 
                 {
                     label: '物资类别', name: 'Mtr_TypeName', width: 80, align: 'left'
 
@@ -120,12 +123,12 @@
         });
         $("#btn_search").click(function () {
             $gridList.jqGrid('setGridParam', {
-                postData: { keyword: $("#txt_keyword").val(), startTime: $("#starttime").val(), endTime: $("#endtime").val(), cardNumber: $.trim($("#txt_cardNumber").val()) },
+                postData: { keyword: $("#txt_keyword").val(), startTime: $("#starttime").val(), endTime: $("#endtime").val(), cardNumber: $.trim($("#txt_cardNumber").val()), code: $.trim($("#txt_Code").val()) },
             }).trigger('reloadGrid');
         });
     }
     function ExportExcel() {
-        $.ExportExcel("gridList", "/mtr/fund/GetGridJsonExport/", { keyword: $("#txt_keyword").val(), startTime: $("#starttime").val(), endTime: $("#endtime").val(), cardNumber: $.trim($("#txt_cardNumber").val()) });
+        $.ExportExcel("gridList", "/mtr/fund/GetGridJsonExport/", { keyword: $("#txt_keyword").val(), startTime: $("#starttime").val(), endTime: $("#endtime").val(), cardNumber: $.trim($("#txt_cardNumber").val()), code: $.trim($("#txt_Code").val()) });
     }
     function btn_Submit() {
 
@@ -231,6 +234,16 @@
             <tr>
                 <td>
                     <div class="input-group">
+                        <span class="input-group-addon">领用单号</span>
+                        <input id="txt_Code" type="text" class="form-control" placeholder="请输入领用单号" style="width: 120px;">
+                    </div>
+                </td>
+                <td style="width:10px;"></td>
+
+
+                <td>
+                <td>
+                    <div class="input-group">
                         <span class="input-group-addon">经费卡号</span>
                         <input id="txt_cardNumber" type="text" class="form-control" placeholder="请输入经费卡号" style="width: 120px;">
                     </div>
@@ -260,8 +273,8 @@
                     <div class="input-group">
                         <input id="txt_keyword" type="text" class="form-control" placeholder="物资名称/简称" style="width: 200px;">
                         @*<span class="input-group-btn">
-                                <button id="btn_search" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
-                            </span>*@
+                    <button id="btn_search" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
+                </span>*@
                     </div>
                 </td>
             </tr>

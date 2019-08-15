@@ -153,14 +153,25 @@ $(function ($) {
 function GetLoadNav() {
     var data = top.clients.authorizeMenu;
     var _html = "";
+    var openstyle = "";
+    var openclass = "";
+
     $.each(data, function (i) {
+        if (i == 0) { //hsc 这里是默认设置 第一个大菜单展开
+            openstyle = ' style="display: block; overflow: auto; height: 183px;"';
+            openclass = ' class="open"';
+        }
+        else {
+             openstyle = "";
+             openclass = "";
+        }
         var row = data[i];
         if (row.F_ParentId == "0") {
-            _html += '<li>';
+            _html += '<li ' + openclass + '>';
             _html += '<a data-id="' + row.F_Id + '" href="#" class="dropdown-toggle"><i class="' + row.F_Icon + '"></i><span>' + row.F_FullName + '</span><i class="fa fa-angle-right drop-icon"></i></a>';
             var childNodes = row.ChildNodes;
             if (childNodes.length > 0) {
-                _html += '<ul class="submenu">';
+                _html += '<ul class="submenu" ' + openstyle+' >'; //hsc 这里默认设置展开
                 $.each(childNodes, function (i) {
                     var subrow = childNodes[i];
                     _html += '<li>';

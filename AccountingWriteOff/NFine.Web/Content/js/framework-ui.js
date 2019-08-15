@@ -473,18 +473,20 @@ $.fn.dataGrid = function (options) {
     };
     var options = $.extend(defaults, options);
     var $element = $(this);
-    options["ondblClickRow"] = function (rowid) {
-        var length = $(this).jqGrid("getGridParam", "selrow").length;
-        var $operate = $(".operate");
-        if (length > 0) {
-            $operate.animate({ "left": 0 }, 200);
-        } else {
-            $operate.animate({ "left": '-100.1%' }, 200);
-        }
-        $operate.find('.close').click(function () {
-            $operate.animate({ "left": '-100.1%' }, 200);
-        })
-    };
+    if (options["ondblClickRow"] == undefined) {
+        options["ondblClickRow"] = function (rowid) {
+            var length = $(this).jqGrid("getGridParam", "selrow").length;
+            var $operate = $(".operate");
+            if (length > 0) {
+                $operate.animate({ "left": 0 }, 200);
+            } else {
+                $operate.animate({ "left": '-100.1%' }, 200);
+            }
+            $operate.find('.close').click(function () {
+                $operate.animate({ "left": '-100.1%' }, 200);
+            })
+        };
+    }
     $element.jqGrid(options);
 };
 $.days_count = function (sDate1, sDate2) {    //sDate1和sDate2是2006-12-18格式  当前月在两个时间之间的天数

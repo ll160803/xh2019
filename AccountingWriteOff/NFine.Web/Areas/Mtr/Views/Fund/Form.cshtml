@@ -112,7 +112,7 @@
     $(function () {
         var datagrid = $("#gridList");
         // var datagrid; //定义全局变量datagrid
-
+        var F_idIndex = 0;
         var selectIndex = undefined;
         var lastIndex = undefined;
         var arr = [];
@@ -130,6 +130,22 @@
                 //{
                 //    field: 'ck', checkbox: true
                 //},
+
+                {
+                    title: '删除',
+                    field: 'del',
+                    width: 60,
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        if (row.MtrName == "合计:") {
+                            return "";
+                        }
+                        var delLink = ' <a href="javascript:void(0);" onclick="doDelete(\'' + row.F_Id + '\')"><i class="fa  fa-remove" aria-hidden="true" style="color:#b8203d;font-size:2rem;"></i></a>';
+                        //  var delLink = '<input type="button" value="删除" onclick="doDelete(\'' + row.F_Id + '\')">';
+                        return delLink;
+
+                    }
+                },
                 {
                     title: '发票号码', field: 'FPHM', width: 120, align: 'left', editable: true,
                     editor: { type: 'validatebox', options: { required: true } }
@@ -198,14 +214,15 @@
                 },
                 {
                     title: '领用数量', field: 'num', width: 80, align: 'left', editable: true,
-                    editor: { type: 'numberbox', options: { required: true } }
+                    editor: { type: 'numberbox', options: { required: true, precision: 2 } }
                 },
                 {
                     title: '单价', field: 'Mtr_Price', width: 80, align: 'left', editable: true,
-                    editor: { type: 'numberbox', options: { required: true } }
+                    editor: { type: 'numberbox', options: { required: true, precision: 2 } }
                 },
                 {
-                    title: '领用金额', field: 'Money', width: 80, align: 'left', editor: { type: 'numberbox' }
+                    title: '领用金额', field: 'Money', width: 80, align: 'left', editor: {
+                        type: 'numberbox', options: { precision: 2 }}
                 }
                 ,
                 {
@@ -254,7 +271,7 @@
                     if (editRow == undefined) {
                         datagrid.datagrid("insertRow", {
                             index: 0, // index start with 0
-                            row: {}
+                            row: { F_Id: F_idIndex }
                         });
                         //将新插入的那一行开户编辑状态
                         datagrid.datagrid("beginEdit", 0);
@@ -266,46 +283,47 @@
                         SetReadOnly(0, "Money");
                         //给当前编辑的行赋值
                         editRow = 0;
+                        F_idIndex++;
                     }
 
 
                 }
-            }, '-',
-            {
-                text: '删除', iconCls: 'icon-remove',
-                handler: function () {
-                    //删除时先获取选择行
-                    var rows = datagrid.datagrid("getSelections");
-                    //选择要删除的行
-                    var index = datagrid.datagrid("getRowIndex", rows[0]);
-                    if (editRow != undefined & editRow != index) {//不是当前编辑行
-                        if (datagrid.datagrid('validateRow', editRow)) {
-                            var gf = $("#SaveId");
-                            gf.click();
-                        }
-                        else {
-                            $.messager.alert("提示", "请先处理编辑中数据", "error");
-                            return;
-                        }
+            },// '-',
+            //{
+            //    text: '删除', iconCls: 'icon-remove',
+            //    handler: function () {
+            //        //删除时先获取选择行
+            //        var rows = datagrid.datagrid("getSelections");
+            //        //选择要删除的行
+            //        var index = datagrid.datagrid("getRowIndex", rows[0]);
+            //        if (editRow != undefined & editRow != index) {//不是当前编辑行
+            //            if (datagrid.datagrid('validateRow', editRow)) {
+            //                var gf = $("#SaveId");
+            //                gf.click();
+            //            }
+            //            else {
+            //                $.messager.alert("提示", "请先处理编辑中数据", "error");
+            //                return;
+            //            }
 
-                    }
+            //        }
 
-                    if (rows.length > 0) {
-                        $.messager.confirm("提示", "你确定要删除吗?", function (r) {
-                            if (r) {
+            //        if (rows.length > 0) {
+            //            $.messager.confirm("提示", "你确定要删除吗?", function (r) {
+            //                if (r) {
 
-                                datagrid.datagrid("deleteRow", index);
-                                UpdateFooter();
-                                if (index == 0) {
-                                    editRow = undefined;
-                                }
-                            }
-                        });
-                    } else {
-                        $.messager.alert("提示", "请选择要删除的行", "error");
-                    }
-                }
-            },
+            //                    datagrid.datagrid("deleteRow", index);
+            //                    UpdateFooter();
+            //                    if (index == 0) {
+            //                        editRow = undefined;
+            //                    }
+            //                }
+            //            });
+            //        } else {
+            //            $.messager.alert("提示", "请选择要删除的行", "error");
+            //        }
+            //    }
+            //},
             //    '-',
             //{
             //    text: '修改', iconCls: 'icon-edit',
@@ -398,12 +416,12 @@
                 //////////////////
             },
             onClickRow: function (rowIndex, rowData) {
-                //双击开启编辑行
-                if (selectIndex == rowIndex) {
-                    datagrid.datagrid("unselectAll");
-                }
-                selectIndex = rowIndex;
-
+                ////双击开启编辑行
+                //if (selectIndex == rowIndex) {
+                //    datagrid.datagrid("unselectAll");
+                //}
+                //selectIndex = rowIndex;
+                datagrid.datagrid('clearSelections');
             }
 
         });
@@ -413,6 +431,29 @@
         gf.hide();
         //GetCombogridOptions();
     });
+    function doDelete(f_id) {
+        var index = $("#gridList").datagrid("getRowIndex", f_id);
+        if (editRow != undefined & editRow != index) {//不是当前编辑行
+            if ($("#gridList").datagrid('validateRow', editRow)) {
+                var gf = $("#SaveId");
+                gf.click();
+            }
+            else {
+                $.messager.alert("提示", "请先处理编辑中数据", "error");
+                return;
+            }
+
+        }
+        $.messager.confirm("提示", "你确定要删除吗?", function (r) {
+            if (r) {
+                $("#gridList").datagrid("deleteRow", index);
+                UpdateFooter();
+                if (index == 0) {
+                    editRow = undefined;
+                }
+            }
+        });
+    }
     function UpdateFooter() {
         var moneySum = 0;
 
@@ -461,8 +502,8 @@
 
         var cellEdit3 = $("#gridList").datagrid('getEditor', { index: rowIndex, field: "Money" });
         var $Money = cellEdit3.target; // 得到文本框对象
-        var price = $Price.val();
-        var num = $Num.val();
+        var price = parseFloat($Price.val());
+        var num = parseFloat($Num.val());
         $Money.numberbox('setValue', price * num);
     }
     function GetCombogridOptions() {
@@ -664,9 +705,10 @@
                 top.layer.close(index);
             }
         });
-      
+
     }
     $(function () {
+        $("#CardNumber").focus();
         $("#CardNumber").keydown(function (event) {
             if (event.keyCode == 13) {
                 if ($.trim($(this).val()) != "") {

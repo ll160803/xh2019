@@ -50,7 +50,8 @@
             ],
             pager: "#gridPager",
             sortname: 'F_CreatorTime desc',
-            viewrecords: true
+            viewrecords: true,
+            ondblClickRow: function () { btn_edit(); }
         });
         $("#btn_search").click(function () {
             $gridList.jqGrid('setGridParam', {
@@ -133,14 +134,14 @@
         <div class="btn-group">
             <a id="NF-add" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_add()"><i class="fa fa-plus"></i>新建物资</a>
         </div>
-        <div class="operate">
+        <div class="operate" style="left:300px; width:30%;">
             <ul class="nav nav-pills">
-                <li class="first">已选中<span>1</span>项</li>
+                @*<li class="first">已选中<span>1</span>项</li>*@
                 <li><a id="NF-edit" authorize="yes" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>修改物资</a></li>
                 <li><a id="NF-delete" authorize="yes" onclick="btn_delete()"><i class="fa fa-trash-o"></i>删除物资</a></li>
                 <li><a id="NF-Details" authorize="yes" onclick="btn_details()"><i class="fa fa-search-plus"></i>查看物资</a></li>
             </ul>
-            <a href="javascript:;" class="close"></a>
+            <a href="javascript:;" class="close" style="display:none;"></a>
         </div>
         <script>$('.toolbar').authorizeButton()</script>
     </div>

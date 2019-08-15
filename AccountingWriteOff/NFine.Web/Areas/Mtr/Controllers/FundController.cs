@@ -18,6 +18,12 @@ namespace NFine.Web.Areas.Mtr.Controllers
         private Fund_B_ConsumeApp mtrApp = new Fund_B_ConsumeApp();
         private Fund_B_Consume_DApp dApp = new Fund_B_Consume_DApp();
 
+        [HttpGet]
+        [HandlerAuthorize(Ignore = false)]
+        public override ActionResult Form()
+        {
+            return View();
+        }
         //
         // GET: /Mtr/Fund/
         [HttpGet]
@@ -129,7 +135,7 @@ namespace NFine.Web.Areas.Mtr.Controllers
         }
         [HttpGet]
         [HandlerAjaxOnly]
-        public ActionResult GetGridJson(string id, Pagination pagination, string keyword, string startTime, string endTime, string cardNumber, int state = -1)
+        public ActionResult GetGridJson(string id, Pagination pagination, string keyword, string startTime, string endTime, string cardNumber, string code, int state = -1)
         {
             System.Linq.Expressions.Expression<Func<View_Fund_B_Consume_DEntity, bool>> expression = ExtLinq.True<View_Fund_B_Consume_DEntity>();
 
@@ -159,6 +165,10 @@ namespace NFine.Web.Areas.Mtr.Controllers
             {
                 expression = expression.And(k => k.CardNumber == cardNumber.Trim());
             }
+            if (!string.IsNullOrEmpty(code))
+            {
+                expression = expression.And(k => k.Code == code.Trim());
+            }
             var viewApp = new View_Fund_B_Consume_DApp();
             var data = new
             {
@@ -173,7 +183,7 @@ namespace NFine.Web.Areas.Mtr.Controllers
         [HttpPost]
         [HandlerAjaxOnly]
         [ValidateAntiForgeryToken]
-        public ActionResult GetGridJsonExport(string id, Pagination pagination, string keyword, string titleAndField, string startTime, string endTime, string cardNumber, int state = -1)
+        public ActionResult GetGridJsonExport(string id, Pagination pagination, string keyword, string titleAndField, string startTime, string endTime, string cardNumber, string code, int state = -1)
         {
             System.Linq.Expressions.Expression<Func<View_Fund_B_Consume_DEntity, bool>> expression = ExtLinq.True<View_Fund_B_Consume_DEntity>();
 
@@ -204,6 +214,10 @@ namespace NFine.Web.Areas.Mtr.Controllers
             if (!string.IsNullOrEmpty(cardNumber.Trim()))
             {
                 expression = expression.And(k => k.CardNumber == cardNumber.Trim());
+            }
+            if (!string.IsNullOrEmpty(code))
+            {
+                expression = expression.And(k => k.Code == code.Trim());
             }
             var viewApp = new View_Fund_B_Consume_DApp();
             var rows = viewApp.GetList(pagination, expression);
@@ -272,20 +286,20 @@ namespace NFine.Web.Areas.Mtr.Controllers
 
         public string Generate(Fund_B_ConsumeEntity main, List<Fund_B_Consume_DEntity> subList)
         {
-          
+
             string caption = "武汉协和医院总务库房领物单";
-            var styletable1= " style='width: 90%;height:110px;;margin: 0px;padding: 0px;border-collapse: collapse;table-layout: fixed;font-size: 14px;'";
+            var styletable1 = " style='width: 90%;height:110px;;margin: 0px;padding: 0px;border-collapse: collapse;table-layout: fixed;font-size: 14px;'";
             var styletable1_td_1 = "style='height: 40px;line-height: 40px;word-break: break-all;text-align: center;font-size: 20px;'";
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("<div style='width:850px;'>");
-            sb.AppendFormat("<table {1}><tr><td colspan='3' {2}>{0}</td></tr>", caption,styletable1,styletable1_td_1);
+            sb.AppendFormat("<table {1}><tr><td colspan='3' {2}>{0}</td></tr>", caption, styletable1, styletable1_td_1);
             var styletable2_td_1 = "style='height: 25px;line-height: 25px;word-break: break-all;text-align: left;font-size: 12px;'";
-           // var styletable2_td_1_2 = "style='height: 25px;line-height: 25px;word-break: break-all;text-align: left;font-size: 14px;'";
+            // var styletable2_td_1_2 = "style='height: 25px;line-height: 25px;word-break: break-all;text-align: left;font-size: 14px;'";
             sb.AppendFormat("<tr><td {3}>经费类型： {0}</td><td {3}>出库日期： {1}</td><td {3}>领物单： {2}</td></tr>", main.FundName, main.OperateTime.Value.ToString("yyyyMMdd"), main.Code, styletable2_td_1);
-            sb.AppendFormat("<tr><td  {2}>送货位置： {0}</td><td {2}>备注信息： {1}</td><td {2}></td></tr>", "", main.F_Description,styletable2_td_1);
+            sb.AppendFormat("<tr><td  {2}>送货位置： {0}</td><td {2}>备注信息： {1}</td><td {2}></td></tr>", "", main.F_Description, styletable2_td_1);
             sb.AppendFormat("<tr><td {3}>经费卡号： {0}</td><td {3}>经费代码： {1}</td><td {3}>当前余额： {2}</td></tr></table>", main.CardNumber, main.FundNumber, main.FundAmount, styletable2_td_1);
             var styleTable2_2 = "style='width: 90%;margin: 0px;padding: 0px;border-left: 1px solid black;border-bottom: 1px solid black;border-collapse: collapse;table-layout: fixed;font-size: 14px;'";
-            sb.AppendFormat("<table  {0}>",styleTable2_2);
+            sb.AppendFormat("<table  {0}>", styleTable2_2);
             var styleTable2_3_1 = " style='width: 5%;border-top: 1px solid black;border-right: 1px solid black;height: 25px;line-height: 25px;word-break: break-all;padding-left: 5px;text-align: center;'";
             var styleTable2_3_2 = " style='width: 15%;border-top: 1px solid black;border-right: 1px solid black;height: 25px;line-height: 25px;word-break: break-all;padding-left: 5px;text-align: center;'";
             var styleTable2_3_3 = " style='width: 30%;border-top: 1px solid black;border-right: 1px solid black;height: 25px;line-height: 25px;word-break: break-all;padding-left: 5px;text-align: center;'";
@@ -301,7 +315,7 @@ namespace NFine.Web.Areas.Mtr.Controllers
             foreach (var item in sortList)
             {
                 sb.AppendFormat("<tr><td {8}>{0}</td><td {8}>{1}</td><td {8}>{2}</td><td {8}>{3}</td><td {8}>{4}</td><td {9}>{5}</td><td {9}>{6}</td><td {9}> {7}</td></tr>",
-                    item.ItemCode.Trim('0'), item.Mtr_Id, item.Mtr_Name, item.Mtr_UnitName, "", String.Format("{0:N2}", item.num), String.Format("{0:N2}", item.Mtr_Price), String.Format("{0:N2}", item.Money),styleTable2_4, styleTable2_5);
+                    item.ItemCode.Trim('0'), item.Mtr_Id, item.Mtr_Name, item.Mtr_UnitName, "", String.Format("{0:N2}", item.num), String.Format("{0:N2}", item.Mtr_Price), String.Format("{0:N2}", item.Money), styleTable2_4, styleTable2_5);
             }
             sb.Append("</table>");
             var styleTable3 = "style='width: 90%;height:auto;margin: 0px;padding: 0px;border-collapse: collapse;table-layout: fixed;'";
@@ -320,8 +334,8 @@ namespace NFine.Web.Areas.Mtr.Controllers
         [HttpPost]
         public ActionResult GetPrintDataByCode(string Code)
         {
-            var main=mtrApp.GetList(new Pagination { page = 1, rows = int.MaxValue }, p => p.Code == Code).FirstOrDefault();
-            if(main==null)
+            var main = mtrApp.GetList(new Pagination { page = 1, rows = int.MaxValue }, p => p.Code == Code).FirstOrDefault();
+            if (main == null)
             {
                 return Error("不存在的订单");
             }
