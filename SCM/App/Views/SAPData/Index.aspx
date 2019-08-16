@@ -193,7 +193,8 @@
                     I_DATEH: $("#nowDay").datebox('getValue'),
                     I_LGORT: $("#I_LGORT").combobox('getValue'),
                     I_CARDNO: $("#I_CARDNO").val(),
-                    I_WERKS: $("#com_WERKST").combobox('getValue')
+                    I_WERKS: $("#com_WERKST").combobox('getValue'),
+                    I_LGORT_text:$("#I_LGORT").combobox('getText')
 
                 }, function (res) {
                     window.location.href = res;

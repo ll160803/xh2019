@@ -104,7 +104,7 @@ namespace Ipedf.App.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetDataExport(Guid? id,string I_WERKS, string I_LGORT, string I_CARDNO, string I_DATEL, string I_DATEH)
+        public ActionResult GetDataExport(Guid? id, string I_WERKS, string I_LGORT, string I_CARDNO, string I_DATEL, string I_DATEH, string I_LGORT_text)
         {
             RfcDestination destination;
             RfcNOC rfc = new RfcNOC();
@@ -178,13 +178,13 @@ namespace Ipedf.App.Controllers
             var queryData = list;
             Dictionary<int, string> dic = new Dictionary<int, string>();
             //string[] Liststring = new string[] { "ID", "TXZ01", "MATNR", "CHARG", "VFDAT", "PKG_AMOUNT", "PKG_NUMBER", "MENGE", "ORDER_MENGE", "GYSNAME", "CODE", "MSEHT", "OUT_CAUSE", "OUT_DATE" };
-            string[] Liststring = new string[] { "EBELN", "CPUDT", "CPUTM", "MATNR", "MAKTX", "NORMT", "MSEHL", "MENGE", "BRTWR", "DMBTR"};
+            string[] Liststring = new string[] { "EBELN", "CPUDT", "CPUTM", "MATNR", "MAKTX", "NORMT", "MSEHL", "MENGE", "BRTWR", "DMBTR" };
             for (int i = 0; i < Liststring.Length; i++)
             {
                 dic.Add(i, Liststring[i]);
             }
-
-            return Content(NPOIWriteExcel.WriteExcel<KSLYCX_ENTITY>(NPOIWriteExcel.GenerateRowAndWriteData, queryData, dic, 1,"~/up/科室领用.xls","up/","科室领用"));
+            string head = I_DATEL + "到" + I_DATEH + "科室领用(" + I_LGORT_text + ")";
+            return Content(NPOIWriteExcel.WriteExcel<KSLYCX_ENTITY>(NPOIWriteExcel.GenerateRowAndWriteData, queryData, dic, 1, "~/up/科室领用.xls", "up/", head));
 
         }
         [HttpPost]
