@@ -65,6 +65,7 @@
     <Compile Include="03 Entity\Mtr\Fund_B_ConsumeEntity.cs" />
     <Compile Include="03 Entity\Mtr\Fund_B_Consume_DEntity.cs" />
     <Compile Include="03 Entity\Mtr\MtrFund_D_MtrEntity.cs" />
+    <Compile Include="03 Entity\Mtr\MtrFund_MtrTypeEntity.cs" />
     <Compile Include="03 Entity\Mtr\Mtr_Fund_D_Mtr_HistoryEntity.cs" />
     <Compile Include="03 Entity\Mtr\View_Fund_B_Consume_DEntity.cs" />
     <Compile Include="03 Entity\SystemManage\AreaEntity.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="04 IRepository\Mtr\IFund_B_ConsumeRepository.cs" />
     <Compile Include="04 IRepository\Mtr\IFund_B_Consume_DRepository.cs" />
     <Compile Include="04 IRepository\Mtr\IMtrFund_D_MtrRepository.cs" />
+    <Compile Include="04 IRepository\Mtr\IMtrFund_MtrTypeRepository.cs" />
     <Compile Include="04 IRepository\Mtr\IMtr_Fund_D_Mtr_HistoryRepository.cs" />
     <Compile Include="04 IRepository\Mtr\IView_Fund_B_Consume_DRepository.cs" />
     <Compile Include="04 IRepository\SystemManage\IAreaRepository.cs" />

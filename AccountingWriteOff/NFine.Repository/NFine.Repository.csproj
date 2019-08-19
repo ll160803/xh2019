@@ -56,6 +56,7 @@
     <Compile Include="Mtr\Fund_B_ConsumeRepository.cs" />
     <Compile Include="Mtr\Fund_B_Consume_DRepository.cs" />
     <Compile Include="Mtr\MtrFund_D_MtrRepository.cs" />
+    <Compile Include="Mtr\MtrFund_MtrTypeRepository.cs" />
     <Compile Include="Mtr\Mtr_Fund_D_Mtr_HistoryRepository.cs" />
     <Compile Include="Mtr\View_Fund_B_Consume_DRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

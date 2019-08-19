@@ -136,6 +136,7 @@
     <Compile Include="Areas\Hrm\Controllers\SapUserController.cs" />
     <Compile Include="Areas\Hrm\HrmAreaRegistration.cs" />
     <Compile Include="Areas\Mtr\Controllers\FundController.cs" />
+    <Compile Include="Areas\Mtr\Controllers\MtrTypeController.cs" />
     <Compile Include="Areas\Mtr\Controllers\Mtr_D_MtrController.cs" />
     <Compile Include="Areas\Mtr\MtrAreaRegistration.cs" />
     <Compile Include="Areas\ReportManage\Controllers\EchartsController.cs" />
@@ -1209,6 +1210,7 @@
     <Content Include="Areas\Mtr\Views\Fund\FundUseRecord.cshtml" />
     <Content Include="Areas\Mtr\Views\Fund\FundSap.cshtml" />
     <Content Include="Areas\Mtr\Views\Mtr_D_Mtr\HistoryIndex.cshtml" />
+    <Content Include="Areas\Mtr\Views\MtrType\Index.cshtml" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />

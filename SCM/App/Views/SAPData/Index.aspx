@@ -63,7 +63,7 @@
                         }, {
                             field: 'CPUDT',
                             title: '领用日期',
-                            width: 120
+                            width: 80
 
                         }, {
                             field: 'CPUTM',
@@ -91,25 +91,31 @@
                         {
                             field: 'MENGE',
                             title: '数量',
-                            width: 80
+                            width: 60
 
                         },
                         {
                             field: 'BRTWR',
                             title: '单价',
-                            width: 80,
+                            width: 60,
                             formatter: function (value, rec) {
                                 if (value == 0) {
                                     return "";
                                 }
+                                return value;
                             }
                         },
                         {
                             field: 'DMBTR',
                             title: '金额',
+                            width: 60
+                        }
+                        ,
+                        {
+                            field: 'LTEXT',
+                            title: '领用科室',
                             width: 80
                         }
-
                     ]
                 ],
                 pagination: true,

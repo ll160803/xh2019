@@ -235,7 +235,7 @@ namespace WindowsFormsApp1
                         return;
                     }
                     //waitMsg.Text = "获取信息成功，开始打印";
-                    data = res.Nachn + "\n" + res.Orgtx + "\n" + res.Zhrzc + "\n" + res.Zhrpzh + "\n" + dateArray[0] + "     " + dateArray[1] + "     " + dateArray[2];
+                    data = res.Nachn + "\n" + res.Orgtx + "\n" + res.Zhrzc + "\n" + res.Zhrpzh + "\n" + dateArray[0] + "     " + dateArray[1] + "     " + dateArray[2] + "\n" + "（" + res.Zpq + "）";
                     break;
                 case 2:
                     //这里接口文档规定恒为一，传入参数为2

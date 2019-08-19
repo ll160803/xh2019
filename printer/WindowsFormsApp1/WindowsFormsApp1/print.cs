@@ -418,31 +418,36 @@ namespace WindowsFormsApp1
             while (count < linesPerPage &&
             ((line = streamToPrint.ReadLine()) != null))
             {
-                if (count == 0)
+                if (count == 0)//姓名
                 {
                     //MessageBox.Show(titleFont.Size + "");
                     ev.Graphics.DrawString(line, titleFont, Brushes.Black, middle(360, line, 110, (int)titleFont.Size) + pos, 305 + posy, new StringFormat());
                     //ev.Graphics.DrawString(line, titleFont, Brushes.Black, 360, 296, new StringFormat());
                 }
-                else if (count == 1)
+                else if (count == 1)//科室
                 {
                     //MessageBox.Show(printFont.GetHeight(ev.Graphics) + "");
                     ev.Graphics.DrawString(line, titleFont, Brushes.Black, middle(760, line, 125, (int)titleFont.Size) + pos, 305 + posy, new StringFormat());
                 }
-                else if (count == 2)
+                else if (count == 2)//职务 
                 {
                     //MessageBox.Show(printFont.GetHeight(ev.Graphics) + "");
                     ev.Graphics.DrawString(line, titleFont, Brushes.Black, middle(150, line, 340, (int)titleFont.Size) + pos, 370 + posy, new StringFormat());
                 }
-                else if (count == 3)
+                else if (count == 3)//号
                 {
                     //MessageBox.Show(printFont.GetHeight(ev.Graphics) + "");
                     ev.Graphics.DrawString(line, printFont, Brushes.Black, middle(290, line, 140, (int)printFont.Size) + pos, 625 + posy, new StringFormat());
                 }
-                else if (count == 4)
+                else if (count == 4)//时间
                 {
 
                     ev.Graphics.DrawString(line, printFont, Brushes.Black, 635+pos, 625+posy, new StringFormat());
+                }
+                else if (count == 5)//备注
+                {
+
+                    ev.Graphics.DrawString(line, printFont, Brushes.Black, middle(605, line, 340, (int)printFont.Size) + pos, 370 + posy, new StringFormat());
                 }
                 count++;
             }

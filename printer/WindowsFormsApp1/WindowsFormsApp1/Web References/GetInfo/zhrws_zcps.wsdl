@@ -74,6 +74,7 @@
             <xsd:element name="Zhrbz" type="tns:char60" />
             <xsd:element name="Zhrpzh" type="tns:char30" />
             <xsd:element name="Zhrzc" type="tns:char20" />
+            <xsd:element name="Zpq" type="tns:char20" />
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>

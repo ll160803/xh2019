@@ -19,16 +19,16 @@
         }
     });
     function initControl() {
-        $("#StockId").bindSelect({
-            url: "/SystemManage/RoleAuthorize/GetWerksJson",
-            id: "F_Id",
-            text: "F_FullName",
-            change: function (obj,text) {
-                $("#StockName").val(text);
-            }
-        });
+        //$("#StockId").bindSelect({
+        //    url: "/SystemManage/RoleAuthorize/GetWerksJson",
+        //    id: "F_Id",
+        //    text: "F_FullName",
+        //    change: function (obj,text) {
+        //        $("#StockName").val(text);
+        //    }
+        //});
         $("#TypeId").bindSelect({
-            url: "/SystemManage/ItemsData/GetGridJson?itemId=6dd60099-e593-4b34-963c-1adf7c8d6731",
+            url: "/mtr/mtr_d_mtr/GetTypeGridJson/",
             id: "F_ItemCode",
             search:true,
             text: "F_ItemName",
@@ -84,7 +84,7 @@
                         <input id="Spec" name="Spec" type="text" class="form-control required" placeholder="请输入物资规格" />
                     </td>
                 </tr>
-                <tr>
+                @*<tr>
                     <th class="formTitle">库房</th>
                     <td class="formValue">
                         <input id="StockName" name="StockName" type="hidden" />
@@ -94,7 +94,7 @@
                     </td>
                     <td colspan="2"></td>
                     </tr>
-                <tr>
+                <tr>*@
                     <th class="formTitle" valign="top" style="padding-top: 5px;">
                         备注
                     </th>

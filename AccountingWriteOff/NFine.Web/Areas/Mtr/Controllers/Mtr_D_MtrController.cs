@@ -16,6 +16,7 @@ namespace NFine.Web.Areas.Mtr.Controllers
     public class Mtr_D_MtrController : ControllerBase
     {
         private MtrFund_D_MtrApp mtrApp = new MtrFund_D_MtrApp();
+        private MtrFund_MtrTypeApp mtrTypeApp = new MtrFund_MtrTypeApp();
         [HttpGet]
         [HandlerAjaxOnly]
         public ActionResult GetGridJson(string id, Pagination pagination, string keyword)
@@ -122,6 +123,18 @@ namespace NFine.Web.Areas.Mtr.Controllers
             var data = mtrApp.GetForm(keyValue);
             return Content(data.ToJson());
         }
+        [HttpGet]
+        [HandlerAjaxOnly]
+        public ActionResult GetTypeGridJson(string keyword)
+        {
+            var authorizedata = new OrganizeApp().GetListByUserId(OperatorProvider.Provider.GetCurrent().UserId);
+            var mtrData = mtrTypeApp.GetList(new Pagination { page = 1, rows = int.MaxValue }, "");
+            var reData = from m in mtrData
+                         join au in authorizedata
+                         on m.F_IGortCode equals au.F_Id
+                         select m;
+            return Content(reData.ToJson());
+        }
         [HttpPost]
         [HandlerAuthorize]
         [HandlerAjaxOnly]
@@ -174,6 +187,10 @@ namespace NFine.Web.Areas.Mtr.Controllers
                 return Error("已经存在相同名称和规格的物资。");
             }
             userEntity.AbbreviationName = PinYin.GetCodstring(userEntity.Name);
+            var stockId = mtrTypeApp.GetForm(userEntity.TypeId).F_IGortCode;
+            var stockName = mtrTypeApp.GetForm(userEntity.TypeId).F_IGortName;
+            userEntity.StockId = stockId;
+            userEntity.StockName = stockName;
             mtrApp.SubmitForm(userEntity, keyValue);
             new Mtr_Fund_D_Mtr_HistoryApp().SubmitForm(//增加一条历史记录
                  new Mtr_Fund_D_Mtr_HistoryEntity

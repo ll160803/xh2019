@@ -178,7 +178,7 @@ namespace Ipedf.App.Controllers
             var queryData = list;
             Dictionary<int, string> dic = new Dictionary<int, string>();
             //string[] Liststring = new string[] { "ID", "TXZ01", "MATNR", "CHARG", "VFDAT", "PKG_AMOUNT", "PKG_NUMBER", "MENGE", "ORDER_MENGE", "GYSNAME", "CODE", "MSEHT", "OUT_CAUSE", "OUT_DATE" };
-            string[] Liststring = new string[] { "EBELN", "CPUDT", "CPUTM", "MATNR", "MAKTX", "NORMT", "MSEHL", "MENGE", "BRTWR", "DMBTR" };
+            string[] Liststring = new string[] { "EBELN", "CPUDT", "CPUTM", "MATNR", "MAKTX", "NORMT", "MSEHL", "MENGE", "BRTWR", "DMBTR","LTEXT" };
             for (int i = 0; i < Liststring.Length; i++)
             {
                 dic.Add(i, Liststring[i]);

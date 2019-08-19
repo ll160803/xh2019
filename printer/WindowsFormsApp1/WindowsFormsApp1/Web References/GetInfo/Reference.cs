@@ -182,6 +182,8 @@ namespace WindowsFormsApp1.GetInfo {
         
         private string zhrzcField;
         
+        private string zpqField;
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public string Gesctxt {
@@ -278,6 +280,17 @@ namespace WindowsFormsApp1.GetInfo {
             }
             set {
                 this.zhrzcField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string Zpq {
+            get {
+                return this.zpqField;
+            }
+            set {
+                this.zpqField = value;
             }
         }
     }

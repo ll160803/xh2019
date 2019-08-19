@@ -60,6 +60,7 @@
     <Compile Include="Mtr\Fund_B_ConsumeApp.cs" />
     <Compile Include="Mtr\Fund_B_Consume_DApp.cs" />
     <Compile Include="Mtr\MtrFund_D_MtrApp.cs" />
+    <Compile Include="Mtr\MtrFund_MtrTypeApp.cs" />
     <Compile Include="Mtr\Mtr_Fund_D_Mtr_HistoryApp.cs" />
     <Compile Include="Mtr\View_Fund_B_Consume_DApp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
