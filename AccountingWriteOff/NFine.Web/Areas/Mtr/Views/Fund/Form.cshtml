@@ -18,16 +18,15 @@
     });
     function Initform() {
         initControl();
-
-        $.ajax({
-            url: "/mtr/fund/GetFormJson/",
-            data: { keyValue: keyValue },
-            dataType: "json",
-            async: false,
-            success: function (data) {
-                $("#form1").formSerialize(data);
-            }
-        });
+            $.ajax({
+                url: "/mtr/fund/GetFormJson/?ver=" + Math.random(),
+                data: { keyValue: keyValue },
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    $("#form1").formSerialize(data);
+                }
+            });
     }
     function initControl() {
         // gridList();
@@ -35,7 +34,7 @@
         $("#WerksId").find("option").remove();
         $("#WerksId").append("<option value=''>==请选择==</option>");
         $("#WerksId").bindSelect({
-            url: "/SystemManage/RoleAuthorize/GetYQJson/1",
+            url: "/SystemManage/RoleAuthorize/GetYQJson/1?ver=" + Math.random(),
             id: "F_Id",
             text: "F_FullName",
             change: function (obj, text) {
@@ -44,7 +43,7 @@
                     $("#Lgort").find("option").remove();
                     $("#Lgort").append("<option value=''>==请选择==</option>");
                     $("#Lgort").bindSelect({
-                        url: "/SystemManage/RoleAuthorize/GetYQJson/2?parentId=" + obj.F_Id,
+                        url: "/SystemManage/RoleAuthorize/GetYQJson/2?parentId=" + obj.F_Id+"&ver=" + Math.random(),
                         id: "F_Id",
                         text: "F_FullName",
                         change: function (obj, text) {

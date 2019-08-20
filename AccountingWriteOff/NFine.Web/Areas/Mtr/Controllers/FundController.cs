@@ -58,6 +58,17 @@ namespace NFine.Web.Areas.Mtr.Controllers
             entity.UserName = OperatorProvider.Provider.GetCurrent().UserName;
             entity.OperateTime = DateTime.Now;
 
+            var typeList = new MtrFund_MtrTypeApp().GetList(new Pagination { page = 1, rows = int.MaxValue }, p2 => p2.F_IGortCode == entity.Lgort);
+
+            var p4 = from d in listD
+                    join t in typeList
+                    on d.Mtr_TypeCode equals t.F_Id
+                    select d;
+            if (p4.Count() != listD.Count)
+            {
+                return Error("库房和物资类别不对应，请重新选择物资");
+            }
+
 
             if (entity.Werks == "" || entity.Lgort == "")
             {

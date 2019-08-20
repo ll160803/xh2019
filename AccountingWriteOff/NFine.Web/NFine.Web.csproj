@@ -1211,6 +1211,7 @@
     <Content Include="Areas\Mtr\Views\Fund\FundSap.cshtml" />
     <Content Include="Areas\Mtr\Views\Mtr_D_Mtr\HistoryIndex.cshtml" />
     <Content Include="Areas\Mtr\Views\MtrType\Index.cshtml" />
+    <Content Include="Areas\Mtr\Views\MtrType\Form.cshtml" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />

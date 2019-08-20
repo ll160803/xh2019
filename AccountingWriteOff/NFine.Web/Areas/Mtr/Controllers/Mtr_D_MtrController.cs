@@ -33,15 +33,15 @@ namespace NFine.Web.Areas.Mtr.Controllers
                 expression = expression.And(keyPress);
             }
             var authorizedata = new OrganizeApp().GetListByUserId(OperatorProvider.Provider.GetCurrent().UserId);
-            var mtrData = mtrApp.GetList(pagination, expression);
+            var mtrData = mtrApp.GetList(new Pagination { page = 1, rows = int.MaxValue }, expression);
             var reData = from m in mtrData
                          join au in authorizedata
                          on m.StockId equals au.F_Id
                          select m;
             var data = new
             {
-                rows = reData,
-                total = pagination.total,
+                rows = reData.Skip((pagination.page - 1) * pagination.rows).Take(pagination.rows),
+                total = reData.Count(),
                 page = pagination.page,
                 records = pagination.records
             };

@@ -224,7 +224,7 @@ namespace NFine.Code
         public static void RemoveCookie(string CookiesName)
         {
             HttpCookie objCookie = new HttpCookie(CookiesName.Trim());
-            objCookie.Expires = DateTime.Now.AddYears(-5);
+            objCookie.Expires = DateTime.Now.AddDays(-1); 
             HttpContext.Current.Response.Cookies.Add(objCookie);
         }
         #endregion

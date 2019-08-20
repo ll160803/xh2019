@@ -420,6 +420,7 @@ $.fn.bindSelect = function (options) {
             url: options.url,
             data: options.param,
             dataType: "json",
+            cache: false,
             async: false,
             success: function (data) {
                 $.each(data, function (i) {
