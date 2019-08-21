@@ -462,7 +462,7 @@
             moneySum += parseFloat(rows[i].Money);
         }
         var rows2 = $('#gridList').datagrid('getFooterRows');
-        rows2[0]["Money"] = moneySum;
+        rows2[0]["Money"] = moneySum.toFixed(2);
         $('#gridList').datagrid('reloadFooter');
     }
     function SetReadOnly(rowIndex, field, value, isReadonly) {
