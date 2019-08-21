@@ -104,6 +104,7 @@ namespace NFine.Web.Areas.Mtr.Controllers
             {
                 expression = expression.And(g => g.StockId == Lgort);
             }
+            expression = expression.And(s => s.F_DeleteMark == false||s.F_DeleteMark==null);
             var authorizedata = new OrganizeApp().GetListByUserId(OperatorProvider.Provider.GetCurrent().UserId);
             var mtrData = mtrApp.GetList(pagination, expression);
             var reData = from m in mtrData
@@ -142,9 +143,26 @@ namespace NFine.Web.Areas.Mtr.Controllers
         public ActionResult DeleteForm(string keyValue)
         {
 
-            var entity = mtrApp.GetForm(keyValue);
-            entity.F_DeleteMark = true;
-            new MtrFund_D_MtrApp().SubmitForm(entity, keyValue);
+            var userEntity = mtrApp.GetForm(keyValue);
+            userEntity.F_DeleteMark = true;
+            new MtrFund_D_MtrApp().SubmitForm(userEntity, keyValue);
+            new Mtr_Fund_D_Mtr_HistoryApp().SubmitForm(//增加一条历史记录
+                new Mtr_Fund_D_Mtr_HistoryEntity
+                {
+                    Code = userEntity.Code,
+                    StockId = userEntity.StockId,
+                    AbbreviationName = userEntity.AbbreviationName,
+                    Name = userEntity.Name,
+                    Ref_Id = userEntity.F_Id,
+                    Spec = userEntity.Spec,
+                    StockName = userEntity.StockName,
+                    TypeId = userEntity.TypeId,
+                    TypeName = userEntity.TypeName,
+                    UnitId = userEntity.UnitId,
+                    UnitName = userEntity.UnitName,
+                    F_DeleteMark = true
+                }, ""
+               );
             return Success("删除成功。");
         }
         [HttpPost]

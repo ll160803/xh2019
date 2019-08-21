@@ -306,8 +306,9 @@ namespace NFine.Web.Areas.Mtr.Controllers
             sb.AppendFormat("<table {1}><tr><td colspan='3' {2}>{0}</td></tr>", caption, styletable1, styletable1_td_1);
             var styletable2_td_1 = "style='height: 25px;line-height: 25px;word-break: break-all;text-align: left;font-size: 12px;'";
             // var styletable2_td_1_2 = "style='height: 25px;line-height: 25px;word-break: break-all;text-align: left;font-size: 14px;'";
-            sb.AppendFormat("<tr><td {3}>经费类型： {0}</td><td {3}>出库日期： {1}</td><td {3}>领物单： {2}</td></tr>", main.FundName, main.OperateTime.Value.ToString("yyyyMMdd"), main.Code, styletable2_td_1);
-            sb.AppendFormat("<tr><td  {2}>送货位置： {0}</td><td {2}>备注信息： {1}</td><td {2}></td></tr>", "", main.F_Description, styletable2_td_1);
+            sb.AppendFormat("<tr><td {3}>领物单： {2}</td><td {3}>出库日期： {1}</td><td {3}>备注信息： {0}</td></tr>", main.F_Description, main.OperateTime.Value.ToString("yyyyMMdd"), main.Code, styletable2_td_1 );
+           // sb.AppendFormat("<tr><td  {2}>送货位置： {0}</td><td {2}>备注信息： {1}</td><td {2}></td></tr>", "", main.F_Description, styletable2_td_1);
+            sb.AppendFormat("<tr><td  colspan='3' {1}>经费名称： {0}</td></tr>", main.FundName, styletable2_td_1);
             sb.AppendFormat("<tr><td {3}>经费卡号： {0}</td><td {3}>经费代码： {1}</td><td {3}>当前余额： {2}</td></tr></table>", main.CardNumber, main.FundNumber, main.FundAmount, styletable2_td_1);
             var styleTable2_2 = "style='width: 90%;margin: 0px;padding: 0px;border-left: 1px solid black;border-bottom: 1px solid black;border-collapse: collapse;table-layout: fixed;font-size: 14px;'";
             sb.AppendFormat("<table  {0}>", styleTable2_2);
@@ -335,7 +336,7 @@ namespace NFine.Web.Areas.Mtr.Controllers
             var styleTable3_td = "style=' height: 35px;line-height: 35px;word-break: break-all;font-size: 14px;'";
             var styleTable3_td_1 = "style=' height: 35px;line-height: 35px;word-break: break-all;text-align:right;font-size: 14px;'";
             sb.AppendFormat("<tr><td {1}></td><td {1}></td><td {1}></td><td {1}></td><td {1}></td><td {1}></td><td {1}>金额合计</td><td {1}>{0}元</td></tr>", subList.Sum(p => p.Money), styleTable3_td);
-            sb.AppendFormat("<tr><td colspan='2' {4}>{0}</td><td {4}>{1}</td><td {5}>{2}</td><td {4}></td><td {4}></td><td {4}>{3}</td><td {4}></td></tr>", "制单:", "库管员:", "记账:", "领物人:", styleTable3_td, styleTable3_td_1);
+            sb.AppendFormat("<tr><td colspan='2' {4}>{0}</td><td {4}>{1}</td><td {5}>{2}</td><td {4}></td><td {4}></td><td {4}>{3}</td><td {4}></td></tr>", "制单:" + OperatorProvider.Provider.GetCurrent().UserName, "库管员:"+ OperatorProvider.Provider.GetCurrent().UserName, "记账:", "领物人:", styleTable3_td, styleTable3_td_1);
             sb.Append("</table>");
             sb.AppendFormat("</div");
             return sb.ToString();
