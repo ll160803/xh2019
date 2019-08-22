@@ -16,7 +16,7 @@
 </head>
 <body>
     <div style="position: absolute; z-index: 999; top: 20px; left: 20px; color: #fff; font-size: 13px; line-height: 22px;">
-        
+
     </div>
     <div class="wrapper">
         <div class="container">
@@ -64,7 +64,7 @@
     <div class="copyright">
         <a href="#" style="text-decoration:none;color:#fff;">SAP开发团队出品</a>
         <br>
-       2016-2019
+        2016-2019
     </div>
     <script type="text/javascript">
         (function ($) {
@@ -155,6 +155,12 @@
                 $.login.init();
             });
         })(jQuery);
+        $(function () {
+            //控制当超时的时候，如果登录页嵌在ifream中的时候，自动控制父级的ifream进行跳转
+            if (self != top) {
+                top.location.href = window.location.href
+            }
+        });
     </script>
 </body>
 </html>
