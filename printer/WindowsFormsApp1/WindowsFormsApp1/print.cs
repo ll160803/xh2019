@@ -68,7 +68,7 @@ namespace WindowsFormsApp1
                     {
                         return;
                     }
-                    d = res.Nachn + "\n" + res.Orgtx + "\n" + res.Zhrzc + "\n" + res.Zhrpzh + "\n" + dateArray[0] + "     " + dateArray[1] + "     " + dateArray[2];
+                    d = res.Nachn + "\n" + res.Orgtx + "\n" + res.Zhrzc + "\n" + res.Zhrpzh + "\n" + dateArray[0] + "     " + dateArray[1] + "     " + dateArray[2] + "\n" + (res.Zpq == "" ? "" : res.Zpq.Substring(0, 4)) + "     " + (res.Zpq == "" ? "" : res.Zpq.Substring(5, 2));
                     break;
                 case 2:
                     return;//只用打印一份
@@ -246,6 +246,7 @@ namespace WindowsFormsApp1
     public class Printer
     {
         private static Font printFont;
+        private static Font printFont2;//打印聘任时间
         private static Font titleFont;
         private static StringReader streamToPrint;
         private static int leftMargin = 0;
@@ -305,6 +306,7 @@ namespace WindowsFormsApp1
             {
                 streamToPrint = new StringReader(str);
                 printFont = new Font("宋体", 16);
+                printFont2 = new Font("宋体", 18);
                 titleFont = new Font("宋体", 24);
                 System.Drawing.Printing.PrintDocument pd = new System.Drawing.Printing.PrintDocument();
                 pd.PrinterSettings.PrinterName = printerName;
@@ -414,7 +416,11 @@ namespace WindowsFormsApp1
             String line = null;
 
             linesPerPage = ev.MarginBounds.Height / printFont.GetHeight(ev.Graphics);
-            int pos = int.Parse(Printer.printerPos.Split(',')[0]);int posy = int.Parse(Printer.printerPos.Split(',')[1]);
+            int pos = int.Parse(Printer.printerPos.Split(',')[0]); int posy = int.Parse(Printer.printerPos.Split(',')[1]);
+            int posPx = int.Parse(Printer.printerPos.Split(',')[2]);//聘任时间  这几个字的X
+            int posPy = int.Parse(Printer.printerPos.Split(',')[3]);//聘任时间  这几个字的Y
+            int posYx = int.Parse(Printer.printerPos.Split(',')[4]);//月  这几个字的X
+            int posMx = int.Parse(Printer.printerPos.Split(',')[5]);//日  这几个字的X
             while (count < linesPerPage &&
             ((line = streamToPrint.ReadLine()) != null))
             {
@@ -442,15 +448,18 @@ namespace WindowsFormsApp1
                 else if (count == 4)//时间
                 {
 
-                    ev.Graphics.DrawString(line, printFont, Brushes.Black, 635+pos, 625+posy, new StringFormat());
+                    ev.Graphics.DrawString(line, printFont, Brushes.Black, 635 + pos, 625 + posy, new StringFormat());
                 }
-                else if (count == 5)//备注
+                else if (count == 5)//聘任时间
                 {
 
-                    ev.Graphics.DrawString(line, printFont, Brushes.Black, middle(605, line, 340, (int)printFont.Size) + pos, 370 + posy, new StringFormat());
+                    ev.Graphics.DrawString(line, printFont, Brushes.Black, 635 + pos, posPy + posy, new StringFormat());
                 }
                 count++;
             }
+            ev.Graphics.DrawString("聘任时间：", printFont2, Brushes.Black, posPx + pos, posPy + posy, new StringFormat());
+            ev.Graphics.DrawString("年", printFont2, Brushes.Black, posYx + pos, posPy + posy, new StringFormat());
+            ev.Graphics.DrawString("月", printFont2, Brushes.Black, posMx + pos, posPy + posy, new StringFormat());
             if (line != null)
                 ev.HasMorePages = true;
             else

@@ -48,17 +48,17 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>mE7p1Z8w85dhg69zvSkGvkKIOOHIhcckVb0BzgfXt3I=</dsig:DigestValue>
+        <dsig:DigestValue>bwd+fYMnoK3PzKiXTzcKIQaEhG5mDbay646Dyuni6yw=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="WindowsFormsApp1.exe.config" size="1249">
+  <file name="WindowsFormsApp1.exe.config" size="1247">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>NpOZAaM64F16Udxcv8/H9ONNU6Ktxu4FAd9Bw9WV1QM=</dsig:DigestValue>
+      <dsig:DigestValue>Z7OXzenpNjfL6e5yW7pUXeiKiR8fkFjXiMLpQJ3ShVQ=</dsig:DigestValue>
     </hash>
   </file>
   <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">

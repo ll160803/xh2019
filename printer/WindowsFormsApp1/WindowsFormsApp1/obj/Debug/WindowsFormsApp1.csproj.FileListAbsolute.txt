@@ -46,4 +46,3 @@ D:\project\xh2019\printer\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFor
 D:\project\xh2019\printer\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.application
 D:\project\xh2019\printer\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.exe
 D:\project\xh2019\printer\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.pdb
-D:\project\xh2019\printer\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.csprojAssemblyReference.cache

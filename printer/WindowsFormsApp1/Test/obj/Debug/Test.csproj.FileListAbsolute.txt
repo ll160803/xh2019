@@ -5,3 +5,10 @@ D:\project\printer\WindowsFormsApp1\Test\obj\Debug\Test.csprojAssemblyReference.
 D:\project\printer\WindowsFormsApp1\Test\obj\Debug\Test.csproj.CoreCompileInputs.cache
 D:\project\printer\WindowsFormsApp1\Test\obj\Debug\Test.exe
 D:\project\printer\WindowsFormsApp1\Test\obj\Debug\Test.pdb
+D:\project\xh2019\printer\WindowsFormsApp1\Test\bin\Debug\Test.exe.config
+D:\project\xh2019\printer\WindowsFormsApp1\Test\bin\Debug\Test.exe
+D:\project\xh2019\printer\WindowsFormsApp1\Test\bin\Debug\Test.pdb
+D:\project\xh2019\printer\WindowsFormsApp1\Test\obj\Debug\Test.csprojAssemblyReference.cache
+D:\project\xh2019\printer\WindowsFormsApp1\Test\obj\Debug\Test.csproj.CoreCompileInputs.cache
+D:\project\xh2019\printer\WindowsFormsApp1\Test\obj\Debug\Test.exe
+D:\project\xh2019\printer\WindowsFormsApp1\Test\obj\Debug\Test.pdb

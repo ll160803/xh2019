@@ -4,7 +4,7 @@
   <description asmv2:publisher="WindowsFormsApp1" asmv2:product="WindowsFormsApp1" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <deployment install="true" mapFileExtensions="true" />
   <compatibleFrameworks xmlns="urn:schemas-microsoft-com:clickonce.v2">
-    <framework targetVersion="4.6.1" profile="Full" supportedRuntime="4.0.30319" />
+    <framework targetVersion="4.5" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
     <dependentAssembly dependencyType="install" codebase="WindowsFormsApp1.exe.manifest" size="4562">
@@ -14,7 +14,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>g56yAD2d98AY6IhHD5clDhuBveauSfL7gYwM+i8EDeQ=</dsig:DigestValue>
+        <dsig:DigestValue>6yPEL5BZItLp6r4glPUV/OUSV+tdu2by5OxYDMFtRF8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

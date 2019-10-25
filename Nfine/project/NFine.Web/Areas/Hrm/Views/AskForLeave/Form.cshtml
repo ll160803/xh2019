@@ -50,6 +50,7 @@
             textField: 'NACHN',
             url: '/hrm/sapuser/GetComboGridJson/',
             method: 'post',
+            delay: 500,
             // pagination: true,
             columns: [[
                 { title: '主键', field: 'F_Id', hidden: true },
@@ -65,9 +66,12 @@
             ]],
             fitColumns: true,
             keyHandler: {
+                enter: function () {
+                    
+                },
                 query: function (keyword) {
                     $(this).combogrid("grid").datagrid('clearSelections');
-
+                   // var keyword = $(this).combogrid('textbox').val();
                     var queryParams = $(this).combogrid("grid").datagrid('options').queryParams;
                     queryParams.keyword = keyword;
                     $(this).combogrid("grid").datagrid('options').queryParams = queryParams;
@@ -87,7 +91,19 @@
                 }
             }
         });
+       
+        //$('#NACHN').combogrid('textbox').unbind().keydown(function (e) {//
+        //    if (e.keyCode == 13) {
+        //        var keyword = $('#NACHN').combogrid('textbox').val();
+        //            $('#NACHN').combogrid("grid").datagrid('clearSelections');
 
+        //            var queryParams = $('#NACHN').combogrid("grid").datagrid('options').queryParams;
+        //            queryParams.keyword = keyword;
+        //            $('#NACHN').combogrid("grid").datagrid('options').queryParams = queryParams;
+        //            $('#NACHN').combogrid("grid").datagrid("reload");
+        //            $('#NACHN').combogrid("setValue", keyword);
+        //        }
+        //    });
     }
     function submitForm() {//保存
         var NACHN = $("input[name='NACHN']").val();
