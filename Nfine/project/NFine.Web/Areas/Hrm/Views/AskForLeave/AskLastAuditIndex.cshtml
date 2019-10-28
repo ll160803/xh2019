@@ -105,7 +105,7 @@
             return false;
         }
         $.modalPrompt({
-            btn2: function (index, value) { agreeSubmit(index,value, 0); },//0是审核不通过
+            btn2: function (index, value) { agreeSubmit(index,value, 5); },//5是审核不通过
             value:'同意',
             callback: function (value, index, elem) {
                 agreeSubmit(index,value, 3);//审核通过

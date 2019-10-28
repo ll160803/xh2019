@@ -42,6 +42,13 @@ namespace NFine.Application.Hrm
             service.Delete(entity);
         }
 
+        public void Delete(string base_id)
+        {
+            var expression = ExtLinq.True<AttendanceRecordDEntity>();
+            expression = expression.And(t => t.Base_Id == base_id);
+            service.Delete(expression);
+        }
+
         public void SubmitForm(AttendanceRecordDEntity entity, string keyValue)
         {
             if (!string.IsNullOrEmpty(keyValue))

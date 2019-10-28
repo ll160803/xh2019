@@ -67,6 +67,21 @@
             }).trigger('reloadGrid');
         });
     }
+    function btn_delete() {
+        var State = $("#gridList").jqGridRowValue().State;
+
+        if (!(State == "未提交")) {
+            $.modalAlert("此记录已经提交，不能删除", "warning");
+            return false;
+        }
+        $.deleteForm({
+            url: "/hrm/attendance/DeleteLeave",
+            param: { keyValue: $("#gridList").jqGridRowValue().F_Id },
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
     function btn_details() {
         var keyValue = $("#gridList").jqGridRowValue().F_Id;
         $.modalOpen({
@@ -130,6 +145,7 @@
         <div class="operate">
             <ul class="nav nav-pills">
                 <li class="first">已选中<span>1</span>项</li>
+                <li><a id="NF-delete" authorize="yes" onclick="btn_delete()"><i class="fa fa-trash-o"></i>删除考勤</a></li>
                 <li><a id="NF-audit" authorize="yes" onclick="btn_Submit()"><i class="fa fa-pencil-square-o"></i>提交考勤</a></li>
                 <li><a id="NF-Details" authorize="yes" onclick="btn_details()"><i class="fa fa-search-plus"></i>查看考勤</a></li>
             </ul>

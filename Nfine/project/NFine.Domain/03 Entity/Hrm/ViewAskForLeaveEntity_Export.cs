@@ -38,6 +38,7 @@ namespace NFine.Domain.Entity.Hrm
         {
             get
             {
+                if (GBDAT == null) return 0;
                 return NFine.Code.Common.GetAgeByBirthdate(GBDAT.Value);
             }
             set
@@ -67,6 +68,9 @@ namespace NFine.Domain.Entity.Hrm
                         break;
                     case 4:
                         state = "已发送SAP";
+                        break;
+                    case 5:
+                        state = "审核未通过";
                         break;
                 }
                 return state;

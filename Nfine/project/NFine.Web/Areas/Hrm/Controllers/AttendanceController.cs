@@ -465,7 +465,23 @@ namespace NFine.Web.Areas.Hrm.Controllers
             appRecord.SubmitForm(entity, keyValue);
             return Success("提交成功。");
         }
-
+        [HttpPost]
+        [HandlerAuthorize]
+        [HandlerAjaxOnly]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteLeave(string keyValue)
+        {
+            AttendanceRecordApp appRecord = new AttendanceRecordApp();
+            AttendanceRecordDApp appDRecord = new AttendanceRecordDApp();
+            AttendanceRecordEntity entity = appRecord.GetForm(keyValue);
+            if (entity.State != (int)AskLeaveStateType.未提交)
+            {
+                return Error("已提交数据不能删除，具体请联系管理员。");
+            }
+            appDRecord.Delete(entity.F_Id);
+            appRecord.Delete(entity);
+            return Success("删除成功。");
+        }
         [HttpPost]
         [HandlerAjaxOnly]
         [ValidateAntiForgeryToken]

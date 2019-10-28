@@ -454,6 +454,10 @@ namespace NFine.Web.Areas.Hrm.Controllers
             //{
             //    userEntity.Flag = Flag == "1" ? true : false;//病产假
             //}
+            if(string.IsNullOrEmpty(userEntity.HrmUserId))
+            {
+                return Error("请选择请假人员，或者更换谷歌浏览器重试");
+            }
             if (string.IsNullOrEmpty(keyValue))
             {
                 userEntity.State = (int)AskLeaveStateType.未提交;//草稿状态
@@ -487,6 +491,10 @@ namespace NFine.Web.Areas.Hrm.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult SubmitAndSaveForm(AskForLeaveEntity userEntity, string keyValue, string Flag)
         {
+            if (string.IsNullOrEmpty(userEntity.HrmUserId))
+            {
+                return Error("请选择请假人员，或者更换谷歌浏览器重试");
+            }
             //if (!string.IsNullOrEmpty(Flag))
             //{
             //    userEntity.Flag = Flag == "1" ? true : false;//是病假还是产假 
@@ -532,6 +540,10 @@ namespace NFine.Web.Areas.Hrm.Controllers
             //{
             //    userEntity.Flag = Flag == "1" ? true : false;//是病假还是产假 
             //}
+            if (string.IsNullOrEmpty(userEntity.HrmUserId))
+            {
+                return Error("请选择请假人员，或者更换谷歌浏览器重试");
+            }
             if (userEntity.EndDate == null)
             {
                 userEntity.EndDate = Convert.ToDateTime("9999-12-31");
