@@ -77,6 +77,8 @@
                         }
                     }
                 }, {
+                    label: '未通过原因', name: 'Suggestion', width: 100, align: 'left'
+                },{
                     label: '序列值', name: 'AskSort', width: 80, align: 'left'
                 }
 
@@ -216,16 +218,12 @@
             id: "FormModify",
             title: "请假改登",
             url: "/hrm/askforleave/Form?keyValue=" + keyValue,
-            btn: ['保存', '保存并提交', '关闭'],
-            btnclass: ['btn btn-primary', 'btn btn-primary', 'btn btn-danger'],
+            btn: ['保存并提交', '关闭'],
+            btnclass: [ 'btn btn-primary', 'btn btn-danger'],
             width: "700px",
             height: "410px",
             callBack: function (iframeId) {
-                top.frames[iframeId].submitFormModify();
-            },
-            callBack2: function (iframeId) {
-                return top.frames[iframeId].submitAndSaveFormModify(iframeId);
-
+                top.frames[iframeId].submitAndSaveFormModify(iframeId);
             }
         });
     }

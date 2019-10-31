@@ -149,6 +149,10 @@ namespace NFine.Web.Areas.SystemManage.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult SubmitForm(OrganizeEntity organizeEntity, string keyValue)
         {
+            if(!string.IsNullOrEmpty(organizeEntity.F_EnCode)&&string.IsNullOrEmpty(keyValue))
+            {
+                organizeEntity.F_Id = organizeEntity.F_EnCode;
+            }
             organizeApp.SubmitForm(organizeEntity, keyValue);
             return Success("操作成功。");
         }

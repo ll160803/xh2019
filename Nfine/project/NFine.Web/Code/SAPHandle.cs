@@ -86,8 +86,8 @@ namespace NFine.Web.Code
                         Zshr = entity.AuditMan,
                         Zshrq = entity.AuditDate.Value.ToString("yyyy-MM-dd"),
                         Ztjr = entity.SubmitMan,
-                        Ztjrq = entity.SubmitDate.Value.ToString("yyyy-MM-dd")
-
+                        Ztjrq = entity.SubmitDate.Value.ToString("yyyy-MM-dd"),
+                        Ztjsj= entity.SubmitDate.Value.ToString("HH:mm:ss")
                     });
                 }
                 input.T_098 = list.ToArray();

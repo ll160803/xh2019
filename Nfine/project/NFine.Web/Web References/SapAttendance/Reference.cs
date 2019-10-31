@@ -177,6 +177,8 @@ namespace NFine.Web.SapAttendance {
         
         private string ztjrqField;
         
+        private string ztjsjField;
+        
         private string zshrField;
         
         private string zshrqField;
@@ -310,6 +312,17 @@ namespace NFine.Web.SapAttendance {
             }
             set {
                 this.ztjrqField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string Ztjsj {
+            get {
+                return this.ztjsjField;
+            }
+            set {
+                this.ztjsjField = value;
             }
         }
         

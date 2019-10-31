@@ -65,9 +65,11 @@
                             <li class="dropdown profile-dropdown">
                                 <a href="#" class="dropdown" data-toggle="dropdown">
                                     <img src="~/Content/img/samples/scarlet-159.png" alt="" />
-                                    <span class="hidden-xs">@NFine.Code.OperatorProvider.Provider.GetCurrent().UserCode</span>
-                                </a>
-                                <ul class="dropdown-menu pull-right">
+                                    <span class="hidden-xs">@if (NFine.Code.OperatorProvider.Provider.GetCurrent() != null) {@NFine.Code.OperatorProvider.Provider.GetCurrent().UserCode}</span>
+
+            </a>
+
+            <ul class="dropdown-menu pull-right">
                                     <li><a class="menuItem" data-id="userInfo" href="/SystemManage/User/Info"><i class="fa fa-user"></i>密码修改</a></li>
                                     @*<li><a href="javascript:void();"><i class="fa fa-inbox"></i>我的信箱</a></li>
                                     <li><a href="javascript:void();" onclick="layer.msg('浏览器缓存清除成功');"><i class="fa fa-trash-o"></i>清空缓存</a></li>

@@ -35,11 +35,6 @@
           <xsd:maxLength value="6" />
         </xsd:restriction>
       </xsd:simpleType>
-      <xsd:simpleType name="char60">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="60" />
-        </xsd:restriction>
-      </xsd:simpleType>
       <xsd:simpleType name="clnt3">
         <xsd:restriction base="xsd:string">
           <xsd:maxLength value="3" />
@@ -60,6 +55,16 @@
     </xsd:schema>
     <xsd:schema xmlns:n0="urn:sap-com:document:sap:rfc:functions" attributeFormDefault="qualified" targetNamespace="urn:sap-com:document:sap:soap:functions:mc-style">
       <xsd:import namespace="urn:sap-com:document:sap:rfc:functions" />
+      <xsd:simpleType name="char20">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="20" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char256">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="256" />
+        </xsd:restriction>
+      </xsd:simpleType>
       <xsd:complexType name="Zhr00T098">
         <xsd:sequence>
           <xsd:element name="Mandt" type="n0:clnt3" />
@@ -71,9 +76,10 @@
           <xsd:element name="Zhrksms" type="n0:char50" />
           <xsd:element name="Zhrzk" type="n0:char10" />
           <xsd:element name="Zhrzkms" type="n0:char50" />
-          <xsd:element name="Zhrbz" type="n0:char60" />
+          <xsd:element name="Zhrbz" type="tns:char256" />
           <xsd:element name="Ztjr" type="n0:char20" />
           <xsd:element name="Ztjrq" type="n0:date10" />
+          <xsd:element name="Ztjsj" type="tns:char20" />
           <xsd:element name="Zshr" type="n0:char20" />
           <xsd:element name="Zshrq" type="n0:date10" />
         </xsd:sequence>
@@ -86,7 +92,7 @@
       <xsd:element name="Zhr00FmKqkssp">
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="T_098" type="tns:TableOfZhr00T098" />
+            <xsd:element minOccurs="0" name="T_098" type="tns:TableOfZhr00T098" />
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
@@ -94,7 +100,7 @@
         <xsd:complexType>
           <xsd:sequence>
             <xsd:element name="Mes" type="n0:char20" />
-            <xsd:element name="T_098" type="tns:TableOfZhr00T098" />
+            <xsd:element minOccurs="0" name="T_098" type="tns:TableOfZhr00T098" />
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
@@ -106,13 +112,13 @@
   <wsdl:message name="Zhr00FmKqksspResponse">
     <wsdl:part name="parameter" element="tns:Zhr00FmKqksspResponse" />
   </wsdl:message>
-  <wsdl:portType name="ZHRWS_KQkshz">
+  <wsdl:portType name="ZHRWS_KQKSHZ">
     <wsdl:operation name="Zhr00FmKqkssp">
       <wsdl:input message="tns:Zhr00FmKqkssp" />
       <wsdl:output message="tns:Zhr00FmKqksspResponse" />
     </wsdl:operation>
   </wsdl:portType>
-  <wsdl:binding name="ZHRWS_KQKSHZ" type="tns:ZHRWS_KQkshz">
+  <wsdl:binding name="ZHRWS_KQKSHZ" type="tns:ZHRWS_KQKSHZ">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="Zhr00FmKqkssp">
       <soap:operation soapAction="urn:sap-com:document:sap:soap:functions:mc-style:ZHRWS_KQkshz:Zhr00FmKqksspRequest" style="document" />
@@ -124,7 +130,7 @@
       </wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
-  <wsdl:binding name="ZHRWS_KQKSHZ_soap12" type="tns:ZHRWS_KQkshz">
+  <wsdl:binding name="ZHRWS_KQKSHZ_soap12" type="tns:ZHRWS_KQKSHZ">
     <wsoap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="Zhr00FmKqkssp">
       <wsoap12:operation soapAction="urn:sap-com:document:sap:soap:functions:mc-style:ZHRWS_KQkshz:Zhr00FmKqksspRequest" style="document" />
