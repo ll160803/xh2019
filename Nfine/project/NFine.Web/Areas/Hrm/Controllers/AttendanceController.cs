@@ -331,7 +331,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 List<AttendanceRecordDEntity> list_d = new List<AttendanceRecordDEntity>();
                 foreach (var item in listData)
                 {
-                    AttendanceRecordDEntity ask_d = new AttendanceRecordDEntity { F_Id = Guid.NewGuid().ToString(), Base_Id = entity.F_Id, hrm_user_Id = item.Id, Note = item.Note };
+                    AttendanceRecordDEntity ask_d = new AttendanceRecordDEntity { F_Id = Guid.NewGuid().ToString(), Base_Id = entity.F_Id, hrm_user_Id = item.Id, Note = item.Note, OrganizeId = item.OrgId };
                     list_d.Add(ask_d);
 
                 }

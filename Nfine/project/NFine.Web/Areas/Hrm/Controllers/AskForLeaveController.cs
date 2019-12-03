@@ -52,7 +52,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
         }
         [HttpGet]
         [HandlerAjaxOnly]
-        public ActionResult GetGridJson(string id, Pagination pagination, string keyword, int state = -1)
+        public ActionResult GetGridJson(string id, Pagination pagination, string keyword, bool Is_New = false, int state = -1)
         {
             System.Linq.Expressions.Expression<Func<ViewAskForLeaveEntity, bool>> expression = ExtLinq.True<ViewAskForLeaveEntity>();
 
@@ -83,6 +83,10 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 expression = expression.And(p => p.State == state);
                 //}
 
+            }
+            if (Is_New == false)
+            {
+                expression = expression.And(p => p.IsNew == true);
             }
             if (!string.IsNullOrEmpty(id) & IsDoctor != "3")
             {
@@ -108,7 +112,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
         [HttpPost]
         [HandlerAjaxOnly]
         [ValidateAntiForgeryToken]
-        public ActionResult GetGridJsonExport(string id, Pagination pagination, string keyword, string titleAndField, int state = -1)
+        public ActionResult GetGridJsonExport(string id, Pagination pagination, string keyword, string titleAndField, bool Is_New = false , int state = -1)
         {
             System.Linq.Expressions.Expression<Func<ViewAskForLeaveEntity, bool>> expression = ExtLinq.True<ViewAskForLeaveEntity>();
 
@@ -139,6 +143,10 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 expression = expression.And(p => p.State == state);
                 //}
 
+            }
+            if (Is_New == false)
+            {
+                expression = expression.And(p => p.IsNew == true);
             }
             if (!string.IsNullOrEmpty(id) & IsDoctor != "3")
             {
@@ -454,7 +462,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
             //{
             //    userEntity.Flag = Flag == "1" ? true : false;//病产假
             //}
-            if(string.IsNullOrEmpty(userEntity.HrmUserId))
+            if (string.IsNullOrEmpty(userEntity.HrmUserId))
             {
                 return Error("请选择请假人员，或者更换谷歌浏览器重试");
             }
@@ -472,16 +480,18 @@ namespace NFine.Web.Areas.Hrm.Controllers
                     return Error("错误操作。");
                 }
             }
-            if(userEntity.EndDate==null)
+            if (userEntity.EndDate == null)
             {
                 userEntity.EndDate = Convert.ToDateTime("9999-12-31");
             }
-           // userEntity.DoctorOrNurser = (IsDoctor == "1" ? true : false);
+            // userEntity.DoctorOrNurser = (IsDoctor == "1" ? true : false);
             // userEntity.OrganizeId= OperatorProvider.Provider.GetCurrent().CompanyId;//当前科室
+            userEntity.DoctorOrNurser = new HrmUserApp().GetForm(userEntity.HrmUserId).RYLB == "2" ? false : true;//在此判断是医生还是护士
+            
             var hasList = askApp.GetLeaveList(userEntity.HrmUserId, userEntity.StartDate.Value, userEntity.EndDate.Value, keyValue);
             if (hasList.Count > 0)
             {
-                return Error("此员工在请假时间区间内，已经有请假记录，请核实后重新提交");
+                return Error("此员工在请假时间区间内，已经有请假记录，请核实后重新提交"+ userEntity.StartDate.Value+"结束时间:"+ userEntity.EndDate.Value);
             }
             askApp.InsertForm(userEntity, keyValue);
             return Success("操作成功。");
@@ -517,6 +527,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
             {
                 userEntity.EndDate = Convert.ToDateTime("9999-12-31");
             }
+            userEntity.DoctorOrNurser = new HrmUserApp().GetForm(userEntity.HrmUserId).RYLB == "2" ? false : true;//在此判断是医生还是护士
             //userEntity.DoctorOrNurser = (IsDoctor == "1" ? true : false);
             userEntity.State = (int)AskLeaveStateType.已提交;//改为提交操作
             userEntity.SubmitUser = OperatorProvider.Provider.GetCurrent().UserCode;
@@ -552,8 +563,9 @@ namespace NFine.Web.Areas.Hrm.Controllers
             userEntity.IsNew = true;//激活的请假
             userEntity.AskSort = userEntity.AskSort + 1;//默认是增加1个
             userEntity.Ref_Id = userEntity.Ref_Id;//请假和请假改登之间的唯一标识
-           // userEntity.DoctorOrNurser = (IsDoctor == "1" ? true : false);
-            // userEntity.OrganizeId= OperatorProvider.Provider.GetCurrent().CompanyId;//当前科室
+                                                  // userEntity.DoctorOrNurser = (IsDoctor == "1" ? true : false);
+                                                  // userEntity.OrganizeId= OperatorProvider.Provider.GetCurrent().CompanyId;//当前科室
+            userEntity.DoctorOrNurser = new HrmUserApp().GetForm(userEntity.HrmUserId).RYLB == "2" ? false : true;//在此判断是医生还是护士
             var hasList = askApp.GetLeaveList(userEntity.HrmUserId, userEntity.StartDate.Value, userEntity.EndDate.Value, keyValue);
             if (hasList.Count > 0)
             {

@@ -33,9 +33,9 @@ FROM
 WHERE
 	HrmUserId = @UserId AND IsNew=1
 	AND (
-	( UNIX_TIMESTAMP( StartDate ) >= UNIX_TIMESTAMP(@StartTime ) AND UNIX_TIMESTAMP( StartDate ) <= UNIX_TIMESTAMP( @EndTime ) ) 
-	OR ( UNIX_TIMESTAMP( EndDate ) >= UNIX_TIMESTAMP( @StartTime ) AND UNIX_TIMESTAMP( EndDate ) <= UNIX_TIMESTAMP( @EndTime ) ) 
-	OR ( ( UNIX_TIMESTAMP( StartDate ) <= UNIX_TIMESTAMP( @StartTime ) AND UNIX_TIMESTAMP( EndDate ) >= UNIX_TIMESTAMP( @EndTime ) ) ) 
+	 ( StartDate  >= @StartTime  AND  StartDate  <=  @EndTime  ) 
+	OR (  EndDate  >=  @StartTime  AND  EndDate  <=  @EndTime  ) 
+	OR (  StartDate  <= @StartTime  AND  EndDate  >=  @EndTime ) 
 	)");
                 DbParameter[] parameter =
                 {
@@ -55,9 +55,9 @@ FROM
 WHERE
 	HrmUserId = @UserId AND F_ID!=@keyvalue AND IsNew=1
 	AND (
-	( UNIX_TIMESTAMP( StartDate ) >= UNIX_TIMESTAMP(@StartTime ) AND UNIX_TIMESTAMP( StartDate ) <= UNIX_TIMESTAMP( @EndTime ) ) 
-	OR ( UNIX_TIMESTAMP( EndDate ) >= UNIX_TIMESTAMP( @StartTime ) AND UNIX_TIMESTAMP( EndDate ) <= UNIX_TIMESTAMP( @EndTime ) ) 
-	OR ( ( UNIX_TIMESTAMP( StartDate ) <= UNIX_TIMESTAMP( @StartTime ) AND UNIX_TIMESTAMP( EndDate ) >= UNIX_TIMESTAMP( @EndTime ) ) ) 
+	 ( StartDate  >= @StartTime  AND  StartDate  <=  @EndTime  ) 
+	OR (  EndDate  >=  @StartTime  AND  EndDate  <=  @EndTime  ) 
+	OR (  StartDate  <= @StartTime  AND  EndDate  >=  @EndTime ) 
 	)");
                 DbParameter[] parameter =
                 {

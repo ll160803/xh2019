@@ -17,6 +17,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
         //
         // GET: /Hrm/SapUser/
         private HrmUserApp userApp = new HrmUserApp();
+        private AskForLeaveApp askApp = new AskForLeaveApp();
         private RoleAuthorizeApp roleAuthorizeApp = new RoleAuthorizeApp();
         public ActionResult Out(string id)
         {
@@ -266,6 +267,22 @@ namespace NFine.Web.Areas.Hrm.Controllers
             user.OrganizeId = orgId;
             userApp.SubmitForm(user, keyValue);
             AddOutAndInRecord(user, "科室移入", orgId);
+
+            var time = DateTime.Now;
+            var searchTime=time.AddDays(1 - time.Day);//月初
+            if (time.Month<=10)
+            {
+                searchTime = searchTime.AddMonths(-1);//上个月月初
+            }
+            System.Linq.Expressions.Expression<Func<AskForLeaveEntity, bool>> expression = ExtLinq.True<AskForLeaveEntity>();
+            expression = expression.And(p => p.IsNew == true);
+            expression = expression.And(p => p.EndDate == null || p.EndDate > searchTime);
+            var records = askApp.GetList(new Pagination { page = 1, rows = 100 }, expression);
+            foreach(var item in records)//可优化  但数据一般至多一条
+            {
+                item.OrganizeId = orgId;
+                new AskForLeaveApp().SubmitForm(item, item.F_Id);
+            }
             return Success("移入成功。");
         }
         /// <summary>

@@ -298,7 +298,7 @@ namespace NFine.Web.Areas.Mtr.Controllers
         public string Generate(Fund_B_ConsumeEntity main, List<Fund_B_Consume_DEntity> subList)
         {
 
-            string caption = "武汉协和医院总务库房领物单";
+            string caption = string.Format("武汉协和医院{0}领物单",main.LgortName);
             var styletable1 = " style='width: 90%;height:110px;;margin: 0px;padding: 0px;border-collapse: collapse;table-layout: fixed;font-size: 14px;'";
             var styletable1_td_1 = "style='height: 40px;line-height: 40px;word-break: break-all;text-align: center;font-size: 20px;'";
             StringBuilder sb = new StringBuilder();
