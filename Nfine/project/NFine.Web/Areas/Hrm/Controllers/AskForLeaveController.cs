@@ -50,6 +50,10 @@ namespace NFine.Web.Areas.Hrm.Controllers
             ViewBag.id = id;
             return View();
         }
+        public ActionResult History()
+        {
+            return View();
+        }
         [HttpGet]
         [HandlerAjaxOnly]
         public ActionResult GetGridJson(string id, Pagination pagination, string keyword, bool Is_New = false, int state = -1)
@@ -109,10 +113,28 @@ namespace NFine.Web.Areas.Hrm.Controllers
             };
             return Content(data.ToJson());
         }
+
+        [HttpGet]
+        [HandlerAjaxOnly]
+        public ActionResult GetHistoryLeave(string id, Pagination pagination, string keyword)
+        {
+            System.Linq.Expressions.Expression<Func<ViewAskForLeaveEntity, bool>> expression = ExtLinq.True<ViewAskForLeaveEntity>();
+
+            expression = expression.And(p => p.HrmUserId == id);//医生还是护士
+
+            var data = new
+            {
+                rows = viewApp.GetList(pagination, expression),
+                total = pagination.total,
+                page = pagination.page,
+                records = pagination.records
+            };
+            return Content(data.ToJson());
+        }
         [HttpPost]
         [HandlerAjaxOnly]
         [ValidateAntiForgeryToken]
-        public ActionResult GetGridJsonExport(string id, Pagination pagination, string keyword, string titleAndField, bool Is_New = false , int state = -1)
+        public ActionResult GetGridJsonExport(string id, Pagination pagination, string keyword, string titleAndField, bool Is_New = false, int state = -1)
         {
             System.Linq.Expressions.Expression<Func<ViewAskForLeaveEntity, bool>> expression = ExtLinq.True<ViewAskForLeaveEntity>();
 
@@ -487,11 +509,11 @@ namespace NFine.Web.Areas.Hrm.Controllers
             // userEntity.DoctorOrNurser = (IsDoctor == "1" ? true : false);
             // userEntity.OrganizeId= OperatorProvider.Provider.GetCurrent().CompanyId;//当前科室
             userEntity.DoctorOrNurser = new HrmUserApp().GetForm(userEntity.HrmUserId).RYLB == "2" ? false : true;//在此判断是医生还是护士
-            
+
             var hasList = askApp.GetLeaveList(userEntity.HrmUserId, userEntity.StartDate.Value, userEntity.EndDate.Value, keyValue);
             if (hasList.Count > 0)
             {
-                return Error("此员工在请假时间区间内，已经有请假记录，请核实后重新提交"+ userEntity.StartDate.Value+"结束时间:"+ userEntity.EndDate.Value);
+                return Error("此员工在请假时间区间内，已经有请假记录，请核实后重新提交" + userEntity.StartDate.Value + "结束时间:" + userEntity.EndDate.Value);
             }
             askApp.InsertForm(userEntity, keyValue);
             return Success("操作成功。");
@@ -528,8 +550,15 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 userEntity.EndDate = Convert.ToDateTime("9999-12-31");
             }
             userEntity.DoctorOrNurser = new HrmUserApp().GetForm(userEntity.HrmUserId).RYLB == "2" ? false : true;//在此判断是医生还是护士
-            //userEntity.DoctorOrNurser = (IsDoctor == "1" ? true : false);
-            userEntity.State = (int)AskLeaveStateType.已提交;//改为提交操作
+                                                                                                                  //userEntity.DoctorOrNurser = (IsDoctor == "1" ? true : false);
+            if (OperatorProvider.Provider.GetCurrent().SubmitType.Trim() == "西院" && userEntity.Flag == true)
+            {
+                userEntity.State = (int)AskLeaveStateType.已推送SAP;//西院的无需提交到职工保健科
+            }
+            else
+            {
+                userEntity.State = (int)AskLeaveStateType.已提交;//改为提交操作
+            }
             userEntity.SubmitUser = OperatorProvider.Provider.GetCurrent().UserCode;
             userEntity.LeaderAuditTime = DateTime.Now;
             // userEntity.OrganizeId= OperatorProvider.Provider.GetCurrent().CompanyId;//当前科室
@@ -539,7 +568,13 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 return Error("此员工在请假时间区间内，已经有请假记录，请核实后重新提交");
             }
             askApp.InsertForm(userEntity, keyValue);
-            SAPHandle.SendAskLeaveToSap(viewApp.GetForm(userEntity.F_Id));
+            //SAPHandle.SendAskLeaveToSap(viewApp.GetForm(userEntity.F_Id));
+            var viewEntity = viewApp.GetForm(userEntity.F_Id);
+            SAPHandle.SendAskLeaveToSap(viewEntity);//传送SAP
+            if (OperatorProvider.Provider.GetCurrent().SubmitType.Trim() == "西院")//西院
+            {
+                DoSendToSap_XY(viewEntity);//提交西院SAP
+            }
             return Success("操作成功。");
         }
         [HttpPost]
@@ -560,6 +595,11 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 userEntity.EndDate = Convert.ToDateTime("9999-12-31");
             }
             userEntity.State = state2;//草稿状态
+            if (OperatorProvider.Provider.GetCurrent().SubmitType.Trim() == "西院" && state2 == 2 && userEntity.Flag==true)//是改登提交
+            {
+                userEntity.State = (int)AskLeaveStateType.已推送SAP;//西院的无需提交到职工保健科
+            }
+
             userEntity.IsNew = true;//激活的请假
             userEntity.AskSort = userEntity.AskSort + 1;//默认是增加1个
             userEntity.Ref_Id = userEntity.Ref_Id;//请假和请假改登之间的唯一标识
@@ -580,7 +620,12 @@ namespace NFine.Web.Areas.Hrm.Controllers
             askApp.SubmitForm(userEntity, "");
             if (state2 == 2)
             {
-                SAPHandle.SendAskLeaveToSap(viewApp.GetForm(userEntity.F_Id));//传送SAP
+                var viewEntity = viewApp.GetForm(userEntity.F_Id);
+                SAPHandle.SendAskLeaveToSap(viewEntity);//传送SAP
+                if (OperatorProvider.Provider.GetCurrent().SubmitType.Trim() == "西院")//西院
+                {
+                    DoSendToSap_XY(viewEntity);//提交西院SAP
+                }
             }
             return Success("操作成功。");
         }
@@ -609,11 +654,22 @@ namespace NFine.Web.Areas.Hrm.Controllers
             {
                 return Error("此请假已经提交，请勿重复操作，具体请联系管理员。");
             }
+
             entity.State = (int)AskLeaveStateType.已提交;
+            if (OperatorProvider.Provider.GetCurrent().SubmitType.Trim() == "西院" &&entity.Flag==true)
+            {
+                entity.State = (int)AskLeaveStateType.已推送SAP;
+            }
             entity.SubmitUser = OperatorProvider.Provider.GetCurrent().UserCode;
             entity.LeaderAuditTime = DateTime.Now;
             askApp.SubmitForm(entity, keyValue);
-            SAPHandle.SendAskLeaveToSap(viewApp.GetForm(keyValue));//传送SAP
+            var viewEntity = viewApp.GetForm(keyValue);
+            SAPHandle.SendAskLeaveToSap(viewEntity);//传送SAP
+            if (OperatorProvider.Provider.GetCurrent().SubmitType.Trim()=="西院")//西院
+            {
+                DoSendToSap_XY(viewEntity);//提交西院SAP
+            }
+
             return Success("提交成功。");
         }
         [HttpPost]
@@ -772,6 +828,33 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 return Error("推送SAP失败,原因:" + ex.Message);
             }
             return Success("推送SAP成功。");
+        }
+
+        /// <summary>
+        /// 西院 直接发送数据到SAP
+        /// </summary>
+        /// <param name="id"></param>
+        private void DoSendToSap_XY(string id)
+        {
+            String mainGuid = "xhxiyuanshuju";
+            ViewAskForLeaveApp viewAskApp = new ViewAskForLeaveApp();
+            var listIds = viewAskApp.GetForm(id);
+            if (listIds.Flag == true)
+            {
+                SAPHandle.BJKAskLeaveToSap(new List<ViewAskForLeaveEntity> { listIds }, DateTime.Now.ToString("yyyy-MM-dd"), OperatorProvider.Provider.GetCurrent().UserCode, mainGuid);
+            }
+        }
+        /// <summary>
+        /// 西院 直接发送数据到SAP
+        /// </summary>
+        /// <param name="id"></param>
+        private void DoSendToSap_XY(ViewAskForLeaveEntity entity)
+        {
+            String mainGuid = "xhxiyuanshuju";
+            if (entity.Flag == true)
+            {
+                SAPHandle.BJKAskLeaveToSap(new List<ViewAskForLeaveEntity> { entity }, DateTime.Now.ToString("yyyy-MM-dd"), OperatorProvider.Provider.GetCurrent().UserCode, mainGuid);
+            }
         }
     }
 }

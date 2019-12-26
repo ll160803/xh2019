@@ -1,0 +1,108 @@
+﻿@{
+    ViewBag.Title = "History";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+}
+<script>
+    var keyValue = $.request("keyValue");
+    $(function () {
+        gridList();
+    })
+    function gridList() {
+        var url = "/Hrm/AskForLeave/GetHistoryLeave/" + keyValue;
+
+        var $gridList = $("#gridList");
+        $gridList.dataGrid({
+            url: url,
+            height: $(window).height() - 128,
+            colModel: [
+                { label: '主键', name: 'F_Id', hidden: true },
+                { label: '人员编号', name: 'PERNR', width: 80, align: 'left' },
+                { label: '姓名', name: 'NACHN', width: 80, align: 'left' },
+
+                {
+                    label: '请假类型', name: 'F_ItemName', width: 60, align: 'left'
+                },
+
+                {
+                    label: '请假开始时间', name: 'StartDate', width: 80, align: 'left',
+                    formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' }
+                },
+                {
+                    label: '请假结束时间', name: 'EndDate', width: 80, align: 'left',
+                    formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' }
+                },
+
+                {
+                    label: '请假天数', name: 'days', width: 50, align: 'left',
+                    formatter: function (cellvalue, options, rowObject) {
+                        return $.days_count(rowObject.StartDate, rowObject.EndDate);
+                    }
+                },
+                {
+                    label: '住院科室', name: 'HosOrganize', width: 80, align: 'left'
+                },
+                {
+                    label: '疾病诊断', name: 'SickCheck', width: 80, align: 'left'
+                },
+                {
+                    label: '性别', name: 'GESCTXT', width: 40, align: 'left'
+                },
+                {
+                    label: '员工工号', name: 'YGGH', width: 80, align: 'left'
+                },
+               {
+                    label: '状态', name: 'State', width: 80, align: 'left',
+                    formatter: function (cellvalue, options, rowObject) {
+                        if (cellvalue == "1") {
+                            return '<span class=\"label label-default\">未提交</span>';
+                        } else if (cellvalue == "5") {
+                            return '<span class=\"label label-warning\">审核未通过</span>';
+                        }else if (cellvalue == "2") {
+                            return '<span class=\"label label-danger\">未审核</span>';
+                        } else if (cellvalue == "3") {
+                            return '<span class=\"label label-success\">已审核</span>';
+                        } else if (cellvalue == "4"){
+                            return '<span class=\"label label-primary\">已发送SAP</span>';
+                        }
+                    }
+                }, {
+                    label: '是否有效', name: 'IsNew', width: 80, align: 'left',
+                    formatter: function (cellvalue, options, rowObject) {
+                        if (cellvalue == true) {
+                            return '有效';
+                        } else {
+                            return '<span class=\"label label-default\">无效</span>';
+                        } 
+                    }
+                }, {
+                    label: '未通过原因', name: 'Suggestion', width: 100, align: 'left'
+                },{
+                    label: '序列值', name: 'AskSort', width: 80, align: 'left'
+                } ,{
+                    label: '备注', name: 'F_Description', width: 80, align: 'left'
+                },
+
+            ],
+            pager: "#gridPager",
+            sortname: 'F_CreatorTime desc',
+            viewrecords: true
+        });
+    }
+
+    function btn_details() {
+        var keyValue = $("#gridList").jqGridRowValue().F_Id;
+        $.modalOpen({
+            id: "Details",
+            title: "查看用户",
+            url: "/hrm/askforleave/Details?keyValue=" + keyValue,
+            width: "700px",
+            height: "550px",
+            btn: null,
+        });
+    }
+
+</script>
+<div class="gridPanel">
+    <table id="gridList"></table>
+    <div id="gridPager"></div>
+</div>

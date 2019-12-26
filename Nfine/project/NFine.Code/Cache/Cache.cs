@@ -25,7 +25,7 @@ namespace NFine.Code
         }
         public void WriteCache<T>(T value, string cacheKey) where T : class
         {
-            cache.Insert(cacheKey, value, null, DateTime.Now.AddMinutes(10), System.Web.Caching.Cache.NoSlidingExpiration);
+            cache.Insert(cacheKey, value, null, DateTime.Now.AddHours(4), System.Web.Caching.Cache.NoSlidingExpiration);
         }
         public void WriteCache<T>(T value, string cacheKey, DateTime expireTime) where T : class
         {

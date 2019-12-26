@@ -172,8 +172,9 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="WCF_SAP\SAP_HRM.svc.cs">
-      <DependentUpon>SAP_HRM.svc</DependentUpon>
+    <Compile Include="WCF_SAP\ISapHealth.cs" />
+    <Compile Include="WCF_SAP\SapHealth.svc.cs">
+      <DependentUpon>SapHealth.svc</DependentUpon>
     </Compile>
     <Compile Include="Web References\BJK_AskLeave\Reference.cs">
       <AutoGen>True</AutoGen>
@@ -186,6 +187,11 @@
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
     <Compile Include="Web References\FundSap\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\HealthyWebRef\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
@@ -932,7 +938,7 @@
     <Content Include="Content\js\zsign\signet.gif" />
     <Content Include="Global.asax" />
     <Content Include="Index.htm" />
-    <Content Include="WCF_SAP\SAP_HRM.svc" />
+    <Content Include="WCF_SAP\SapHealth.svc" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1249,6 +1255,11 @@
       <DependentUpon>Reference.map</DependentUpon>
     </Content>
     <None Include="Web References\FundSap\zws_wwkf.wsdl" />
+    <Content Include="Web References\HealthyWebRef\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </Content>
+    <None Include="Web References\HealthyWebRef\ws.wsdl" />
     <None Include="Web References\HrmSap\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
@@ -1281,6 +1292,17 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
+    <WebReferenceUrl Include="http://10.254.254.3:1980/openapi/services/ws%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\HealthyWebRef\</RelPath>
+      <UpdateFromURL>http://10.254.254.3:1980/openapi/services/ws%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>NFine_Web_HealthyWebRef_OpenWebServiceService</CachedSettingsPropName>
+    </WebReferenceUrl>
     <WebReferenceUrl Include="http://192.168.64.26:8001/sap/bc/srt/wsdl/flv_10002A101AD1/bndg_url/sap/bc/srt/rfc/sap/zhrws_kqryxx/800/zws_kqryxx/zws_kqryxx%3fsap-client=800">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\SapHrm\</RelPath>

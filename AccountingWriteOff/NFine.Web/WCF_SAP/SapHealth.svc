@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="NFine.Web.WCF_SAP.SapHealth" CodeBehind="SapHealth.svc.cs" %>

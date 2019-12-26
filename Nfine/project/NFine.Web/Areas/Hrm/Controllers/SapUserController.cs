@@ -277,6 +277,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
             System.Linq.Expressions.Expression<Func<AskForLeaveEntity, bool>> expression = ExtLinq.True<AskForLeaveEntity>();
             expression = expression.And(p => p.IsNew == true);
             expression = expression.And(p => p.EndDate == null || p.EndDate > searchTime);
+            expression = expression.And(p => p.HrmUserId == user.PERNR);
             var records = askApp.GetList(new Pagination { page = 1, rows = 100 }, expression);
             foreach(var item in records)//可优化  但数据一般至多一条
             {

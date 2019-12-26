@@ -6,6 +6,7 @@
     body {
         font-size: 16px !important;
     }
+
     .input-group-addon {
         font-size: 16px !important;
     }
@@ -27,23 +28,23 @@
                 { label: '人员编号', name: 'PERNR', width: 80, align: 'left' },
                 { label: '姓名', name: 'NACHN', width: 60, align: 'left' },
                 {
-                    label: '性别', name: 'GESCTXT', width: 80, align: 'left'
+                    label: '性别', name: 'GESCTXT', width: 40, align: 'left'
                 },
                 {
                     label: '就职科室', name: 'F_FullName', width: 120, align: 'left'
                 },
-                { label: '职业类别', name: 'BTEXT', width: 80, align: 'left' },
-                
-               
+                { label: '职业类别', name: 'BTEXT', width: 40, align: 'left' },
+
+
                 {
-                    label: '年龄', name: 'Ages', width: 60, align: 'left'
+                    label: '年龄', name: 'Ages', width: 40, align: 'left'
                 },
                 {
-                    label: '请假开始时间', name: 'StartDate', width: 100, align: 'left',
+                    label: '请假开始时间', name: 'StartDate', width: 80, align: 'left',
                     formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' }
                 },
                 {
-                    label: '请假结束时间', name: 'EndDate', width: 100, align: 'left',
+                    label: '请假结束时间', name: 'EndDate', width: 80, align: 'left',
                     formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' }
                 },
 
@@ -60,21 +61,42 @@
                     label: '疾病诊断', name: 'SickCheck', width: 80, align: 'left'
                 },
                 {
-                    label: '请假类型', name: 'F_ItemName', width: 80, align: 'left'
+                    label: '请假类型', name: 'F_ItemName', width: 60, align: 'left'
                 },
-               
                 {
-                    label: '备注', name: 'F_Description', width: 200, align: 'left'
-                },{
-                    label: '状态', name: 'StateName', width: 80, align: 'left'
+                    label: '状态', name: 'State', width: 80, align: 'left',hidden:true
+                },
+               {
+                   label: '状态', name: 'StateName', width: 60, align: 'left',
+                   formatter: function (cellvalue, options, rowObject) {
+                       if (cellvalue == "已审核") {
+                           return '<span class=\"label label-success\">已审核</span>';
+                       } else if (cellvalue == "已发送SAP") {
+                           return '<span class=\"label label-primary\">已发送SAP</span>';
+                       }
+                       else if (cellvalue == "已提交"){
+                           return '<span class=\"label label-danger\">未审核</span>';
+                       }
+                       else if (cellvalue == "审核未通过"){
+                           return '<span class=\"label label-warning\">审核未通过</span>';
+                       }
+                   }
                 }, {
-                    label: '是否有效', name: 'IsNewName', width: 80, align: 'left'
-                   
+                   label: '是否有效', name: 'IsNewName', width: 80, align: 'left',
+                   formatter: function (cellvalue, options, rowObject) {
+                       if (cellvalue == "否") {
+                           return '<span class=\"label label-default\">无效</span>';
+                       } 
+                       return "有效"
+                   }
+
                 },{
                     label: '未通过原因', name: 'Suggestion', width: 100, align: 'left'
                 }, {
                     label: '序列值', name: 'AskSort', width: 60, align: 'left'
-                }
+                }, {
+                    label: '备注', name: 'F_Description', width: 200, align: 'left'
+                },
 
             ],
             pager: "#gridPager",
@@ -100,9 +122,20 @@
             btn: null,
         });
     }
+    function btn_history() {
+        var keyValue = $("#gridList").jqGridRowValue().PERNR;
+        $.modalOpen({
+            id: "Details",
+            title: "查看历史记录",
+            url: "/hrm/askforleave/History?keyValue=" + keyValue,
+            width: "1200px",
+            height: "550px",
+            btn: null,
+        });
+    }
     function btn_SubmitAudit() {//
-        var State = $("#gridList").jqGridRowValue().StateName;
-        if (State == "已审核" || State == "已发送SAP") {
+        var State = $("#gridList").jqGridRowValue().State;
+        if (State == 3 || State == 4) {
             $.modalAlert("此记录已审核，请勿重复操作", "warning");
             return false;
         }
@@ -171,6 +204,7 @@
         <div class="operate">
             <ul class="nav nav-pills">
                 <li class="first">已选中<span>1</span>项</li>
+                <li><a id="NF-History"  onclick="btn_history()"><i class="fa fa-search-plus"></i>查看请假历史</a></li>
                 <li><a id="NF-Details" authorize="yes" onclick="btn_details()"><i class="fa fa-search-plus"></i>查看请假</a></li>
                 <li><a id="NF-edit" authorize="yes" onclick="btn_SubmitAudit()"><i class="fa fa-pencil-square-o"></i>请假审核</a></li>
             </ul>

@@ -40,18 +40,25 @@ namespace NFine.Web.Controllers
         [HttpGet]
         public ActionResult OutLogin()
         {
-            new LogApp().WriteDbLog(new LogEntity
+            try
             {
-                F_ModuleName = "系统登录",
-                F_Type = DbLogType.Exit.ToString(),
-                F_Account = OperatorProvider.Provider.GetCurrent().UserCode,
-                F_NickName = OperatorProvider.Provider.GetCurrent().UserName,
-                F_Result = true,
-                F_Description = "安全退出系统",
-            });
-            Session.Abandon();
-            Session.Clear();
-            OperatorProvider.Provider.RemoveCurrent();
+                new LogApp().WriteDbLog(new LogEntity
+                {
+                    F_ModuleName = "系统登录",
+                    F_Type = DbLogType.Exit.ToString(),
+                    F_Account = OperatorProvider.Provider.GetCurrent().UserCode,
+                    F_NickName = OperatorProvider.Provider.GetCurrent().UserName,
+                    F_Result = true,
+                    F_Description = "安全退出系统",
+                });
+                Session.Abandon();
+                Session.Clear();
+                OperatorProvider.Provider.RemoveCurrent();
+            }
+            catch (Exception ex)
+            {
+
+            }
             return RedirectToAction("Index", "Login");
         }
         [HttpPost]
@@ -79,6 +86,7 @@ namespace NFine.Web.Controllers
                     operatorModel.CompanyId = userEntity.F_OrganizeId;
                     operatorModel.DepartmentId = userEntity.F_DepartmentId;
                     operatorModel.RoleId = userEntity.F_RoleId;
+                    operatorModel.SubmitType = userEntity.F_WeChat ?? "";
                     // operatorModel.LoginIPAddress = Net.Ip;
                     //operatorModel.LoginIPAddressName = Net.GetLocation(operatorModel.LoginIPAddress);
                     operatorModel.LoginTime = DateTime.Now;

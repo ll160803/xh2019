@@ -87,5 +87,15 @@ namespace NFine.Web.Properties {
                 return ((string)(this["NFine_Web_FundSapInput_ZFI02WS_006"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://127.0.0.1:21000/openapi/services/ws")]
+        public string NFine_Web_HealthyWebRef_OpenWebServiceService {
+            get {
+                return ((string)(this["NFine_Web_HealthyWebRef_OpenWebServiceService"]));
+            }
+        }
     }
 }

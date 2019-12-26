@@ -24,10 +24,10 @@
                 { label: '人员编号', name: 'PERNR', width: 80, align: 'left' },
                 { label: '姓名', name: 'NACHN', width: 80, align: 'left' },
                 {
-                    label: '性别', name: 'GESCTXT', width: 80, align: 'left'
+                    label: '性别', name: 'GESCTXT', width: 40, align: 'left'
                 },
                 {
-                    label: '就职科室', name: 'F_FullName', width: 150, align: 'left'
+                    label: '就职科室', name: 'F_FullName', width: 130, align: 'left'
                     //formatter: function (cellvalue, options, rowObject) {
                     //    return top.clients.organize[rowObject.OrganizeId] == null ? "" : top.clients.organize[rowObject.OrganizeId].fullname;
                     //}
@@ -35,7 +35,7 @@
                 { label: '职业类别', name: 'BTEXT', width: 80, align: 'left' },
 
                 {
-                    label: '年龄', name: 'Ages', width: 80, align: 'left'
+                    label: '年龄', name: 'Ages', width: 40, align: 'left'
                 },
 
 
@@ -49,7 +49,7 @@
                 },
 
                 {
-                    label: '请假天数', name: 'days', width: 80, align: 'left',
+                    label: '请假天数', name: 'days', width: 50, align: 'left',
                     formatter: function (cellvalue, options, rowObject) {
                         return $.days_count(rowObject.StartDate, rowObject.EndDate);
                     }

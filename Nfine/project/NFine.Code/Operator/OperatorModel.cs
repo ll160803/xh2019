@@ -23,5 +23,9 @@ namespace NFine.Code
         public string Is_Doctor { get; set; }
         public DateTime LoginTime { get; set; }
         public bool IsSystem { get; set; }
+        /// <summary>
+        /// 是否需要职工保健科审核
+        /// </summary>
+        public string SubmitType { get; set; }
     }
 }
