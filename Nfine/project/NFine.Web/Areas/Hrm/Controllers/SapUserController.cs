@@ -182,17 +182,21 @@ namespace NFine.Web.Areas.Hrm.Controllers
         {
             System.Linq.Expressions.Expression<Func<HrmUserEntity, bool>> expression = ExtLinq.True<HrmUserEntity>();
 
-            expression = expression.And(p => string.IsNullOrEmpty(p.OrganizeId));
+           
             if (!string.IsNullOrEmpty(id) & IsDoctor != "3")
             {
                 expression = expression.And(p => p.RYLB == id);
             }
-            if (!string.IsNullOrEmpty(keyword))
+            if (!string.IsNullOrEmpty(keyword) && !string.IsNullOrEmpty(keyword.Trim()))
             {
                 var keyPress = ExtLinq.True<HrmUserEntity>();
                 keyPress = keyPress.And(t => t.PERNR.Contains(keyword));
                 keyPress = keyPress.Or(t => t.NACHN.Contains(keyword));
                 expression = expression.And(keyPress);
+            }
+            else
+            {
+                expression = expression.And(p => string.IsNullOrEmpty(p.OrganizeId));
             }
             if (!Is_all)
             {
