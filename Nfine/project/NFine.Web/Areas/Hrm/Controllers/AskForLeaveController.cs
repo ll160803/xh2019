@@ -240,7 +240,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 keyPress = keyPress.Or(t => t.NACHN.Contains(keyword));
                 expression = expression.And(keyPress);
             }
-
+          
             var data = new
             {
                 rows = viewApp.GetList(pagination, expression),
@@ -260,7 +260,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
         /// <returns></returns>
         [HttpGet]
         [HandlerAjaxOnly]
-        public ActionResult GetLastAuditGridJson(string id, Pagination pagination, string keyword, int state = 2)
+        public ActionResult GetLastAuditGridJson(string id, Pagination pagination, string keyword, string startDate, string endDate, int state = 2)
         {
             System.Linq.Expressions.Expression<Func<ViewAskForLeaveEntity, bool>> expression = ExtLinq.True<ViewAskForLeaveEntity>();
             // var orgId = OperatorProvider.Provider.GetCurrent().CompanyId;//当前用户所在公司ID
@@ -285,7 +285,16 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 keyPress = keyPress.Or(t => t.NACHN.Contains(keyword));
                 expression = expression.And(keyPress);
             }
-
+            if (!string.IsNullOrEmpty(startDate) && !string.IsNullOrEmpty(endDate))
+            {
+                DateTime sd = Convert.ToDateTime(startDate);
+                DateTime nd = Convert.ToDateTime(endDate);
+                var keyPress = ExtLinq.True<ViewAskForLeaveEntity>();
+                keyPress = keyPress.And(t => t.StartDate >= sd && t.StartDate <= nd);
+                keyPress = keyPress.Or(t => t.EndDate >= sd && t.EndDate <= nd);
+                keyPress = keyPress.Or(t => t.EndDate >= nd && t.StartDate <= sd);
+                expression = expression.And(keyPress);
+            }
             var data = new
             {
                 rows = viewApp.GetList(pagination, expression),
@@ -296,7 +305,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
             return Content(data.ToJson());
         }
 
-        public ActionResult GetLastAuditGridJsonExport(string id, Pagination pagination, string keyword, string titleAndField, int state = 2)
+        public ActionResult GetLastAuditGridJsonExport(string id, Pagination pagination, string keyword, string titleAndField, string startDate, string endDate, int state = 2)
         {
             System.Linq.Expressions.Expression<Func<ViewAskForLeaveEntity, bool>> expression = ExtLinq.True<ViewAskForLeaveEntity>();
             // var orgId = OperatorProvider.Provider.GetCurrent().CompanyId;//当前用户所在公司ID
@@ -321,7 +330,16 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 keyPress = keyPress.Or(t => t.NACHN.Contains(keyword));
                 expression = expression.And(keyPress);
             }
-
+            if (!string.IsNullOrEmpty(startDate) && !string.IsNullOrEmpty(endDate))
+            {
+                DateTime sd = Convert.ToDateTime(startDate);
+                DateTime nd = Convert.ToDateTime(endDate);
+                var keyPress = ExtLinq.True<ViewAskForLeaveEntity>();
+                keyPress = keyPress.And(t => t.StartDate >= sd && t.StartDate <= nd);
+                keyPress = keyPress.Or(t => t.EndDate >= sd && t.EndDate <= nd);
+                keyPress = keyPress.Or(t => t.EndDate >= nd && t.StartDate <= sd);
+                expression = expression.And(keyPress);
+            }
 
             pagination.page = 1;
             pagination.rows = int.MaxValue;
