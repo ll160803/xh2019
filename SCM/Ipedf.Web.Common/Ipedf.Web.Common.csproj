@@ -108,6 +108,7 @@
   <ItemGroup>
     <Compile Include="ButtonText.cs" />
     <Compile Include="CalcExcelRowsCount.cs" />
+    <Compile Include="FtpUtils.cs" />
     <Compile Include="IniFileHelper.cs" />
     <Compile Include="MDM_DEPT_TYPE.cs" />
     <Compile Include="Message.cs" />

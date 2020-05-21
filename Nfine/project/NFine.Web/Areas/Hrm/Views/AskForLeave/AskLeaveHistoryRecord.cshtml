@@ -8,7 +8,22 @@
     }
 </style>
 <script>
+    var startDate = '';
+    var endDate = '';
     $(function () {
+        laydate.render({
+            elem: '#dateLeave'
+            , range: true
+            , done: function (value, date, endDate2) {
+                if (date.year == undefined) {
+                    startDate = '';
+                    endDate2 = '';
+                } else {
+                    startDate = date.year + '-' + date.month + '-' + date.date;
+                    endDate = endDate2.year + '-' + endDate2.month + '-' + endDate2.date;
+                }
+            }
+        });
         gridList();
     })
     function gridList() {
@@ -40,7 +55,7 @@
         });
         $("#btn_search").click(function () {
             $gridList.jqGrid('setGridParam', {
-                postData: { keyword: $("#txt_keyword").val() },
+                postData: { keyword: $("#txt_keyword").val(), startDate: startDate, endDate: endDate },
             }).trigger('reloadGrid');
         });
     }
@@ -58,7 +73,9 @@
             }
         });
     }
-
+     function ExportExcel() {
+         $.ExportExcel("gridList", "/Hrm/AskForLeave/GetHistoryBJRecordExport/", { keyword: $("#txt_keyword").val(), startDate: startDate, endDate: endDate})
+    }
 </script>
 
 <div class="topPanel">
@@ -68,6 +85,9 @@
         </div>
         <div class="btn-group">
             @*<a id="NF-add" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_SubmitAudit()"><i class="fa fa-plus"></i>请假审核</a>*@
+        </div>
+        <div class="btn-group">
+            <a id="NF-Export" authorize="yes" class="btn btn-primary dropdown-text" onclick="ExportExcel()"><i class="fa fa-file-excel-o"></i>导出</a>
         </div>
         <div class="operate">
             <ul class="nav nav-pills">
@@ -81,6 +101,12 @@
     <div class="search">
         <table>
             <tr>
+                <td>
+                    <div class="input-group">
+                        <input id="dateLeave" type="text" class="form-control" placeholder="请选择提交时间" style="width: 200px;">
+                    </div>
+                </td>
+                <td style="width:10px;"></td>
                 <td>
                     <div class="input-group">
                         <input id="txt_keyword" type="text" class="form-control" placeholder="考勤员/考勤部门" style="width: 200px;">

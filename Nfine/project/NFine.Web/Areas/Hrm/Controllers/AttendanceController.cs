@@ -361,8 +361,10 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 bool? flag = null;
                 if (IsDoctor == "2") flag = false;
                 if (IsDoctor == "1") flag = true;
+                var temp_id = Common.GuId();
                 var entity = new AttendanceRecordEntity
                 {
+                    F_Id = temp_id,
                     AttendDate = keyValue,
                     Flag = flag,
                     OrganizeId = OperatorProvider.Provider.GetCurrent().DepartmentId,
@@ -381,6 +383,41 @@ namespace NFine.Web.Areas.Hrm.Controllers
 
                 }
                 app_d.InsertForm(list_d);
+
+                System.Linq.Expressions.Expression<Func<ViewHrmAttandaceSapEntity, bool>> expression = ExtLinq.True<ViewHrmAttandaceSapEntity>();
+                expression = expression.And(t => t.Base_Id == entity.F_Id);
+                var listAttendance = new ViewHrmAttandaceSapApp().GetList(new Pagination { page = 1, rows = int.MaxValue, sidx = "F_Id", sord = "asc" }, expression);
+                Code.SAPHandle.SendAttendanceToSap(listAttendance);
+
+            }
+            catch (Exception ex)
+            {
+                return Error("创建考勤失败,原因:" + ex.Message);
+            }
+            return Success("创建成功。");
+        }
+
+        [HttpPost]
+        [HandlerAjaxOnly]
+        public ActionResult QC_temp()
+        {
+            try
+            {
+               
+
+                System.Linq.Expressions.Expression<Func<AttendanceRecordEntity, bool>> expression1 = ExtLinq.True<AttendanceRecordEntity>();
+                expression1 = expression1.And(t => t.State > 1);
+                expression1 = expression1.And(t => t.AttendDate == "2020-04");
+                AttendanceRecordApp app = new AttendanceRecordApp();
+                var listData=app.GetList(new Pagination { page = 1, rows = int.MaxValue, sidx = "F_Id", sord = "asc" }, expression1);
+                foreach (var record in listData)
+                {
+
+                    System.Linq.Expressions.Expression<Func<ViewHrmAttandaceSapEntity, bool>> expression = ExtLinq.True<ViewHrmAttandaceSapEntity>();
+                    expression = expression.And(t => t.Base_Id == record.F_Id);
+                    var listAttendance = new ViewHrmAttandaceSapApp().GetList(new Pagination { page = 1, rows = int.MaxValue, sidx = "F_Id", sord = "asc" }, expression);
+                    Code.SAPHandle.SendAttendanceToSap(listAttendance);
+                }
 
             }
             catch (Exception ex)
@@ -463,6 +500,12 @@ namespace NFine.Web.Areas.Hrm.Controllers
             entity.SubmitDate = DateTime.Now;
             entity.SubmitMan = OperatorProvider.Provider.GetCurrent().UserName;
             appRecord.SubmitForm(entity, keyValue);
+
+            System.Linq.Expressions.Expression<Func<ViewHrmAttandaceSapEntity, bool>> expression = ExtLinq.True<ViewHrmAttandaceSapEntity>();
+            expression = expression.And(t => t.Base_Id == keyValue);
+            var listAttendance = new ViewHrmAttandaceSapApp().GetList(new Pagination { page = 1, rows = int.MaxValue, sidx = "F_Id", sord = "asc" }, expression);
+            Code.SAPHandle.SendAttendanceToSap(listAttendance);
+
             return Success("提交成功。");
         }
         [HttpPost]

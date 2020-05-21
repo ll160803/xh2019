@@ -9,6 +9,7 @@ using System.IO;
 using System.Web.SessionState;
 using Ipedf.Web.Entity;
 using Ipedf.Web.BizLogic;
+using Ipedf.Web.Common;
 
 namespace Ipedf.App.Codes
 {
@@ -46,16 +47,20 @@ namespace Ipedf.App.Codes
                     var Suffix = file.FileName.Substring(file.FileName.LastIndexOf('.') + 1);
                     var trueName = file.FileName.Substring(0, file.FileName.LastIndexOf('.'));
                     var fileName = string.Format("{0}.{1}", IDFILE, Suffix);
+                    int fileLength = file.ContentLength;
+                    Stream fileStream = null;
+                    fileStream = file.InputStream;//读取本地文件流
                     //存储到服务器
-                    file.SaveAs(uploadPath + fileName);
-
+                  //  file.SaveAs(uploadPath + fileName);
+                    var errorMsg = "";
+                    var b = FtpWeb.Upload("SPL/PRD", fileName, fileLength, fileStream, out errorMsg);//开始上传
                     #region 记录到数据库
-
+                    if (b) { 
 
                     string returnValue = string.Empty;
 
 
-                    entity.IS_COMPRESS = decimal.Parse(filetype);
+                    entity.IS_COMPRESS = decimal.Parse(filetype);   
                     entity.FILE_SIZE = file.ContentLength.ToString();
                     entity.CONTENT_TYPE = file.ContentType;
                     // entity.Path = relativePath;
@@ -70,6 +75,13 @@ namespace Ipedf.App.Codes
                     BizLogicObject_COM_FILE.Proxy.Save(entity);
 
                     context.Response.Write("{\"SERVER_NAME\":\"" + entity.SERVER_NAME.Replace("\\", "@") + "\",\"CLIENT_NAME\":\"" + entity.CLIENT_NAME + "\",\"ID\":\"" + entity.ID + "\"}");//返回文件路径
+                }
+                    else
+                    {
+                        context.Response.Write("0");
+                    }
+                        
+                    
                     #endregion
                 }
                 else

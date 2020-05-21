@@ -400,7 +400,8 @@ namespace Ipedf.App.Codes
                 destination = this.GetDestination();
 
                 RfcRepository rfcrep = destination.Repository;
-                IRfcFunction myfun = null;
+       
+         IRfcFunction myfun = null;
                 myfun = rfcrep.CreateFunction(fuName);
                 //  myfun.SetValue("IS_SELCOND", "0");//SAP里面的传入参数
                 if (myfun == null)
@@ -430,6 +431,47 @@ namespace Ipedf.App.Codes
             }
 
 
+        }
+
+        public void SendVendorInfo_RFC(string LIFNR,string tel,string NACHN,string NAME1,string fuName = "ZMM00_FM_DHHM")
+        {
+            LogHelper.Info("ZMM00_FM_DHHM(发送供应商信息) begin", 1);
+            RfcDestination destination;
+            try
+            {
+                destination = this.GetDestination();
+
+                RfcRepository rfcrep = destination.Repository;
+
+                IRfcFunction myfun = null;
+                myfun = rfcrep.CreateFunction(fuName);
+                //  myfun.SetValue("IS_SELCOND", "0");//SAP里面的传入参数
+                if (myfun == null)
+                {
+                    LogHelper.Info("ZMM00_FM_DHHM is NULL");
+                }
+
+
+                myfun.SetValue("LIFNR", LIFNR);
+                myfun.SetValue("tel", tel);
+                myfun.SetValue("NACHN", NACHN);
+                myfun.SetValue("NAME1", NAME1);
+                //提前实例化一个空的表结构出来
+                myfun.Invoke(destination);//执行
+
+
+                LogHelper.Info("发送供应商信息 。");
+
+                LogHelper.Info("ZMM00_FM_DHHM(发送供应商信息) END SUCCESS!", 1);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Info("ZMM00_FM_DHHM(发送供应商信息)出现问题：" + ex.Message, 1);
+            }
+            finally
+            {
+                destination = null;
+            }
         }
     }
 }

@@ -252,6 +252,7 @@ namespace Ipedf.App.Areas.System.Controllers
             string[] Names = NAMEs.Split(',').ToArray();
             List<EntityObject_MDM_D_DEPT> updateDetailEntities = new List<EntityObject_MDM_D_DEPT>();
             BizLogicObject_MDM_D_DEPT logic = new BizLogicObject_MDM_D_DEPT();
+            RfcNOC rfc = new RfcNOC();
             for (var i = 0; i < Ids.Length; i++)
             {
                 EntityObject_MDM_D_DEPT entity = new EntityObject_MDM_D_DEPT();
@@ -262,6 +263,9 @@ namespace Ipedf.App.Areas.System.Controllers
                 {
                     entity.STATE = 2;
                     AddPerson(Names[i], aspCodes[i], DEPT_TYPE_ID);//保存用户数据
+
+                    //上传sap
+                    rfc.SendVendorInfo_RFC(entity.CODE, entity.PHONE, entity.LINK_PERSON, entity.NAME);
                 }
                 updateDetailEntities.Add(entity);
             }

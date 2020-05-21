@@ -10,6 +10,7 @@ using Models;
 using Ipedf.Core;
 using Ipedf.App.Codes;
 using System.IO;
+using Ipedf.Web.Common;
 
 namespace Ipedf.App.Areas.System.Controllers
 {
@@ -346,8 +347,13 @@ namespace Ipedf.App.Areas.System.Controllers
         }
         public FileStreamResult DownFile(string CLIENT_NAME, string SERVER_NAME)
         {
-            string absoluFilePath = Server.MapPath("~/SAP/") + SERVER_NAME;
-            return File(new FileStream(absoluFilePath, FileMode.Open), "application/octet-stream", Server.UrlEncode(SERVER_NAME));
+            var errorMsg = "";
+            string absoluFilePath = "D:/web/load" ;
+           // string absoluFilePath = Server.MapPath("~/SAP/") + SERVER_NAME;
+             FtpWeb.Download("SPL/PRD", absoluFilePath, SERVER_NAME, out errorMsg);
+          
+            //return File(absoluFilePath, "application/octet-stream", Server.UrlEncode(SERVER_NAME));
+            return File(new FileStream(absoluFilePath+ "/"+SERVER_NAME, FileMode.Open), "application/octet-stream", Server.UrlEncode(SERVER_NAME));
         }
         [HttpPost]
         public ActionResult Edit(string id, FormCollection from)

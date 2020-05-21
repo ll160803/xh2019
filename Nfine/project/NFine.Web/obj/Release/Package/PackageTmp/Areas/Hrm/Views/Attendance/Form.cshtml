@@ -30,8 +30,15 @@
         //    language: 'zh-CN'
         //});
         var date = new Date();
+
         var dateStr = date.getFullYear() + '-';
-        var m = (date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth());
+        if (date.getMonth() == 0) {
+            dateStr = (date.getFullYear()-1) + '-';
+        }
+        var m = "12";
+        if (date.getMonth() > 0) {
+            m = (date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth());
+        }
         dateStr = dateStr + m;
         $("#txt_keyword").val(dateStr);
     }

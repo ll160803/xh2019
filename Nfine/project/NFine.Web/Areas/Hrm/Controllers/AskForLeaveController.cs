@@ -458,7 +458,7 @@ namespace NFine.Web.Areas.Hrm.Controllers
         /// <returns></returns>
         [HttpGet]
         [HandlerAjaxOnly]
-        public ActionResult GetHistoryBJRecord(string id, Pagination pagination, string keyword)
+        public ActionResult GetHistoryBJRecord(string id, Pagination pagination, string keyword, string startDate, string endDate)
         {
             System.Linq.Expressions.Expression<Func<ViewHrmAskForLeaveRecordEntity, bool>> expression = ExtLinq.True<ViewHrmAskForLeaveRecordEntity>();
             var orgId = OperatorProvider.Provider.GetCurrent().CompanyId;//当前用户所在公司ID
@@ -474,6 +474,15 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 keyPress = keyPress.Or(t => t.F_RealName.Contains(keyword));
                 expression = expression.And(keyPress);
             }
+            if (!string.IsNullOrEmpty(startDate) && !string.IsNullOrEmpty(endDate))
+            {
+                DateTime sd = Convert.ToDateTime(startDate);
+                DateTime nd = Convert.ToDateTime(endDate + " 23:59:59");
+                var keyPress = ExtLinq.True<ViewHrmAskForLeaveRecordEntity>();
+                keyPress = keyPress.And(t => t.F_CreatorTime >= sd && t.F_CreatorTime <= nd);
+
+                expression = expression.And(keyPress);
+            }
             ViewHrmAskForLeaveRecordApp appRecord = new ViewHrmAskForLeaveRecordApp();
 
             var data = new
@@ -485,7 +494,55 @@ namespace NFine.Web.Areas.Hrm.Controllers
             };
             return Content(data.ToJson());
         }
+        [HttpPost]
+        [HandlerAjaxOnly]
+        public ActionResult GetHistoryBJRecordExport(string id, Pagination pagination, string keyword, string startDate, string endDate)
+        {
+            System.Linq.Expressions.Expression<Func<ViewHrmAskForLeaveRecordEntity, bool>> expression = ExtLinq.True<ViewHrmAskForLeaveRecordEntity>();
+            var orgId = OperatorProvider.Provider.GetCurrent().CompanyId;//当前用户所在公司ID
+            expression = expression.And(p => p.Flag == true);
+            //if (!string.IsNullOrEmpty(id))//保健科不分医生和护士
+            //{
+            //    expression = expression.And(p => p.RYLB == id);//医生还是护士
+            //}
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                var keyPress = ExtLinq.True<ViewHrmAskForLeaveRecordEntity>();
+                keyPress = keyPress.And(t => t.F_FullName.Contains(keyword));
+                keyPress = keyPress.Or(t => t.F_RealName.Contains(keyword));
+                expression = expression.And(keyPress);
+            }
+            if (!string.IsNullOrEmpty(startDate) && !string.IsNullOrEmpty(endDate))
+            {
+                DateTime sd = Convert.ToDateTime(startDate);
+                DateTime nd = Convert.ToDateTime(endDate + " 23:59:59");
+                var keyPress = ExtLinq.True<ViewHrmAskForLeaveRecordEntity>();
+                keyPress = keyPress.And(t => t.F_CreatorTime >= sd && t.F_CreatorTime <= nd);
 
+                expression = expression.And(keyPress);
+            }
+            ViewHrmAskForLeaveRecordApp appRecord = new ViewHrmAskForLeaveRecordApp();
+            pagination.page = 1;
+            pagination.rows = int.MaxValue;
+            var p_rows = appRecord.GetList(pagination, expression).Select(p => p.F_Id);
+
+            HistoryRecordDetailApp appRecord2 = new HistoryRecordDetailApp();
+            System.Linq.Expressions.Expression<Func<HistoryRecordDetailEntity, bool>> expression2 = ExtLinq.True<HistoryRecordDetailEntity>();
+            expression2 = expression2.And(p => p_rows.Contains(p.Base_Id));
+            expression2 = expression2.And(p => p.IsNew == true);
+
+
+            var hrmUserList = appRecord2.GetList(pagination, expression2);
+
+
+            var rows = hrmUserList;//.Cast<HistoryRecordDetailEntity_Export>().ToList();
+            string titleAndField = "[{\"Title\":\"人员编号\",\"Field\":\"PERNR\"},{\"Title\":\"姓名\",\"Field\":\"NACHN\"},{\"Title\":\"性别\",\"Field\":\"GESCTXT\"},{\"Title\":\"就职科室\",\"Field\":\"F_FullName\"},{\"Title\":\"职业类别\",\"Field\":\"BTEXT\"},{\"Title\":\"年龄\",\"Field\":\"Ages\"},{\"Title\":\"请假开始时间\",\"Field\":\"StartDate\"},{\"Title\":\"请假结束时间\",\"Field\":\"EndDate\"},{\"Title\":\"请假天数\",\"Field\":\"days\"},{\"Title\":\"住院科室\",\"Field\":\"HosOrganize\"},{\"Title\":\"疾病诊断\",\"Field\":\"SickCheck\"},{\"Title\":\"请假类型\",\"Field\":\"F_ItemName\"},{\"Title\":\"备注\",\"Field\":\"F_Description\"},{\"Title\":\"状态\",\"Field\":\"StateName\"},{\"Title\":\"是否有效\",\"Field\":\"IsNewName\"},{\"Title\":\"序列值\",\"Field\":\"AskSort\"}]";
+
+            var dicFields = HandleTitelAndField.GetTitleAndField(titleAndField, 12, 15, 18);
+            var downUrl = NPOIWriteExcel.OutputExcel<HistoryRecordDetailEntity>(rows, dicFields, new ExcelCaption { CaptionName = "请假记录表", Height = 24 });
+
+            return Success("下载成功", downUrl);
+        }
         [HttpGet]
         [HandlerAjaxOnly]
         public ActionResult GetFormJson(string keyValue)

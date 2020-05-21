@@ -804,6 +804,9 @@ namespace Ipedf.App.Controllers
 
             TryUpdateModel<EntityObject_MDM_D_DEPT>(curObj, from);
             var msg = BizLogicObject_MDM_D_DEPT.Proxy.Update(curObj);
+            //发送sap
+            RfcNOC rfc = new RfcNOC();
+            rfc.SendVendorInfo_RFC(curObj.CODE, curObj.PHONE, curObj.LINK_PERSON, curObj.NAME);
             if (msg.Succeed)
             {
                 return Json("S:保存成功", "text/html");

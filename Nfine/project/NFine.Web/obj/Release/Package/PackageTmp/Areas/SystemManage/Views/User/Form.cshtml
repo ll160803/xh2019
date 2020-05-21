@@ -60,7 +60,7 @@
             text: "F_FullName"
         });
         $("#permissionTree").treeview({
-            height: 444,
+            height: 380,
             showcheck: true,
             upcascadecheck: false,//向上级联取消
             url: "/SystemManage/Organize/GetOrganizeTreeJson/",
@@ -83,7 +83,7 @@
     }
 </script>
 <form id="form1">
-    <div class="widget-body">
+    <div class="widget-body" style="overflow-y:hidden">
         <div id="wizard" class="wizard" data-target="#wizard-steps" style="border-left: none; border-top: none; border-right: none;">
             <ul class="steps">
                 <li data-target="#step-1" class="active"><span class="step">1</span>基本信息<span class="chevron"></span></li>
@@ -162,9 +162,12 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th class="formTitle">微信</th>
+                                <th class="formTitle">类型描述</th>
                                 <td class="formValue">
-                                    <input id="F_WeChat" name="F_WeChat" type="text" class="form-control" />
+                                    <select id="F_WeChat" name="F_WeChat" class="form-control">
+                                        <option value="本部">本部</option>
+                                        <option value="西院">西院</option>
+                                    </select>
                                 </td>
                                 <th class="formTitle">邮箱</th>
                                 <td class="formValue">
@@ -200,7 +203,7 @@
                 </div>
             </div>
             <div class="step-pane" id="step-2">
-                <div id="permissionTree"></div>
+                    <div id="permissionTree"></div>
             </div>
         </div>
         <div class="form-button" id="wizard-actions">

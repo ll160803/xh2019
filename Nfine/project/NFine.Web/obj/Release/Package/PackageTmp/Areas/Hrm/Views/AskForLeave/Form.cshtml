@@ -118,6 +118,12 @@
                 return false;
             }
         }
+        if (bt == "病假" || bt == "产假") {
+            if ($.trim($("#SickCheck").val()) == "") {
+                $.modalAlert("病假、产假疾病诊断必填", "warning");
+                return false;
+            }
+        }
         if (!$('#form1').formValid()) {
             return false;
         }
@@ -143,6 +149,13 @@
                 return false;
             }
         }
+        if (bt == "病假" || bt == "产假") {
+            if ($.trim($("#SickCheck").val()) == "") {
+                $.modalAlert("病假、产假疾病诊断必填", "warning");
+                return false;
+            }
+        }
+
         if (!$('#form1').formValid()) {
             return false;
         }
@@ -167,6 +180,12 @@
                 return false;
             }
         }
+        if (bt == "病假" || bt == "产假") {
+            if ($.trim($("#SickCheck").val()) == "") {
+                $.modalAlert("病假、产假疾病诊断必填", "warning");
+                return false;
+            }
+        }
         $.submitForm({
             url: "/hrm/askforleave/SubmitFormModify?keyValue=" + keyValue + "&state2=1",
             param: $("#form1").formSerialize(),
@@ -178,6 +197,19 @@
     function submitAndSaveFormModify(index) {//改登 保存并提交
         if (!$('#form1').formValid()) {
             return false;
+        }
+        var bt = $("#AskTypeId").find("option:selected").text();
+        if (bt != "病假") {
+            if ($.trim($("#EndDate").val()) == "") {
+                $.modalAlert("请选择结束时间", "warning");
+                return false;
+            }
+        }
+        if (bt == "病假" || bt == "产假") {
+            if ($.trim($("#SickCheck").val()) == "") {
+                $.modalAlert("病假、产假疾病诊断必填", "warning");
+                return false;
+            }
         }
         $.submitForm({
             url: "/hrm/askforleave/SubmitFormModify?keyValue=" + keyValue + "&state2=2",

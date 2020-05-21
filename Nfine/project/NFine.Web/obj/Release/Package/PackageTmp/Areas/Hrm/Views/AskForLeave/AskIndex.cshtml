@@ -77,6 +77,8 @@
                         }
                     }
                 }, {
+                    label: '未通过原因', name: 'Suggestion', width: 100, align: 'left'
+                },{
                     label: '序列值', name: 'AskSort', width: 80, align: 'left'
                 }
 
@@ -87,7 +89,7 @@
         });
         $("#btn_search").click(function () {
             $gridList.jqGrid('setGridParam', {
-                postData: { keyword: $("#txt_keyword").val(), id:@ViewBag.id, state: $("#state").val()},
+                postData: { keyword: $("#txt_keyword").val(), id:@ViewBag.id, state: $("#state").val(), Is_New: $('#check_select').is(':checked')},
             }).trigger('reloadGrid');
         });
     }
@@ -216,21 +218,17 @@
             id: "FormModify",
             title: "请假改登",
             url: "/hrm/askforleave/Form?keyValue=" + keyValue,
-            btn: ['保存', '保存并提交', '关闭'],
-            btnclass: ['btn btn-primary', 'btn btn-primary', 'btn btn-danger'],
+            btn: ['保存并提交', '关闭'],
+            btnclass: [ 'btn btn-primary', 'btn btn-danger'],
             width: "700px",
             height: "410px",
             callBack: function (iframeId) {
-                top.frames[iframeId].submitFormModify();
-            },
-            callBack2: function (iframeId) {
-                return top.frames[iframeId].submitAndSaveFormModify(iframeId);
-
+                top.frames[iframeId].submitAndSaveFormModify(iframeId);
             }
         });
     }
     function ExportExcel() {
-        $.ExportExcel("gridList", "/Hrm/AskForLeave/GetGridJsonExport/", { keyword: $("#txt_keyword").val(), id:'@ViewBag.id', state: $("#state").val()})
+        $.ExportExcel("gridList", "/Hrm/AskForLeave/GetGridJsonExport/", { keyword: $("#txt_keyword").val(), id: '@ViewBag.id', state: $("#state").val(),Is_New:$('#check_select').is(':checked')})
     }
 </script>
 
@@ -292,6 +290,12 @@
                         <span class="input-group-btn">
                             <button id="btn_search" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
                         </span>
+                    </div>
+                </td>
+                <td style="width:20px;"></td>
+                <td>
+                    <div class="input-group">
+                        <input type="checkbox" id="check_select" onclick="$('#btn_search').click();" class="form-control" style="width: 20px;"><span class="input-group">全部显示</span>
                     </div>
                 </td>
             </tr>
