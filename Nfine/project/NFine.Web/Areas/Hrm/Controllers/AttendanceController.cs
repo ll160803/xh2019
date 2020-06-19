@@ -157,10 +157,10 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 var orgIds = "," + string.Join(",", authorizedata.Select(u => u.F_ItemId)) + ",";
                 expression = expression.And(p => orgIds.Contains("," + p.OrganizeId + ","));
             }
-            if (IsDoctor != "3")
-            {
-                expression = expression.And(p => p.DoctorOrNurser == (IsDoctor == "1" ? true : false));
-            }
+            //if (IsDoctor != "3")
+            //{
+            //    expression = expression.And(p => p.DoctorOrNurser == (IsDoctor == "1" ? true : false));
+            //}
             expression = expression.And(p => p.IsNew == true & p.State > 1);//提交过的 是最新的 是护士或者医生  
 
             if (string.IsNullOrEmpty(keyword))
@@ -240,10 +240,10 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 var orgIds = "," + string.Join(",", authorizedata.Select(u => u.F_ItemId)) + ",";
                 expression = expression.And(p => orgIds.Contains("," + p.OrganizeId + ","));
             }
-            if (IsDoctor != "3")
-            {
-                expression = expression.And(p => p.DoctorOrNurser == (IsDoctor == "1" ? true : false));
-            }
+            //if (IsDoctor != "3")
+            //{
+            //    expression = expression.And(p => p.DoctorOrNurser == (IsDoctor == "1" ? true : false));
+            //}
             expression = expression.And(p => p.IsNew == true & p.State > 1);//提交过的 是最新的 是护士或者医生  
 
             if (string.IsNullOrEmpty(keyword))

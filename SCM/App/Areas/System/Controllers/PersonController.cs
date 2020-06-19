@@ -39,7 +39,7 @@ namespace Ipedf.App.Areas.System.Controllers
                 {
                     userType = "0"; //0 管理员  1是PDA  2 是供应商
                 }
-                entity.PASSWORD = "k6mMNZqjupk=";//"111"
+                entity.PASSWORD = "wWoCilomkOPpJ3+whHkNnA==";//"111"
                 var departID = "10001                               ";
                 var Role_ID = "";
                 switch (userType)
@@ -255,7 +255,7 @@ namespace Ipedf.App.Areas.System.Controllers
         {
             if (entity != null && ModelState.IsValid)
             {
-                entity.PASSWORD = "k6mMNZqjupk=";//"111"
+                entity.PASSWORD = "wWoCilomkOPpJ3+whHkNnA==";//"scm@0610"
                 BizLogicObject_COM_USER.Proxy.Save(entity);
                 return Json("S:创建成功");
             }
@@ -299,7 +299,7 @@ namespace Ipedf.App.Areas.System.Controllers
             DisplayObject_COM_USER[] users = BizLogicObject_COM_USER.Proxy.Query(p);
             foreach (DisplayObject_COM_USER user in users)
             {
-                user.PASSWORD = SystemLogic.Proxy.Encrypt("111");
+                user.PASSWORD = SystemLogic.Proxy.Encrypt("scm@0610");
                 user.SetUpdate("PASSWORD");
             }
             var msg = BizLogicObject_COM_USER.Proxy.BatchUpdate(users);

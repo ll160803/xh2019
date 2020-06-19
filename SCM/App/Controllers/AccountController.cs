@@ -29,7 +29,7 @@ namespace Ipedf.App.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
-            
+
             return View();
         }
 
@@ -109,6 +109,12 @@ namespace Ipedf.App.Controllers
             }
             if (ModelState.IsValid)
             {
+                if (!checkPass(model.NewPassword))
+                {
+                    ModelState.AddModelError("", "密码必须包含小写或大写字母,必须包含数字，必须含有特殊字符（@，$,#等），8位以上！");
+                    return View();
+                }
+
                 //IAccountBLL accountBLL = new AccountBLL();
                 BizLogicMsg msg = SystemLogic.Proxy.ModifyPassword(System.Web.HttpContext.Current.Request, SystemLogic.Proxy.CurrentUser.ACCOUNT, model.OldPassword, model.NewPassword);
                 if (msg.Succeed)
@@ -124,6 +130,23 @@ namespace Ipedf.App.Controllers
             }
             ModelState.AddModelError("", "密码修改失败，请核实数据");
             return View();
+        }
+        public bool checkPass(string password)
+        {
+            var regex = new Regex(@"
+(?=.*[0-9])                     #必须包含数字
+(?=.*[a-zA-Z])                  #必须包含小写或大写字母
+(?=([\x21-\x7e]+)[^a-zA-Z0-9])  #必须包含特殊符号
+.{8,30}                         #至少8个字符，最多30个字符
+", RegexOptions.Multiline | RegexOptions.IgnorePatternWhitespace);
+            if (!regex.IsMatch(password))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
         /// <summary>
         /// 登录页面

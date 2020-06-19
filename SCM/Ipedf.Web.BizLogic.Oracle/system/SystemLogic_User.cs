@@ -63,7 +63,7 @@ namespace Ipedf.Web.BizLogic
         {
             CauseObject_COM_USER userCauseObject = new CauseObject_COM_USER();
             userCauseObject.ACCOUNT = account;
-           // userCauseObject.PASSWORD = Encrypt(password);
+            userCauseObject.PASSWORD = Encrypt(password);
             userCauseObject.IS_USABLE = 0;//0 «…Û∫ÀÕ®π˝’À∫≈ 1 « ß∞‹’À∫≈
             DisplayObject_COM_USER[] result = HelperObject_COM_USER.Query(userCauseObject);
             if (result.Length != 0)
