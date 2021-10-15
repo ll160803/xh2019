@@ -346,12 +346,27 @@
                     <asp:Button ID="btn_delete" runat="server" Visible="false" class="btn btn-primary btn-sm btn-white" Text="删除" OnClick="btn_delete_Click" />请选择上传Word文件！
                 </div>
             </div>--%>
+             <div class="form-group row">
+                <label for="regSkill" class="col-sm-2 control-label">
+                    有无既往病史：</label>
+                <div class="col-sm-8">
+                    <asp:TextBox ID="txtInputJWBS" runat="server" MaxLength="50"  class="form-control"></asp:TextBox>
+                </div>
+            </div>
             <div class="form-group row">
                 <label for="regSkill" class="col-sm-2 control-label">
                     自我介绍：</label>
                 <div class="col-sm-8">
                     <asp:TextBox ID="txtInputZHRZWJS" runat="server" MaxLength="200" TextMode="MultiLine"
                         class="form-control" Height="60px"></asp:TextBox>
+                </div>
+            </div>
+             <div class="form-group row">
+                <label for="regSkill" class="col-sm-2 control-label">
+                    在校获奖情况</br>（院级以上）：</label>
+                <div class="col-sm-8">
+                    <asp:TextBox ID="txtInputShcoolInfo" runat="server" MaxLength="1200" TextMode="MultiLine"
+                        class="form-control" Height="80px"></asp:TextBox>
                 </div>
             </div>
             <div class="form-group row">

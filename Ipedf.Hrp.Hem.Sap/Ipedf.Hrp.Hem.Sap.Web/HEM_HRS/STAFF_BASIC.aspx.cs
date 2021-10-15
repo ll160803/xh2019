@@ -445,6 +445,24 @@ namespace Ipedf.Hrp.Hem.Sap.Web
                     return false;
                 }
             }
+            if (!string.IsNullOrEmpty(entity.SCHOOLINFO))
+            {
+                if (entity.SCHOOLINFO.Length > 1200)
+                {
+                    lbl_Error.Visible = true;
+                    lbl_Error.Text = "在校获奖情况（院级以上输入的长度不能超过1200个字！";
+                    return false;
+                }
+            }
+            if (!string.IsNullOrEmpty(entity.JWBS))
+            {
+                if (entity.JWBS.Length > 50)
+                {
+                    lbl_Error.Visible = true;
+                    lbl_Error.Text = "有无既往病史输入的长度不能超过50个字！";
+                    return false;
+                }
+            }
 
             if (!string.IsNullOrEmpty(entity.FANAM))
             {
@@ -1245,6 +1263,29 @@ namespace Ipedf.Hrp.Hem.Sap.Web
 
             displayStaff.ZHRZWJS = entity.ZHRZWJS;
 
+            //在校获奖情况（院级以上）
+            if (!string.IsNullOrEmpty(this.txtInputJWBS.Text))
+            {
+                entity.JWBS = this.txtInputJWBS.Text.Trim();
+            }
+            else
+            {
+                entity.JWBS = "";
+            }
+            displayStaff.JWBS = entity.JWBS;
+            //在校获奖情况（院级以上）
+            if (!string.IsNullOrEmpty(this.txtInputShcoolInfo.Text))
+            {
+                entity.SCHOOLINFO = this.txtInputShcoolInfo.Text.Trim();
+            }
+            else
+            {
+                entity.SCHOOLINFO = "";
+            }
+
+            displayStaff.SCHOOLINFO = entity.SCHOOLINFO;
+
+
             //是否证书
             if (this.ckInputIS_CERTIFICATE.Checked == true)
             {
@@ -1456,6 +1497,16 @@ namespace Ipedf.Hrp.Hem.Sap.Web
             {
                 //自我介绍
                 this.txtInputZHRZWJS.Text = entity.ZHRZWJS.Trim();
+            }
+            if (!string.IsNullOrEmpty(entity.SCHOOLINFO))
+            {
+                //自我介绍
+                this.txtInputShcoolInfo.Text = entity.SCHOOLINFO.Trim();
+            }
+            if (!string.IsNullOrEmpty(entity.JWBS))
+            {
+                //自我介绍
+                this.txtInputJWBS.Text = entity.JWBS.Trim();
             }
 
             if (!string.IsNullOrEmpty(entity.IS_CERTIFICATE.ToString()))

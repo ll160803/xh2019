@@ -1393,6 +1393,17 @@ namespace Ipedf.Hrp.Hem.Sap.Web
             }
 
             displayVstaff.USRID_MAIL = entity.USRID_MAIL;
+            //电子信箱
+            if (!string.IsNullOrEmpty(this.txtInputJWBS.Text))
+            {
+                entity.JWBS = this.txtInputJWBS.Text.Trim();
+            }
+            else
+            {
+                entity.JWBS = "";
+            }
+
+            displayVstaff.JWBS = entity.JWBS;
 
             //自我介绍
             if (!string.IsNullOrEmpty(this.txtInputZHRZWJS.Text))
@@ -1678,6 +1689,11 @@ namespace Ipedf.Hrp.Hem.Sap.Web
             if (!string.IsNullOrEmpty(entity.USRID_MAIL))
             {
                 this.txtInputUSRID_MAIL.Text = entity.USRID_MAIL.Trim();
+            }
+            //bs
+            if (!string.IsNullOrEmpty(entity.JWBS))
+            {
+                this.txtInputJWBS.Text = entity.JWBS.Trim();
             }
 
             if (!string.IsNullOrEmpty(entity.ZHRZWJS))

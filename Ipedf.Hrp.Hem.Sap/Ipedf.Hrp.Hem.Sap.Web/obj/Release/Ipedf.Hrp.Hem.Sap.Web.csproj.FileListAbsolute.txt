@@ -35,3 +35,17 @@ D:\project\Item\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Web\obj\Release\Ipedf.Hrp.He
 D:\project\Item\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Web\obj\Release\Ipedf.Hrp.Hem.Sap.Web.csproj.CopyComplete
 D:\project\Item\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Web\obj\Release\Ipedf.Hrp.Hem.Sap.Web.dll
 D:\project\Item\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Web\obj\Release\Ipedf.Hrp.Hem.Sap.Web.pdb
+D:\project\xh2019\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Web\bin\Ipedf.Hrp.Hem.Sap.Web.dll.config
+D:\project\xh2019\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Web\bin\Ipedf.Hrp.Hem.Sap.Web.dll
+D:\project\xh2019\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Web\bin\Ipedf.Hrp.Hem.Sap.Web.pdb
+D:\project\xh2019\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Web\bin\Ipedf.Hrp.Hem.Sap.BizLogic.dll
+D:\project\xh2019\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Web\bin\Ipedf.Hrp.Hem.Sap.Entity.dll
+D:\project\xh2019\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Web\bin\Ipedf.Hrp.Hem.Sap.DataAccess.dll
+D:\project\xh2019\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Web\bin\Ipedf.Hrp.Hem.Sap.BizLogic.pdb
+D:\project\xh2019\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Web\bin\Ipedf.Hrp.Hem.Sap.Entity.pdb
+D:\project\xh2019\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Web\bin\Ipedf.Hrp.Hem.Sap.DataAccess.pdb
+D:\project\xh2019\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Web\obj\Release\Ipedf.Hrp.Hem.Sap.Web.csprojAssemblyReference.cache
+D:\project\xh2019\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Web\obj\Release\Ipedf.Hrp.Hem.Sap.Web.csproj.CoreCompileInputs.cache
+D:\project\xh2019\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Web\obj\Release\Ipedf.Hrp.Hem.Sap.Web.csproj.CopyComplete
+D:\project\xh2019\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Web\obj\Release\Ipedf.Hrp.Hem.Sap.Web.dll
+D:\project\xh2019\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Web\obj\Release\Ipedf.Hrp.Hem.Sap.Web.pdb

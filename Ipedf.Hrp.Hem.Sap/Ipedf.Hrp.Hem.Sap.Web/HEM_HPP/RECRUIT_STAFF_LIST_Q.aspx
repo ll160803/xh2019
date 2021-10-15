@@ -496,9 +496,9 @@
                 <asp:ListItem Value="1000">发送失败</asp:ListItem>
               </asp:DropDownList>&nbsp;
               <asp:Button ID="btn_All_Npoi" runat="server" class="Content2-btn btn btn-primary btn-sm"  
-        Text="导出" OnClick="btn_All_Npoi_Click" />   
-              <asp:Button ID="btn_All_fj" runat="server" class="Content2-btn btn btn-primary btn-sm"  
-        Text="导出附件" OnClick="btn_All_fj_Click" />  
+        Text="导出" OnClick="btn_All_Npoi_Click" />
+              <asp:Button ID="btn_All_fj" runat="server" class="Content2-btn btn btn-primary btn-sm" 
+        Text="导出附件" OnClick="btn_All_fj_Click" />
               <button id="a_divsx" type="button" class="Content2-btn btn btn-primary btn-sm">筛选</button>
 <asp:Button ID="btn_query" runat="server" class="Content2-btn btn btn-primary btn-sm"  Text="查询" OnClientClick="queryStringSql('N');" OnClick="btn_query_Click" />
 

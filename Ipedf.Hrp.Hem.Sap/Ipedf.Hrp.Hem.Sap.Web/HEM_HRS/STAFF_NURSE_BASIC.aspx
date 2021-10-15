@@ -383,9 +383,14 @@
             </div>
             <div class="form-group row">
                 <label for="name" class="col-sm-2 control-label">是否护士资格证：</label>
-                <div class="col-sm-8">
+                <div class="col-sm-3">
                     <asp:CheckBox ID="ckInputIS_CERTIFICATE" runat="server" />
                  </div>
+                 <label for="regHobby" class="col-sm-2 control-label">
+                    有无既往病史：</label>
+                <div class="col-sm-3">
+                     <asp:TextBox ID="txtInputJWBS" runat="server" MaxLength="50"  class="form-control"></asp:TextBox>
+                </div>
             </div>
             <%--<div class="form-group row">
                 <label for="regSkill" class="col-sm-2 control-label">

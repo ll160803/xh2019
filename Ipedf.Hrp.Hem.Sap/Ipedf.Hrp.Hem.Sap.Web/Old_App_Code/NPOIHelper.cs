@@ -104,7 +104,7 @@ namespace Ipedf.Hrp.Hem.Sap.Web
                 //    //sheet.AddMergedRegion(new CellRangeAddress(0, 2, icolIndex, icolIndex));
                 //    icolIndex++;
                 //}
-                int icolIndex = 50;
+                int icolIndex = 51;
 
                 int[] nRows = itemHeader.GroupBy(o => o.ROWSTART).Select(p => p.Key).ToArray();
 
@@ -126,7 +126,7 @@ namespace Ipedf.Hrp.Hem.Sap.Web
                 cellStyle.BorderLeft = NPOI.SS.UserModel.BorderStyle.Thin;
                 cellStyle.BorderRight = NPOI.SS.UserModel.BorderStyle.Thin;
                 cellStyle.BorderTop = NPOI.SS.UserModel.BorderStyle.Thin;
-
+                cellStyle.WrapText = true;
 
                 NPOI.SS.UserModel.IFont cellfont = workbook.CreateFont();
                 cellfont.Boldweight = (short)FontBoldWeight.Normal;
@@ -140,12 +140,18 @@ namespace Ipedf.Hrp.Hem.Sap.Web
                     IRow DataRow = sheet.CreateRow(iRowIndex);
                     foreach (DataColumn Colitem in dt.Columns)
                     {
-
+                        String cllV = Rowitem[Colitem].ToString();
+                        if (!String.IsNullOrEmpty(cllV))
+                        {
+                            cllV = cllV.Replace("@#", "\n");
+                        }
                         ICell cell = DataRow.CreateCell(iCellIndex);
-                        cell.SetCellValue(Rowitem[Colitem].ToString());
+                        cell.SetCellValue(cllV);
                         cell.CellStyle = cellStyle;
+
                         iCellIndex++;
                     }
+                    DataRow.Height = 38 * 20;
                     iCellIndex = 0;
                     iRowIndex++;
                 }
@@ -281,7 +287,7 @@ namespace Ipedf.Hrp.Hem.Sap.Web
                     //    //sheet.AddMergedRegion(new CellRangeAddress(0, 2, icolIndex, icolIndex));
                     //    icolIndex++;
                     //}
-                    int icolIndex = 50;
+                    int icolIndex = 51;
 
                     int[] nRows = itemHeader.GroupBy(o => o.ROWSTART).Select(p => p.Key).ToArray();
 
@@ -304,7 +310,7 @@ namespace Ipedf.Hrp.Hem.Sap.Web
                     cellStyle.BorderRight = NPOI.SS.UserModel.BorderStyle.Thin;
                     cellStyle.BorderTop = NPOI.SS.UserModel.BorderStyle.Thin;
 
-
+                    cellStyle.WrapText = true;
                     NPOI.SS.UserModel.IFont cellfont = workbook.CreateFont();
                     cellfont.Boldweight = (short)FontBoldWeight.Normal;
                     cellStyle.SetFont(cellfont);
@@ -317,12 +323,17 @@ namespace Ipedf.Hrp.Hem.Sap.Web
                         IRow DataRow = sheet.CreateRow(iRowIndex);
                         foreach (DataColumn Colitem in dt.Columns)
                         {
-
+                            String cllV = Rowitem[Colitem].ToString();
+                            if (!String.IsNullOrEmpty(cllV))
+                            {
+                                cllV = cllV.Replace("@#", "\n");
+                            }
                             ICell cell = DataRow.CreateCell(iCellIndex);
-                            cell.SetCellValue(Rowitem[Colitem].ToString());
+                            cell.SetCellValue(cllV);
                             cell.CellStyle = cellStyle;
                             iCellIndex++;
                         }
+                        DataRow.Height = 38 * 20;
                         iCellIndex = 0;
                         iRowIndex++;
                     }
@@ -424,7 +435,7 @@ namespace Ipedf.Hrp.Hem.Sap.Web
                 //    //sheet.AddMergedRegion(new CellRangeAddress(0, 2, icolIndex, icolIndex));
                 //    icolIndex++;
                 //}
-                int icolIndex = 50;
+                int icolIndex = 51;
                 int[] nRows = itemHeader.GroupBy(o => o.RowStart).Select(p => p.Key).ToArray();
 
                 for (int i = 0; i < nRows.Length; i++)
@@ -445,7 +456,7 @@ namespace Ipedf.Hrp.Hem.Sap.Web
                 cellStyle.BorderLeft = NPOI.SS.UserModel.BorderStyle.Thin;
                 cellStyle.BorderRight = NPOI.SS.UserModel.BorderStyle.Thin;
                 cellStyle.BorderTop = NPOI.SS.UserModel.BorderStyle.Thin;
-
+                cellStyle.WrapText = true;
 
                 NPOI.SS.UserModel.IFont cellfont = workbook.CreateFont();
                 cellfont.Boldweight = (short)FontBoldWeight.Normal;
@@ -459,12 +470,17 @@ namespace Ipedf.Hrp.Hem.Sap.Web
                     IRow DataRow = sheet.CreateRow(iRowIndex);
                     foreach (DataColumn Colitem in dt.Columns)
                     {
-
+                        String cllV = Rowitem[Colitem].ToString();
+                        if (!String.IsNullOrEmpty(cllV))
+                        {
+                            cllV = cllV.Replace("@#", "\n");
+                        }
                         ICell cell = DataRow.CreateCell(iCellIndex);
-                        cell.SetCellValue(Rowitem[Colitem].ToString());
+                        cell.SetCellValue(cllV);
                         cell.CellStyle = cellStyle;
                         iCellIndex++;
                     }
+                    DataRow.Height = 38 * 20;
                     iCellIndex = 0;
                     iRowIndex++;
                 }
