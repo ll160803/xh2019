@@ -271,7 +271,15 @@ namespace Ipedf.Hrp.Hem.Sap.Entity
 		
 		public System.String  ZHRZWJS{get{ return  _ZHRZWJS;}set{ _ZHRZWJS = value;}}
 
-        System.Decimal _IS_STANDARD;
+		System.String _SCHOOLINFO;
+
+		public System.String SCHOOLINFO { get { return _SCHOOLINFO; } set { _SCHOOLINFO = value; } }
+
+		System.String _JWBS;
+
+		public System.String JWBS { get { return _JWBS; } set { _JWBS = value; } }
+
+		System.Decimal _IS_STANDARD;
 
         public System.Decimal IS_STANDARD { get { return _IS_STANDARD; } set { _IS_STANDARD = value; } }
 

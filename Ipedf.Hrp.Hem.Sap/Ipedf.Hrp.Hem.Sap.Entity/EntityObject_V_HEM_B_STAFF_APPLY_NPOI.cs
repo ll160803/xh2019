@@ -628,6 +628,10 @@ namespace Ipedf.Hrp.Hem.Sap.Entity
         [DataMember]
         public System.String OUTOCEAN { get { return _OUTOCEAN; } set { _OUTOCEAN = value; } }
 
-		#endregion 
+		System.String _JWBS;
+		[DataMember]
+		public System.String JWBS { get { return _JWBS; } set { _JWBS = value; } }
+
+		#endregion
 	}	
 }

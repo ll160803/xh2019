@@ -391,6 +391,7 @@ namespace Ipedf.Hrp.Hem.Sap.BizLogic
                         {
                             if (!listPhone.Contains(itemHSP[i].USRID_TEL))
                             {
+                                //var smg=SendMessage(itemHSP[i].USRID_TEL, Mac, content + " 确认请回复 1;");
                                 listPhone.Add(itemHSP[i].USRID_TEL);
                                 EntityObject_HEM_B_PHONE_MSSAGE entitySave = new EntityObject_HEM_B_PHONE_MSSAGE();
                                 entitySave.APPLY_ID = itemHSP[i].ID;

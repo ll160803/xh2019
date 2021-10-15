@@ -69,10 +69,11 @@ namespace Ipedf.Hrp.Hem.Sap.BizLogic
                 dtYs = getDtYs();
             }
 
-            if (TypeNo == "PQZ" || TypeNo == "1005")
-            {
-                dtPqz = getDtPqz();
-            }
+            //if (TypeNo == "PQZ" || TypeNo == "1005" || TypeNo == "All")
+            //{
+            //    dtPqz = getDtYwsx();
+            //    dtPqz.TableName = "T6";
+            //}
             
             DisplayObject_V_HEM_B_STAFF_APPLY_NPOI[] itemDisplay = HelperObject_V_HEM_B_STAFF_APPLY_NPOI.Query(cause);
             int nCount1 = 1;
@@ -190,6 +191,7 @@ namespace Ipedf.Hrp.Hem.Sap.BizLogic
                         newRowWjs["OPERATOR_ONE"] = display.OPERATOR_ONE;//27操作成绩
                         newRowWjs["USRID_MAIL"] = display.USRID_MAIL;//邮箱
                         newRowWjs["OUTOCEAN"] = display.OUTOCEAN;//用户类型
+                        newRowWjs["JWBS"] = display.JWBS;//既往病史
                         dtWjs.Rows.Add(newRowWjs);
 
                         nCount2 = nCount2 + 1;
@@ -241,6 +243,7 @@ namespace Ipedf.Hrp.Hem.Sap.BizLogic
                         newRowYnsx["OPERATOR_ONE"] = display.OPERATOR_ONE;//29操作成绩
                         newRowYnsx["USRID_MAIL"] = display.USRID_MAIL;//邮箱
                         newRowYnsx["OUTOCEAN"] = display.OUTOCEAN;//用户类型
+                        newRowYnsx["JWBS"] = display.JWBS;//既往病史
                         dtYnsx.Rows.Add(newRowYnsx);
                         nCount3 = nCount3 + 1;
                     }
@@ -296,6 +299,7 @@ namespace Ipedf.Hrp.Hem.Sap.BizLogic
                         newRowYwsx["OPERATOR_ONE"] = display.OPERATOR_ONE;//28操作成绩
                         newRowYwsx["USRID_MAIL"] = display.USRID_MAIL;//邮箱
                         newRowYwsx["OUTOCEAN"] = display.OUTOCEAN;//用户类型
+                        newRowYwsx["JWBS"] = display.JWBS;//既往病史
                         dtYwsx.Rows.Add(newRowYwsx);
                         nCount4 = nCount4 + 1;
                     }
@@ -326,17 +330,17 @@ namespace Ipedf.Hrp.Hem.Sap.BizLogic
                             if(!string.IsNullOrEmpty(sBEGDA))
                             {
                                 dtDate = DateTime.Parse(sBEGDA);
-                                sBEGDA = dtDate.ToString("yyyy.MM.dd");
+                                sBEGDA = dtDate.ToString("yyyy.MM");
                             }
                             sENDDA = display.SF_BS_EDUCATION_ENDDA;
 
                             if(!string.IsNullOrEmpty(sENDDA))
                             {
                                 dtDate = DateTime.Parse(sENDDA);
-                                sENDDA = dtDate.ToString("yyyy.MM.dd");
+                                sENDDA = dtDate.ToString("yyyy.MM");
                             }
                             //dtDate = DateTime.Parse();
-                            newRowYs["SF_BS_EDUCATION_INSTI"] = display.SF_BS_EDUCATION_INSTI + "(" + display.SF_BS_EDUCATION_ZHRXKZY1 + sBEGDA + "-" + sENDDA + ")";//10博士学校
+                            newRowYs["SF_BS_EDUCATION_INSTI"] = display.SF_BS_EDUCATION_INSTI + "@#" + display.SF_BS_EDUCATION_ZHRXKZY1 +"@#"+ sBEGDA + "-" + sENDDA;//10博士学校
                         }else{
                             newRowYs["SF_BS_EDUCATION_INSTI"] = "";
                         }
@@ -369,7 +373,7 @@ namespace Ipedf.Hrp.Hem.Sap.BizLogic
                                 sENDDA = dtDate.ToString("yyyy.MM.dd");
                             }
 
-                            newRowYs["SF_SS_EDUCATION_INSTI"] = display.SF_SS_EDUCATION_INSTI + "(" + display.SF_SS_EDUCATION_ZHRXKZY1 + sBEGDA + "-" + sENDDA + ")";//10博士学校
+                            newRowYs["SF_SS_EDUCATION_INSTI"] = display.SF_SS_EDUCATION_INSTI + "@#"  + display.SF_SS_EDUCATION_ZHRXKZY1 + "@#" + sBEGDA + "-" + sENDDA ;//10博士学校
                         }else
                         {
                             newRowYs["SF_SS_EDUCATION_INSTI"] = "";//12硕士学校
@@ -394,7 +398,7 @@ namespace Ipedf.Hrp.Hem.Sap.BizLogic
                                 sENDDA = dtDate.ToString("yyyy.MM.dd");
                             }
 
-                            newRowYs["SF_BK_EDUCATION_INSTI"] = display.SF_BK_EDUCATION_INSTI + "(" + display.SF_BK_EDUCATION_ZHRXKZY1 + sBEGDA + "-" + sENDDA + ")";//10博士学校
+                            newRowYs["SF_BK_EDUCATION_INSTI"] = display.SF_BK_EDUCATION_INSTI + "@#" + display.SF_BK_EDUCATION_ZHRXKZY1 + "@#" + sBEGDA + "-" + sENDDA ;//10博士学校
                         }
                         else
                         {
@@ -437,149 +441,204 @@ namespace Ipedf.Hrp.Hem.Sap.BizLogic
                         newRowYs["USRID_MAIL"] = display.USRID_MAIL;//邮箱
                         newRowYs["OUTOCEAN"] = display.OUTOCEAN;//用户类型
                         newRowYs["IS_SZHY"] = display.IS_SZHY;//用户类型
+                        newRowYs["JWBS"] = display.JWBS;//既往病史
                         dtYs.Rows.Add(newRowYs);
                         nCount5 = nCount5 + 1;
                     }
                 }
 
-                if (TypeNo == "PQZ" || TypeNo == "1005")
-                {
-                    DataRow newRowYs = dtPqz.NewRow();
-                    newRowYs["NO"] = nCount5.ToString();//1编号
-                    newRowYs["NACHN"] = display.NACHN;//2姓名
-                    newRowYs["SEX"] = display.SEX;//3性别
-                    newRowYs["GBDAT"] = display.GBDAT.ToString("yyyy-MM-dd");//4出生年月
-                    newRowYs["ICNUM"] = display.ICNUM;//身份证号
-                    newRowYs["SF_FAMST_NAME"] = display.SF_FAMST_NAME;//5婚姻状况
-                    newRowYs["ZHRJG"] = display.ZHRJG;//籍贯
-                    newRowYs["PCODE_NAME"] = display.PCODE_NAME;//5政治面貌
-                    newRowYs["DT_HH_EDUCATION_NAME"] = display.DT_HH_EDUCATION_NAME;//6最高学历
-                    newRowYs["DT_ZG_TYPE_NAME"] = display.DT_ZG_TYPE_NAME;//6最高学历学科类型
-                    newRowYs["SF_HH_EDUCATION_ZHRXKZY1"] = display.SF_HH_EDUCATION_ZHRXKZY1;//7最高学历专业
-                    newRowYs["SF_HH_EDUCATION_ZHRDSXM"] = display.SF_HH_EDUCATION_ZHRDSXM;//8最高学历导师
-                    newRowYs["SF_ZHRWYSP_NAME"] = display.SF_ZHRWYSP_NAME;//9外语水平
+                //if (TypeNo == "PQZ" || TypeNo == "1005" || TypeNo == "All")
+                //{
+                //    if (display.SF_SS_EDUCATION_SLART != "11" && display.TYPE_ID == "1005")
+                //    {
 
-                    if (!string.IsNullOrEmpty(display.SF_BS_EDUCATION_INSTI))
-                    {
-                        sBEGDA = display.SF_BS_EDUCATION_BEGDA;
-                        if (!string.IsNullOrEmpty(sBEGDA))
-                        {
-                            dtDate = DateTime.Parse(sBEGDA);
-                            sBEGDA = dtDate.ToString("yyyy.MM.dd");
-                        }
-                        sENDDA = display.SF_BS_EDUCATION_ENDDA;
+                //        DataRow newRowYs = dtPqz.NewRow();
+                //        newRowYs["NO"] = nCount5.ToString();//1编号
+                //        if (!string.IsNullOrEmpty(display.SF_BK_EDUCATION_INSTI))
+                //        {
+                //            newRowYs["SF_BK_EDUCATION_INSTI"] = display.SF_BK_EDUCATION_INSTI + "(" + display.SF_BK_EDUCATION_ZHRXKZY1 + ")";//2本科学校
+                //        }
+                //        else
+                //        {
+                //            newRowYs["SF_BK_EDUCATION_INSTI"] = "";
+                //        }
+                //        newRowYs["NACHN"] = display.NACHN;//3姓名
+                //        newRowYs["SF_BK_EDUCATION_ENDDA"] = display.SF_BK_EDUCATION_ENDDA;//4本科毕业日期
+                //        newRowYs["DT_BK_EDUCATION_NAME"] = display.DT_BK_EDUCATION_NAME;//5本科学历
+                //        newRowYs["ZHRJG"] = display.ZHRJG;//6籍贯
+                //        newRowYs["PCODE_NAME"] = display.PCODE_NAME;//7政治面貌
+                //        newRowYs["RACKY_NAME"] = display.RACKY_NAME;//8民族
+                //        newRowYs["GBDAT"] = display.GBDAT.ToString("yyyy-MM-dd");//9出生年月
+                //        newRowYs["ICNUM"] = display.ICNUM;//身份证号
+                //        newRowYs["ZHRGRSG"] = display.ZHRGRSG;//10身高
+                //        newRowYs["SEX"] = display.SEX;//11性别
+                //        newRowYs["SF_GZ_EDUCATION_INSTI"] = display.SF_GZ_EDUCATION_INSTI;//12高中学校
+                //        newRowYs["ZHRTZGG"] = display.ZHRTZGG;//13高考成绩
+                //        newRowYs["SF_ZHRWYSP_NAME"] = display.SF_ZHRWYSP_NAME;//14外语水平
+                //        newRowYs["SF_ZHRJSJSP_NAME"] = display.SF_ZHRJSJSP_NAME;//15计算机水平
+                //        if (!string.IsNullOrEmpty(display.ZHRSXXX))
+                //        {
+                //            newRowYs["SF_WORK_SX_ZHRXXDW"] = display.ZHRSXXX;
+                //        }
+                //        else
+                //        {
+                //            newRowYs["SF_WORK_SX_ZHRXXDW"] = display.SF_WORK_SX_ZHRXXDW;//21实习医院
+                //        }
+                //        newRowYs["SX_ZHRGZNX"] = display.SX_ZHRGZNX;//17实习时长
+                //        newRowYs["ZHRTC"] = display.ZHRTC;//18特长
+                //        newRowYs["USRID_TEL"] = display.USRID_TEL;//19手机号码
+                //        newRowYs["ZHRHJJL"] = display.ZHRHJJL;//20获奖经历
+                //        newRowYs["ZHRBZ"] = display.ZHRBZ;//21备注
+                //        newRowYs["REAL_ZHRGRSG"] = display.REAL_ZHRGRSG;//22真实身高
+                //        newRowYs["REAL_ZHRGRTZ"] = display.REAL_ZHRGRTZ;//23真实体重
+                //        newRowYs["REAL_ZHRSLJZ"] = display.REAL_ZHRSLJZ;//24真实视力
+                //        newRowYs["WRITTEN_THEORY"] = display.WRITTEN_THEORY;//25笔试理论成绩
+                //        newRowYs["WRITTEN_ENGLISH"] = display.WRITTEN_ENGLISH;//26笔试英语成绩
+                //        newRowYs["WRITTEN_SUM"] = "";//27笔试总分
+                //        newRowYs["OPERATOR_ONE"] = display.OPERATOR_ONE;//28操作成绩
+                //        newRowYs["USRID_MAIL"] = display.USRID_MAIL;//邮箱
+                //        newRowYs["OUTOCEAN"] = display.OUTOCEAN;//用户类型
+                //        newRowYs["JWBS"] = display.JWBS;//既往病史
+                //        dtPqz.Rows.Add(newRowYs);
+                //        nCount5 = nCount5 + 1;
+                //        /**
+                //        DataRow newRowYs = dtPqz.NewRow();
+                //        newRowYs["NO"] = nCount5.ToString();//1编号
+                //        newRowYs["NACHN"] = display.NACHN;//2姓名
+                //        newRowYs["SEX"] = display.SEX;//3性别
+                //        newRowYs["GBDAT"] = display.GBDAT.ToString("yyyy-MM-dd");//4出生年月
+                //        newRowYs["ICNUM"] = display.ICNUM;//身份证号
+                //        newRowYs["SF_FAMST_NAME"] = display.SF_FAMST_NAME;//5婚姻状况
+                //        newRowYs["ZHRJG"] = display.ZHRJG;//籍贯
+                //        newRowYs["PCODE_NAME"] = display.PCODE_NAME;//5政治面貌
+                //        newRowYs["DT_HH_EDUCATION_NAME"] = display.DT_HH_EDUCATION_NAME;//6最高学历
+                //        newRowYs["DT_ZG_TYPE_NAME"] = display.DT_ZG_TYPE_NAME;//6最高学历学科类型
+                //        newRowYs["SF_HH_EDUCATION_ZHRXKZY1"] = display.SF_HH_EDUCATION_ZHRXKZY1;//7最高学历专业
+                //        newRowYs["SF_HH_EDUCATION_ZHRDSXM"] = display.SF_HH_EDUCATION_ZHRDSXM;//8最高学历导师
+                //        newRowYs["SF_ZHRWYSP_NAME"] = display.SF_ZHRWYSP_NAME;//9外语水平
 
-                        if (!string.IsNullOrEmpty(sENDDA))
-                        {
-                            dtDate = DateTime.Parse(sENDDA);
-                            sENDDA = dtDate.ToString("yyyy.MM.dd");
-                        }
-                        //dtDate = DateTime.Parse();
-                        newRowYs["SF_BS_EDUCATION_INSTI"] = display.SF_BS_EDUCATION_INSTI + "(" + display.SF_BS_EDUCATION_ZHRXKZY1 + sBEGDA + "-" + sENDDA + ")";//10博士学校
-                    }
-                    else
-                    {
-                        newRowYs["SF_BS_EDUCATION_INSTI"] = "";
-                    }
+                //        if (!string.IsNullOrEmpty(display.SF_BS_EDUCATION_INSTI))
+                //        {
+                //            sBEGDA = display.SF_BS_EDUCATION_BEGDA;
+                //            if (!string.IsNullOrEmpty(sBEGDA))
+                //            {
+                //                dtDate = DateTime.Parse(sBEGDA);
+                //                sBEGDA = dtDate.ToString("yyyy.MM.dd");
+                //            }
+                //            sENDDA = display.SF_BS_EDUCATION_ENDDA;
 
-                    if (!string.IsNullOrEmpty(sENDDA))
-                    {
-                        sENDDA = dtDate.ToString("yyyyMMdd");
-                        newRowYs["SF_BS_EDUCATION_ENDDA"] = sENDDA;//11博士毕业时间
-                    }
-                    else
-                    {
-                        newRowYs["SF_BS_EDUCATION_ENDDA"] = "";//11博士毕业时间
-                    }
-                    sBEGDA = "";
-                    sENDDA = "";
-                    dtDate = new DateTime();
+                //            if (!string.IsNullOrEmpty(sENDDA))
+                //            {
+                //                dtDate = DateTime.Parse(sENDDA);
+                //                sENDDA = dtDate.ToString("yyyy.MM.dd");
+                //            }
+                //            //dtDate = DateTime.Parse();
+                //            newRowYs["SF_BS_EDUCATION_INSTI"] = display.SF_BS_EDUCATION_INSTI + "(" + display.SF_BS_EDUCATION_ZHRXKZY1 + sBEGDA + "-" + sENDDA + ")";//10博士学校
+                //        }
+                //        else
+                //        {
+                //            newRowYs["SF_BS_EDUCATION_INSTI"] = "";
+                //        }
 
-                    if (!string.IsNullOrEmpty(display.SF_SS_EDUCATION_INSTI))
-                    {
-                        sBEGDA = display.SF_SS_EDUCATION_BEGDA;
-                        if (!string.IsNullOrEmpty(sBEGDA))
-                        {
-                            dtDate = DateTime.Parse(sBEGDA);
-                            sBEGDA = dtDate.ToString("yyyy.MM.dd");
-                        }
-                        sENDDA = display.SF_SS_EDUCATION_ENDDA;
+                //        if (!string.IsNullOrEmpty(sENDDA))
+                //        {
+                //            sENDDA = dtDate.ToString("yyyyMMdd");
+                //            newRowYs["SF_BS_EDUCATION_ENDDA"] = sENDDA;//11博士毕业时间
+                //        }
+                //        else
+                //        {
+                //            newRowYs["SF_BS_EDUCATION_ENDDA"] = "";//11博士毕业时间
+                //        }
+                //        sBEGDA = "";
+                //        sENDDA = "";
+                //        dtDate = new DateTime();
 
-                        if (!string.IsNullOrEmpty(sENDDA))
-                        {
-                            dtDate = DateTime.Parse(sENDDA);
-                            sENDDA = dtDate.ToString("yyyy.MM.dd");
-                        }
+                //        if (!string.IsNullOrEmpty(display.SF_SS_EDUCATION_INSTI))
+                //        {
+                //            sBEGDA = display.SF_SS_EDUCATION_BEGDA;
+                //            if (!string.IsNullOrEmpty(sBEGDA))
+                //            {
+                //                dtDate = DateTime.Parse(sBEGDA);
+                //                sBEGDA = dtDate.ToString("yyyy.MM.dd");
+                //            }
+                //            sENDDA = display.SF_SS_EDUCATION_ENDDA;
 
-                        newRowYs["SF_SS_EDUCATION_INSTI"] = display.SF_SS_EDUCATION_INSTI + "(" + display.SF_SS_EDUCATION_ZHRXKZY1 + sBEGDA + "-" + sENDDA + ")";//10博士学校
-                    }
-                    else
-                    {
-                        newRowYs["SF_SS_EDUCATION_INSTI"] = "";//12硕士学校
-                    }
+                //            if (!string.IsNullOrEmpty(sENDDA))
+                //            {
+                //                dtDate = DateTime.Parse(sENDDA);
+                //                sENDDA = dtDate.ToString("yyyy.MM.dd");
+                //            }
 
-                    sBEGDA = "";
-                    sENDDA = "";
-                    dtDate = new DateTime();
-                    if (!string.IsNullOrEmpty(display.SF_BK_EDUCATION_INSTI))
-                    {
-                        sBEGDA = display.SF_BK_EDUCATION_BEGDA;
-                        if (!string.IsNullOrEmpty(sBEGDA))
-                        {
-                            dtDate = DateTime.Parse(sBEGDA);
-                            sBEGDA = dtDate.ToString("yyyy.MM.dd");
-                        }
-                        sENDDA = display.SF_BK_EDUCATION_ENDDA;
+                //            newRowYs["SF_SS_EDUCATION_INSTI"] = display.SF_SS_EDUCATION_INSTI + "(" + display.SF_SS_EDUCATION_ZHRXKZY1 + sBEGDA + "-" + sENDDA + ")";//10博士学校
+                //        }
+                //        else
+                //        {
+                //            newRowYs["SF_SS_EDUCATION_INSTI"] = "";//12硕士学校
+                //        }
 
-                        if (!string.IsNullOrEmpty(sENDDA))
-                        {
-                            dtDate = DateTime.Parse(sENDDA);
-                            sENDDA = dtDate.ToString("yyyy.MM.dd");
-                        }
+                //        sBEGDA = "";
+                //        sENDDA = "";
+                //        dtDate = new DateTime();
+                //        if (!string.IsNullOrEmpty(display.SF_BK_EDUCATION_INSTI))
+                //        {
+                //            sBEGDA = display.SF_BK_EDUCATION_BEGDA;
+                //            if (!string.IsNullOrEmpty(sBEGDA))
+                //            {
+                //                dtDate = DateTime.Parse(sBEGDA);
+                //                sBEGDA = dtDate.ToString("yyyy.MM.dd");
+                //            }
+                //            sENDDA = display.SF_BK_EDUCATION_ENDDA;
 
-                        newRowYs["SF_BK_EDUCATION_INSTI"] = display.SF_BK_EDUCATION_INSTI + "(" + display.SF_BK_EDUCATION_ZHRXKZY1 + sBEGDA + "-" + sENDDA + ")";//10博士学校
-                    }
-                    else
-                    {
-                        newRowYs["SF_BK_EDUCATION_INSTI"] = "";//13本科学校
-                    }
-                    sBEGDA = "";
-                    sENDDA = "";
-                    dtDate = new DateTime();
-                    newRowYs["BBJH"] = "";//14本部计划
-                    newRowYs["XBJH"] = "";//15西院计划
-                    //newRowYs["DYZY"] = display.FIRSTCHOICE;//16第一志愿
-                    //newRowYs["DEZY"] = display.SECONDCHOICE;//17第二志愿
-                    newRowYs["PRACTICE_TYPE_ID_NAME"] = display.PRACTICE_TYPE_ID_NAME;//17执业类型
-                    newRowYs["ESA"] = display.ESA;//18A
-                    newRowYs["ESB"] = display.ESB;//19B
-                    newRowYs["ESC"] = display.ESC;//20C
-                    newRowYs["EQW"] = display.EQW;//21权威
-                    newRowYs["EHX"] = display.EHX;//22核心
-                    newRowYs["EYB"] = display.EYB;//23一般
-                    newRowYs["ESCI"] = display.ESCI;//24SCI
-                    newRowYs["EOTHER"] = display.EOTHER;//25其他
-                    newRowYs["KYQK"] = "";//26科研情况
-                    newRowYs["QTCG"] = "";//27其他相关成果
-                    newRowYs["REMAEK"] = "";//28备注
-                    newRowYs["LXYJ"] = "";//29选留意见
-                    newRowYs["ZZJG"] = "";//30最终结果
-                    newRowYs["SFQY"] = "";//31是否签约
-                    newRowYs["USRID_TEL"] = display.USRID_TEL;//32电话
-                    newRowYs["BRQZ"] = "";//33本人签字确认
-                    newRowYs["REMAEK1"] = "";//34备注1
-                    newRowYs["REAL_ZHRGRSG"] = display.REAL_ZHRGRSG;//35真实身高
-                    newRowYs["REAL_ZHRGRTZ"] = display.REAL_ZHRGRTZ;//36真实体重
-                    newRowYs["REAL_ZHRSLJZ"] = display.REAL_ZHRSLJZ;//37真实视力
-                    newRowYs["WRITTEN_THEORY"] = display.WRITTEN_THEORY;//38笔试理论成绩
-                    newRowYs["WRITTEN_ENGLISH"] = display.WRITTEN_ENGLISH;//39笔试英语成绩
-                    newRowYs["WRITTEN_SUM"] = "";//40笔试总分
-                    newRowYs["OPERATOR_ONE"] = display.OPERATOR_ONE;//41操作成绩
-                    newRowYs["USRID_MAIL"] = display.USRID_MAIL;//邮箱
-                    newRowYs["OUTOCEAN"] = display.OUTOCEAN;//用户类型
-                    dtPqz.Rows.Add(newRowYs);
-                    nCount5 = nCount5 + 1;
-                }
+                //            if (!string.IsNullOrEmpty(sENDDA))
+                //            {
+                //                dtDate = DateTime.Parse(sENDDA);
+                //                sENDDA = dtDate.ToString("yyyy.MM.dd");
+                //            }
+
+                //            newRowYs["SF_BK_EDUCATION_INSTI"] = display.SF_BK_EDUCATION_INSTI + "(" + display.SF_BK_EDUCATION_ZHRXKZY1 + sBEGDA + "-" + sENDDA + ")";//10博士学校
+                //        }
+                //        else
+                //        {
+                //            newRowYs["SF_BK_EDUCATION_INSTI"] = "";//13本科学校
+                //        }
+                //        sBEGDA = "";
+                //        sENDDA = "";
+                //        dtDate = new DateTime();
+                //        newRowYs["BBJH"] = "";//14本部计划
+                //        newRowYs["XBJH"] = "";//15西院计划
+                //                              //newRowYs["DYZY"] = display.FIRSTCHOICE;//16第一志愿
+                //                              //newRowYs["DEZY"] = display.SECONDCHOICE;//17第二志愿
+                //        newRowYs["PRACTICE_TYPE_ID_NAME"] = display.PRACTICE_TYPE_ID_NAME;//17执业类型
+                //        newRowYs["ESA"] = display.ESA;//18A
+                //        newRowYs["ESB"] = display.ESB;//19B
+                //        newRowYs["ESC"] = display.ESC;//20C
+                //        newRowYs["EQW"] = display.EQW;//21权威
+                //        newRowYs["EHX"] = display.EHX;//22核心
+                //        newRowYs["EYB"] = display.EYB;//23一般
+                //        newRowYs["ESCI"] = display.ESCI;//24SCI
+                //        newRowYs["EOTHER"] = display.EOTHER;//25其他
+                //        newRowYs["KYQK"] = "";//26科研情况
+                //        newRowYs["QTCG"] = "";//27其他相关成果
+                //        newRowYs["REMAEK"] = "";//28备注
+                //        newRowYs["LXYJ"] = "";//29选留意见
+                //        newRowYs["ZZJG"] = "";//30最终结果
+                //        newRowYs["SFQY"] = "";//31是否签约
+                //        newRowYs["USRID_TEL"] = display.USRID_TEL;//32电话
+                //        newRowYs["BRQZ"] = "";//33本人签字确认
+                //        newRowYs["REMAEK1"] = "";//34备注1
+                //        newRowYs["REAL_ZHRGRSG"] = display.REAL_ZHRGRSG;//35真实身高
+                //        newRowYs["REAL_ZHRGRTZ"] = display.REAL_ZHRGRTZ;//36真实体重
+                //        newRowYs["REAL_ZHRSLJZ"] = display.REAL_ZHRSLJZ;//37真实视力
+                //        newRowYs["WRITTEN_THEORY"] = display.WRITTEN_THEORY;//38笔试理论成绩
+                //        newRowYs["WRITTEN_ENGLISH"] = display.WRITTEN_ENGLISH;//39笔试英语成绩
+                //        newRowYs["WRITTEN_SUM"] = "";//40笔试总分
+                //        newRowYs["OPERATOR_ONE"] = display.OPERATOR_ONE;//41操作成绩
+                //        newRowYs["USRID_MAIL"] = display.USRID_MAIL;//邮箱
+                //        newRowYs["OUTOCEAN"] = display.OUTOCEAN;//用户类型
+                //        dtPqz.Rows.Add(newRowYs);**/
+
+                //    }
+                //}
                 
             }
 
@@ -607,10 +666,10 @@ namespace Ipedf.Hrp.Hem.Sap.BizLogic
             {
                 ds.Tables.Add(dtYs);
             }
-            if (TypeNo == "PQZ" || TypeNo == "1005")
-            {
-                ds.Tables.Add(dtPqz);
-            }
+            //if (TypeNo == "PQZ" || TypeNo == "1005" || TypeNo == "All")
+            //{
+            //    ds.Tables.Add(dtPqz);
+            //}
             return ds;
         }
 
@@ -669,6 +728,7 @@ namespace Ipedf.Hrp.Hem.Sap.BizLogic
             newDt.Columns.Add("USRID_MAIL", typeof(string));//邮箱
             newDt.Columns.Add("OUTOCEAN", typeof(string));//用户类型
             newDt.Columns.Add("IS_SZHY", typeof(string));//17毕业时是否取得住院医师规范化培训合格证
+            newDt.Columns.Add("JWBS", typeof(string));//既往病史
             return newDt;
         }
 
@@ -724,6 +784,7 @@ namespace Ipedf.Hrp.Hem.Sap.BizLogic
             newDt.Columns.Add("OPERATOR_ONE", typeof(string));//41操作成绩
             newDt.Columns.Add("USRID_MAIL", typeof(string));//邮箱
             newDt.Columns.Add("OUTOCEAN", typeof(string));//用户类型
+            newDt.Columns.Add("JWBS", typeof(string));
             return newDt;
         }
 
@@ -766,6 +827,7 @@ namespace Ipedf.Hrp.Hem.Sap.BizLogic
             newDt.Columns.Add("XLYJ", typeof(string));//27
             newDt.Columns.Add("USRID_MAIL", typeof(string));//邮箱
             newDt.Columns.Add("OUTOCEAN", typeof(string));//用户类型
+            newDt.Columns.Add("JWBS", typeof(string));
             return newDt;
         }
 
@@ -804,6 +866,7 @@ namespace Ipedf.Hrp.Hem.Sap.BizLogic
             newDt.Columns.Add("OPERATOR_ONE", typeof(string));//27操作成绩
             newDt.Columns.Add("USRID_MAIL", typeof(string));//邮箱
             newDt.Columns.Add("OUTOCEAN", typeof(string));//用户类型
+            newDt.Columns.Add("JWBS", typeof(string));
             return newDt;
         }
 
@@ -845,6 +908,7 @@ namespace Ipedf.Hrp.Hem.Sap.BizLogic
             newDt.Columns.Add("OPERATOR_ONE", typeof(string));//29操作成绩
             newDt.Columns.Add("USRID_MAIL", typeof(string));//邮箱
             newDt.Columns.Add("OUTOCEAN", typeof(string));//用户类型
+            newDt.Columns.Add("JWBS", typeof(string));
 
             return newDt;
         }
@@ -884,6 +948,7 @@ namespace Ipedf.Hrp.Hem.Sap.BizLogic
             newDt.Columns.Add("OPERATOR_ONE", typeof(string));//28操作成绩
             newDt.Columns.Add("USRID_MAIL", typeof(string));//邮箱
             newDt.Columns.Add("OUTOCEAN", typeof(string));//用户类型
+            newDt.Columns.Add("JWBS", typeof(string));
             return newDt;
         }
         

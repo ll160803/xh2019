@@ -7,3 +7,12 @@ D:\project\Item\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Entity\obj\Release\Ipedf.Hrp
 D:\project\Item\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Entity\obj\Release\Ipedf.Hrp.Hem.Sap.Entity.dll
 D:\project\Item\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Entity\obj\Release\Ipedf.Hrp.Hem.Sap.Entity.pdb
 D:\project\Item\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Entity\obj\Release\Ipedf.Hrp.Hem.Sap.Entity.csprojAssemblyReference.cache
+D:\project\xh2019\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Entity\bin\Release\Ipedf.Hrp.Hem.Sap.Entity.dll
+D:\project\xh2019\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Entity\bin\Release\Ipedf.Hrp.Hem.Sap.Entity.pdb
+D:\project\xh2019\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Entity\bin\Release\Ipedf.Common.dll
+D:\project\xh2019\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Entity\bin\Release\Ipedf.Core.Web.dll
+D:\project\xh2019\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Entity\obj\Release\Ipedf.Hrp.Hem.Sap.Entity.csproj.CoreCompileInputs.cache
+D:\project\xh2019\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Entity\obj\Release\Ipedf.Hrp.Hem.Sap.Entity.csproj.CopyComplete
+D:\project\xh2019\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Entity\obj\Release\Ipedf.Hrp.Hem.Sap.Entity.dll
+D:\project\xh2019\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Entity\obj\Release\Ipedf.Hrp.Hem.Sap.Entity.pdb
+D:\project\xh2019\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.Entity\obj\Release\Ipedf.Hrp.Hem.Sap.Entity.csprojAssemblyReference.cache

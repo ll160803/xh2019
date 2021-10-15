@@ -309,6 +309,15 @@ namespace Ipedf.Hrp.Hem.Sap.Entity
 		System.String  _ZHRZWJS;
 		
 		public System.String  ZHRZWJS{get{ return  _ZHRZWJS;}set{ _ZHRZWJS = value;}}
+
+
+		System.String _SCHOOLINFO;
+
+		public System.String SCHOOLINFO { get { return _SCHOOLINFO; } set { _SCHOOLINFO = value; } }
+		System.String _JWBS;
+
+		public System.String JWBS { get { return _JWBS; } set { _JWBS = value; } }
+
 		System.Decimal  _IS_CERTIFICATE;
 		
 		public System.Decimal  IS_CERTIFICATE{get{ return  _IS_CERTIFICATE;}set{ _IS_CERTIFICATE = value;}}

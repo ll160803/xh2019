@@ -17,3 +17,12 @@ D:\project\Item\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.DataAccess\obj\Release\Ipedf
 D:\project\Item\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.DataAccess\obj\Release\Ipedf.Hrp.Hem.Sap.DataAccess.csproj.CopyComplete
 D:\project\Item\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.DataAccess\obj\Release\Ipedf.Hrp.Hem.Sap.DataAccess.dll
 D:\project\Item\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.DataAccess\obj\Release\Ipedf.Hrp.Hem.Sap.DataAccess.pdb
+D:\project\xh2019\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.DataAccess\bin\Release\Ipedf.Hrp.Hem.Sap.DataAccess.dll
+D:\project\xh2019\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.DataAccess\bin\Release\Ipedf.Hrp.Hem.Sap.DataAccess.pdb
+D:\project\xh2019\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.DataAccess\bin\Release\Ipedf.Hrp.Hem.Sap.Entity.dll
+D:\project\xh2019\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.DataAccess\bin\Release\Ipedf.Hrp.Hem.Sap.Entity.pdb
+D:\project\xh2019\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.DataAccess\obj\Release\Ipedf.Hrp.Hem.Sap.DataAccess.csprojAssemblyReference.cache
+D:\project\xh2019\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.DataAccess\obj\Release\Ipedf.Hrp.Hem.Sap.DataAccess.csproj.CoreCompileInputs.cache
+D:\project\xh2019\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.DataAccess\obj\Release\Ipedf.Hrp.Hem.Sap.DataAccess.csproj.CopyComplete
+D:\project\xh2019\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.DataAccess\obj\Release\Ipedf.Hrp.Hem.Sap.DataAccess.dll
+D:\project\xh2019\Ipedf.Hrp.Hem.Sap\Ipedf.Hrp.Hem.Sap.DataAccess\obj\Release\Ipedf.Hrp.Hem.Sap.DataAccess.pdb
