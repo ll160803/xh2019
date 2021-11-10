@@ -87,6 +87,7 @@ namespace NFine.Web.Controllers
                     operatorModel.DepartmentId = userEntity.F_DepartmentId;
                     operatorModel.RoleId = userEntity.F_RoleId;
                     operatorModel.SubmitType = userEntity.F_WeChat ?? "";
+                    operatorModel.AskTypeIds = userEntity.F_Description ?? "";
                     // operatorModel.LoginIPAddress = Net.Ip;
                     //operatorModel.LoginIPAddressName = Net.GetLocation(operatorModel.LoginIPAddress);
                     operatorModel.LoginTime = DateTime.Now;

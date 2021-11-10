@@ -5,7 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+
 using System.Windows.Forms;
 using System.Management;
 using System.Drawing.Printing;
@@ -22,7 +22,7 @@ namespace WindowsFormsApp1
     {
         private String data;
         private int type;
-        private string id;
+        private string id;//身份证号
         private String printDate = DateTime.Now.ToShortDateString().ToString();
         private int time = 30;
         private int completeTime = -1;
@@ -57,31 +57,9 @@ namespace WindowsFormsApp1
 
         private void againPrint(int type)
         {
-            string[] dateArray = Regex.Split(printDate, "/", RegexOptions.IgnoreCase);
-            string d = "";
-            switch (type)
-            {
-                case 1:
+            // 这里可以读取秋晨的接口
 
-                    GetInfo.Zhr00FmZcpsdyResponse res = WebRes.getInfo(id, type + "");
-                    if (res.Mes != "")
-                    {
-                        return;
-                    }
-                    d = res.Nachn + "\n" + res.Orgtx + "\n" + res.Zhrzc + "\n" + res.Zhrpzh + "\n" + dateArray[0] + "     " + dateArray[1] + "     " + dateArray[2] + "\n" + (res.Zpq == "" ? "" : res.Zpq.Substring(0, 4)) + "     " + (res.Zpq == "" ? "" : res.Zpq.Substring(5, 2));
-                    break;
-                case 2:
-                    return;//只用打印一份
-                    printDate = dateArray[0] + "年" + dateArray[1] + "月" + dateArray[2] + "日";
-
-                    d = "工作证明\n张  一，男，身份证号：4201141211111111111，系我\n院职工。\n特此证明。\n联系电话：027-85726359\n单位地址：湖北省武汉市江汉区解放大道1277号\n华中科技大学同济医学院附属协和医院\n2019年3月29日\n本证明仅用于证明我院员工的工作，不作为我院对该员\n工任何形式的担保文件。";
-                    //Application.Run(new print("工作证明\n张XX，男，身份证号：420114XXXXXXXXXXXXX，系我院职工。\n特此证明。\n联系电话：027 - 85726359\n单位地址：湖北省武汉市江汉区解放大道1277号\n华中科技大学同济医学院附属协和医院\n2019年3月29日\n本证明仅用于证明我院员工的工作，不作为我院对该员工任何形式的担保文件。", 2));
-                    //data = "工作证明\n" + printName + "，" + printSex + "，身份证号：" + printId + "，系我院职工。\n特此证明。\n联系电话：027 - 85726359" + (printAddress ? "\n单位地址：湖北省武汉市江汉区解放大道1277号" : "") + "\n华中科技大学同济医学院附属协和医院\n" + printDate + "\n本证明仅用于证明我院员工的工作，不作为我院对该员工任何形式的担保文件。";
-                    break;
-
-            }
-
-            if (Printer.printMethod(d, type, this))
+            if (Printer.printMethod("", type, this))
             {
                 WebRes.CompletePrint(id, type + "");
             }
