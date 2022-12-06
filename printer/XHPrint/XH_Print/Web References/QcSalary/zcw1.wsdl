@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsoap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:tns="urn:sap-com:document:sap:soap:functions:mc-style" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:n1="urn:sap-com:document:sap:rfc:functions" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:sap-com:document:sap:soap:functions:mc-style" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation>
+    <sidl:sidl xmlns:sidl="http://www.sap.com/2007/03/sidl" />
+  </wsdl:documentation>
+  <wsdl:types>
+    <xsd:schema attributeFormDefault="qualified" targetNamespace="urn:sap-com:document:sap:rfc:functions">
+      <xsd:simpleType name="char100">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="100" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char20">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="20" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char25">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="25" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char30">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char5">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="5" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char50">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="50" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char6">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="6" />
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:schema>
+    <xsd:schema xmlns:n0="urn:sap-com:document:sap:rfc:functions" attributeFormDefault="qualified" targetNamespace="urn:sap-com:document:sap:soap:functions:mc-style">
+      <xsd:import namespace="urn:sap-com:document:sap:rfc:functions" />
+      <xsd:element name="Zhr00FmGjjsrzm">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" name="Icnum" type="n0:char30" />
+            <xsd:element minOccurs="0" name="Ip" type="n0:char50" />
+            <xsd:element minOccurs="0" name="Zdtm" type="n0:char6" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Zhr00FmGjjsrzmResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Dwgjjzh" type="n0:char20" />
+            <xsd:element name="Gjjjn" type="n0:char20" />
+            <xsd:element name="Gjjsr" type="n0:char20" />
+            <xsd:element name="Grgjjzh" type="n0:char20" />
+            <xsd:element name="Icnum" type="n0:char30" />
+            <xsd:element name="Jcyh" type="n0:char100" />
+            <xsd:element name="Jjbl" type="n0:char5" />
+            <xsd:element name="Mes" type="n0:char50" />
+            <xsd:element name="Nachn" type="n0:char25" />
+            <xsd:element name="Shysrxx" type="n0:char20" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="Zhr00FmGjjsrzm">
+    <wsdl:part name="parameters" element="tns:Zhr00FmGjjsrzm" />
+  </wsdl:message>
+  <wsdl:message name="Zhr00FmGjjsrzmResponse">
+    <wsdl:part name="parameter" element="tns:Zhr00FmGjjsrzmResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ZHR00_CW1">
+    <wsdl:operation name="Zhr00FmGjjsrzm">
+      <wsdl:input message="tns:Zhr00FmGjjsrzm" />
+      <wsdl:output message="tns:Zhr00FmGjjsrzmResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ZCW1" type="tns:ZHR00_CW1">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Zhr00FmGjjsrzm">
+      <soap:operation soapAction="urn:sap-com:document:sap:soap:functions:mc-style:ZHR00_CW1:Zhr00FmGjjsrzmRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ZCW1_soap12" type="tns:ZHR00_CW1">
+    <wsoap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Zhr00FmGjjsrzm">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:soap:functions:mc-style:ZHR00_CW1:Zhr00FmGjjsrzmRequest" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ZCW1">
+    <wsdl:port name="ZCW1" binding="tns:ZCW1">
+      <soap:address location="http://p01app1:8001/sap/bc/srt/rfc/sap/zhr00_cw1/800/zcw1/zcw1" />
+    </wsdl:port>
+    <wsdl:port name="ZCW1_soap12" binding="tns:ZCW1_soap12">
+      <wsoap12:address location="http://p01app1:8001/sap/bc/srt/rfc/sap/zhr00_cw1/800/zcw1/zcw1" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

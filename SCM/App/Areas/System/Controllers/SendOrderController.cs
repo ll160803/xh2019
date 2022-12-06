@@ -48,7 +48,7 @@ namespace Ipedf.App.Areas.System.Controllers
         /// <param name="sort"></param>
         /// <param name="search"></param>
         /// <returns></returns>
-        public JsonResult GetData(Guid? id, int page, int rows, string order, string sort, string startDate, string endDate, string txtName, string txtEBELN, string WERKST)
+        public JsonResult GetData(Guid? id, int page, int rows, string order, string sort, string startDate, string endDate, string txtName, string txtEBELN, string WERKST, string txtSEND_DEPART_NAME)
         {
             // RfcNOC rnc = new RfcNOC(); 
             if (string.IsNullOrEmpty(startDate))
@@ -67,6 +67,10 @@ namespace Ipedf.App.Areas.System.Controllers
             if (!string.IsNullOrEmpty(txtName) && !string.IsNullOrEmpty(txtName.Trim()))
             {
                 sb.Append(" and TXZ01 like '%" + txtName.Trim() + "%' ");
+            }
+            if (!string.IsNullOrEmpty(txtSEND_DEPART_NAME) && !string.IsNullOrEmpty(txtSEND_DEPART_NAME.Trim()))
+            {
+                sb.Append(" and SEND_DEAPRT_NAME like '%" + txtSEND_DEPART_NAME.Trim() + "%' ");
             }
             cause.LIFNR = GetCurrentID();
             //   cause.STATUS = "0";
@@ -91,6 +95,7 @@ namespace Ipedf.App.Areas.System.Controllers
 
             foreach (var item in pageList)
             {
+               
                 item.ALLMENGE = GetSubPlanStatistic(item.EBELN, item.EBELP).Sum(p => p.MENGE);
                 item.SUREMENGE = GetSubPlanStatistic(item.EBELN, item.EBELP).Where(p => p.STATUS == "1").Sum(p => p.MENGE);
 
@@ -531,7 +536,8 @@ namespace Ipedf.App.Areas.System.Controllers
                             MONEY = entity.FPJR,
                             SEND_DEPART = entity.SEND_DEPART,
                             NAME = entity.ID,
-                            WERKS = entity.WERKS
+                            WERKS = entity.WERKS,
+                             CODE =entity.CODE
                         });
                     }
                     // return Json("S:创建成功", "text/html");
@@ -723,6 +729,7 @@ namespace Ipedf.App.Areas.System.Controllers
                             sendinfo.MONEY = curObj.FPJR;
                             sendinfo.SEND_DEPART = curObj.SEND_DEPART;
                             sendinfo.WERKS = curObj.WERKS;
+                            sendinfo.CODE = curObj.CODE;
                             BizLogicObject_SCM_B_SENDINFO.Proxy.Update(sendinfo);
                         }
                     }

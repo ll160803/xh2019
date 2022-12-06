@@ -36,6 +36,7 @@ namespace NFine.Web.Areas.SystemManage.Controllers
             }
             return Content(list.ToJson());
         }
+       
         [HttpGet]
         [HandlerAjaxOnly]
         public ActionResult GetSelectJson_Own(string enCode)

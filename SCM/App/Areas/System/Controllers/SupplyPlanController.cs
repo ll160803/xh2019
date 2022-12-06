@@ -991,7 +991,7 @@ namespace Ipedf.App.Areas.System.Controllers
             {
                 return true;
             }
-            if (entity.WERKS == "2100")
+            if (entity.WERKS == "2100" || entity.WERKS == "2300")
             {
                 return true;
             }

@@ -37,6 +37,8 @@
             return this.optional(element) || valueStripped.match(regex).length >= params[0] && valueStripped.match(regex).length <= params[1];
         }, $.validator.format("Please enter between {0} and {1} words."));
 
+       
+
     }());
 
     // Accept a value from a file input based on a required mimetype
@@ -1003,5 +1005,6 @@
         var date2 = new Date(Date.parse(value.replace("-", "/")));
         return date1 <= date2;
     }, "结束日期必须大于开始日期");
+   
 
 }));

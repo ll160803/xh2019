@@ -263,8 +263,17 @@ namespace NFine.Web.Areas.Hrm.Controllers
         public ActionResult GetLastAuditGridJson(string id, Pagination pagination, string keyword, string startDate, string endDate, int state = 2)
         {
             System.Linq.Expressions.Expression<Func<ViewAskForLeaveEntity, bool>> expression = ExtLinq.True<ViewAskForLeaveEntity>();
-            // var orgId = OperatorProvider.Provider.GetCurrent().CompanyId;//当前用户所在公司ID
+             var askIds = OperatorProvider.Provider.GetCurrent().AskTypeIds;//当前用户所在公司ID
+          //  var isBenbu = OperatorProvider.Provider.GetCurrent().SubmitType;//本部 或西院
             expression = expression.And(p => p.Flag == true);
+            //if (!String.IsNullOrEmpty(isBenbu)) //本部或者西院
+            //{
+            //    expression = expression.And(p => p.F_WeChat == isBenbu);
+            //}
+            if (!String.IsNullOrEmpty(askIds)) //可以审核的请假类型
+            {
+                expression = expression.And(p => askIds.Contains(p.AskTypeId));
+            }
             //if (!string.IsNullOrEmpty(id))//保健科不分医生和护士
             //{
             //    expression = expression.And(p => p.RYLB == id);//医生还是护士
@@ -308,8 +317,17 @@ namespace NFine.Web.Areas.Hrm.Controllers
         public ActionResult GetLastAuditGridJsonExport(string id, Pagination pagination, string keyword, string titleAndField, string startDate, string endDate, int state = 2)
         {
             System.Linq.Expressions.Expression<Func<ViewAskForLeaveEntity, bool>> expression = ExtLinq.True<ViewAskForLeaveEntity>();
-            // var orgId = OperatorProvider.Provider.GetCurrent().CompanyId;//当前用户所在公司ID
+            var askIds = OperatorProvider.Provider.GetCurrent().AskTypeIds;//当前用户所在公司ID
+           // var isBenbu = OperatorProvider.Provider.GetCurrent().SubmitType;//本部 或西院
             expression = expression.And(p => p.Flag == true);
+            //if (!String.IsNullOrEmpty(isBenbu)) //本部或者西院
+            //{
+            //    expression = expression.And(p => p.F_WeChat == isBenbu);
+            //}
+            if (!String.IsNullOrEmpty(askIds)) //可以审核的请假类型
+            {
+                expression = expression.And(p => askIds.Contains(p.AskTypeId));
+            }
             //if (!string.IsNullOrEmpty(id))//保健科不分医生和护士
             //{
             //    expression = expression.And(p => p.RYLB == id);//医生还是护士
@@ -463,6 +481,8 @@ namespace NFine.Web.Areas.Hrm.Controllers
             System.Linq.Expressions.Expression<Func<ViewHrmAskForLeaveRecordEntity, bool>> expression = ExtLinq.True<ViewHrmAskForLeaveRecordEntity>();
             var orgId = OperatorProvider.Provider.GetCurrent().CompanyId;//当前用户所在公司ID
             expression = expression.And(p => p.Flag == true);
+            var userName = OperatorProvider.Provider.GetCurrent().UserName;
+            expression = expression.And(p => p.F_RealName == userName);
             //if (!string.IsNullOrEmpty(id))//保健科不分医生和护士
             //{
             //    expression = expression.And(p => p.RYLB == id);//医生还是护士
@@ -788,6 +808,38 @@ namespace NFine.Web.Areas.Hrm.Controllers
             askApp.SubmitForm(entity, keyValue);
             return Success("审核成功。");
         }
+
+        [HttpPost]
+        [HandlerAuthorize]
+        [HandlerAjaxOnly]
+        [ValidateAntiForgeryToken]
+        public ActionResult AuditSubmitLeavePage(string keyValue)
+        {
+            String[] ids = keyValue.Split(new string[]{ "," }, StringSplitOptions.RemoveEmptyEntries);
+            foreach(var id in ids)
+            {
+                AskForLeaveEntity entity = askApp.GetForm(id);
+                if (entity.State != ((int)AskLeaveStateType.已提交))
+                {
+                    return Error("此请假已经审核，请勿重复操作，具体请联系管理员。");
+                }
+                if (entity.Flag == true)
+                {
+                    entity.LastAudit = OperatorProvider.Provider.GetCurrent().UserName;
+                    entity.LastAuditTime = DateTime.Now;
+                }
+                if (entity.Flag == false)
+                {
+                    entity.LeaderAudit = OperatorProvider.Provider.GetCurrent().UserName;
+                    entity.LeaderAuditTime = DateTime.Now;
+                }
+                entity.State = 3;
+                entity.Suggestion = "同意";
+                askApp.SubmitForm(entity, id);
+
+            }
+            return Success("审核成功。");
+        }
         /// <summary>
         /// 推送数据到SAP 科室主任
         /// </summary>
@@ -857,7 +909,22 @@ namespace NFine.Web.Areas.Hrm.Controllers
                 //sb.AppendFormat(" and Flag={0} ", (int)AskLeaveType.病产假);//是产、病假
                 //var listIds = askApp.GetIdList(sb.ToString());
                 ViewAskForLeaveApp viewAskApp = new ViewAskForLeaveApp();
-                var listIds = viewAskApp.GetList(new Pagination { page = 1, rows = int.MaxValue, sidx = "F_Id", sord = "asc" }, x => x.State == 3 & x.Flag == true);
+                System.Linq.Expressions.Expression<Func<ViewAskForLeaveEntity, bool>> expression = ExtLinq.True<ViewAskForLeaveEntity>();
+                var askIds = OperatorProvider.Provider.GetCurrent().AskTypeIds;//当前用户所在公司ID
+               // var isBenbu = OperatorProvider.Provider.GetCurrent().SubmitType;//本部 或西院
+                expression = expression.And(p => p.Flag == true);
+                expression = expression.And(p => p.State == 3);
+
+                //if (!String.IsNullOrEmpty(isBenbu)) //本部或者西院
+                //{
+                //    expression = expression.And(p => p.F_WeChat == isBenbu);
+                //}
+
+                if (!String.IsNullOrEmpty(askIds)) //可以审核的请假类型
+                {
+                    expression = expression.And(p => askIds.Contains(p.AskTypeId));
+                }
+                var listIds = viewAskApp.GetList(new Pagination { page = 1, rows = int.MaxValue, sidx = "F_Id", sord = "asc" },expression);
 
                 if (listIds.Count <= 0)
                 {

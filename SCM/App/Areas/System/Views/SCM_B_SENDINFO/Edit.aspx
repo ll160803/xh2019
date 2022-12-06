@@ -201,6 +201,9 @@
                         case "2100":
                             var url = '<%: Url.Content("~/System/SCM_D_SENDDEPART/GetComBoxData?type=2100")%>';
                             break;
+                        case "2300":
+                            var url = '<%: Url.Content("~/System/SCM_D_SENDDEPART/GetComBoxData?type=2300")%>';
+                                 break;
                         default:
                             var url = '<%: Url.Content("~/System/SCM_D_SENDDEPART/GetComBoxData?type=2000")%>';
                     }

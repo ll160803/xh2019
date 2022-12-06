@@ -130,6 +130,7 @@ namespace Ipedf.App.Areas.System.Controllers
             return View(curObj);
         }
         [HttpPost]
+        [ValidateInput(false)]
         public ActionResult Edit(string id, FormCollection from)
         {
             EntityObject_SCM_D_REPORT curObj = new EntityObject_SCM_D_REPORT();

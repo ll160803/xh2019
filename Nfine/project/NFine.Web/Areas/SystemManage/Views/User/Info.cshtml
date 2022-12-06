@@ -4,6 +4,11 @@
 }
 <script>
     $(function () {
+        $.validator.addMethod("password2", function (value, element) {
+            var reg = /^(?=.*?[A-Za-z])(?=.*?[0-9])(?=.*((?=[\x21-\x7e]+)[^A-Za-z0-9])).{10,}$/;
+            return this.optional(element) || reg.test(value);
+        }, "请输入至少10位密码（至少包含一个字母，一个数字和一个特殊字符）");
+
         $('.wrapper').height($(window).height() - 11);
         $("#form1").validate({
             rules: {
@@ -12,23 +17,27 @@
                 },
                 txt_NewPassword: {
                     required: true,
-                    minlength: 3
+                   // minlength: 3,
+                   
                 },
                 txt_NewTwoPassword: {
                     required: true,
-                    minlength: 3,
-                    equalTo: "#txt_NewPassword"
+                   // minlength: 3,
+                    equalTo: "#txt_NewPassword",
+                   
                 }
             },
             messages: {
                 txt_NewPassword: {
                     required: "*请输入密码",
-                    minlength: "*密码不能小于3个字符"
+                  //  minlength: "*密码不能小于3个字符",
+                    password2: "请输入至少10位密码（至少包含一个字母，一个数字和一个特殊字符）"
                 },
                 txt_NewTwoPassword: {
                     required: "*请输入确认密码",
-                    minlength: "*密码不能小于3个字符",
-                    equalTo: "*请再次输入相同的值"
+                  //  minlength: "*密码不能小于3个字符",
+                    equalTo: "*请再次输入相同的值",
+                    password2: "请输入至少10位密码（至少包含一个字母，一个数字和一个特殊字符）"
                 },
                 txt_OldPassword: {
                     required: "*请输入密码"
@@ -128,11 +137,11 @@
                     </li>
                     <li>
                         <label>新密码</label>
-                        <span style="display:table-cell;max-width:400px;" class="formValue"><input type="password" class="form-control required" autocomplete="off" placeholder="请输入密码" id="txt_NewPassword" name="txt_NewPassword" /></span>
+                        <span style="display:table-cell;max-width:400px;" class="formValue"><input type="password" class="form-control required" password2="#txt_NewPassword"  autocomplete="off" placeholder="请输入密码" id="txt_NewPassword" name="txt_NewPassword" /></span>
                     </li>
                     <li>
                         <label>确认新密码</label>
-                        <span style="display:table-cell;max-width:400px;" class="formValue"><input type="password" class="form-control required" autocomplete="off" placeholder="请输入密码" id="txt_NewTwoPassword" name="txt_NewTwoPassword" /></span>
+                        <span style="display:table-cell;max-width:400px;" class="formValue"><input type="password" class="form-control required"  password2="#txt_NewTwoPassword" autocomplete="off" placeholder="请输入密码" id="txt_NewTwoPassword" name="txt_NewTwoPassword" /></span>
                     </li>
                     <li>
                         <div style="padding-left: 115px;">

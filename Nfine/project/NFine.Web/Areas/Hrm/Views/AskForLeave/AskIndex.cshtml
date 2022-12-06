@@ -20,20 +20,20 @@
                 { label: '姓名', name: 'NACHN', width: 80, align: 'left' },
 
                 {
-                    label: '请假类型', name: 'F_ItemName', width: 80, align: 'left'
+                    label: '考勤状态类型', name: 'F_ItemName', width: 80, align: 'left'
                 },
 
                 {
-                    label: '请假开始时间', name: 'StartDate', width: 80, align: 'left',
+                    label: '开始时间', name: 'StartDate', width: 80, align: 'left',
                     formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' }
                 },
                 {
-                    label: '请假结束时间', name: 'EndDate', width: 80, align: 'left',
+                    label: '结束时间', name: 'EndDate', width: 80, align: 'left',
                     formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'Y-m-d' }
                 },
 
                 {
-                    label: '请假天数', name: 'days', width: 80, align: 'left',
+                    label: '天数', name: 'days', width: 80, align: 'left',
                     formatter: function (cellvalue, options, rowObject) {
                         return $.days_count(rowObject.StartDate, rowObject.EndDate);
                     }
@@ -96,7 +96,7 @@
     function btn_add() {
         $.modalOpen({
             id: "Form",
-            title: "新增请假",
+            title: "新建考勤状态",
             url: "/hrm/askforleave/Form",
             width: "700px",
             height: "410px",
@@ -250,7 +250,7 @@
 
         </div>
         <div class="btn-group">
-            <a id="NF-add" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_add()"><i class="fa fa-plus"></i>新建请假</a>
+            <a id="NF-add" authorize="yes" class="btn btn-primary dropdown-text" onclick="btn_add()"><i class="fa fa-plus"></i>新建考勤状态</a>
         </div>
         <div class="operate">
             <ul class="nav nav-pills">

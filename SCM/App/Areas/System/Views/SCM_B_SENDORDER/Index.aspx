@@ -23,6 +23,7 @@
                 <option value="武汉协和医院-本部">武汉协和医院-本部</option>
                 <option value="武汉协和医院-西院">武汉协和医院-西院</option>
                 <option value="武汉协和医院-肿瘤中心">武汉协和医院-肿瘤中心</option>
+                 <option value="武汉协和医院-金银湖院区">武汉协和医院-金银湖院区</option>
             </select>
             <a href="#" class="easyui-linkbutton" iconcls="icon-search" onclick="btnSearch();">查询</a>
         </div>

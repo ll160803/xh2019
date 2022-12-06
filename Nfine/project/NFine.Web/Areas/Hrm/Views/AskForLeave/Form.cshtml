@@ -41,9 +41,9 @@
 
             language: 'zh-CN'
         });
-        $("#AskTypeId").bindSelect({
-            url: "/SystemManage/ItemsData/GetSelectJson_Own?enCode=AskLeaveType"
-        });
+        //$("#AskTypeId").bindSelect({
+        //    url: "/SystemManage/ItemsData/GetSelectJson_Own?enCode=AskLeaveType"
+        //});
         $("#NACHN").combogrid({
             panelWidth: 500,
             idField: 'F_Id',
@@ -51,7 +51,7 @@
             url: '/hrm/sapuser/GetComboGridJson/',
             method: 'post',
             delay: 500,
-            // pagination: true,
+            pagination: true,
             columns: [[
                 { title: '主键', field: 'F_Id', hidden: true },
                 { title: '人员编号', field: 'PERNR', width: 80, align: 'left' },
@@ -108,11 +108,11 @@
     function submitForm() {//保存
         var NACHN = $("input[name='NACHN']").val();
         if (NACHN == "") {
-            $.modalAlert("请选择请假人", "warning");
+            $.modalAlert("请选择人员编号", "warning");
             return false;
         }
         var bt = $("#AskTypeId").find("option:selected").text();
-        if (bt != "病假") {
+        if (bt != "病假" && bt != "疫情隔离" && bt != "出武汉市") {
             if ($.trim($("#EndDate").val()) == "") {
                 $.modalAlert("请选择结束时间", "warning");
                 return false;
@@ -139,11 +139,11 @@
     function submitAndSaveForm(index) {//保存并提交a
         var NACHN = $("input[name='NACHN']").val();
         if (NACHN == "") {
-            $.modalAlert("请选择请假人", "warning");
+            $.modalAlert("请选择人员编号", "warning");
             return false;
         }
         var bt = $("#AskTypeId").find("option:selected").text();
-        if (bt != "病假") {
+        if (bt != "病假" && bt != "疫情隔离" && bt != "出武汉市") {
             if ($.trim($("#EndDate").val()) == "") {
                 $.modalAlert("请选择结束时间", "warning");
                 return false;
@@ -174,7 +174,7 @@
             return false;
         }
         var bt = $("#AskTypeId").find("option:selected").text();
-        if (bt != "病假") {
+        if (bt != "病假" && bt != "疫情隔离" && bt != "出武汉市")  {
             if ($.trim($("#EndDate").val()) == "") {
                 $.modalAlert("请选择结束时间", "warning");
                 return false;
@@ -199,7 +199,7 @@
             return false;
         }
         var bt = $("#AskTypeId").find("option:selected").text();
-        if (bt != "病假") {
+        if (bt != "病假" && bt != "疫情隔离" && bt != "出武汉市") {
             if ($.trim($("#EndDate").val()) == "") {
                 $.modalAlert("请选择结束时间", "warning");
                 return false;
@@ -221,8 +221,10 @@
         })
     }
     function ModifyFlag(obj) {
-        var txt = obj.find("option:selected").text();
-        if (txt == "病假" || txt == "产假") {
+        var txt = obj.find("option:selected").text();//需要审核的请假类型
+        var typeId = ",病假,产假,离岗,探亲假,婚假,丧假,寒假,暑假,旷工,外派支援（人事处派出）,国内进修,脱产教学,本科教学秘书,住培教学秘书,研究生教学秘书,专职科研,兼职科研,行政部门轮转,外派托管,外派博士团,外派支援（组织部派出）,育儿假,停工留薪期(工伤假)";
+
+        if (typeId.indexOf(","+txt)>=0) {
             $("#Flag").val(true);
         }
         else {
@@ -269,7 +271,7 @@
         <div style="padding-top: 20px; margin-right: 30px;">
             <table class="form">
                 <tr>
-                    <th class="formTitle">请假人</th>
+                    <th class="formTitle">人员编号</th>
                     <td class="formValue">
                         <input id="NACHN" name="NACHN" type="text" class="form-control required" placeholder="请输入请假人" />
                         <input id="HrmUserId" name="HrmUserId" type="hidden" />
@@ -281,9 +283,36 @@
                         <input id="Flag" name="Flag" type="hidden" value="true" />
                         <input id="DoctorOrNurser" name="DoctorOrNurser" type="hidden" value="true" />
                     </td>
-                    <th class="formTitle">请假类型</th>
+                    <th class="formTitle">考勤状态类型</th>
                     <td class="formValue">
-                        <select id="AskTypeId" name="AskTypeId" class="form-control required" onchange="ModifyFlag($(this));"></select>
+                        <select id="AskTypeId" name="AskTypeId" class="form-control required" onchange="ModifyFlag($(this));">
+                            <option value="10">病假</option>
+                            <option value="12">产假</option>
+                            <option value="56">探亲假</option>
+                            <option value="24">婚假</option>
+                            <option value="26">丧假</option>
+                            <option value="20">寒假</option>
+                            <option value="22">暑假</option>
+                            <option value="40">旷工</option>
+                            <option value="48">离岗</option>
+                            <option value="58">外派支援（人事处派出）</option>
+                            <option value="16">国内进修</option>
+                            <option value="60">脱产教学</option>
+                            <option value="62">本科教学秘书</option>
+                            <option value="64">住培教学秘书</option>
+                            <option value="66">研究生教学秘书</option>
+                            <option value="68">专职科研</option>
+                            <option value="70">兼职科研</option>
+                            <option value="72">行政部门轮转</option>
+                            <option value="74">外派托管</option>
+                            <option value="76">外派博士团</option>
+                            <option value="78">外派支援（组织部派出）</option>
+                            <option value="80">疫情隔离</option>
+                            @*<option value="81">出武汉市</option>*@
+                            <option value="83">育儿假</option>
+                            <option value="85">停工留薪期(工伤假)</option>
+                            <option value="87">外派支援（其他）</option>
+                        </select>
                     </td>
                 </tr>
                 <tr>

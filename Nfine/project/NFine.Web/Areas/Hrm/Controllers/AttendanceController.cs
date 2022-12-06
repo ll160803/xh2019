@@ -1,6 +1,8 @@
-﻿using NFine.Application.Hrm;
+﻿using NFine.Application.hrm;
+using NFine.Application.Hrm;
 using NFine.Application.SystemManage;
 using NFine.Code;
+using NFine.Domain.Entity.hrm;
 using NFine.Domain.Entity.Hrm;
 using NFine.Domain.Entity.SystemManage;
 using System;
@@ -551,5 +553,41 @@ namespace NFine.Web.Areas.Hrm.Controllers
             }
             return Success("审核成功。");
         }
+        [HttpGet]
+        [HandlerAjaxOnly]
+        public ActionResult GetAttendanceReport(string year)
+        {
+           
+            ViewReportApp hrmUserApp = new ViewReportApp();
+            var oragnizedId = OperatorProvider.Provider.GetCurrent().DepartmentId;
+            var submitMan = OperatorProvider.Provider.GetCurrent().UserName;
+
+            var hrmUserList = hrmUserApp.GetReportList(oragnizedId, year, submitMan);
+           
+            return Content(hrmUserList.ToJson());
+
+        }
+        [HttpPost]
+        [HandlerAjaxOnly]
+        public ActionResult GetViewReportExport( string year, string titleAndField)
+        {
+            ViewReportApp hrmUserApp = new ViewReportApp();
+            var oragnizedId = OperatorProvider.Provider.GetCurrent().DepartmentId;
+
+            var submitMan = OperatorProvider.Provider.GetCurrent().UserName;
+
+            var hrmUserList = hrmUserApp.GetReportList(oragnizedId, year, submitMan);
+
+            var dicFields = HandleTitelAndField.GetTitleAndField(titleAndField, 12, 15, 18);
+            var downUrl = NPOIWriteExcel.OutputExcel<ViewReportEntity>(hrmUserList, dicFields, new ExcelCaption { CaptionName = year+"考勤记录表", Height = 24 });
+
+            return Success("下载成功", downUrl);
+        }
+
+        public ActionResult AttendanceReport()
+        {
+            return View();
+        }
+
     }
 }

@@ -1,0 +1,129 @@
+﻿@{
+    ViewBag.Title = "科室考勤报表";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+}
+
+<script>
+    $(function () {
+        var date = new Date();
+
+        var dateStr = date.getFullYear();
+        $("#year").val(dateStr);
+        gridList();
+    })
+    function gridList() {
+        var url = ""
+
+        url = "/Hrm/Attendance/GetAttendanceReport/";//
+
+
+        var $gridList = $("#gridList");
+        $gridList.dataGrid({
+            url: url,
+            height: $(window).height() - 128,
+            colModel: [
+
+                { label: '姓名', name: 'NACHN', width: 100, align: 'left' },
+
+
+                {
+                    label: '发薪号', name: 'PERNR', width: 80, align: 'left'
+                },
+                {
+                    label: '1月', name: 'v1', width: 80, align: 'left'
+                },
+                {
+                    label: '2月', name: 'v2', width: 80, align: 'left'
+                },
+                {
+                    label: '3月', name: 'v3', width: 80, align: 'left'
+                },
+                {
+                    label: '4月', name: 'v4', width: 80, align: 'left'
+                },
+                {
+                    label: '5月', name: 'v5', width: 80, align: 'left'
+                },
+                {
+                    label: '6月', name: 'v6', width: 80, align: 'left'
+                },
+                {
+                    label: '7月', name: 'v7', width: 80, align: 'left'
+                },
+                {
+                    label: '8月', name: 'v8', width: 80, align: 'left'
+                },
+                {
+                    label: '9月', name: 'v9', width: 80, align: 'left'
+                },
+                {
+                    label: '10月', name: 'v10', width: 80, align: 'left'
+                },
+                {
+                    label: '11月', name: 'v11', width: 80, align: 'left'
+                },
+                {
+                    label: '12月', name: 'v12', width: 80, align: 'left'
+                },
+
+
+            ],
+            pager: "#gridPager",
+            sortname: 'PERNR desc',
+            viewrecords: true
+        });
+        $("#btn_search").click(function () {
+            $gridList.jqGrid('setGridParam', {
+                postData: { year: $("#year").val() }
+            }).trigger('reloadGrid');
+        });
+
+    }
+    function ExportExcel() {
+        $.ExportExcel("gridList", "/Hrm/Attendance/GetViewReportExport", { year: $("#year").val() })
+    }
+</script>
+
+<div class="topPanel">
+    <div class="toolbar">
+       
+       
+            <div class="btn-group">
+                <a id="NF-Export"  class="btn btn-primary dropdown-text" onclick="ExportExcel()"><i class="fa fa-file-excel-o"></i>导出</a>
+            </div>
+    </div>
+    <div class="search">
+        <table>
+            <tr>
+                <td>
+                    <div class="input-group">
+                        <select id="year" name="year" class="form-control" style="width:200px;" onchange="$('#btn_search').click();">
+                            <option value="2019">2019</option>
+                            <option value="2020">2020</option>
+                            <option value="2021">2021</option>
+                            <option value="2022">2022</option>
+                            <option value="2023">2023</option>
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                            <option value="2026">2026</option>
+                            <option value="2027">2027</option>
+                            <option value="2028">2028</option>
+                            <option value="2029">2029</option>
+                            <option value="2030">2030</option>
+                            <option value="2031">2031</option>
+                            <option value="2032">2032</option>
+                        </select>
+                        <span class="input-group-btn">
+                            <button id="btn_search" type="button" class="btn  btn-primary"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="gridPanel" id="main_panel">
+    <table id="gridList"></table>
+    <div id="gridPager"></div>
+</div>
+

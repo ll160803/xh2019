@@ -565,14 +565,16 @@ namespace Ipedf.App.Areas.System.Controllers
             CauseObject_V_SCM_D_SUPPLIERPLAN cause = new CauseObject_V_SCM_D_SUPPLIERPLAN();
 
             cause.SEND_ORDER_CODE = id;
-            var entitys = BizLogicObject_V_SCM_D_SUPPLIERPLAN.Proxy.Query(cause);
+          
+            var entitys = BizLogicObject_V_SCM_D_SUPPLIERPLAN.Proxy.Query(cause).ToList();
+            entitys = entitys.OrderBy(p => p.SEND_DEPART_NAME).ThenBy(t => t.CODE).ToList();
             StringBuilder sb = new StringBuilder();
             var markCode = GenerateMark(id);//生成送货清单二维码
             sb.Append("<table cellpadding=\"0\" cellspacing=\"0\">");
 
             var gysName = "";
             var FPJR = entitys.Sum(p => p.FPJR);
-            for (int i = 0; i < entitys.Length; i++)
+            for (int i = 0; i < entitys.Count; i++)
             {
                 var entity = entitys[i];
                 if (i == 0)
@@ -583,13 +585,13 @@ namespace Ipedf.App.Areas.System.Controllers
                     sb.AppendFormat("<td colspan=\"1\" style=\"height:40px;font-family:宋体;text-align:left;font-size: 12px;\" >院区：</td><td colspan=\"5\" style=\"height:40px;font-family:宋体;text-align:left;font-size: 12px;\" >发票号码：{0}</td><td colspan=\"3\" style=\"height:40px;font-family:宋体;font-size: 12px;\" >送货清单号：</td><td style=\"height:40px;font-family:宋体;font-size: 12px;\" rowspan=\"2\"> <img alt=\"显示出错\" id=\"im_1\" src=\"{3}\"  style=\" width:80px; height:80px;\"/></td></tr>", entity.FPHM, FPJR.ToString("F2"), id, markCode, entity.WERKST);
                     sb.AppendFormat("<tr><td colspan=\"4\" style=\"height:40px;font-family:宋体;text-align:left;font-size: 12px;\" >{0}</td>", entity.GYSNAME);
                     sb.AppendFormat("<td colspan=\"1\" style=\"height:40px;font-family:宋体;text-align:left;font-size: 12px;\" >{4}</td><td colspan=\"5\" style=\"height:40px;font-family:宋体;font-size: 12px;\" >发票金额：{1}</td><td colspan=\"3\" style=\"height:40px;font-family:宋体;font-size: 12px;\" >{2}</td></tr>", entity.FPHM, FPJR.ToString("F2"), id, markCode, entity.WERKST);
-                    GenerateHeadCode(sb, "订单日期", "采购订单", "行项目", "物资编码", "物资描述", "采购数量", "送货数量", "基本单位", "单价", "金额", "送达科室", "负责人", "联系电话", "商品条码");
+                    GenerateHeadCode(sb, "序号", "订单日期", "供应计划号", "物资编码", "物资描述", "采购数量", "送货数量", "基本单位", "单价", "金额", "送达科室", "负责人", "联系电话", "商品条码");
                 }
                 // var data = GenerateMark(entity.CODE);
-                GenerateCode(sb, entity.BEDAT, entity.EBELN, entity.GYJH, entity.MATNR, entity.TXZ01, entity.ORDER_MENGE.ToString(), entity.MENGE.ToString(), entity.MSEHT, entity.NETPR, entity.FPJR.ToString(), entity.SEND_DEPART_NAME, entity.LINK_PERSON, entity.LINK_TELEPHONE, entity.MATER_CODE);
+                GenerateCode(sb, (i+1).ToString(), entity.BEDAT, entity.CODE, entity.MATNR, entity.TXZ01, entity.ORDER_MENGE.ToString(), entity.MENGE.ToString(), entity.MSEHT, entity.NETPR, entity.FPJR.ToString(), entity.SEND_DEPART_NAME, entity.LINK_PERSON, entity.LINK_TELEPHONE, entity.MATER_CODE);
             }
             //GenerateBottomCode(sb, "", "", "", "", "", "", "", "", "", "", "", "", "", "");//最后一行空着
-            sb.AppendFormat("<tr><td colspan=\"5\" style=\"height:30px;font-family:宋体;border-top:solid 1px black;text-align:left;font-size: 12px;\" >供应商(盖章)：{0}</td><td colspan=\"5\" style=\"height:30px;font-family:宋体;border-top:solid 1px black;font-size: 12px;\" >采购中心(签字)：</td><td colspan=\"4\" style=\"height:30px;border-top:solid 1px black;font-family:宋体;font-size: 12px;\" >打印日期：</td></tr>", gysName);
+            sb.AppendFormat("<tr><td colspan=\"5\" style=\"height:30px;font-family:宋体;border-top:solid 1px black;text-align:left;font-size: 12px;\" >供应商(盖章)：{0}</td><td colspan=\"5\" style=\"height:30px;font-family:宋体;border-top:solid 1px black;font-size: 12px;\" >物资供应管理中心(签字)：</td><td colspan=\"4\" style=\"height:30px;border-top:solid 1px black;font-family:宋体;font-size: 12px;\" >打印日期：{1}</td></tr>", gysName,DateTime.Now.ToString("yyyy-MM-dd"));
             sb.Append("</table>");
             ViewBag.PrintStr = new MvcHtmlString(sb.ToString());
             return View();
@@ -635,13 +637,13 @@ namespace Ipedf.App.Areas.System.Controllers
         {
             var reStr =
                  "<tr>" +
-                    "<td style=\"width: 80px;border-bottom:solid 1px black;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                    "<td style=\"width: 40px;border-bottom:solid 1px black;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
                         "{0}" +
                     "</td>" +
-                     "<td style=\"width: 60px;border-bottom:solid 1px black;border-left:solid 1px black;border-top:solid 1px black;height:30px;font-family:宋体;font-size: 12px;\">" +
+                     "<td style=\"width: 80px;border-bottom:solid 1px black;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
                         "{1}" +
                     "</td>" +
-                    "<td style=\"width:60px;border-bottom:solid 1px black;border-left:solid 1px black;border-top:solid 1px black;height:30px;font-family:宋体;font-size: 12px;\">" +
+                    "<td style=\"width:80px;border-bottom:solid 1px black;border-left:solid 1px black;border-top:solid 1px black;height:30px;font-family:宋体;font-size: 12px;\">" +
                         "{2}" +
                     "</td>" +
                       "<td style=\"width: 60px;border-bottom:solid 1px black;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
@@ -691,13 +693,13 @@ namespace Ipedf.App.Areas.System.Controllers
         {
             var reStr =
                  "<tr>" +
-                    "<td style=\"width: 80px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                    "<td style=\"width: 40px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
                         "{0}" +
                     "</td>" +
-                     "<td style=\"width: 60px;border-left:solid 1px black;border-top:solid 1px black;height:30px;font-family:宋体;font-size: 12px;\">" +
+                     "<td style=\"width: 80px;border-left:solid 1px black;border-top:solid 1px black;height:30px;text-align:center;font-family:宋体;font-size: 12px;\">" +
                         "{1}" +
                     "</td>" +
-                    "<td style=\"width: 60px;border-left:solid 1px black;border-top:solid 1px black;height:30px;font-family:宋体;font-size: 12px;\">" +
+                    "<td style=\"width: 80px;border-left:solid 1px black;border-top:solid 1px black;height:30px;font-family:宋体;font-size: 12px;\">" +
                         "{2}" +
                     "</td>" +
                       "<td style=\"width: 60px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
@@ -721,7 +723,7 @@ namespace Ipedf.App.Areas.System.Controllers
                        "<td style=\"width: 60px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
                         "{9}" +
                     "</td>" +
-                       "<td style=\"width: 60px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                       "<td style=\"width: 100px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
                         "{10}" +
                     "</td>" +
                        "<td style=\"width: 60px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
@@ -731,7 +733,7 @@ namespace Ipedf.App.Areas.System.Controllers
                        "<td style=\"width: 80px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
                         "{12}" +
                     "</td>" +
-                      "<td style=\"width: 100px;border-left:solid 1px black;border-top:solid 1px black;border-right:solid 1px black;height:30px;font-family:宋体;font-size: 12px;\">" +
+                      "<td style=\"width: 60px;border-left:solid 1px black;border-top:solid 1px black;border-right:solid 1px black;height:30px;font-family:宋体;font-size: 12px;\">" +
                         "{13}" +
                     "</td>" +
                 "</tr>";
@@ -749,13 +751,13 @@ namespace Ipedf.App.Areas.System.Controllers
         {
             var reStr =
                  "<tr>" +
-                    "<td style=\"width: 80px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                    "<td style=\"width: 40px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
                         "{0}" +
                     "</td>" +
-                     "<td style=\"width: 60px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                     "<td style=\"width: 80px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
                         "{1}" +
                     "</td>" +
-                    "<td style=\"width: 60px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                    "<td style=\"width: 80px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
                         "{2}" +
                     "</td>" +
                       "<td style=\"width: 60px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
@@ -779,7 +781,7 @@ namespace Ipedf.App.Areas.System.Controllers
                       "<td style=\"width: 60px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
                         "{9}" +
                     "</td>" +
-                      "<td style=\"width: 60px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                      "<td style=\"width: 100px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
                         "{10}" +
                     "</td>" +
                       "<td style=\"width: 60px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
@@ -788,7 +790,7 @@ namespace Ipedf.App.Areas.System.Controllers
                       "<td style=\"width: 80px;border-left:solid 1px black;border-top:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
                         "{12}" +
                     "</td>" +
-                      "<td style=\"width: 100px;border-left:solid 1px black;border-top:solid 1px black;border-right:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
+                      "<td style=\"width: 60px;border-left:solid 1px black;border-top:solid 1px black;border-right:solid 1px black;text-align:center;height:30px;font-family:宋体;font-size: 12px;\">" +
                         "{13}" +
                     "</td>" +
                 "</tr>";

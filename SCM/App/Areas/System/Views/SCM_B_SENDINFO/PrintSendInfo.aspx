@@ -22,16 +22,27 @@
         function PrintPrintPage() {
             LODOP = getLodop();
             LODOP.PRINT_INIT("条码打印");
-            LODOP.ADD_PRINT_HTM(10, 10, $("#print").width(), $("#print").height(), document.getElementById("print").innerHTML);
-            LODOP.SET_PRINT_PAGESIZE(1, 2100, 2970, "");
+            LODOP.ADD_PRINT_TEXT(770, 600, 300, 100, "#/&"); //页码 1
+            LODOP.SET_PRINT_STYLEA(0, "ItemType", 2); //页码2 
+            LODOP.SET_PRINT_STYLEA(0, "Horient", 1); //页码3
+            LODOP.SET_PRINT_STYLEA(0, "Vorient", 1); //页码4
+            LODOP.ADD_PRINT_HTM(80, 40, $("#print").width(), $("#print").height(), document.getElementById("print").innerHTML);
+            LODOP.SET_PRINT_PAGESIZE(2, 2100, 2970, "");
             // LODOP.PREVIEW();
             LODOP.PRINTA(); //直接打印在默认打印机
         }
         function PrintPreviewPage() {
             LODOP = getLodop();
             LODOP.PRINT_INIT("条码打印");
-            LODOP.ADD_PRINT_HTM(10, 10, $("#print").width(), $("#print").height(), document.getElementById("print").innerHTML);
-            LODOP.SET_PRINT_PAGESIZE(1, 2100, 2970, "");
+  LODOP.ADD_PRINT_TEXT(770, 600, 300, 100, "#/&"); //页码 1
+            LODOP.SET_PRINT_STYLEA(0, "ItemType", 2); //页码2 
+LODOP.SET_PRINT_STYLEA(0,"Horient",1); //页码3
+LODOP.SET_PRINT_STYLEA(0,"Vorient",1); //页码4
+   LODOP.ADD_PRINT_HTM(80, 40, $("#print").width(), $("#print").height(), document.getElementById("print").innerHTML);         
+          
+
+
+            LODOP.SET_PRINT_PAGESIZE(2, 2100, 2970, "");
             LODOP.PREVIEW();
             //LODOP.PRINT();
         }

@@ -210,7 +210,7 @@
             range: c.validator.format("请输入一个介于 {0} 和 {1} 之间的值"),
             max: c.validator.format("请输入一个最大为 {0} 的值"),
             min: c.validator.format("请输入一个最小为 {0} 的值"),
-            compareDate:"结束日期必须大于开始日期"
+            compareDate: "结束日期必须大于开始日期"
         },
         autoCreateRanges: false,
         prototype: {
@@ -807,7 +807,8 @@
                 var date1 = new Date(Date.parse(startDate.replace("-", "/")));
                 var date2 = new Date(Date.parse(a.replace("-", "/")));
                 return date1 < date2;
-            }
+            },
+           
         }
     });
     c.format = c.validator.format
@@ -1016,4 +1017,5 @@ $(function () {
         var reg = RegExp(/[(\ )(\`)(\~)(\!)(\@)(\#)(\$)(\%)(\^)(\&)(\*)(\()(\))(\+)(\=)(\|)(\{)(\})(\')(\:)(\;)(\')(',)(\[)(\])(\.)(\<)(\>)(\/)(\?)(\~)(\！)(\@)(\#)(\￥)(\%)(\…)(\&)(\*)(\（)(\）)(\—)(\+)(\|)(\{)(\})(\【)(\】)(\‘)(\；)(\：)(\”)(\“)(\’)(\。)(\，)(\、)(\？)]+/);
         return this.optional(element) || !reg.test(value);
     }, "含有中英文特殊字符");
+
 });

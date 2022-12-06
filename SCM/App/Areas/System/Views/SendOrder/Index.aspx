@@ -230,12 +230,14 @@
             <input class="easyui-datebox" id="nowDay" value="<%:ViewBag.NowDay %>" style="width: 100px" />
             订单编号：<input class="easyui-textbox" id="txtEBELN" style="width: 100px" />
             物料名称：<input class="easyui-textbox" id="txtName" style="width: 100px" />
+            送货科室：<input class="easyui-textbox" id="txtSEND_DEPART_NAME" style="width: 100px" />
             院区：
             <select class="easyui-combobox" id="com_WERKST" style="width: 100px;">
                 <option value="全部">全部</option>
                 <option value="武汉协和医院-本部">武汉协和医院-本部</option>
                 <option value="武汉协和医院-西院">武汉协和医院-西院</option>
                 <option value="武汉协和医院-肿瘤中心">武汉协和医院-肿瘤中心</option>
+                <option value="武汉协和医院-金银湖院区">武汉协和医院-金银湖院区</option>
             </select>
             <a href="#" class="easyui-linkbutton" iconcls="icon-search" onclick="btnSearch();">查询</a>
         </div>
@@ -926,7 +928,8 @@ function CompareDate(beginDate)
                  startDate:$("#lastDay").datebox('getValue'),
                  endDate:$("#nowDay").datebox('getValue'),
                  txtName:$("#txtName").val(),
-                 txtEBELN:$("#txtEBELN").val(),
+                txtEBELN: $("#txtEBELN").val(),
+                txtSEND_DEPART_NAME: $("#txtSEND_DEPART_NAME").val(),
                  WERKST:$("#com_WERKST").combobox('getValue')
 
             });

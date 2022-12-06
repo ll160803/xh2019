@@ -198,6 +198,24 @@
      function ExportExcel() {
         $.ExportExcel("gridList", "/Hrm/AskForLeave/GetLastAuditGridJsonExport/", { keyword: $("#txt_keyword").val(), id:@ViewBag.id , state: $("#state").val()})
     }
+    function auditPage() {
+        var obj = $("#gridList").jqGrid("getRowData");
+        var ids = '';
+        for (i = 0; i < obj.length; i++) {
+            if (obj[i].State == "2") {
+                ids += obj[i].F_Id + ",";
+            }
+        }
+        $.deleteForm({
+            prompt: "注：您确定要审核这页考勤数据吗？",
+            loading: "正在提交数据...",
+            url: "/hrm/askforleave/AuditSubmitLeavePage",
+            param: {keyValue: ids},
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        })
+    }
 </script>
 
 <div class="topPanel">
@@ -233,7 +251,7 @@
                 <td>
                     <div class="input-group">
                         <span class="input-group-addon">审核状态</span>
-                        <select id="state" name="state" class="form-control" style="width:200px;" onchange="$('#btn_search').click();">
+                        <select id="state" name="state" class="form-control" style="width:100px;" onchange="$('#btn_search').click();">
                             <option value="0">全部</option>
                             <option value="3">已审核</option>
                             <option value="2" selected>未审核</option>
@@ -245,13 +263,13 @@
                 </span>*@
                     </div>
                 </td>
-                <td style="width:10px;"></td>
+                <td style="width:3px;"></td>
                 <td>
                     <div class="input-group">
                         <input id="dateLeave" type="text" class="form-control" placeholder="请选择请假时间" style="width: 200px;">
                     </div>
                 </td>
-                <td style="width:10px;"></td>
+                <td style="width:3px;"></td>
                 <td>
                     <div class="input-group">
 
@@ -266,10 +284,15 @@
                 </td>
                 <td>
                     @*<div class="input-group2">*@
-                    <span class="btn-group" style="padding-left:10px;">
+                    <span class="btn-group" style="padding-left:5px;">
                         <button id="btn_send" type="button" onclick="sendSap();" class="btn btn-success">考勤推送</button>
                     </span>
                     @*</div>*@
+                </td>
+                <td>
+                    <span class="btn-group" style="padding-left:5px;">
+                        <button id="btn_pageAudit" type="button" onclick="auditPage();" class="btn btn-success">整页审核</button>
+                    </span>
                 </td>
             </tr>
         </table>

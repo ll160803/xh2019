@@ -11,13 +11,16 @@
             -
             <input class="easyui-datebox" id="endDate" column="CREATE_TIME" style="width: 100px" />
             物料名称：<input class="easyui-textbox" id="txtName" style="width: 100px" />
+             送货科室：<input class="easyui-textbox" id="txtSEND_DEPART_NAME" style="width: 100px" />
              院区：
             <select class="easyui-combobox" id="com_WERKST" style="width: 150px;">
                 <option value="">全部</option>
                 <option value="2000">武汉协和医院-本部</option>
                 <option value="2200">武汉协和医院-西院</option>
                 <option value="2100">武汉协和医院-肿瘤中心</option>
+               <option value="2300">武汉协和医院-金银湖院区</option>
             </select>
+
             <a href="#" class="easyui-linkbutton" iconcls="icon-search" onclick="btnSearch();">查询</a>
         </div>
     </div>
@@ -36,25 +39,28 @@
 
                 nowrap: false,
                 rownumbers: true,
-                toolbar: [{
-                    text: '创建',
-                    iconCls: 'icon-add',
-                    handler: function () {
-                        return flexiCreate();
-                    }
-                }, {
-                    text: '删除',
-                    iconCls: 'icon-remove',
-                    handler: function () {
-                        return flexiDelete();
-                    }
-                }, {
-                    text: '修改',
-                    iconCls: 'icon-edit',
-                    handler: function () {
-                        return flexiModify();
-                    }
-                }, {
+                toolbar: [
+                //    {
+                //    text: '创建',
+                //    iconCls: 'icon-add',
+                //    handler: function () {
+                //        return flexiCreate();
+                //    }
+                //},
+                //    {
+                //    text: '删除',
+                //    iconCls: 'icon-remove',
+                //    handler: function () {
+                //        return flexiDelete();
+                //    }
+                //}, {
+                //    text: '修改',
+                //    iconCls: 'icon-edit',
+                //    handler: function () {
+                //        return flexiModify();
+                //    }
+                //    },
+                    {
                     text: '打印送货单',
                     iconCls: 'icon-save',
                     handler: function () {
@@ -74,7 +80,7 @@
                         hidden: true
                     }, {
                         field: 'CODE',
-                        title: '送货单号',
+                        title: '供应计划号',
                         halign: 'center',
                         align: 'center',
                         sortable: true,
@@ -307,6 +313,7 @@
                 startDate: $("#startDate").datebox('getValue'),
                 endDate: $("#endDate").datebox('getValue'),
                 txtName: $("#txtName").val(),
+                txtSEND_DEPART_NAME: $("#txtSEND_DEPART_NAME").val(),
                 WERKS:$("#com_WERKST").combobox('getValue')
             });
             $("#flexigridData").datagrid("clearSelections");
